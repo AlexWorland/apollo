@@ -33,12 +33,6 @@ jobs:
             cuda_build: "575.57.08"
             nvm_node: true
           - distro: debian
-            version: "12"
-            gcc_version: "13"
-            cuda_version: "12.9.1"
-            cuda_build: "575.57.08"
-            nvm_node: false
-          - distro: debian
             version: "13"
             gcc_version: "14"
             cuda_version: "12.9.1"
