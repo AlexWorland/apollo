@@ -369,8 +369,8 @@ main() {
     
     case "$command" in
         build)
-            check_dependencies
-            local deps_result=$?
+            local deps_result=0
+            check_dependencies || deps_result=$?
             if [ $deps_result -eq 2 ]; then
                 # Dependencies missing, fall back to Docker
                 build_with_docker build
@@ -386,8 +386,8 @@ main() {
             fi
             ;;
         configure)
-            check_dependencies
-            local deps_result=$?
+            local deps_result=0
+            check_dependencies || deps_result=$?
             if [ $deps_result -eq 2 ]; then
                 build_with_docker configure
             else
@@ -399,8 +399,8 @@ main() {
             ;;
         test)
             export BUILD_TESTS=ON
-            check_dependencies
-            local deps_result=$?
+            local deps_result=0
+            check_dependencies || deps_result=$?
             if [ $deps_result -eq 2 ]; then
                 build_with_docker test
             else
