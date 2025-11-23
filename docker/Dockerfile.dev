@@ -1,0 +1,116 @@
+# Development Dockerfile for building Apollo
+# This image contains all build dependencies and tools needed to compile Apollo
+# Usage: See BUILD.md for instructions
+
+# syntax=docker/dockerfile:1
+ARG BASE_IMAGE=ubuntu:24.04
+FROM ${BASE_IMAGE} AS apollo-dev-base
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install all build dependencies
+RUN <<_DEPS
+#!/bin/bash
+set -e
+
+# Update package lists
+apt-get update -y
+
+# Install build essentials and tools
+apt-get install -y --no-install-recommends \
+  build-essential \
+  cmake \
+  ninja-build \
+  git \
+  curl \
+  wget \
+  ca-certificates \
+  pkg-config
+
+# Install C++ compiler (GCC 14 for Ubuntu 24.04)
+apt-get install -y --no-install-recommends \
+  gcc-14 \
+  g++-14
+
+# Set GCC 14 as default
+update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100 \
+  --slave /usr/bin/g++ g++ /usr/bin/g++-14 \
+  --slave /usr/bin/gcov gcov /usr/bin/gcov-14
+
+# Install development libraries
+apt-get install -y --no-install-recommends \
+  libssl-dev \
+  libopus-dev \
+  libminiupnpc-dev \
+  libcurl4-openssl-dev \
+  libevdev-dev \
+  libdrm-dev \
+  libcap-dev \
+  libwayland-dev \
+  libx11-dev \
+  libxcb1-dev \
+  libxcb-shm0-dev \
+  libxcb-xfixes0-dev \
+  libxfixes-dev \
+  libxrandr-dev \
+  libxtst-dev \
+  libgbm-dev \
+  libnuma-dev \
+  libpulse-dev \
+  libnotify-dev \
+  libappindicator3-dev \
+  desktop-file-utils \
+  appstream \
+  appstream-util \
+  libboost-filesystem-dev \
+  libboost-locale-dev \
+  libboost-log-dev \
+  libboost-program-options-dev \
+  libboost-system-dev \
+  libva-dev \
+  libva-drm2 \
+  libva-x11-2
+
+# Install Node.js and npm (for web UI)
+curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+apt-get install -y --no-install-recommends nodejs
+
+# Optional: Install CUDA if needed (commented out by default)
+# Uncomment and adjust version if CUDA support is required
+# RUN wget https://developer.download.nvidia.com/compute/cuda/12.9.1/local_installers/cuda_12.9.1_575.57.08_linux.run && \
+#     sh cuda_12.9.1_575.57.08_linux.run --silent --toolkit --no-opengl-libs && \
+#     rm cuda_12.9.1_575.57.08_linux.run
+
+# Clean up
+apt-get clean && \
+rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+_DEPS
+
+# Verify installations
+RUN <<_VERIFY
+#!/bin/bash
+set -e
+echo "=== Build Environment Verification ==="
+echo "CMake version:"
+cmake --version
+echo ""
+echo "Ninja version:"
+ninja --version
+echo ""
+echo "GCC version:"
+gcc --version
+echo ""
+echo "Node.js version:"
+node --version
+echo ""
+echo "npm version:"
+npm --version
+echo "================================"
+_VERIFY
+
+# Set working directory
+WORKDIR /workspace
+
+# Default command (can be overridden)
+CMD ["/bin/bash"]
+

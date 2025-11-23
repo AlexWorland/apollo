@@ -1,0 +1,30 @@
+services:
+  apollo-build:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dev
+      args:
+        BASE_IMAGE: ${BASE_IMAGE:-ubuntu:24.04}
+    image: apollo-dev:latest
+    container_name: apollo-build
+    volumes:
+      # Mount the entire apollo directory
+      - .:/workspace
+      # Cache directory for build artifacts (optional, for faster rebuilds)
+      - apollo-build-cache:/workspace/build
+    working_dir: /workspace
+    # Note: We don't set user here to allow the container to fix permissions
+    # The build script will handle permission fixes
+    # Environment variables
+    environment:
+      - CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release}
+      - BUILD_TESTS=${BUILD_TESTS:-OFF}
+      - BUILD_WERROR=${BUILD_WERROR:-OFF}
+    # Keep container running for interactive use
+    stdin_open: true
+    tty: true
+
+volumes:
+  apollo-build-cache:
+    driver: local
+

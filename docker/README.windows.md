@@ -43,31 +43,31 @@ The easiest way to build is using the provided PowerShell script:
 
 ```powershell
 # Basic build (Release mode)
-.\docker-build-windows.ps1
+.\docker/docker-build-windows.ps1
 
 # Debug build
-.\docker-build-windows.ps1 -BuildType Debug
+.\docker/docker-build-windows.ps1 -BuildType Debug
 
 # Skip certain steps
-.\docker-build-windows.ps1 -SkipConfigure  # Skip CMake configuration
-.\docker-build-windows.ps1 -SkipBuild      # Skip compilation
-.\docker-build-windows.ps1 -SkipPackage   # Skip packaging
+.\docker/docker-build-windows.ps1 -SkipConfigure  # Skip CMake configuration
+.\docker/docker-build-windows.ps1 -SkipBuild      # Skip compilation
+.\docker/docker-build-windows.ps1 -SkipPackage   # Skip packaging
 
 # Interactive mode (get a shell in the container)
-.\docker-build-windows.ps1 -Interactive
+.\docker/docker-build-windows.ps1 -Interactive
 ```
 
 ### Method 2: Using Docker Compose
 
 ```powershell
 # Build the image
-docker-compose -f docker-compose.windows.yml build
+docker-compose -f docker/docker-compose.windows.yml build
 
 # Run the build
-docker-compose -f docker-compose.windows.yml run --rm apollo-windows-build
+docker-compose -f docker/docker-compose.windows.yml run --rm apollo-windows-build
 
 # Interactive shell
-docker-compose -f docker-compose.windows.yml run --rm apollo-windows-build powershell
+docker-compose -f docker/docker-compose.windows.yml run --rm apollo-windows-build powershell
 ```
 
 ### Method 3: Using Docker Directly
@@ -135,7 +135,7 @@ After a successful build, you'll find:
 
 **Solution**:
 - Check that all submodules are initialized: `git submodule update --init --recursive`
-- Try an interactive container to debug: `.\docker-build-windows.ps1 -Interactive`
+- Try an interactive container to debug: `.\docker/docker-build-windows.ps1 -Interactive`
 
 ## What's Inside the Container
 
@@ -178,10 +178,10 @@ The build script supports skipping steps:
 
 ```powershell
 # Only configure, don't build
-.\docker-build-windows.ps1 -SkipBuild -SkipPackage
+.\docker/docker-build-windows.ps1 -SkipBuild -SkipPackage
 
 # Only package existing build
-.\docker-build-windows.ps1 -SkipConfigure -SkipBuild
+.\docker/docker-build-windows.ps1 -SkipConfigure -SkipBuild
 ```
 
 ## See Also

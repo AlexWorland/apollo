@@ -13,7 +13,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 $SCRIPT_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
-$PROJECT_ROOT = $SCRIPT_DIR
+$PROJECT_ROOT = Split-Path -Parent $SCRIPT_DIR
 $IMAGE_NAME = "apollo-windows-builder"
 $CONTAINER_NAME = "apollo-windows-build-$(Get-Random)"
 

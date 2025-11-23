@@ -175,11 +175,11 @@ Build artifacts are written to your local `build/` directory, so you can access 
 cd apollo
 
 # Simple Docker build
-./docker-build.sh
+./docker/docker-build.sh
 
 # With options
-CMAKE_BUILD_TYPE=Debug ./docker-build.sh
-BUILD_TESTS=ON ./docker-build.sh test
+CMAKE_BUILD_TYPE=Debug ./docker/docker-build.sh
+BUILD_TESTS=ON ./docker/docker-build.sh test
 ```
 
 #### Option 2: Using docker-compose
@@ -188,13 +188,13 @@ BUILD_TESTS=ON ./docker-build.sh test
 cd apollo
 
 # Build the image
-docker-compose -f docker-compose.dev.yml build
+docker-compose -f docker/docker-compose.dev.yml build
 
 # Run a build
-docker-compose -f docker-compose.dev.yml run --rm apollo-build ./build.sh
+docker-compose -f docker/docker-compose.dev.yml run --rm apollo-build ./build.sh
 
 # Get an interactive shell in the container
-docker-compose -f docker-compose.dev.yml run --rm apollo-build bash
+docker-compose -f docker/docker-compose.dev.yml run --rm apollo-build bash
 ```
 
 #### Option 3: Using Docker directly
@@ -401,7 +401,7 @@ For Windows users, you can build Apollo using Docker Windows containers. This pr
 
 ```powershell
 # Build Windows executable and installer
-.\docker-build-windows.ps1
+.\docker/docker-build-windows.ps1
 ```
 
 ### Prerequisites
@@ -414,13 +414,13 @@ For Windows users, you can build Apollo using Docker Windows containers. This pr
 
 ```powershell
 # Release build (default)
-.\docker-build-windows.ps1
+.\docker/docker-build-windows.ps1
 
 # Debug build
-.\docker-build-windows.ps1 -BuildType Debug
+.\docker/docker-build-windows.ps1 -BuildType Debug
 
 # Interactive container shell
-.\docker-build-windows.ps1 -Interactive
+.\docker/docker-build-windows.ps1 -Interactive
 ```
 
 The build artifacts (`.exe` and installer) will be in `build\cpack_artifacts\`.
