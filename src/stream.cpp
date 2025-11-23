@@ -6,6 +6,7 @@
 // standard includes
 #include <fstream>
 #include <future>
+#include <iomanip>
 #include <queue>
 
 // lib includes
@@ -832,6 +833,10 @@ namespace stream {
           float frameLossPercent = (validCount / expectedFrames) * 100.0f;
           // Clamp to non-negative to ensure valid percentage
           frameLossPercent = std::max(0.0f, frameLossPercent);
+          
+          BOOST_LOG(debug) << "AutoBitrate: [Metrics] Frame loss calculation - expected=" << expectedFrames 
+                           << ", lost=" << count << " (valid=" << validCount << "), loss_percent=" 
+                           << std::fixed << std::setprecision(2) << frameLossPercent << "%, interval_ms=" << t.count();
 
           // Initialize controller if not already done
           if (!session->auto_bitrate_controller) {
@@ -840,6 +845,15 @@ namespace stream {
             int maxBitrate = (config::video.max_bitrate > 0)
               ? std::min(config::video.max_bitrate, config::video.auto_bitrate.max_bitrate)
               : config::video.auto_bitrate.max_bitrate;
+            
+            BOOST_LOG(info) << "AutoBitrate: [Init] Initializing controller - initial_bitrate=" << initialBitrate
+                            << " kbps, min=" << minBitrate << " kbps, max=" << maxBitrate << " kbps"
+                            << ", poor_threshold=" << config::video.auto_bitrate.poor_network_threshold << "%"
+                            << ", good_threshold=" << config::video.auto_bitrate.good_network_threshold << "%"
+                            << ", increase_factor=" << config::video.auto_bitrate.increase_factor
+                            << ", decrease_factor=" << config::video.auto_bitrate.decrease_factor
+                            << ", stability_window_ms=" << config::video.auto_bitrate.stability_window_ms
+                            << ", min_consecutive_good=" << config::video.auto_bitrate.min_consecutive_good_intervals;
             
             session->auto_bitrate_controller = std::make_unique<auto_bitrate::AutoBitrateController>(
                 initialBitrate,
@@ -852,12 +866,15 @@ namespace stream {
                 config::video.auto_bitrate.stability_window_ms,
                 config::video.auto_bitrate.min_consecutive_good_intervals
             );
-            BOOST_LOG(info) << "AutoBitrate: Initialized with bitrate " << initialBitrate
-                            << " kbps, min=" << minBitrate << ", max=" << maxBitrate;
+            BOOST_LOG(info) << "AutoBitrate: [Init] Controller initialized successfully";
           }
 
           // Update network metrics
+          int currentBitrateBeforeUpdate = session->auto_bitrate_controller->getCurrentBitrate();
           session->auto_bitrate_controller->updateNetworkMetrics(frameLossPercent, t.count());
+          BOOST_LOG(debug) << "AutoBitrate: [Metrics] Updated network metrics - frame_loss=" 
+                           << std::fixed << std::setprecision(2) << frameLossPercent 
+                           << "%, current_bitrate=" << currentBitrateBeforeUpdate << " kbps, interval_ms=" << t.count();
 
           // Log periodic status (every 30 seconds)
           session->auto_bitrate_controller->logStatusIfNeeded(30000);
@@ -865,12 +882,20 @@ namespace stream {
           // Check for bitrate adjustment
           auto newBitrate = session->auto_bitrate_controller->getAdjustedBitrate();
           if (newBitrate.has_value()) {
+            BOOST_LOG(info) << "AutoBitrate: [Decision] Bitrate adjustment needed: " << currentBitrateBeforeUpdate 
+                            << " -> " << newBitrate.value() << " kbps (change: " 
+                            << (newBitrate.value() - currentBitrateBeforeUpdate) << " kbps)";
             // Signal video thread to update bitrate with the new value
             // Pass the bitrate value through the event since config is copied by value
             // Config will be updated only after successful reconfiguration in video thread
             if (session->video.bitrate_update_event) {
               session->video.bitrate_update_event->raise(newBitrate.value());
+              BOOST_LOG(info) << "AutoBitrate: [Event] Bitrate update event raised: " << newBitrate.value() << " kbps";
+            } else {
+              BOOST_LOG(warning) << "AutoBitrate: [Event] Bitrate update event is null, cannot raise update";
             }
+          } else {
+            BOOST_LOG(debug) << "AutoBitrate: [Decision] No bitrate adjustment needed at this time";
           }
 
           // Calculate and send connection status to client
