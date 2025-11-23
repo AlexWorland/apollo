@@ -7,12 +7,18 @@
 // standard includes
 #include <atomic>
 #include <chrono>
+#include <functional>
 #include <list>
+#include <map>
 #include <memory>
 #include <optional>
 #include <string>
 #include <thread>
+#include <tuple>
+#include <unordered_map>
 #include <utility>
+#include <variant>
+#include <vector>
 
 // lib includes
 #include <boost/asio.hpp>
@@ -29,6 +35,7 @@ extern "C" {
 #include "input.h"
 #include "network.h"
 #include "platform/common.h"
+#include "sync.h"
 #include "thread_safe.h"
 #include "utility.h"
 #include "video.h"
@@ -39,9 +46,87 @@ namespace stream {
   constexpr auto AUDIO_STREAM_PORT = 11;
 
   // Forward declarations
-  struct broadcast_ctx_t;
-  struct control_server_t;
-  struct message_queue_queue_t;
+  struct config_t;
+  class control_server_t;
+  struct session_t;
+  
+  namespace session {
+    enum class state_e : int;
+  }
+
+  // Type aliases needed for broadcast_ctx_t
+  enum class socket_e : int {
+    video,  ///< Video
+    audio  ///< Audio
+  };
+
+  namespace asio = boost::asio;
+  using asio::ip::udp;
+  using av_session_id_t = std::variant<asio::ip::address, std::string>;  // IP address or SS-Ping-Payload from RTSP handshake
+  using message_queue_t = std::shared_ptr<safe::queue_t<std::pair<udp::endpoint, std::string>>>;
+  using message_queue_queue_t = std::shared_ptr<safe::queue_t<std::tuple<socket_e, av_session_id_t, message_queue_t>>>;
+
+  // control_server_t definition (needed by broadcast_ctx_t)
+  class control_server_t {
+  public:
+    int bind(net::af_e address_family, std::uint16_t port);
+
+    // Get session associated with address.
+    // If none are found, try to find a session not yet claimed. (It will be marked by a port of value 0
+    // If none of those are found, return nullptr
+    session_t *get_session(const net::peer_t peer, uint32_t connect_data);
+
+    // Circular dependency:
+    //   iterate refers to session
+    //   session refers to broadcast_ctx_t
+    //   broadcast_ctx_t refers to control_server_t
+    // Therefore, iterate is implemented further down the source file
+    void iterate(std::chrono::milliseconds timeout);
+
+    /**
+     * @brief Call the handler for a given control stream message.
+     * @param type The message type.
+     * @param session The session the message was received on.
+     * @param payload The payload of the message.
+     * @param reinjected `true` if this message is being reprocessed after decryption.
+     */
+    void call(std::uint16_t type, session_t *session, const std::string_view &payload, bool reinjected);
+
+    void map(uint16_t type, std::function<void(session_t *, const std::string_view &)> cb);
+
+    int send(const std::string_view &payload, net::peer_t peer);
+
+    void flush();
+
+    // Callbacks
+    std::unordered_map<std::uint16_t, std::function<void(session_t *, const std::string_view &)>> _map_type_cb;
+
+    // All active sessions (including those still waiting for a peer to connect)
+    sync_util::sync_t<std::vector<session_t *>> _sessions;
+
+    // ENet peer to session mapping for sessions with a peer connected
+    sync_util::sync_t<std::map<net::peer_t, session_t *>> _peer_to_session;
+
+    ENetAddress _addr;
+    net::host_t _host;
+  };
+
+  // broadcast_ctx_t definition (needed by session_t)
+  struct broadcast_ctx_t {
+    message_queue_queue_t message_queue_queue;
+
+    std::thread recv_thread;
+    std::thread video_thread;
+    std::thread audio_thread;
+    std::thread control_thread;
+
+    asio::io_context io_context;
+
+    udp::socket video_sock {io_context};
+    udp::socket audio_sock {io_context};
+
+    control_server_t control_server;
+  };
 
 #pragma pack(push, 1)
   struct audio_fec_packet_t {
