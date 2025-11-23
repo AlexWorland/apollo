@@ -2265,6 +2265,8 @@ namespace stream {
 
       session->config = config;
 
+      session->auto_bitrate_enabled = launch_session.auto_bitrate_enabled;
+
       session->control.connect_data = launch_session.control_connect_data;
       session->control.feedback_queue = mail->queue<platf::gamepad_feedback_msg_t>(mail::gamepad_feedback);
       session->control.hdr_queue = mail->event<video::hdr_info_t>(mail::hdr);

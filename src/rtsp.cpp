@@ -1169,11 +1169,10 @@ namespace rtsp_stream {
       return;
     }
 
-    auto stream_session = stream::session::alloc(config, session);
+    // Store auto bitrate flag in launch session - will be copied to stream session during alloc
+    session.auto_bitrate_enabled = auto_bitrate_enabled;
     
-    // Store auto bitrate flag in session - controls whether dynamic adjustment is active
-    // When false, host uses existing static bitrate flow (no adjustments)
-    stream_session->auto_bitrate_enabled = auto_bitrate_enabled;
+    auto stream_session = stream::session::alloc(config, session);
     
     server->insert(stream_session);
 
