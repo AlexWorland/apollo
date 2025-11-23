@@ -868,6 +868,10 @@ namespace stream {
     });
 
     server->map(packetTypes[IDX_LOSS_STATS], [&](session_t *session, const std::string_view &payload) {
+      // Log actual payload size for investigation
+      BOOST_LOG(info) << "AutoBitrate: [LossStats] Received payload size: " 
+                      << payload.size() << " bytes";
+      
       if (payload.size() < 32) {
         BOOST_LOG(info) << "AutoBitrate: [LossStats] Invalid payload size: " 
                         << payload.size() << " bytes (expected: 32 bytes)";
