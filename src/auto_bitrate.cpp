@@ -120,11 +120,11 @@ namespace stream {
     new_bitrate = clamp_bitrate(new_bitrate, min_bitrate, max_bitrate);
 
     // Update state's last adjustment time and increment count
-    auto &state = const_cast<auto_bitrate_controller_t*>(this)->get_or_create_state(session);
-    if (new_bitrate != state.current_bitrate_kbps) {
-      state.last_adjustment_time = now;
-      state.adjustment_count++;
-      state.current_bitrate_kbps = new_bitrate;
+    auto &mutable_state = const_cast<auto_bitrate_controller_t*>(this)->get_or_create_state(session);
+    if (new_bitrate != mutable_state.current_bitrate_kbps) {
+      mutable_state.last_adjustment_time = now;
+      mutable_state.adjustment_count++;
+      mutable_state.current_bitrate_kbps = new_bitrate;
     }
 
     return new_bitrate;
