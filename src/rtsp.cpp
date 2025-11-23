@@ -1132,6 +1132,19 @@ namespace rtsp_stream {
       config.monitor.bitrate = configuredBitrateKbps;
     }
 
+    // Parse auto bitrate enabled flag from client
+    // This flag is sent ONLY when the client-side checkbox is checked
+    bool auto_bitrate_enabled = false;
+    try {
+      auto auto_bitrate_str = args.at("x-ml-video.autoBitrateEnabled"sv);
+      auto_bitrate_enabled = (util::from_view(auto_bitrate_str) != 0);
+      BOOST_LOG(info) << "Client auto bitrate enabled: " << (auto_bitrate_enabled ? "yes" : "no");
+    } catch (std::out_of_range &) {
+      // Flag not present = checkbox unchecked = use existing static bitrate flow
+      auto_bitrate_enabled = false;
+      BOOST_LOG(debug) << "Client auto bitrate flag not present (checkbox unchecked, using static bitrate)";
+    }
+
     if (config.monitor.videoFormat == 1 && video::active_hevc_mode == 1) {
       BOOST_LOG(warning) << "HEVC is disabled, yet the client requested HEVC"sv;
 
@@ -1157,6 +1170,11 @@ namespace rtsp_stream {
     }
 
     auto stream_session = stream::session::alloc(config, session);
+    
+    // Store auto bitrate flag in session - controls whether dynamic adjustment is active
+    // When false, host uses existing static bitrate flow (no adjustments)
+    stream_session->auto_bitrate_enabled = auto_bitrate_enabled;
+    
     server->insert(stream_session);
 
     if (stream::session::start(*stream_session, sock.remote_endpoint().address().to_string())) {

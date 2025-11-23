@@ -7,6 +7,7 @@
 #include <fstream>
 #include <future>
 #include <queue>
+#include <unordered_map>
 
 // lib includes
 #include <boost/endian/arithmetic.hpp>
@@ -20,6 +21,7 @@ extern "C" {
 }
 
 // local includes
+#include "auto_bitrate.h"
 #include "config.h"
 #include "crypto.h"
 #include "display_device.h"
@@ -53,6 +55,8 @@ extern "C" {
 #define IDX_SET_CLIPBOARD 16
 #define IDX_FILE_TRANSFER_NONCE_REQUEST 17
 #define IDX_SET_ADAPTIVE_TRIGGERS 18
+#define IDX_CONNECTION_STATUS 19
+#define IDX_BITRATE_STATS 20
 
 static const short packetTypes[] = {
   0x0305,  // Start A
@@ -74,6 +78,8 @@ static const short packetTypes[] = {
   0x3001,  // Set Clipboard (Apollo protocol extension)
   0x3002,  // File transfer nonce request (Apollo protocol extension)
   0x5503,  // Set Adaptive triggers (Sunshine protocol extension)
+  0x3003,  // Connection status (Apollo protocol extension)
+  0x5504,  // Bitrate Stats (Sunshine protocol extension)
 };
 
 namespace asio = boost::asio;
@@ -217,6 +223,15 @@ namespace stream {
 
     // Sunshine protocol extension
     SS_HDR_METADATA metadata;
+  };
+
+  struct control_bitrate_stats_t {
+    control_header_v2 header;
+
+    std::uint32_t current_bitrate_kbps;
+    std::uint64_t last_adjustment_time_ms;
+    std::uint32_t adjustment_count;
+    float loss_percentage;
   };
 
   typedef struct control_encrypted_t {
@@ -423,6 +438,12 @@ namespace stream {
     safe::signal_t controlEnd;
 
     std::atomic<session::state_e> state;
+
+    bool auto_bitrate_enabled = false;  // Enable auto bitrate for this session
+                                       // Set to true ONLY when client checkbox is checked
+                                       // When false, use existing static bitrate flow
+    
+    int bitrate_stats_send_counter = 0;  // Counter for periodic stats sending
   };
 
   /**
@@ -725,6 +746,58 @@ namespace stream {
     }
   }  // namespace fec
 
+  // Global auto bitrate controller instance
+  static auto_bitrate_controller_t auto_bitrate_controller;
+
+  /**
+   * @brief Send auto bitrate statistics to client.
+   * @param session The streaming session.
+   * @return 0 on success, -1 on error.
+   */
+  int send_bitrate_stats(session_t *session) {
+    if (!session->control.peer || !session->auto_bitrate_enabled) {
+      return -1;
+    }
+
+    uint32_t current_bitrate_kbps;
+    uint64_t last_adjustment_time_ms;
+    uint32_t adjustment_count;
+    float loss_percentage;
+
+    if (!auto_bitrate_controller.get_stats(session, current_bitrate_kbps, 
+                                            last_adjustment_time_ms, 
+                                            adjustment_count, 
+                                            loss_percentage)) {
+      return -1;
+    }
+
+    control_bitrate_stats_t plaintext {};
+    plaintext.header.type = packetTypes[IDX_BITRATE_STATS];
+    plaintext.header.payloadLength = sizeof(control_bitrate_stats_t) - sizeof(control_header_v2);
+
+    plaintext.current_bitrate_kbps = util::endian::little(current_bitrate_kbps);
+    plaintext.last_adjustment_time_ms = util::endian::little(last_adjustment_time_ms);
+    plaintext.adjustment_count = util::endian::little(adjustment_count);
+    
+    // Copy float ensuring proper endianness
+    uint32_t loss_bits;
+    std::memcpy(&loss_bits, &loss_percentage, sizeof(float));
+    loss_bits = util::endian::little(loss_bits);
+    std::memcpy(&plaintext.loss_percentage, &loss_bits, sizeof(float));
+
+    std::array<std::uint8_t, sizeof(control_encrypted_t) + crypto::cipher::round_to_pkcs7_padded(sizeof(plaintext)) + crypto::cipher::tag_size>
+      encrypted_payload;
+
+    auto payload = encode_control(session, util::view(plaintext), encrypted_payload);
+    if (session->broadcast_ref->control_server.send(payload, session->control.peer)) {
+      TUPLE_2D(port, addr, platf::from_sockaddr_ex((sockaddr *) &session->control.peer->address.address));
+      BOOST_LOG(debug) << "Couldn't send bitrate stats to ["sv << addr << ':' << port << ']';
+      return -1;
+    }
+
+    return 0;
+  }
+
   /**
    * @brief Combines two buffers and inserts new buffers at each slice boundary of the result.
    * @param insert_size The number of bytes to insert.
@@ -941,11 +1014,20 @@ namespace stream {
     });
 
     server->map(packetTypes[IDX_LOSS_STATS], [&](session_t *session, const std::string_view &payload) {
+      if (payload.size() < 32) {
+        BOOST_LOG(info) << "AutoBitrate: [LossStats] Invalid payload size: " 
+                        << payload.size() << " bytes (expected: 32 bytes)";
+        return;
+      }
+
       int32_t *stats = (int32_t *) payload.data();
       auto count = stats[0];
       std::chrono::milliseconds t {stats[1]};
 
-      auto lastGoodFrame = stats[3];
+      // Extract lastGoodFrame (64-bit at offset 12)
+      int64_t lastGoodFrame64;
+      std::memcpy(&lastGoodFrame64, &stats[3], sizeof(int64_t));
+      uint64_t lastGoodFrame = static_cast<uint64_t>(lastGoodFrame64);
 
       BOOST_LOG(verbose)
         << "type [IDX_LOSS_STATS]"sv << std::endl
@@ -954,6 +1036,28 @@ namespace stream {
         << "time in milli since last report [" << t.count() << ']' << std::endl
         << "last good frame [" << lastGoodFrame << ']' << std::endl
         << "---end stats---";
+
+      // Process loss stats through controller (only if auto bitrate is enabled)
+      if (session->auto_bitrate_enabled) {
+        auto_bitrate_controller.process_loss_stats(session, lastGoodFrame, t);
+
+        // Check if adjustment is needed
+        if (auto_bitrate_controller.should_adjust_bitrate(session)) {
+          int new_bitrate = auto_bitrate_controller.calculate_new_bitrate(session);
+
+          // Raise mail event for video thread
+          session->mail->event<int>(mail::bitrate_change)->raise(new_bitrate);
+
+          BOOST_LOG(info) << "AutoBitrate: Adjusting bitrate to " << new_bitrate << " Kbps";
+        }
+
+        // Send bitrate stats to client periodically (every ~1 second, loss stats come every 50ms)
+        session->bitrate_stats_send_counter++;
+        if (session->bitrate_stats_send_counter >= 20) {  // Every 20 packets = ~1 second
+          session->bitrate_stats_send_counter = 0;
+          send_bitrate_stats(session);
+        }
+      }
     });
 
     server->map(packetTypes[IDX_REQUEST_IDR_FRAME], [&](session_t *session, const std::string_view &payload) {

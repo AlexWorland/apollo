@@ -69,6 +69,13 @@ namespace nvenc {
      */
     bool invalidate_ref_frames(uint64_t first_frame, uint64_t last_frame);
 
+    /**
+     * @brief Reconfigure encoder bitrate during active session.
+     * @param new_bitrate_kbps New bitrate in Kbps.
+     * @return `true` on success, `false` on error or unsupported.
+     */
+    bool reconfigure_bitrate(uint32_t new_bitrate_kbps);
+
   protected:
     /**
      * @brief Required. Used for loading NvEnc library and setting `nvenc` variable with `NvEncodeAPICreateInstance()`.
@@ -129,6 +136,10 @@ namespace nvenc {
     } encoder_params;
 
     std::string last_nvenc_error_string;
+
+    // Stored config for reconfiguration
+    nvenc_config config;
+    video::config_t client_config;
 
     // Derived classes set these variables
     void *device = nullptr;  ///< Platform-specific handle of encoding device.

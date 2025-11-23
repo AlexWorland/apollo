@@ -98,6 +98,9 @@ namespace nvenc {
   }
 
   bool nvenc_base::create_encoder(const nvenc_config &config, const video::config_t &client_config, const nvenc_colorspace_t &colorspace, NV_ENC_BUFFER_FORMAT buffer_format) {
+    // Store config for later reconfiguration
+    this->config = config;
+    this->client_config = client_config;
     // Pick the minimum NvEncode API version required to support the specified codec
     // to maximize driver compatibility. AV1 was introduced in SDK v12.0.
     minimum_api_version = (client_config.videoFormat <= 1) ? MAKE_NVENC_VER(11U, 0U) : MAKE_NVENC_VER(12U, 0U);
@@ -677,5 +680,107 @@ namespace nvenc {
     }
 
     return version;
+  }
+
+  bool nvenc_base::reconfigure_bitrate(uint32_t new_bitrate_kbps) {
+    if (!encoder) {
+      BOOST_LOG(error) << "NvEnc: Cannot reconfigure - encoder not initialized";
+      return false;
+    }
+
+    // Check if dynamic bitrate is supported
+    NV_ENC_CAPS_PARAM caps_param = {min_struct_version(NV_ENC_CAPS_PARAM_VER)};
+    caps_param.capsToQuery = NV_ENC_CAPS_SUPPORT_DYNAMIC_BITRATE;
+
+    int dynamic_bitrate_supported = 0;
+    NV_ENC_INITIALIZE_PARAMS init_params = {min_struct_version(NV_ENC_INITIALIZE_PARAMS_VER)};
+    
+    // Determine codec GUID
+    switch (client_config.videoFormat) {
+      case 0:
+        init_params.encodeGUID = NV_ENC_CODEC_H264_GUID;
+        break;
+      case 1:
+        init_params.encodeGUID = NV_ENC_CODEC_HEVC_GUID;
+        break;
+      case 2:
+        init_params.encodeGUID = NV_ENC_CODEC_AV1_GUID;
+        break;
+      default:
+        BOOST_LOG(error) << "NvEnc: Unknown video format for reconfiguration";
+        return false;
+    }
+
+    if (nvenc_failed(nvenc->nvEncGetEncodeCaps(encoder, init_params.encodeGUID, &caps_param, &dynamic_bitrate_supported))) {
+      BOOST_LOG(warning) << "NvEnc: Failed to query dynamic bitrate capability";
+      return false;
+    }
+
+    if (!dynamic_bitrate_supported) {
+      BOOST_LOG(debug) << "NvEnc: Dynamic bitrate not supported by this encoder";
+      return false;
+    }
+
+    // Get current preset config
+    GUID preset_guid = quality_preset_guid_from_number(config.quality_preset);
+    NV_ENC_PRESET_CONFIG preset_config = {min_struct_version(NV_ENC_PRESET_CONFIG_VER), {min_struct_version(NV_ENC_CONFIG_VER, 7, 8)}};
+    if (nvenc_failed(nvenc->nvEncGetEncodePresetConfigEx(encoder, init_params.encodeGUID, preset_guid, NV_ENC_TUNING_INFO_ULTRA_LOW_LATENCY, &preset_config))) {
+      BOOST_LOG(error) << "NvEnc: Failed to get preset config for reconfiguration";
+      return false;
+    }
+
+    // Prepare reconfigure parameters
+    NV_ENC_RECONFIGURE_PARAMS reconfigure_params = {min_struct_version(NV_ENC_RECONFIGURE_PARAMS_VER)};
+    reconfigure_params.forceIDR = 0;  // Don't force IDR on bitrate change
+    reconfigure_params.resetEncoder = 0;
+
+    // Update encoder config with new bitrate
+    NV_ENC_CONFIG enc_config = preset_config.presetCfg;
+    enc_config.rcParams.averageBitRate = new_bitrate_kbps * 1000;  // Convert to bps
+
+    // Recalculate VBV buffer size if custom VBV is enabled
+    auto get_encoder_cap = [&](NV_ENC_CAPS cap) {
+      NV_ENC_CAPS_PARAM param = {min_struct_version(NV_ENC_CAPS_PARAM_VER), cap};
+      int value = 0;
+      nvenc->nvEncGetEncodeCaps(encoder, init_params.encodeGUID, &param, &value);
+      return value;
+    };
+
+    if (get_encoder_cap(NV_ENC_CAPS_SUPPORT_CUSTOM_VBV_BUF_SIZE)) {
+      float framerate = static_cast<float>(client_config.framerate);
+      if (framerate > 1000) {
+        framerate = framerate / 1000.0f;  // Convert from millifps to fps
+      }
+      enc_config.rcParams.vbvBufferSize = new_bitrate_kbps * 1000 / static_cast<uint32_t>(framerate);
+      if (config.vbv_percentage_increase > 0) {
+        enc_config.rcParams.vbvBufferSize += enc_config.rcParams.vbvBufferSize * config.vbv_percentage_increase / 100;
+      }
+    }
+
+    // Set up reinitialize parameters
+    init_params.presetGUID = preset_guid;
+    init_params.tuningInfo = NV_ENC_TUNING_INFO_ULTRA_LOW_LATENCY;
+    init_params.encodeConfig = &enc_config;
+    init_params.encodeWidth = encoder_params.width;
+    init_params.encodeHeight = encoder_params.height;
+    init_params.maxEncodeWidth = encoder_params.width;
+    init_params.maxEncodeHeight = encoder_params.height;
+    init_params.frameRateNum = client_config.framerate;
+    init_params.frameRateDen = 1;
+
+    reconfigure_params.reInitEncodeParams = init_params;
+
+    // Perform reconfiguration
+    NVENCSTATUS status = nvenc->nvEncReconfigureEncoder(encoder, &reconfigure_params);
+    if (nvenc_failed(status)) {
+      BOOST_LOG(error) << "NvEnc: ReconfigureEncoder failed: " << last_nvenc_error_string;
+      return false;
+    }
+
+    // Update stored client config
+    client_config.bitrate = new_bitrate_kbps;
+
+    BOOST_LOG(info) << "NvEnc: Bitrate reconfigured to " << new_bitrate_kbps << " Kbps";
+    return true;
   }
 }  // namespace nvenc

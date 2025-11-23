@@ -146,6 +146,12 @@ namespace config {
     int max_bitrate;  // Maximum bitrate, sets ceiling in kbps for bitrate requested from client
     double minimum_fps_target;  ///< Lowest framerate that will be used when streaming. Range 0-1000, 0 = half of client's requested framerate.
 
+    // Auto bitrate adjustment settings (only used when client enables it)
+    // Note: Feature is controlled by client checkbox, these are host-side tuning parameters
+    int auto_bitrate_min_kbps = 500;  // Minimum bitrate (Kbps)
+    int auto_bitrate_max_kbps = 0;    // Maximum bitrate (0 = use client max)
+    int auto_bitrate_adjustment_interval_ms = 3000;  // Minimum time between adjustments
+
     std::string fallback_mode;
     bool isolated_virtual_display_option;
     bool ignore_encoder_probe_failure;

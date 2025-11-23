@@ -59,6 +59,13 @@
       >
       </audio-video>
 
+      <!-- Auto Bitrate Tab -->
+      <auto-bitrate
+        v-if="currentTab === 'auto_bitrate'"
+        :config="config"
+        :platform="platform">
+      </auto-bitrate>
+
       <!-- Network Tab -->
       <network
         v-if="currentTab === 'network'"
@@ -112,6 +119,7 @@
   import Files from './configs/tabs/Files.vue'
   import Advanced from './configs/tabs/Advanced.vue'
   import AudioVideo from './configs/tabs/AudioVideo.vue'
+  import AutoBitrate from './configs/tabs/AutoBitrate.vue'
   import ContainerEncoders from './configs/tabs/ContainerEncoders.vue'
   import {$tp, usePlatformI18n} from './platform-i18n'
 
@@ -127,6 +135,7 @@
       Advanced,
       // They will be accessible via audio-video, container-encoders only.
       AudioVideo,
+      AutoBitrate,
       ContainerEncoders,
     },
     data() {
@@ -213,6 +222,15 @@
               "max_bitrate": 0,
               "minimum_fps_target": 0,
               "isolated_virtual_display_option": "disabled",
+            },
+          },
+          {
+            id: "auto_bitrate",
+            name: "Auto Bitrate",
+            options: {
+              "auto_bitrate_min_kbps": 500,
+              "auto_bitrate_max_kbps": 0,
+              "auto_bitrate_adjustment_interval_ms": 3000,
             },
           },
           {
