@@ -769,6 +769,11 @@ namespace stream {
     return 0;
   }
 
+  // Forward declaration for AutoBitrate controller initialization
+  namespace session {
+    void initialize_auto_bitrate_controller(session_t &session);
+  }
+
   void controlBroadcastThread(control_server_t *server) {
     server->map(packetTypes[IDX_PERIODIC_PING], [](session_t *session, const std::string_view &payload) {
       BOOST_LOG(verbose) << "type [IDX_PERIODIC_PING]"sv;
