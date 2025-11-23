@@ -86,11 +86,6 @@ using namespace std::literals;
 
 namespace stream {
 
-  enum class socket_e : int {
-    video,  ///< Video
-    audio  ///< Audio
-  };
-
 #pragma pack(push, 1)
 
   struct video_short_frame_header_t {
@@ -233,11 +228,6 @@ namespace stream {
     // encrypted control_header_v2 and payload data follow
   } *control_encrypted_p;
 
-  struct audio_fec_packet_t {
-    RTP_PACKET rtp;
-    AUDIO_FEC_HEADER fecHeader;
-  };
-
 #pragma pack(pop)
 
   constexpr std::size_t round_to_pkcs7_padded(std::size_t size) {
@@ -247,10 +237,6 @@ namespace stream {
   constexpr std::size_t MAX_AUDIO_PACKET_SIZE = 1400;
 
   using audio_aes_t = std::array<char, round_to_pkcs7_padded(MAX_AUDIO_PACKET_SIZE)>;
-
-  using av_session_id_t = std::variant<asio::ip::address, std::string>;  // IP address or SS-Ping-Payload from RTSP handshake
-  using message_queue_t = std::shared_ptr<safe::queue_t<std::pair<udp::endpoint, std::string>>>;
-  using message_queue_queue_t = std::shared_ptr<safe::queue_t<std::tuple<socket_e, av_session_id_t, message_queue_t>>>;
 
   // return bytes written on success
   // return -1 on error
@@ -270,160 +256,7 @@ namespace stream {
     }
   }
 
-  class control_server_t {
-  public:
-    int bind(net::af_e address_family, std::uint16_t port) {
-      _host = net::host_create(address_family, _addr, port);
 
-      return !(bool) _host;
-    }
-
-    // Get session associated with address.
-    // If none are found, try to find a session not yet claimed. (It will be marked by a port of value 0
-    // If none of those are found, return nullptr
-    session_t *get_session(const net::peer_t peer, uint32_t connect_data);
-
-    // Circular dependency:
-    //   iterate refers to session
-    //   session refers to broadcast_ctx_t
-    //   broadcast_ctx_t refers to control_server_t
-    // Therefore, iterate is implemented further down the source file
-    void iterate(std::chrono::milliseconds timeout);
-
-    /**
-     * @brief Call the handler for a given control stream message.
-     * @param type The message type.
-     * @param session The session the message was received on.
-     * @param payload The payload of the message.
-     * @param reinjected `true` if this message is being reprocessed after decryption.
-     */
-    void call(std::uint16_t type, session_t *session, const std::string_view &payload, bool reinjected);
-
-    void map(uint16_t type, std::function<void(session_t *, const std::string_view &)> cb) {
-      _map_type_cb.emplace(type, std::move(cb));
-    }
-
-    int send(const std::string_view &payload, net::peer_t peer) {
-      auto packet = enet_packet_create(payload.data(), payload.size(), ENET_PACKET_FLAG_RELIABLE);
-      if (enet_peer_send(peer, 0, packet)) {
-        enet_packet_destroy(packet);
-
-        return -1;
-      }
-
-      return 0;
-    }
-
-    void flush() {
-      enet_host_flush(_host.get());
-    }
-
-    // Callbacks
-    std::unordered_map<std::uint16_t, std::function<void(session_t *, const std::string_view &)>> _map_type_cb;
-
-    // All active sessions (including those still waiting for a peer to connect)
-    sync_util::sync_t<std::vector<session_t *>> _sessions;
-
-    // ENet peer to session mapping for sessions with a peer connected
-    sync_util::sync_t<std::map<net::peer_t, session_t *>> _peer_to_session;
-
-    ENetAddress _addr;
-    net::host_t _host;
-  };
-
-  struct broadcast_ctx_t {
-    message_queue_queue_t message_queue_queue;
-
-    std::thread recv_thread;
-    std::thread video_thread;
-    std::thread audio_thread;
-    std::thread control_thread;
-
-    asio::io_context io_context;
-
-    udp::socket video_sock {io_context};
-    udp::socket audio_sock {io_context};
-
-    control_server_t control_server;
-  };
-
-  struct session_t {
-    config_t config;
-
-    safe::mail_t mail;
-
-    std::shared_ptr<input::input_t> input;
-
-    std::thread audioThread;
-    std::thread videoThread;
-
-    std::chrono::steady_clock::time_point pingTimeout;
-
-    safe::shared_t<broadcast_ctx_t>::ptr_t broadcast_ref;
-
-    boost::asio::ip::address localAddress;
-
-    struct {
-      std::string ping_payload;
-
-      int lowseq;
-      udp::endpoint peer;
-
-      std::optional<crypto::cipher::gcm_t> cipher;
-      std::uint64_t gcm_iv_counter;
-
-      safe::mail_raw_t::event_t<bool> idr_events;
-      safe::mail_raw_t::event_t<std::pair<int64_t, int64_t>> invalidate_ref_frames_events;
-
-      std::unique_ptr<platf::deinit_t> qos;
-    } video;
-
-    struct {
-      crypto::cipher::cbc_t cipher;
-      std::string ping_payload;
-
-      std::uint16_t sequenceNumber;
-      // avRiKeyId == util::endian::big(First (sizeof(avRiKeyId)) bytes of launch_session->iv)
-      std::uint32_t avRiKeyId;
-      std::uint32_t timestamp;
-      udp::endpoint peer;
-
-      util::buffer_t<char> shards;
-      util::buffer_t<uint8_t *> shards_p;
-
-      audio_fec_packet_t fec_packet;
-      std::unique_ptr<platf::deinit_t> qos;
-    } audio;
-
-    struct {
-      crypto::cipher::gcm_t cipher;
-      crypto::aes_t legacy_input_enc_iv;  // Only used when the client doesn't support full control stream encryption
-      crypto::aes_t incoming_iv;
-      crypto::aes_t outgoing_iv;
-
-      std::uint32_t connect_data;  // Used for new clients with ML_FF_SESSION_ID_V1
-      std::string expected_peer_address;  // Only used for legacy clients without ML_FF_SESSION_ID_V1
-
-      net::peer_t peer;
-      std::uint32_t seq;
-
-      platf::feedback_queue_t feedback_queue;
-      safe::mail_raw_t::event_t<video::hdr_info_t> hdr_queue;
-    } control;
-
-    std::uint32_t launch_session_id;
-    std::string device_name;
-    std::string device_uuid;
-    crypto::PERM permission;
-
-    std::list<crypto::command_entry_t> do_cmds;
-    std::list<crypto::command_entry_t> undo_cmds;
-
-    safe::mail_raw_t::event_t<bool> shutdown_event;
-    safe::signal_t controlEnd;
-
-    std::atomic<session::state_e> state;
-  };
 
   /**
    * First part of cipher must be struct of type control_encrypted_t
@@ -954,6 +787,82 @@ namespace stream {
         << "time in milli since last report [" << t.count() << ']' << std::endl
         << "last good frame [" << lastGoodFrame << ']' << std::endl
         << "---end stats---";
+
+      // Handle auto bitrate adjustment if enabled
+      if (session->config.autoBitrateEnabled && t.count() > 0) {
+        // Calculate frame loss percentage
+        // encodingFramerate format depends on config::video.limit_framerate:
+        // - If limit_framerate is true: encodingFramerate is in fps format (from session.fps)
+        // - If limit_framerate is false: encodingFramerate is in fps*1000 format
+        // framerate (after RTSP normalization): values > 1000 are in fps*1000 format,
+        // values <= 1000 are in fps format
+        float framerate;
+        if (session->config.monitor.encodingFramerate > 0) {
+          // Check if encodingFramerate is in fps*1000 format (> 1000) or fps format (<= 1000)
+          if (session->config.monitor.encodingFramerate > 1000) {
+            // encodingFramerate is in fps*1000 format, normalize to fps
+            framerate = session->config.monitor.encodingFramerate / 1000.0f;
+          } else {
+            // encodingFramerate is already in fps format (when limit_framerate is true)
+            framerate = static_cast<float>(session->config.monitor.encodingFramerate);
+          }
+        } else {
+          // Fallback: check if framerate is in fps*1000 format
+          // After RTSP normalization, values > 1000 are in fps*1000 format (divide by 1000),
+          // while values <= 1000 are in fps format (use as-is). Use 1000 threshold to match encodingFramerate logic.
+          if (session->config.monitor.framerate > 1000) {
+            framerate = session->config.monitor.framerate / 1000.0f;
+          } else {
+            framerate = static_cast<float>(session->config.monitor.framerate);
+          }
+        }
+        float expectedFrames = framerate * (t.count() / 1000.0f);
+        if (expectedFrames > 0) {
+          // Validate frame loss count is non-negative to prevent incorrect bitrate adjustments
+          // Negative values can occur due to data corruption or counter issues
+          int32_t validCount = std::max(0, count);
+          float frameLossPercent = (validCount / expectedFrames) * 100.0f;
+          // Clamp to non-negative to ensure valid percentage
+          frameLossPercent = std::max(0.0f, frameLossPercent);
+
+          // Initialize controller if not already done
+          if (!session->auto_bitrate_controller) {
+            int initialBitrate = session->config.monitor.bitrate;
+            int minBitrate = config::video.auto_bitrate.min_bitrate;
+            int maxBitrate = (config::video.max_bitrate > 0)
+              ? std::min(config::video.max_bitrate, config::video.auto_bitrate.max_bitrate)
+              : config::video.auto_bitrate.max_bitrate;
+            
+            session->auto_bitrate_controller = std::make_unique<auto_bitrate::AutoBitrateController>(
+                initialBitrate,
+                minBitrate,
+                maxBitrate,
+                config::video.auto_bitrate.poor_network_threshold,
+                config::video.auto_bitrate.good_network_threshold,
+                config::video.auto_bitrate.increase_factor,
+                config::video.auto_bitrate.decrease_factor,
+                config::video.auto_bitrate.stability_window_ms,
+                config::video.auto_bitrate.min_consecutive_good_intervals
+            );
+            BOOST_LOG(info) << "AutoBitrate: Initialized with bitrate " << initialBitrate
+                            << " kbps, min=" << minBitrate << ", max=" << maxBitrate;
+          }
+
+          // Update network metrics
+          session->auto_bitrate_controller->updateNetworkMetrics(frameLossPercent, t.count());
+
+          // Check for bitrate adjustment
+          auto newBitrate = session->auto_bitrate_controller->getAdjustedBitrate();
+          if (newBitrate.has_value()) {
+            // Signal video thread to update bitrate with the new value
+            // Pass the bitrate value through the event since config is copied by value
+            // Config will be updated only after successful reconfiguration in video thread
+            if (session->video.bitrate_update_event) {
+              session->video.bitrate_update_event->raise(newBitrate.value());
+            }
+          }
+        }
+      }
     });
 
     server->map(packetTypes[IDX_REQUEST_IDR_FRAME], [&](session_t *session, const std::string_view &payload) {
@@ -2172,6 +2081,7 @@ namespace stream {
 
       session->video.idr_events = mail->event<bool>(mail::idr);
       session->video.invalidate_ref_frames_events = mail->event<std::pair<int64_t, int64_t>>(mail::invalidate_ref_frames);
+      session->video.bitrate_update_event = mail->event<int>(mail::bitrate_update);
       session->video.lowseq = 0;
       session->video.ping_payload = launch_session.av_ping_payload;
       if (config.encryptionFlagsEnabled & SS_ENC_VIDEO) {
