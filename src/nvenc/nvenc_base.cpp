@@ -688,11 +688,6 @@ namespace nvenc {
       return false;
     }
 
-    // Check if dynamic bitrate is supported
-    NV_ENC_CAPS_PARAM caps_param = {min_struct_version(NV_ENC_CAPS_PARAM_VER)};
-    caps_param.capsToQuery = NV_ENC_CAPS_SUPPORT_DYNAMIC_BITRATE;
-
-    int dynamic_bitrate_supported = 0;
     NV_ENC_INITIALIZE_PARAMS init_params = {min_struct_version(NV_ENC_INITIALIZE_PARAMS_VER)};
     
     // Determine codec GUID
@@ -709,16 +704,6 @@ namespace nvenc {
       default:
         BOOST_LOG(error) << "NvEnc: Unknown video format for reconfiguration";
         return false;
-    }
-
-    if (nvenc_failed(nvenc->nvEncGetEncodeCaps(encoder, init_params.encodeGUID, &caps_param, &dynamic_bitrate_supported))) {
-      BOOST_LOG(warning) << "NvEnc: Failed to query dynamic bitrate capability";
-      return false;
-    }
-
-    if (!dynamic_bitrate_supported) {
-      BOOST_LOG(debug) << "NvEnc: Dynamic bitrate not supported by this encoder";
-      return false;
     }
 
     // Get current preset config
