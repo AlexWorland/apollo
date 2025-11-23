@@ -242,7 +242,10 @@ namespace nvenc {
     enc_config.profileGUID = NV_ENC_CODEC_PROFILE_AUTOSELECT_GUID;
     enc_config.gopLength = NVENC_INFINITE_GOPLENGTH;
     enc_config.frameIntervalP = 1;
-    enc_config.rcParams.rateControlMode = NV_ENC_PARAMS_RC_CBR;
+    // Use VBR mode when auto bitrate is enabled to allow peaks above average
+    enc_config.rcParams.rateControlMode = client_config.autoBitrateEnabled 
+        ? NV_ENC_PARAMS_RC_VBR 
+        : NV_ENC_PARAMS_RC_CBR;
     enc_config.rcParams.zeroReorderDelay = 1;
     enc_config.rcParams.enableLookahead = 0;
     enc_config.rcParams.lowDelayKeyFrameScale = 1;
@@ -252,6 +255,9 @@ namespace nvenc {
 
     enc_config.rcParams.enableAQ = config.adaptive_quantization;
     enc_config.rcParams.averageBitRate = client_config.bitrate * 1000;
+    // Set maxBitRate to allow peaks above average (typically 1.5x average for VBR, but set higher for auto bitrate)
+    // Note: maxBitRate is ignored in CBR mode, but setting it ensures it's correct if mode changes
+    enc_config.rcParams.maxBitRate = client_config.bitrate * 1500;  // 1.5x average to allow peaks
 
     if (get_encoder_cap(NV_ENC_CAPS_SUPPORT_CUSTOM_VBV_BUF_SIZE)) {
       // VBV buffer size formula: bitrate_bps / framerate_fps
@@ -458,6 +464,12 @@ namespace nvenc {
       if (config.insert_filler_data) {
         extra += " filler-data";
       }
+      // Add rate control mode info
+      if (enc_config.rcParams.rateControlMode == NV_ENC_PARAMS_RC_VBR) {
+        extra += " VBR";
+      } else {
+        extra += " CBR";
+      }
 
       BOOST_LOG(info) << "NvEnc: created encoder " << video_format_string << quality_preset_string_from_guid(init_params.presetGUID) << extra;
     }
@@ -641,10 +653,14 @@ namespace nvenc {
     }
 
     // Use stored encode config (NVENC API doesn't have a function to get current params)
+    // This preserves the rate control mode (VBR/CBR) that was set during initialization
     NV_ENC_CONFIG enc_config = stored_encode_config;
 
     // Update bitrate (convert from kbps to bps)
     enc_config.rcParams.averageBitRate = new_bitrate_kbps * 1000;
+    // Update maxBitRate to allow peaks above average (1.5x average)
+    // Note: maxBitRate is ignored in CBR mode, but setting it ensures it's correct if mode changes
+    enc_config.rcParams.maxBitRate = new_bitrate_kbps * 1500;  // 1.5x average to allow peaks
 
     // Update VBV buffer size proportionally if supported
     auto get_encoder_cap = [&](NV_ENC_CAPS cap) {
@@ -687,7 +703,9 @@ namespace nvenc {
       return false;
     }
 
-    BOOST_LOG(info) << "NvEnc: Bitrate reconfigured to " << new_bitrate_kbps << " kbps";
+    std::string rc_mode = (enc_config.rcParams.rateControlMode == NV_ENC_PARAMS_RC_VBR) ? "VBR" : "CBR";
+    BOOST_LOG(info) << "NvEnc: Bitrate reconfigured to " << new_bitrate_kbps << " kbps (average), " 
+                    << (new_bitrate_kbps * 1500 / 1000) << " kbps (max peak) [" << rc_mode << " mode]";
     return true;
   }
 

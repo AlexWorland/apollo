@@ -1184,10 +1184,12 @@ namespace rtsp_stream {
       BOOST_LOG(info) << "AutoBitrate: [RTSP] Final adjusted video encoding bitrate: " << bitrateBeforeAdjustments << " -> " << configuredBitrateKbps << " kbps (total reduction: " 
                       << (bitrateBeforeAdjustments - configuredBitrateKbps) << " kbps)";
       config.monitor.bitrate = configuredBitrateKbps;
+      config.monitor.autoBitrateEnabled = config.autoBitrateEnabled;
     } else {
       // Fallback: if configuredBitrateKbps is somehow 0 or invalid, use maximumBitrateKbps
       // This should rarely happen, but ensures we always have a valid bitrate
       config.monitor.bitrate = maximumBitrateKbps;
+      config.monitor.autoBitrateEnabled = config.autoBitrateEnabled;
       BOOST_LOG(warning) << "AutoBitrate: [RTSP] configuredBitrateKbps is 0, using maximumBitrateKbps as fallback: " << maximumBitrateKbps << " kbps";
     }
 

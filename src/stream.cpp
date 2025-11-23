@@ -834,7 +834,7 @@ namespace stream {
           // Clamp to non-negative to ensure valid percentage
           frameLossPercent = std::max(0.0f, frameLossPercent);
           
-          BOOST_LOG(debug) << "AutoBitrate: [Metrics] Frame loss calculation - expected=" << expectedFrames 
+          BOOST_LOG(info) << "AutoBitrate: [Metrics] Frame loss calculation - expected=" << expectedFrames 
                            << ", lost=" << count << " (valid=" << validCount << "), loss_percent=" 
                            << std::fixed << std::setprecision(2) << frameLossPercent << "%, interval_ms=" << t.count();
 
@@ -872,7 +872,7 @@ namespace stream {
           // Update network metrics
           int currentBitrateBeforeUpdate = session->auto_bitrate_controller->getCurrentBitrate();
           session->auto_bitrate_controller->updateNetworkMetrics(frameLossPercent, t.count());
-          BOOST_LOG(debug) << "AutoBitrate: [Metrics] Updated network metrics - frame_loss=" 
+          BOOST_LOG(info) << "AutoBitrate: [Metrics] Updated network metrics - frame_loss=" 
                            << std::fixed << std::setprecision(2) << frameLossPercent 
                            << "%, current_bitrate=" << currentBitrateBeforeUpdate << " kbps, interval_ms=" << t.count();
 
@@ -895,7 +895,7 @@ namespace stream {
               BOOST_LOG(warning) << "AutoBitrate: [Event] Bitrate update event is null, cannot raise update";
             }
           } else {
-            BOOST_LOG(debug) << "AutoBitrate: [Decision] No bitrate adjustment needed at this time";
+            BOOST_LOG(info) << "AutoBitrate: [Decision] No bitrate adjustment needed at this time";
           }
 
           // Calculate and send connection status to client
