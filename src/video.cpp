@@ -2016,26 +2016,34 @@ namespace video {
         session->request_idr_frame();
       }
 
-      // Handle bitrate updates
+      // Handle bitrate updates (only when auto bitrate is enabled)
       if (bitrate_update_events->peek()) {
         if (auto newBitrate = bitrate_update_events->pop()) {
           // Cast channel_data to session_t* to access config and auto_bitrate_controller
           auto stream_session = static_cast<stream::session_t *>(channel_data);
-          int currentBitrate = stream_session->config.monitor.bitrate;
-          BOOST_LOG(info) << "AutoBitrate: [Video] Received bitrate update event: " << currentBitrate << " -> " << *newBitrate << " kbps";
           
-          if (session->reconfigure_bitrate(*newBitrate)) {
-            // Update config only after successful reconfiguration
-            stream_session->config.monitor.bitrate = *newBitrate;
-            BOOST_LOG(info) << "AutoBitrate: [Video] Encoder bitrate successfully updated: " << currentBitrate << " -> " << *newBitrate << " kbps";
-          } else {
-            // Reset controller to current config value (last successfully applied bitrate)
-            // to keep it in sync with the actual encoder state
-            BOOST_LOG(warning) << "AutoBitrate: [Video] Encoder reconfiguration failed for bitrate: " << *newBitrate << " kbps";
-            if (stream_session->auto_bitrate_controller) {
-              stream_session->auto_bitrate_controller->reset(stream_session->config.monitor.bitrate);
-              BOOST_LOG(warning) << "AutoBitrate: [Video] Controller reset to current encoder bitrate: " << stream_session->config.monitor.bitrate << " kbps";
+          // Only process bitrate updates when auto bitrate is enabled
+          // When auto bitrate is disabled, the bitrate should remain at the configured value
+          if (stream_session->config.autoBitrateEnabled) {
+            int currentBitrate = stream_session->config.monitor.bitrate;
+            BOOST_LOG(info) << "AutoBitrate: [Video] Received bitrate update event: " << currentBitrate << " -> " << *newBitrate << " kbps";
+            
+            if (session->reconfigure_bitrate(*newBitrate)) {
+              // Update config only after successful reconfiguration
+              stream_session->config.monitor.bitrate = *newBitrate;
+              BOOST_LOG(info) << "AutoBitrate: [Video] Encoder bitrate successfully updated: " << currentBitrate << " -> " << *newBitrate << " kbps";
+            } else {
+              // Reset controller to current config value (last successfully applied bitrate)
+              // to keep it in sync with the actual encoder state
+              BOOST_LOG(warning) << "AutoBitrate: [Video] Encoder reconfiguration failed for bitrate: " << *newBitrate << " kbps";
+              if (stream_session->auto_bitrate_controller) {
+                stream_session->auto_bitrate_controller->reset(stream_session->config.monitor.bitrate);
+                BOOST_LOG(warning) << "AutoBitrate: [Video] Controller reset to current encoder bitrate: " << stream_session->config.monitor.bitrate << " kbps";
+              }
             }
+          } else {
+            BOOST_LOG(info) << "AutoBitrate: [Video] Ignoring bitrate update event (auto bitrate disabled) - requested: " 
+                            << *newBitrate << " kbps, current: " << stream_session->config.monitor.bitrate << " kbps";
           }
         }
       }

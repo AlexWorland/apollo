@@ -2341,7 +2341,8 @@ namespace stream {
       }
 
       int initialBitrate = session.config.monitor.bitrate;
-      int minBitrate = config::video.auto_bitrate.min_bitrate;
+      // Hardcoded minimum bitrate for auto bitrate mode: 10 Mbps
+      int minBitrate = 10000;  // 10 Mbps in kbps
       int maxBitrate = (config::video.max_bitrate > 0)
         ? std::min(config::video.max_bitrate, config::video.auto_bitrate.max_bitrate)
         : config::video.auto_bitrate.max_bitrate;
