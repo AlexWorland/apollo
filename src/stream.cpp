@@ -1239,6 +1239,9 @@ namespace stream {
 
         auto now = std::chrono::steady_clock::now();
 
+        // Typedef to avoid preprocessor issues with commas in template parameters inside macro body
+        using last_normal_log_t = std::map<session_t*, std::chrono::steady_clock::time_point>;
+
         KITTY_WHILE_LOOP(auto pos = std::begin(*server->_sessions), pos != std::end(*server->_sessions), {
           // Don't perform additional session processing if we're shutting down
           if (shutdown_event->peek() || broadcast_shutdown_event->peek()) {
@@ -1366,7 +1369,7 @@ namespace stream {
               BOOST_LOG(info) << "AutoBitrate: [Timeout] Loss stats timestamp reset to prevent repeated triggers";
             } else {
               // Loss stats are being received normally, log periodically for debugging
-              static std::map<session_t*, std::chrono::steady_clock::time_point> lastNormalLog;
+              static last_normal_log_t lastNormalLog;
               auto lastLogIt = lastNormalLog.find(session);
               if (lastLogIt == lastNormalLog.end() || 
                   std::chrono::duration_cast<std::chrono::milliseconds>(now - lastLogIt->second).count() >= 10000) {
