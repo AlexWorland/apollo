@@ -240,6 +240,7 @@ namespace stream {
                                        // When false, use existing static bitrate flow
     
     int bitrate_stats_send_counter = 0;  // Counter for periodic stats sending
+    int last_sent_connection_status = -1;  // Track last sent status to detect changes
   };
 
   namespace session {

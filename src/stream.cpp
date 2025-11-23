@@ -230,6 +230,11 @@ namespace stream {
     float loss_percentage;
   };
 
+  struct control_connection_status_t {
+    control_header_v2 header;
+    std::uint8_t status;  // 0 = OKAY, 1 = POOR
+  };
+
   typedef struct control_encrypted_t {
     std::uint16_t encryptedHeaderType;  // Always LE 0x0001
     std::uint16_t length;  // sizeof(seq) + 16 byte tag + secondary header and data
@@ -653,6 +658,42 @@ namespace stream {
   }
 
   /**
+   * @brief Send connection status to client.
+   * @param session The streaming session.
+   * @param status Connection status (0 = OKAY, 1 = POOR).
+   * @return 0 on success, -1 on error.
+   */
+  int send_connection_status(session_t *session, int status) {
+    if (!session->control.peer || !session->auto_bitrate_enabled) {
+      return -1;
+    }
+
+    // Check if protocol supports connection status packets
+    if (packetTypes[IDX_CONNECTION_STATUS] == -1) {
+      return -1;
+    }
+
+    control_connection_status_t plaintext {};
+    plaintext.header.type = packetTypes[IDX_CONNECTION_STATUS];
+    plaintext.header.payloadLength = sizeof(control_connection_status_t) - sizeof(control_header_v2);
+    plaintext.status = static_cast<std::uint8_t>(status);
+
+    std::array<std::uint8_t, sizeof(control_encrypted_t) + crypto::cipher::round_to_pkcs7_padded(sizeof(plaintext)) + crypto::cipher::tag_size>
+      encrypted_payload;
+
+    auto payload = encode_control(session, util::view(plaintext), encrypted_payload);
+    if (session->broadcast_ref->control_server.send(payload, session->control.peer)) {
+      TUPLE_2D(port, addr, platf::from_sockaddr_ex((sockaddr *) &session->control.peer->address.address));
+      BOOST_LOG(debug) << "Couldn't send connection status to ["sv << addr << ':' << port << ']';
+      return -1;
+    }
+
+    BOOST_LOG(verbose) << "AutoBitrate: [ConnectionStatus] Sent status: " 
+                      << (status == 1 ? "POOR" : "OKAY") << " to client";
+    return 0;
+  }
+
+  /**
    * @brief Combines two buffers and inserts new buffers at each slice boundary of the result.
    * @param insert_size The number of bytes to insert.
    * @param slice_size The number of bytes between insertions.
@@ -898,6 +939,40 @@ namespace stream {
       // Process loss stats through controller (only if auto bitrate is enabled)
       if (session->auto_bitrate_enabled) {
         auto_bitrate_controller.process_loss_stats(session, lastGoodFrame, t);
+
+        // Detect and send connection status changes based on loss percentage
+        float loss_percentage;
+        uint32_t dummy_bitrate;
+        uint64_t dummy_time;
+        uint32_t dummy_count;
+        if (auto_bitrate_controller.get_stats(session, dummy_bitrate, dummy_time, dummy_count, loss_percentage)) {
+          // Determine connection status based on loss thresholds
+          // POOR: loss > 5.0% OR (loss > 1.0% AND currently POOR)
+          // OKAY: loss <= 1.0%
+          int new_status;
+          if (loss_percentage > 5.0) {
+            // Severe loss - definitely POOR
+            new_status = 1;  // POOR
+          } else if (loss_percentage <= 1.0) {
+            // Good conditions - OKAY
+            new_status = 0;  // OKAY
+          } else {
+            // Moderate loss (1.0% - 5.0%) - use hysteresis
+            // If we were already POOR, stay POOR; otherwise OKAY
+            if (session->last_sent_connection_status == 1) {
+              new_status = 1;  // POOR (stay POOR)
+            } else {
+              new_status = 0;  // OKAY (not severe enough to go POOR yet)
+            }
+          }
+
+          // Send status if it changed
+          if (new_status != session->last_sent_connection_status) {
+            if (send_connection_status(session, new_status) == 0) {
+              session->last_sent_connection_status = new_status;
+            }
+          }
+        }
 
         // Check for bitrate change confirmations from video thread
         // This ensures state is only updated after encoder successfully applies changes
