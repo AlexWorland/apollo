@@ -53,6 +53,7 @@ extern "C" {
 #define IDX_SET_CLIPBOARD 16
 #define IDX_FILE_TRANSFER_NONCE_REQUEST 17
 #define IDX_SET_ADAPTIVE_TRIGGERS 18
+#define IDX_CONNECTION_STATUS 19
 
 static const short packetTypes[] = {
   0x0305,  // Start A
@@ -74,6 +75,7 @@ static const short packetTypes[] = {
   0x3001,  // Set Clipboard (Apollo protocol extension)
   0x3002,  // File transfer nonce request (Apollo protocol extension)
   0x5503,  // Set Adaptive triggers (Sunshine protocol extension)
+  0x3003,  // Connection status (Apollo protocol extension)
 };
 
 namespace asio = boost::asio;
@@ -212,6 +214,12 @@ namespace stream {
 
     // Sunshine protocol extension
     SS_HDR_METADATA metadata;
+  };
+
+  struct control_connection_status_t {
+    control_header_v2 header;
+
+    std::uint8_t status;  // 0 = CONN_STATUS_OKAY, 1 = CONN_STATUS_POOR
   };
 
   typedef struct control_encrypted_t {
@@ -862,6 +870,35 @@ namespace stream {
             // Config will be updated only after successful reconfiguration in video thread
             if (session->video.bitrate_update_event) {
               session->video.bitrate_update_event->raise(newBitrate.value());
+            }
+          }
+
+          // Calculate and send connection status to client
+          session_t::connection_status_e newStatus = session->connection_status;
+          if (frameLossPercent > config::video.auto_bitrate.poor_network_threshold) {
+            newStatus = session_t::connection_status_e::POOR;
+          } else if (frameLossPercent < config::video.auto_bitrate.good_network_threshold) {
+            newStatus = session_t::connection_status_e::OKAY;
+          }
+          // Else: keep current status (stable zone)
+
+          // Send status update to client if status changed
+          if (newStatus != session->connection_status && session->control.peer) {
+            control_connection_status_t plaintext {};
+            plaintext.header.type = packetTypes[IDX_CONNECTION_STATUS];
+            plaintext.header.payloadLength = sizeof(control_connection_status_t) - sizeof(control_header_v2);
+            plaintext.status = (newStatus == session_t::connection_status_e::POOR) ? 1 : 0;
+
+            std::array<std::uint8_t, sizeof(control_encrypted_t) + crypto::cipher::round_to_pkcs7_padded(sizeof(plaintext)) + crypto::cipher::tag_size>
+              encrypted_payload;
+
+            auto payload = encode_control(session, util::view(plaintext), encrypted_payload);
+            if (session->broadcast_ref->control_server.send(payload, session->control.peer)) {
+              TUPLE_2D(port, addr, platf::from_sockaddr_ex((sockaddr *) &session->control.peer->address.address));
+              BOOST_LOG(warning) << "Couldn't send connection status to ["sv << addr << ':' << port << ']';
+            } else {
+              BOOST_LOG(debug) << "Sent connection status: " << (newStatus == session_t::connection_status_e::POOR ? "POOR" : "OKAY");
+              session->connection_status = newStatus;
             }
           }
         }
@@ -2072,6 +2109,8 @@ namespace stream {
       session->undo_cmds = std::move(launch_session.client_undo_cmds);
 
       session->config = config;
+
+      session->connection_status = session_t::connection_status_e::UNKNOWN;
 
       session->control.connect_data = launch_session.control_connect_data;
       session->control.feedback_queue = mail->queue<platf::gamepad_feedback_msg_t>(mail::gamepad_feedback);
