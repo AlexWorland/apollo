@@ -12,8 +12,8 @@ services:
     image: apollo-windows-builder:latest
     container_name: apollo-windows-build
     volumes:
-      # Mount the entire apollo directory
-      - .:C:\workspace
+      # Mount the entire apollo directory (project root)
+      - ..:C:\workspace
     working_dir: C:\workspace
     # Environment variables
     environment:

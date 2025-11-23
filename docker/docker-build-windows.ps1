@@ -27,7 +27,7 @@ function Write-Warn {
     Write-Host "[WARN] $Message" -ForegroundColor Yellow
 }
 
-function Write-Error {
+function Write-ErrorMsg {
     param([string]$Message)
     Write-Host "[ERROR] $Message" -ForegroundColor Red
 }
@@ -41,14 +41,14 @@ function Write-Header {
 
 # Check Docker
 if (-not (Get-Command docker -ErrorAction SilentlyContinue)) {
-    Write-Error "Docker is not installed. Please install Docker Desktop for Windows."
+    Write-ErrorMsg "Docker is not installed. Please install Docker Desktop for Windows."
     exit 1
 }
 
 try {
     docker info | Out-Null
 } catch {
-    Write-Error "Docker is not running. Please start Docker Desktop."
+    Write-ErrorMsg "Docker is not running. Please start Docker Desktop."
     exit 1
 }
 
@@ -72,7 +72,7 @@ Set-Location $PROJECT_ROOT
 docker build -f docker/Dockerfile.windows -t $IMAGE_NAME .
 
 if ($LASTEXITCODE -ne 0) {
-    Write-Error "Failed to build Docker image"
+    Write-ErrorMsg "Failed to build Docker image"
     exit 1
 }
 
@@ -120,7 +120,7 @@ try {
             Write-Info "Artifacts are in: $PROJECT_ROOT\build\cpack_artifacts\"
             Write-Info "Executable is in: $PROJECT_ROOT\build\sunshine.exe"
         } else {
-            Write-Error "Build failed!"
+            Write-ErrorMsg "Build failed!"
             exit 1
         }
     }
