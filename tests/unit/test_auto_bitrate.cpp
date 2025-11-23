@@ -23,13 +23,13 @@ protected:
 
 // Test basic initialization
 TEST_F(AutoBitrateControllerTest, Initialization) {
-  AutoBitrateController controller(20000, 500, 150000);
+  AutoBitrateController controller(20000, 500, 1000000);
   EXPECT_EQ(controller.getCurrentBitrate(), 20000);
 }
 
 // Test poor network condition - immediate decrease
 TEST_F(AutoBitrateControllerTest, PoorNetworkDecrease) {
-  AutoBitrateController controller(20000, 500, 150000);
+  AutoBitrateController controller(20000, 500, 1000000);
 
   // Simulate poor network (>5% loss)
   controller.updateNetworkMetrics(10.0f, 2000);
@@ -44,7 +44,7 @@ TEST_F(AutoBitrateControllerTest, PoorNetworkDecrease) {
 
 // Test good network condition - increase after stability
 TEST_F(AutoBitrateControllerTest, GoodNetworkIncrease) {
-  AutoBitrateController controller(10000, 500, 150000);
+  AutoBitrateController controller(10000, 500, 1000000);
 
   // Simulate consecutive good intervals (<1% loss)
   for (int i = 0; i < 3; i++) {
@@ -62,7 +62,7 @@ TEST_F(AutoBitrateControllerTest, GoodNetworkIncrease) {
 
 // Test stable network condition - no change
 TEST_F(AutoBitrateControllerTest, StableNetworkNoChange) {
-  AutoBitrateController controller(20000, 500, 150000);
+  AutoBitrateController controller(20000, 500, 1000000);
 
   // Simulate stable network (1-5% loss)
   controller.updateNetworkMetrics(3.0f, 2000);
@@ -74,7 +74,7 @@ TEST_F(AutoBitrateControllerTest, StableNetworkNoChange) {
 
 // Test minimum bitrate clamping
 TEST_F(AutoBitrateControllerTest, MinimumBitrateClamping) {
-  AutoBitrateController controller(1000, 500, 150000);
+  AutoBitrateController controller(1000, 500, 1000000);
 
   // Simulate very poor network
   controller.updateNetworkMetrics(20.0f, 2000);
@@ -87,7 +87,7 @@ TEST_F(AutoBitrateControllerTest, MinimumBitrateClamping) {
 
 // Test maximum bitrate clamping
 TEST_F(AutoBitrateControllerTest, MaximumBitrateClamping) {
-  AutoBitrateController controller(100000, 500, 150000);
+  AutoBitrateController controller(100000, 500, 1000000);
 
   // Simulate consecutive good intervals
   for (int i = 0; i < 3; i++) {
@@ -99,12 +99,12 @@ TEST_F(AutoBitrateControllerTest, MaximumBitrateClamping) {
   std::this_thread::sleep_for(std::chrono::milliseconds(2100));
   auto newBitrate = controller.getAdjustedBitrate();
   ASSERT_TRUE(newBitrate.has_value());
-  EXPECT_EQ(newBitrate.value(), 150000);  // Should clamp to maximum
+  EXPECT_EQ(newBitrate.value(), 1000000);  // Should clamp to maximum
 }
 
 // Test reset functionality
 TEST_F(AutoBitrateControllerTest, Reset) {
-  AutoBitrateController controller(20000, 500, 150000);
+  AutoBitrateController controller(20000, 500, 1000000);
 
   // Change bitrate
   controller.updateNetworkMetrics(10.0f, 2000);
@@ -118,7 +118,7 @@ TEST_F(AutoBitrateControllerTest, Reset) {
 
 // Test rapid oscillation prevention
 TEST_F(AutoBitrateControllerTest, OscillationPrevention) {
-  AutoBitrateController controller(20000, 500, 150000);
+  AutoBitrateController controller(20000, 500, 1000000);
 
   // First decrease
   controller.updateNetworkMetrics(10.0f, 2000);

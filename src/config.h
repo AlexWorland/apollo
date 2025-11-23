@@ -152,7 +152,7 @@ namespace config {
 
     struct auto_bitrate_t {
       int min_bitrate = 500;
-      int max_bitrate = 150000;
+      int max_bitrate = 1000000;
       float poor_network_threshold = 5.0f;
       float good_network_threshold = 1.0f;
       float increase_factor = 1.2f;

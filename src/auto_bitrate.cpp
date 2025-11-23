@@ -4,6 +4,8 @@
  */
 #include "auto_bitrate.h"
 
+#include <iomanip>
+
 #include "logging.h"
 
 namespace auto_bitrate {
@@ -28,7 +30,8 @@ namespace auto_bitrate {
         poorNetworkThreshold(poorNetworkThreshold),
         goodNetworkThreshold(goodNetworkThreshold),
         minConsecutiveGoodIntervals(minConsecutiveGoodIntervals),
-        lastCheckTime(std::chrono::steady_clock::now()) {
+        lastCheckTime(std::chrono::steady_clock::now()),
+        lastStatusLog(std::chrono::steady_clock::now()) {
     metrics.lastAdjustment = std::chrono::steady_clock::now();
     metrics.lastPoorCondition = std::chrono::steady_clock::now();
   }
@@ -75,12 +78,18 @@ namespace auto_bitrate {
         return std::nullopt;
       }
 
-      int newBitrate = static_cast<int>(currentBitrateKbps * decreaseFactor);
-      newBitrate = std::max(newBitrate, minBitrateKbps);
+      int calculatedBitrate = static_cast<int>(currentBitrateKbps * decreaseFactor);
+      int newBitrate = std::max(calculatedBitrate, minBitrateKbps);
 
       if (newBitrate != currentBitrateKbps) {
-        BOOST_LOG(info) << "AutoBitrate: Poor network detected (" << metrics.frameLossPercent
-                        << "% loss), decreasing bitrate from " << currentBitrateKbps << " to " << newBitrate << " kbps";
+        if (newBitrate == minBitrateKbps && calculatedBitrate < minBitrateKbps) {
+          BOOST_LOG(info) << "AutoBitrate: Poor network detected (" << metrics.frameLossPercent
+                          << "% loss), decreasing bitrate from " << currentBitrateKbps << " to " << newBitrate
+                          << " kbps (clamped to minimum " << minBitrateKbps << " kbps)";
+        } else {
+          BOOST_LOG(info) << "AutoBitrate: Poor network detected (" << metrics.frameLossPercent
+                          << "% loss), decreasing bitrate from " << currentBitrateKbps << " to " << newBitrate << " kbps";
+        }
         currentBitrateKbps = newBitrate;
         metrics.lastAdjustment = now;
         metrics.consecutiveGoodIntervals = 0;
@@ -100,12 +109,18 @@ namespace auto_bitrate {
             return std::nullopt;
           }
 
-          int newBitrate = static_cast<int>(currentBitrateKbps * increaseFactor);
-          newBitrate = std::min(newBitrate, maxBitrateKbps);
+          int calculatedBitrate = static_cast<int>(currentBitrateKbps * increaseFactor);
+          int newBitrate = std::min(calculatedBitrate, maxBitrateKbps);
 
           if (newBitrate != currentBitrateKbps) {
-            BOOST_LOG(info) << "AutoBitrate: Good network detected (" << metrics.frameLossPercent
-                            << "% loss), increasing bitrate from " << currentBitrateKbps << " to " << newBitrate << " kbps";
+            if (newBitrate == maxBitrateKbps && calculatedBitrate > maxBitrateKbps) {
+              BOOST_LOG(info) << "AutoBitrate: Good network detected (" << metrics.frameLossPercent
+                              << "% loss), increasing bitrate from " << currentBitrateKbps << " to " << newBitrate
+                              << " kbps (clamped to maximum " << maxBitrateKbps << " kbps)";
+            } else {
+              BOOST_LOG(info) << "AutoBitrate: Good network detected (" << metrics.frameLossPercent
+                              << "% loss), increasing bitrate from " << currentBitrateKbps << " to " << newBitrate << " kbps";
+            }
             currentBitrateKbps = newBitrate;
             metrics.lastAdjustment = now;
             metrics.consecutiveGoodIntervals = 0;
@@ -122,6 +137,7 @@ namespace auto_bitrate {
   }
 
   void AutoBitrateController::reset(int newBaseBitrate) {
+    int oldBitrate = currentBitrateKbps;
     baseBitrateKbps = newBaseBitrate;
     currentBitrateKbps = newBaseBitrate;
     metrics.consecutiveGoodIntervals = 0;
@@ -130,6 +146,31 @@ namespace auto_bitrate {
     metrics.lastAdjustment = std::chrono::steady_clock::now();
     metrics.lastPoorCondition = std::chrono::steady_clock::now();
     lastCheckTime = std::chrono::steady_clock::now();
+    BOOST_LOG(info) << "AutoBitrate: Controller reset from " << oldBitrate << " to " << newBaseBitrate << " kbps";
+  }
+
+  void AutoBitrateController::logStatusIfNeeded(int statusLogIntervalMs) {
+    auto now = std::chrono::steady_clock::now();
+    auto timeSinceLastLog = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastStatusLog).count();
+
+    if (timeSinceLastLog >= statusLogIntervalMs) {
+      std::string networkState;
+      if (metrics.frameLossPercent > poorNetworkThreshold) {
+        networkState = "poor";
+      } else if (metrics.frameLossPercent < goodNetworkThreshold) {
+        networkState = "good";
+      } else {
+        networkState = "stable";
+      }
+
+      BOOST_LOG(info) << "AutoBitrate: Status - bitrate=" << currentBitrateKbps
+                      << " kbps, frame_loss=" << std::fixed << std::setprecision(2) << metrics.frameLossPercent
+                      << "%, state=" << networkState
+                      << ", good_intervals=" << metrics.consecutiveGoodIntervals
+                      << ", poor_intervals=" << metrics.consecutivePoorIntervals;
+      
+      lastStatusLog = now;
+    }
   }
 
 }  // namespace auto_bitrate

@@ -14,7 +14,7 @@ const config = ref(props.config)
 // Validation functions
 const validateMinBitrate = (event) => {
   const value = parseInt(event.target.value);
-  const maxBitrate = config.value.auto_bitrate_max_bitrate || 150000;
+  const maxBitrate = config.value.auto_bitrate_max_bitrate || 1000000;
   if (isNaN(value) || value < 100 || value > maxBitrate) {
     event.target.setCustomValidity(`Minimum bitrate must be between 100 and ${maxBitrate} kbps`);
   } else {
@@ -26,8 +26,8 @@ const validateMinBitrate = (event) => {
 const validateMaxBitrate = (event) => {
   const value = parseInt(event.target.value);
   const minBitrate = config.value.auto_bitrate_min_bitrate || 500;
-  if (isNaN(value) || value < minBitrate || value > 150000) {
-    event.target.setCustomValidity(`Maximum bitrate must be between ${minBitrate} and 150000 kbps`);
+  if (isNaN(value) || value < minBitrate || value > 1000000) {
+    event.target.setCustomValidity(`Maximum bitrate must be between ${minBitrate} and 1000000 kbps`);
   } else {
     event.target.setCustomValidity('');
   }
@@ -99,11 +99,11 @@ const validateFactor = (event, min, max) => {
         id="auto_bitrate_min_bitrate"
         v-model.number="config.auto_bitrate_min_bitrate"
         min="100"
-        :max="config.auto_bitrate_max_bitrate || 150000"
+        :max="config.auto_bitrate_max_bitrate || 1000000"
         @input="validateMinBitrate"
       />
       <div class="form-text">
-        Minimum bitrate that will be used when auto bitrate is active. Range: 100 - {{ config.auto_bitrate_max_bitrate || 150000 }} kbps
+        Minimum bitrate that will be used when auto bitrate is active. Range: 100 - {{ config.auto_bitrate_max_bitrate || 1000000 }} kbps
       </div>
     </div>
 
@@ -118,11 +118,11 @@ const validateFactor = (event, min, max) => {
         id="auto_bitrate_max_bitrate"
         v-model.number="config.auto_bitrate_max_bitrate"
         :min="config.auto_bitrate_min_bitrate || 500"
-        max="150000"
+        max="1000000"
         @input="validateMaxBitrate"
       />
       <div class="form-text">
-        Maximum bitrate that will be used when auto bitrate is active. Range: {{ config.auto_bitrate_min_bitrate || 500 }} - 150000 kbps.
+        Maximum bitrate that will be used when auto bitrate is active. Range: {{ config.auto_bitrate_min_bitrate || 500 }} - 1000000 kbps.
         This value is also limited by the global <code>max_bitrate</code> setting in the Audio/Video tab.
       </div>
     </div>
@@ -256,7 +256,7 @@ const validateFactor = (event, min, max) => {
         class="btn btn-secondary"
         @click="() => {
           config.auto_bitrate_min_bitrate = 500;
-          config.auto_bitrate_max_bitrate = 150000;
+          config.auto_bitrate_max_bitrate = 1000000;
           config.auto_bitrate_poor_network_threshold = 5.0;
           config.auto_bitrate_good_network_threshold = 1.0;
           config.auto_bitrate_increase_factor = 1.2;
