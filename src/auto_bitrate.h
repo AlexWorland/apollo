@@ -70,8 +70,8 @@ namespace stream {
      * @brief Get bitrate statistics for a session.
      * @param session The streaming session.
      * @param current_bitrate_kbps Output: Current encoder bitrate in Kbps.
-     * @param last_adjustment_time_ms Output: Milliseconds since session start when last adjustment occurred (0 if never).
-     * @param adjustment_count Output: Total number of adjustments made.
+     * @param last_adjustment_time_ms Output: Milliseconds since session start when last successful adjustment occurred (0 if never).
+     * @param adjustment_count Output: Total number of successful adjustments made.
      * @param loss_percentage Output: Current frame loss percentage.
      * @return true if stats are available, false otherwise.
      */
@@ -86,6 +86,7 @@ namespace stream {
       uint64_t last_reported_good_frame = 0;
       std::chrono::steady_clock::time_point last_loss_stats_time;
       std::chrono::steady_clock::time_point last_adjustment_time;
+      std::chrono::steady_clock::time_point last_successful_adjustment_time;
       std::chrono::steady_clock::time_point session_start_time;
       double loss_percentage = 0.0;
       int connection_status = 0;  // 0 = OKAY, 1 = POOR
