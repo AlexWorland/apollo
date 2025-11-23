@@ -48,6 +48,7 @@ namespace video {
 
     int encodingFramerate; // Requested display framerate
     bool input_only;
+    bool autoBitrateEnabled; // Auto bitrate adjustment enabled
   };
 
   platf::mem_type_e map_base_dev_type(AVHWDeviceType type);

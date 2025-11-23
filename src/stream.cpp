@@ -4,8 +4,11 @@
  */
 
 // standard includes
+#include <cstring>
 #include <fstream>
 #include <future>
+#include <iomanip>
+#include <map>
 #include <queue>
 
 // lib includes
@@ -768,6 +771,11 @@ namespace stream {
     return 0;
   }
 
+  // Forward declaration for AutoBitrate controller initialization
+  namespace session {
+    void initialize_auto_bitrate_controller(session_t &session);
+  }
+
   void controlBroadcastThread(control_server_t *server) {
     server->map(packetTypes[IDX_PERIODIC_PING], [](session_t *session, const std::string_view &payload) {
       BOOST_LOG(verbose) << "type [IDX_PERIODIC_PING]"sv;
@@ -782,19 +790,34 @@ namespace stream {
     });
 
     server->map(packetTypes[IDX_LOSS_STATS], [&](session_t *session, const std::string_view &payload) {
+      // Client sends loss stats payload structure (32 bytes total, little-endian):
+      // Offset 0-3:   int32_t count (always 0, not computed by client)
+      // Offset 4-7:   int32_t time_interval_ms (LOSS_REPORT_INTERVAL_MS = 50)
+      // Offset 8-11:  int32_t (1000, unused)
+      // Offset 12-19: int64_t lastGoodFrame (written as 64-bit, but value is uint32_t)
+      // Offset 20-23: int32_t (0, unused)
+      // Offset 24-27: int32_t (0, unused)
+      // Offset 28-31: int32_t (0x14, unused)
+      
+      if (payload.size() < 32) {
+        BOOST_LOG(info) << "AutoBitrate: [LossStats] Invalid payload size: " << payload.size() << " bytes (expected: 32 bytes)";
+        return;
+      }
+      
       int32_t *stats = (int32_t *) payload.data();
-      auto count = stats[0];
-      std::chrono::milliseconds t {stats[1]};
+      auto count = stats[0];  // Offset 0: loss count (always 0 from client)
+      std::chrono::milliseconds t {stats[1]};  // Offset 4: time interval in ms
+      
+      // lastGoodFrame is written as 64-bit at offset 12, but the value is uint32_t
+      // Read it correctly as 64-bit using memcpy to avoid alignment issues
+      // Offset 12 = stats[3] (which is at byte offset 12)
+      int64_t lastGoodFrame64;
+      std::memcpy(&lastGoodFrame64, &stats[3], sizeof(int64_t));
+      uint64_t lastGoodFrame = static_cast<uint64_t>(lastGoodFrame64);
 
-      auto lastGoodFrame = stats[3];
-
-      BOOST_LOG(verbose)
-        << "type [IDX_LOSS_STATS]"sv << std::endl
-        << "---begin stats---" << std::endl
-        << "loss count since last report [" << count << ']' << std::endl
-        << "time in milli since last report [" << t.count() << ']' << std::endl
-        << "last good frame [" << lastGoodFrame << ']' << std::endl
-        << "---end stats---";
+          BOOST_LOG(info)
+        << "AutoBitrate: [LossStats] Received loss stats - payload_size: " << payload.size() << " bytes, count: " << count 
+        << ", time_interval_ms: " << t.count() << ", last_good_frame: " << lastGoodFrame;
 
       // Handle auto bitrate adjustment if enabled
       if (session->config.autoBitrateEnabled && t.count() > 0) {
@@ -826,38 +849,64 @@ namespace stream {
         }
         float expectedFrames = framerate * (t.count() / 1000.0f);
         if (expectedFrames > 0) {
+          // Compute actual frame loss count from lastGoodFrame
+          // The client sends stats[0] = 0 (not computed), so we compute it server-side
+          // by tracking the last reported good frame and comparing to expected progression
+          int32_t computedLossCount = 0;
+          auto now = std::chrono::steady_clock::now();
+          
+          if (session->last_reported_good_frame > 0 && session->last_loss_stats_report_time != std::chrono::steady_clock::time_point{}) {
+            // Calculate expected frame progression based on time elapsed and framerate
+            auto timeSinceLastReport = std::chrono::duration_cast<std::chrono::milliseconds>(
+              now - session->last_loss_stats_report_time).count();
+            float expectedFrameProgression = framerate * (timeSinceLastReport / 1000.0f);
+            uint64_t expectedCurrentFrame = session->last_reported_good_frame + static_cast<uint64_t>(expectedFrameProgression);
+            
+            // If lastGoodFrame is less than expected, frames were lost
+            if (lastGoodFrame < expectedCurrentFrame) {
+              computedLossCount = static_cast<int32_t>(expectedCurrentFrame - lastGoodFrame);
+            }
+            
+            BOOST_LOG(info) << "AutoBitrate: [Metrics] Computing loss count from frame numbers - last_reported_frame: " 
+                            << session->last_reported_good_frame << ", current_frame: " << lastGoodFrame 
+                            << ", expected_frame: " << expectedCurrentFrame << ", time_since_last_report: " 
+                            << timeSinceLastReport << " ms, computed_loss_count: " << computedLossCount;
+          } else {
+            // First report or no previous data - use client's count (which may be 0)
+            computedLossCount = count;
+            BOOST_LOG(info) << "AutoBitrate: [Metrics] First loss stats report or no previous data - using client count: " << count;
+          }
+          
+          // Update tracking
+          session->last_reported_good_frame = lastGoodFrame;
+          session->last_loss_stats_report_time = now;
+          
           // Validate frame loss count is non-negative to prevent incorrect bitrate adjustments
           // Negative values can occur due to data corruption or counter issues
-          int32_t validCount = std::max(0, count);
+          int32_t validCount = std::max(0, computedLossCount);
           float frameLossPercent = (validCount / expectedFrames) * 100.0f;
           // Clamp to non-negative to ensure valid percentage
           frameLossPercent = std::max(0.0f, frameLossPercent);
+          
+          BOOST_LOG(info) << "AutoBitrate: [Metrics] Frame loss calculation - expected=" << expectedFrames 
+                           << ", client_count=" << count << ", computed_count=" << computedLossCount 
+                           << " (valid=" << validCount << "), loss_percent=" 
+                           << std::fixed << std::setprecision(2) << frameLossPercent << "%, interval_ms=" << t.count();
 
-          // Initialize controller if not already done
+          // Initialize controller if not already done (fallback - should already be initialized at stream start)
           if (!session->auto_bitrate_controller) {
-            int initialBitrate = session->config.monitor.bitrate;
-            int minBitrate = config::video.auto_bitrate.min_bitrate;
-            int maxBitrate = (config::video.max_bitrate > 0)
-              ? std::min(config::video.max_bitrate, config::video.auto_bitrate.max_bitrate)
-              : config::video.auto_bitrate.max_bitrate;
-            
-            session->auto_bitrate_controller = std::make_unique<auto_bitrate::AutoBitrateController>(
-                initialBitrate,
-                minBitrate,
-                maxBitrate,
-                config::video.auto_bitrate.poor_network_threshold,
-                config::video.auto_bitrate.good_network_threshold,
-                config::video.auto_bitrate.increase_factor,
-                config::video.auto_bitrate.decrease_factor,
-                config::video.auto_bitrate.stability_window_ms,
-                config::video.auto_bitrate.min_consecutive_good_intervals
-            );
-            BOOST_LOG(info) << "AutoBitrate: Initialized with bitrate " << initialBitrate
-                            << " kbps, min=" << minBitrate << ", max=" << maxBitrate;
+            session::initialize_auto_bitrate_controller(*session);
           }
 
+          // Update timestamp of last received loss stats
+          session->last_loss_stats_time = std::chrono::steady_clock::now();
+
           // Update network metrics
+          int currentBitrateBeforeUpdate = session->auto_bitrate_controller->getCurrentBitrate();
           session->auto_bitrate_controller->updateNetworkMetrics(frameLossPercent, t.count());
+          BOOST_LOG(info) << "AutoBitrate: [Metrics] Updated network metrics - frame_loss=" 
+                           << std::fixed << std::setprecision(2) << frameLossPercent 
+                           << "%, current_bitrate=" << currentBitrateBeforeUpdate << " kbps, interval_ms=" << t.count();
 
           // Log periodic status (every 30 seconds)
           session->auto_bitrate_controller->logStatusIfNeeded(30000);
@@ -865,12 +914,20 @@ namespace stream {
           // Check for bitrate adjustment
           auto newBitrate = session->auto_bitrate_controller->getAdjustedBitrate();
           if (newBitrate.has_value()) {
+            BOOST_LOG(info) << "AutoBitrate: [Decision] Bitrate adjustment needed: " << currentBitrateBeforeUpdate 
+                            << " -> " << newBitrate.value() << " kbps (change: " 
+                            << (newBitrate.value() - currentBitrateBeforeUpdate) << " kbps)";
             // Signal video thread to update bitrate with the new value
             // Pass the bitrate value through the event since config is copied by value
             // Config will be updated only after successful reconfiguration in video thread
             if (session->video.bitrate_update_event) {
               session->video.bitrate_update_event->raise(newBitrate.value());
+              BOOST_LOG(info) << "AutoBitrate: [Event] Bitrate update event raised: " << newBitrate.value() << " kbps";
+            } else {
+              BOOST_LOG(warning) << "AutoBitrate: [Event] Bitrate update event is null, cannot raise update";
             }
+          } else {
+            BOOST_LOG(info) << "AutoBitrate: [Decision] No bitrate adjustment needed at this time";
           }
 
           // Calculate and send connection status to client
@@ -881,6 +938,21 @@ namespace stream {
             newStatus = session_t::connection_status_e::OKAY;
           }
           // Else: keep current status (stable zone)
+          
+          // Log connection status check with thresholds
+          std::string currentStatusStr = (session->connection_status == session_t::connection_status_e::POOR) ? "POOR" : "OKAY";
+          std::string newStatusStr = (newStatus == session_t::connection_status_e::POOR) ? "POOR" : "OKAY";
+          if (newStatus != session->connection_status) {
+            BOOST_LOG(info) << "AutoBitrate: [Connection] Status changed - " << currentStatusStr << " -> " << newStatusStr 
+                            << " (frame_loss: " << std::fixed << std::setprecision(2) << frameLossPercent 
+                            << "%, thresholds: good<" << config::video.auto_bitrate.good_network_threshold 
+                            << "%, poor>" << config::video.auto_bitrate.poor_network_threshold << "%)";
+          } else {
+            BOOST_LOG(info) << "AutoBitrate: [Connection] Status check - " << newStatusStr 
+                            << " (frame_loss: " << std::fixed << std::setprecision(2) << frameLossPercent 
+                            << "%, thresholds: good<" << config::video.auto_bitrate.good_network_threshold 
+                            << "%, poor>" << config::video.auto_bitrate.poor_network_threshold << "%)";
+          }
 
           // Send status update to client if status changed
           if (newStatus != session->connection_status && session->control.peer) {
@@ -902,6 +974,90 @@ namespace stream {
             }
           }
         }
+      }
+    });
+
+    // Handle connection status messages from client as fallback when loss stats can't be sent
+    server->map(packetTypes[IDX_CONNECTION_STATUS], [&](session_t *session, const std::string_view &payload) {
+      if (payload.size() < sizeof(std::uint8_t)) {
+        BOOST_LOG(info) << "AutoBitrate: [Connection] Received invalid connection status message (payload size: " 
+                        << payload.size() << ", expected: " << sizeof(std::uint8_t) << ")";
+        return;
+      }
+
+      std::uint8_t clientStatus = payload[0];
+      bool clientReportsPoor = (clientStatus == 1);  // 1 = POOR, 0 = OKAY
+      std::string currentStatusStr = (session->connection_status == session_t::connection_status_e::POOR) ? "POOR" : 
+                                      (session->connection_status == session_t::connection_status_e::OKAY) ? "OKAY" : "UNKNOWN";
+      
+      BOOST_LOG(info) << "AutoBitrate: [Connection] Client reports connection status: " << (clientReportsPoor ? "POOR" : "OKAY") 
+                      << " (raw value: " << static_cast<int>(clientStatus) << ", current server status: " << currentStatusStr 
+                      << ", auto_bitrate_enabled: " << (session->config.autoBitrateEnabled ? "true" : "false") << ")";
+
+      // Use client connection status as fallback when loss stats aren't available
+      // This is critical when control stream is unreliable and loss stats can't be sent
+      if (session->config.autoBitrateEnabled && clientReportsPoor) {
+        // Initialize controller if not already done
+        if (!session->auto_bitrate_controller) {
+          BOOST_LOG(info) << "AutoBitrate: [Connection] Controller not initialized, initializing now";
+          session::initialize_auto_bitrate_controller(*session);
+        }
+
+        if (session->auto_bitrate_controller) {
+          // Treat client-reported poor status as high frame loss to trigger immediate bitrate reduction
+          // Use a conservative estimate (10% loss) to ensure we reduce bitrate quickly
+          const float estimatedFrameLossPercent = 10.0f;
+          const int estimatedIntervalMs = 1000;  // Assume 1 second interval
+          
+          int currentBitrateBeforeUpdate = session->auto_bitrate_controller->getCurrentBitrate();
+          BOOST_LOG(info) << "AutoBitrate: [Connection] Client reports poor connection - treating as " 
+                          << std::fixed << std::setprecision(2) << estimatedFrameLossPercent 
+                          << "% frame loss for bitrate adjustment (current_bitrate: " << currentBitrateBeforeUpdate 
+                          << " kbps, estimated_interval: " << estimatedIntervalMs << " ms)";
+          
+          // Update network metrics with estimated loss
+          session->auto_bitrate_controller->updateNetworkMetrics(estimatedFrameLossPercent, estimatedIntervalMs);
+          BOOST_LOG(info) << "AutoBitrate: [Connection] Network metrics updated with estimated loss";
+          
+          // Check for bitrate adjustment
+          auto newBitrate = session->auto_bitrate_controller->getAdjustedBitrate();
+          if (newBitrate.has_value()) {
+            BOOST_LOG(info) << "AutoBitrate: [Connection] Bitrate adjustment triggered by client poor status: " 
+                            << currentBitrateBeforeUpdate << " -> " << newBitrate.value() << " kbps (change: " 
+                            << (newBitrate.value() - currentBitrateBeforeUpdate) << " kbps)";
+            
+            if (session->video.bitrate_update_event) {
+              session->video.bitrate_update_event->raise(newBitrate.value());
+              BOOST_LOG(info) << "AutoBitrate: [Connection] Bitrate update event raised successfully: " << newBitrate.value() << " kbps";
+            } else {
+              BOOST_LOG(info) << "AutoBitrate: [Connection] Bitrate update event is null, cannot raise update (event pointer: null)";
+            }
+          } else {
+            BOOST_LOG(info) << "AutoBitrate: [Connection] No bitrate adjustment needed at this time (controller returned no adjustment)";
+          }
+        } else {
+          BOOST_LOG(info) << "AutoBitrate: [Connection] Controller is null after initialization attempt";
+        }
+      } else {
+        if (!session->config.autoBitrateEnabled) {
+          BOOST_LOG(info) << "AutoBitrate: [Connection] Auto bitrate disabled, ignoring client connection status";
+        } else if (!clientReportsPoor) {
+          if (session->auto_bitrate_controller) {
+            int currentBitrate = session->auto_bitrate_controller->getCurrentBitrate();
+            BOOST_LOG(info) << "AutoBitrate: [Connection] Client reports OKAY status, no bitrate reduction needed (current_bitrate: " 
+                            << currentBitrate << " kbps)";
+          } else {
+            BOOST_LOG(info) << "AutoBitrate: [Connection] Client reports OKAY status, no bitrate reduction needed (controller not initialized)";
+          }
+        }
+      }
+
+      // Update session connection status to match client's report
+      auto oldStatus = session->connection_status;
+      session->connection_status = clientReportsPoor ? session_t::connection_status_e::POOR : session_t::connection_status_e::OKAY;
+      if (oldStatus != session->connection_status) {
+        BOOST_LOG(info) << "AutoBitrate: [Connection] Session connection status updated: " << currentStatusStr 
+                        << " -> " << (clientReportsPoor ? "POOR" : "OKAY");
       }
     });
 
@@ -1083,6 +1239,9 @@ namespace stream {
 
         auto now = std::chrono::steady_clock::now();
 
+        // Typedef to avoid preprocessor issues with commas in template parameters inside macro body
+        using last_normal_log_t = std::map<session_t*, std::chrono::steady_clock::time_point>;
+
         KITTY_WHILE_LOOP(auto pos = std::begin(*server->_sessions), pos != std::end(*server->_sessions), {
           // Don't perform additional session processing if we're shutting down
           if (shutdown_event->peek() || broadcast_shutdown_event->peek()) {
@@ -1095,6 +1254,138 @@ namespace stream {
             auto address = session->control.peer ? platf::from_sockaddr((sockaddr *) &session->control.peer->address.address) : session->control.expected_peer_address;
             BOOST_LOG(info) << address << ": Ping Timeout"sv;
             session::stop(*session);
+          }
+
+          // Check for missing loss stats as fallback when control stream is unreliable
+          // Loss stats should arrive every 50ms, so if we haven't received any for 500ms, assume network issues
+          if (session->config.autoBitrateEnabled && session->auto_bitrate_controller && session->control.peer) {
+            const auto LOSS_STATS_TIMEOUT_MS = 500;  // 10x the expected interval (50ms)
+            const auto LOSS_STATS_GOOD_UPDATE_INTERVAL_MS = 1000;  // Update every 1s when stats missing but network seems good
+            auto timeSinceLastLossStats = std::chrono::duration_cast<std::chrono::milliseconds>(
+              now - session->last_loss_stats_time).count();
+            
+            // If we've never received loss stats (timestamp is zero), periodically update with 0% loss
+            // to allow bitrate increases when network is actually good
+            if (session->last_loss_stats_time == std::chrono::steady_clock::time_point{}) {
+              const auto SESSION_START_GRACE_PERIOD_MS = 2000;  // Wait 2s after session start before assuming good network
+              auto timeSinceSessionStart = std::chrono::duration_cast<std::chrono::milliseconds>(
+                now - session->session_start_time).count();
+              
+              std::string connectionStatusStr = (session->connection_status == session_t::connection_status_e::POOR) ? "POOR" : 
+                                                 (session->connection_status == session_t::connection_status_e::OKAY) ? "OKAY" : "UNKNOWN";
+              
+              BOOST_LOG(info) << "AutoBitrate: [NoStats] No loss stats received yet (time_since_session_start: " 
+                              << timeSinceSessionStart << " ms, grace_period: " << SESSION_START_GRACE_PERIOD_MS 
+                              << " ms, connection_status: " << connectionStatusStr << ")";
+              
+              // Only start periodic updates after initial grace period
+              // and only if connection status is not poor
+              if (timeSinceSessionStart > SESSION_START_GRACE_PERIOD_MS && 
+                  session->connection_status != session_t::connection_status_e::POOR) {
+                // Update with 0% loss periodically to accumulate good intervals
+                auto timeSinceLastGoodUpdate = std::chrono::duration_cast<std::chrono::milliseconds>(
+                  now - session->last_good_update_time).count();
+                
+                BOOST_LOG(info) << "AutoBitrate: [NoStats] Grace period passed, checking for periodic update (time_since_last_update: " 
+                                << timeSinceLastGoodUpdate << " ms, update_interval: " << LOSS_STATS_GOOD_UPDATE_INTERVAL_MS << " ms)";
+                
+                if (timeSinceLastGoodUpdate >= LOSS_STATS_GOOD_UPDATE_INTERVAL_MS) {
+                  int currentBitrate = session->auto_bitrate_controller->getCurrentBitrate();
+                  BOOST_LOG(info) << "AutoBitrate: [NoStats] Updating with 0% loss to allow bitrate increases (current_bitrate: " 
+                                  << currentBitrate << " kbps, update_interval: " << LOSS_STATS_GOOD_UPDATE_INTERVAL_MS << " ms)";
+                  
+                  session->auto_bitrate_controller->updateNetworkMetrics(0.0f, LOSS_STATS_GOOD_UPDATE_INTERVAL_MS);
+                  BOOST_LOG(info) << "AutoBitrate: [NoStats] Network metrics updated with 0% loss";
+                  
+                  // Check for bitrate adjustment
+                  auto newBitrate = session->auto_bitrate_controller->getAdjustedBitrate();
+                  if (newBitrate.has_value()) {
+                    BOOST_LOG(info) << "AutoBitrate: [NoStats] Bitrate adjustment triggered (no loss stats yet): " 
+                                    << currentBitrate << " -> " << newBitrate.value() << " kbps (change: " 
+                                    << (newBitrate.value() - currentBitrate) << " kbps)";
+                    
+                    if (session->video.bitrate_update_event) {
+                      session->video.bitrate_update_event->raise(newBitrate.value());
+                      BOOST_LOG(info) << "AutoBitrate: [NoStats] Bitrate update event raised successfully: " << newBitrate.value() << " kbps";
+                    } else {
+                      BOOST_LOG(info) << "AutoBitrate: [NoStats] Bitrate update event is null, cannot raise update";
+                    }
+                  } else {
+                    BOOST_LOG(info) << "AutoBitrate: [NoStats] No bitrate adjustment needed at this time (controller returned no adjustment)";
+                  }
+                  
+                  session->last_good_update_time = now;
+                  BOOST_LOG(info) << "AutoBitrate: [NoStats] Good update timestamp updated";
+                } else {
+                  BOOST_LOG(info) << "AutoBitrate: [NoStats] Waiting for next periodic update (remaining: " 
+                                  << (LOSS_STATS_GOOD_UPDATE_INTERVAL_MS - timeSinceLastGoodUpdate) << " ms)";
+                }
+              } else {
+                if (timeSinceSessionStart <= SESSION_START_GRACE_PERIOD_MS) {
+                  BOOST_LOG(info) << "AutoBitrate: [NoStats] Still in grace period (remaining: " 
+                                  << (SESSION_START_GRACE_PERIOD_MS - timeSinceSessionStart) << " ms)";
+                }
+                if (session->connection_status == session_t::connection_status_e::POOR) {
+                  BOOST_LOG(info) << "AutoBitrate: [NoStats] Connection status is POOR, skipping periodic good updates";
+                }
+              }
+            }
+            // If we've previously received loss stats but they stopped, check for timeout
+            else if (timeSinceLastLossStats > LOSS_STATS_TIMEOUT_MS) {
+              int currentBitrateBeforeUpdate = session->auto_bitrate_controller->getCurrentBitrate();
+              BOOST_LOG(info) << "AutoBitrate: [Timeout] No loss stats received for " << timeSinceLastLossStats 
+                              << " ms (timeout: " << LOSS_STATS_TIMEOUT_MS << " ms, current_bitrate: " 
+                              << currentBitrateBeforeUpdate << " kbps) - assuming poor network";
+              
+              // Treat missing loss stats as high frame loss to trigger bitrate reduction
+              const float estimatedFrameLossPercent = 10.0f;
+              const int estimatedIntervalMs = static_cast<int>(timeSinceLastLossStats);
+              
+              BOOST_LOG(info) << "AutoBitrate: [Timeout] Treating missing loss stats as " << std::fixed << std::setprecision(2) 
+                              << estimatedFrameLossPercent << "% frame loss (estimated_interval: " << estimatedIntervalMs << " ms)";
+              
+              session->auto_bitrate_controller->updateNetworkMetrics(estimatedFrameLossPercent, estimatedIntervalMs);
+              BOOST_LOG(info) << "AutoBitrate: [Timeout] Network metrics updated with estimated loss";
+              
+              // Check for bitrate adjustment
+              auto newBitrate = session->auto_bitrate_controller->getAdjustedBitrate();
+              if (newBitrate.has_value()) {
+                BOOST_LOG(info) << "AutoBitrate: [Timeout] Bitrate adjustment triggered by missing loss stats: " 
+                                << currentBitrateBeforeUpdate << " -> " << newBitrate.value() << " kbps (change: " 
+                                << (newBitrate.value() - currentBitrateBeforeUpdate) << " kbps)";
+                
+                if (session->video.bitrate_update_event) {
+                  session->video.bitrate_update_event->raise(newBitrate.value());
+                  BOOST_LOG(info) << "AutoBitrate: [Timeout] Bitrate update event raised successfully: " << newBitrate.value() << " kbps";
+                } else {
+                  BOOST_LOG(info) << "AutoBitrate: [Timeout] Bitrate update event is null, cannot raise update";
+                }
+              } else {
+                BOOST_LOG(info) << "AutoBitrate: [Timeout] No bitrate adjustment needed at this time (controller returned no adjustment)";
+              }
+              
+              // Reset timestamp to prevent repeated triggers (will be updated when loss stats resume)
+              session->last_loss_stats_time = now;
+              BOOST_LOG(info) << "AutoBitrate: [Timeout] Loss stats timestamp reset to prevent repeated triggers";
+            } else {
+              // Loss stats are being received normally, log periodically for debugging
+              static last_normal_log_t lastNormalLog;
+              auto lastLogIt = lastNormalLog.find(session);
+              if (lastLogIt == lastNormalLog.end() || 
+                  std::chrono::duration_cast<std::chrono::milliseconds>(now - lastLogIt->second).count() >= 10000) {
+                BOOST_LOG(info) << "AutoBitrate: [NoStats] Loss stats being received normally (time_since_last: " 
+                                << timeSinceLastLossStats << " ms, timeout: " << LOSS_STATS_TIMEOUT_MS << " ms)";
+                lastNormalLog[session] = now;
+              }
+            }
+          } else {
+            if (!session->config.autoBitrateEnabled) {
+              BOOST_LOG(info) << "AutoBitrate: [NoStats] Auto bitrate disabled, skipping loss stats check";
+            } else if (!session->auto_bitrate_controller) {
+              BOOST_LOG(info) << "AutoBitrate: [NoStats] Controller not initialized, skipping loss stats check";
+            } else if (!session->control.peer) {
+              BOOST_LOG(info) << "AutoBitrate: [NoStats] Control peer not connected, skipping loss stats check";
+            }
           }
 
           if (session->state.load(std::memory_order_acquire) == session::state_e::STOPPING) {
@@ -2035,6 +2326,50 @@ namespace stream {
       BOOST_LOG(debug) << "Session ended"sv;
     }
 
+    /**
+     * @brief Initialize the AutoBitrate controller for a session if auto bitrate is enabled.
+     * @param session The session to initialize the controller for.
+     */
+    void initialize_auto_bitrate_controller(session_t &session) {
+      if (!session.config.autoBitrateEnabled) {
+        return;
+      }
+
+      // Only initialize if not already done
+      if (session.auto_bitrate_controller) {
+        return;
+      }
+
+      int initialBitrate = session.config.monitor.bitrate;
+      // Hardcoded minimum bitrate for auto bitrate mode: 10 Mbps
+      int minBitrate = 10000;  // 10 Mbps in kbps
+      int maxBitrate = (config::video.max_bitrate > 0)
+        ? std::min(config::video.max_bitrate, config::video.auto_bitrate.max_bitrate)
+        : config::video.auto_bitrate.max_bitrate;
+      
+      BOOST_LOG(info) << "AutoBitrate: [Init] Initializing controller - initial_bitrate=" << initialBitrate
+                      << " kbps, min=" << minBitrate << " kbps, max=" << maxBitrate << " kbps"
+                      << ", poor_threshold=" << config::video.auto_bitrate.poor_network_threshold << "%"
+                      << ", good_threshold=" << config::video.auto_bitrate.good_network_threshold << "%"
+                      << ", increase_factor=" << config::video.auto_bitrate.increase_factor
+                      << ", decrease_factor=" << config::video.auto_bitrate.decrease_factor
+                      << ", stability_window_ms=" << config::video.auto_bitrate.stability_window_ms
+                      << ", min_consecutive_good=" << config::video.auto_bitrate.min_consecutive_good_intervals;
+      
+      session.auto_bitrate_controller = std::make_unique<auto_bitrate::AutoBitrateController>(
+          initialBitrate,
+          minBitrate,
+          maxBitrate,
+          config::video.auto_bitrate.poor_network_threshold,
+          config::video.auto_bitrate.good_network_threshold,
+          config::video.auto_bitrate.increase_factor,
+          config::video.auto_bitrate.decrease_factor,
+          config::video.auto_bitrate.stability_window_ms,
+          config::video.auto_bitrate.min_consecutive_good_intervals
+      );
+      BOOST_LOG(info) << "AutoBitrate: [Init] Controller initialized successfully";
+    }
+
     int start(session_t &session, const std::string &addr_string) {
       session.input = input::alloc(session.mail);
 
@@ -2060,6 +2395,9 @@ namespace stream {
       session.audio.peer.port(0);
 
       session.pingTimeout = std::chrono::steady_clock::now() + config::stream.ping_timeout;
+
+      // Initialize AutoBitrate controller at stream start if enabled
+      initialize_auto_bitrate_controller(session);
 
       session.audioThread = std::thread {audioThread, &session};
       session.videoThread = std::thread {videoThread, &session};
@@ -2111,6 +2449,11 @@ namespace stream {
       session->config = config;
 
       session->connection_status = session_t::connection_status_e::UNKNOWN;
+      session->last_loss_stats_time = std::chrono::steady_clock::time_point{};  // Initialize to zero (not yet received)
+      session->session_start_time = std::chrono::steady_clock::now();  // Track session start time
+      session->last_good_update_time = std::chrono::steady_clock::now();  // Initialize good update time
+      session->last_reported_good_frame = 0;  // Initialize frame tracking
+      session->last_loss_stats_report_time = std::chrono::steady_clock::time_point{};  // Initialize report time tracking
 
       session->control.connect_data = launch_session.control_connect_data;
       session->control.feedback_queue = mail->queue<platf::gamepad_feedback_msg_t>(mail::gamepad_feedback);
