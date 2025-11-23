@@ -9,7 +9,7 @@ services:
     container_name: apollo-build
     volumes:
       # Mount the entire apollo directory
-      - .:/workspace
+      - ..:/workspace
     working_dir: /workspace
     # Note: We don't set user here to allow the container to fix permissions
     # The build script will handle permission fixes
