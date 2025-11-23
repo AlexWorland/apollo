@@ -838,35 +838,9 @@ namespace stream {
                            << ", lost=" << count << " (valid=" << validCount << "), loss_percent=" 
                            << std::fixed << std::setprecision(2) << frameLossPercent << "%, interval_ms=" << t.count();
 
-          // Initialize controller if not already done
+          // Initialize controller if not already done (fallback - should already be initialized at stream start)
           if (!session->auto_bitrate_controller) {
-            int initialBitrate = session->config.monitor.bitrate;
-            int minBitrate = config::video.auto_bitrate.min_bitrate;
-            int maxBitrate = (config::video.max_bitrate > 0)
-              ? std::min(config::video.max_bitrate, config::video.auto_bitrate.max_bitrate)
-              : config::video.auto_bitrate.max_bitrate;
-            
-            BOOST_LOG(info) << "AutoBitrate: [Init] Initializing controller - initial_bitrate=" << initialBitrate
-                            << " kbps, min=" << minBitrate << " kbps, max=" << maxBitrate << " kbps"
-                            << ", poor_threshold=" << config::video.auto_bitrate.poor_network_threshold << "%"
-                            << ", good_threshold=" << config::video.auto_bitrate.good_network_threshold << "%"
-                            << ", increase_factor=" << config::video.auto_bitrate.increase_factor
-                            << ", decrease_factor=" << config::video.auto_bitrate.decrease_factor
-                            << ", stability_window_ms=" << config::video.auto_bitrate.stability_window_ms
-                            << ", min_consecutive_good=" << config::video.auto_bitrate.min_consecutive_good_intervals;
-            
-            session->auto_bitrate_controller = std::make_unique<auto_bitrate::AutoBitrateController>(
-                initialBitrate,
-                minBitrate,
-                maxBitrate,
-                config::video.auto_bitrate.poor_network_threshold,
-                config::video.auto_bitrate.good_network_threshold,
-                config::video.auto_bitrate.increase_factor,
-                config::video.auto_bitrate.decrease_factor,
-                config::video.auto_bitrate.stability_window_ms,
-                config::video.auto_bitrate.min_consecutive_good_intervals
-            );
-            BOOST_LOG(info) << "AutoBitrate: [Init] Controller initialized successfully";
+            initialize_auto_bitrate_controller(*session);
           }
 
           // Update network metrics
@@ -2075,6 +2049,49 @@ namespace stream {
       BOOST_LOG(debug) << "Session ended"sv;
     }
 
+    /**
+     * @brief Initialize the AutoBitrate controller for a session if auto bitrate is enabled.
+     * @param session The session to initialize the controller for.
+     */
+    static void initialize_auto_bitrate_controller(session_t &session) {
+      if (!session.config.autoBitrateEnabled) {
+        return;
+      }
+
+      // Only initialize if not already done
+      if (session.auto_bitrate_controller) {
+        return;
+      }
+
+      int initialBitrate = session.config.monitor.bitrate;
+      int minBitrate = config::video.auto_bitrate.min_bitrate;
+      int maxBitrate = (config::video.max_bitrate > 0)
+        ? std::min(config::video.max_bitrate, config::video.auto_bitrate.max_bitrate)
+        : config::video.auto_bitrate.max_bitrate;
+      
+      BOOST_LOG(info) << "AutoBitrate: [Init] Initializing controller - initial_bitrate=" << initialBitrate
+                      << " kbps, min=" << minBitrate << " kbps, max=" << maxBitrate << " kbps"
+                      << ", poor_threshold=" << config::video.auto_bitrate.poor_network_threshold << "%"
+                      << ", good_threshold=" << config::video.auto_bitrate.good_network_threshold << "%"
+                      << ", increase_factor=" << config::video.auto_bitrate.increase_factor
+                      << ", decrease_factor=" << config::video.auto_bitrate.decrease_factor
+                      << ", stability_window_ms=" << config::video.auto_bitrate.stability_window_ms
+                      << ", min_consecutive_good=" << config::video.auto_bitrate.min_consecutive_good_intervals;
+      
+      session.auto_bitrate_controller = std::make_unique<auto_bitrate::AutoBitrateController>(
+          initialBitrate,
+          minBitrate,
+          maxBitrate,
+          config::video.auto_bitrate.poor_network_threshold,
+          config::video.auto_bitrate.good_network_threshold,
+          config::video.auto_bitrate.increase_factor,
+          config::video.auto_bitrate.decrease_factor,
+          config::video.auto_bitrate.stability_window_ms,
+          config::video.auto_bitrate.min_consecutive_good_intervals
+      );
+      BOOST_LOG(info) << "AutoBitrate: [Init] Controller initialized successfully";
+    }
+
     int start(session_t &session, const std::string &addr_string) {
       session.input = input::alloc(session.mail);
 
@@ -2100,6 +2117,9 @@ namespace stream {
       session.audio.peer.port(0);
 
       session.pingTimeout = std::chrono::steady_clock::now() + config::stream.ping_timeout;
+
+      // Initialize AutoBitrate controller at stream start if enabled
+      initialize_auto_bitrate_controller(session);
 
       session.audioThread = std::thread {audioThread, &session};
       session.videoThread = std::thread {videoThread, &session};
