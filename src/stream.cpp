@@ -2023,6 +2023,9 @@ namespace stream {
       BOOST_LOG(debug) << "Resetting Input..."sv;
       input::reset(session.input);
 
+      // Clear auto bitrate session state
+      auto_bitrate_controller.reset(&session);
+
       if (!session.undo_cmds.empty()) {
         auto exec_thread = std::thread([cmd_list = session.undo_cmds]{
           for (auto &cmd : cmd_list) {
