@@ -46,6 +46,24 @@ namespace auto_bitrate {
     auto now = std::chrono::steady_clock::now();
     int oldGoodIntervals = metrics.consecutiveGoodIntervals;
     int oldPoorIntervals = metrics.consecutivePoorIntervals;
+    
+    // Determine current network condition
+    std::string oldCondition, newCondition;
+    if (oldFrameLoss > poorNetworkThreshold) {
+      oldCondition = "poor";
+    } else if (oldFrameLoss < goodNetworkThreshold) {
+      oldCondition = "good";
+    } else {
+      oldCondition = "stable";
+    }
+    
+    if (frameLossPercent > poorNetworkThreshold) {
+      newCondition = "poor";
+    } else if (frameLossPercent < goodNetworkThreshold) {
+      newCondition = "good";
+    } else {
+      newCondition = "stable";
+    }
 
     // Update consecutive interval counters
     if (frameLossPercent > poorNetworkThreshold) {
@@ -59,6 +77,17 @@ namespace auto_bitrate {
       // Stable zone: reset counters but don't change bitrate
       metrics.consecutiveGoodIntervals = 0;
       metrics.consecutivePoorIntervals = 0;
+    }
+    
+    // Log network condition check with thresholds
+    if (oldCondition != newCondition) {
+      BOOST_LOG(info) << "AutoBitrate: [Network] Condition changed - " << oldCondition << " -> " << newCondition
+                       << " (frame_loss: " << std::fixed << std::setprecision(2) << frameLossPercent 
+                       << "%, thresholds: good<" << goodNetworkThreshold << "%, poor>" << poorNetworkThreshold << "%)";
+    } else {
+      BOOST_LOG(info) << "AutoBitrate: [Network] Condition check - " << newCondition
+                       << " (frame_loss: " << std::fixed << std::setprecision(2) << frameLossPercent 
+                       << "%, thresholds: good<" << goodNetworkThreshold << "%, poor>" << poorNetworkThreshold << "%)";
     }
     
     // Log when counters change significantly

@@ -1028,6 +1028,8 @@ namespace rtsp_stream {
       config.monitor.height = util::from_view(args.at("x-nv-video[0].clientViewportHt"sv));
       config.monitor.width = util::from_view(args.at("x-nv-video[0].clientViewportWd"sv));
       config.monitor.framerate = util::from_view(args.at("x-nv-video[0].maxFPS"sv));
+      // Initialize bitrate to 0 - will be set later after adjustments
+      config.monitor.bitrate = 0;
       // Read maximumBitrateKbps for reference, but don't use it as initial bitrate
       // It's already adjusted down by the client (80% of original, minus 500 for remote)
       // and should only be used as a maximum limit, not the starting bitrate

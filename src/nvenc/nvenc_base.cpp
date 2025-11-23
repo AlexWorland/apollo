@@ -224,11 +224,13 @@ namespace nvenc {
     init_params.encodeHeight = encoder_params.height;
     init_params.darHeight = encoder_params.height;
     // NVENC expects framerate in fps*1000 format. client_config.framerate may be in fps format
-    // (if normalized in rtsp.cpp line 1039 when > 4000) or fps*1000 format. Normalize to fps*1000 format.
+    // (if normalized in rtsp.cpp line 1054 when > 4000) or fps*1000 format. Normalize to fps*1000 format.
     // Use 1000 threshold to correctly detect format after RTSP normalization.
-    // If framerate > 1000, it's in fps*1000 format (use as-is).
-    // If framerate <= 1000, it's in fps format (multiply by 1000).
-    int framerate_for_nvenc = (client_config.framerate > 1000) ? client_config.framerate : client_config.framerate * 1000;
+    // If framerate >= 1000, it's in fps*1000 format (use as-is).
+    // If framerate < 1000, it's in fps format (multiply by 1000).
+    // Note: framerate of exactly 1000 would be ambiguous, but normal framerates are either
+    // very small (< 1000, meaning fps format) or very large (>= 1000, meaning fps*1000 format).
+    int framerate_for_nvenc = (client_config.framerate >= 1000) ? client_config.framerate : client_config.framerate * 1000;
     init_params.frameRateNum = framerate_for_nvenc;
     init_params.frameRateDen = 1;
 
@@ -254,10 +256,24 @@ namespace nvenc {
                                                                                             NV_ENC_MULTI_PASS_DISABLED;
 
     enc_config.rcParams.enableAQ = config.adaptive_quantization;
+    
+    // Validate bitrate is reasonable (not 0 or uninitialized)
+    if (client_config.bitrate <= 0) {
+      BOOST_LOG(error) << "NvEnc: Invalid bitrate value: " << client_config.bitrate << " kbps. This may indicate config.monitor.bitrate was not properly set during RTSP negotiation.";
+      return false;
+    }
+    
     enc_config.rcParams.averageBitRate = client_config.bitrate * 1000;
     // Set maxBitRate to allow peaks above average (typically 1.5x average for VBR, but set higher for auto bitrate)
     // Note: maxBitRate is ignored in CBR mode, but setting it ensures it's correct if mode changes
     enc_config.rcParams.maxBitRate = client_config.bitrate * 1500;  // 1.5x average to allow peaks
+    
+    // Log the actual bitrate values being set for debugging
+    BOOST_LOG(info) << "NvEnc: Setting bitrate - client_config.bitrate=" << client_config.bitrate 
+                    << " kbps, averageBitRate=" << enc_config.rcParams.averageBitRate 
+                    << " bps, maxBitRate=" << enc_config.rcParams.maxBitRate << " bps"
+                    << ", client_config.framerate=" << client_config.framerate 
+                    << ", framerate_for_nvenc=" << framerate_for_nvenc;
 
     if (get_encoder_cap(NV_ENC_CAPS_SUPPORT_CUSTOM_VBV_BUF_SIZE)) {
       // VBV buffer size formula: bitrate_bps / framerate_fps
@@ -424,8 +440,11 @@ namespace nvenc {
     {
       auto f = stat_trackers::two_digits_after_decimal();
       // Normalize framerate to fps format for calculation (bitrate is in kbps, framerate needs to be in fps)
-      float framerate_fps = (client_config.framerate > 1000) ? client_config.framerate / 1000.0f : static_cast<float>(client_config.framerate);
-      BOOST_LOG(debug) << "NvEnc: requested encoded frame size " << f % (client_config.bitrate / 8. / framerate_fps) << " kB";
+      // Use >= 1000 threshold to match the logic above for consistency
+      float framerate_fps = (client_config.framerate >= 1000) ? client_config.framerate / 1000.0f : static_cast<float>(client_config.framerate);
+      float expected_frame_size_kb = client_config.bitrate / 8.0f / framerate_fps;
+      BOOST_LOG(debug) << "NvEnc: requested encoded frame size " << f % expected_frame_size_kb << " kB"
+                       << " (bitrate=" << client_config.bitrate << " kbps, framerate=" << framerate_fps << " fps)";
     }
 
     {
@@ -652,15 +671,35 @@ namespace nvenc {
       return false;
     }
 
+    // Validate bitrate is reasonable (not 0 or suspiciously low)
+    if (new_bitrate_kbps <= 0) {
+      BOOST_LOG(error) << "NvEnc: Invalid bitrate for reconfiguration: " << new_bitrate_kbps << " kbps";
+      return false;
+    }
+    
+    // Warn if bitrate seems unusually low (might indicate minimum clamping)
+    if (new_bitrate_kbps < 1000) {
+      BOOST_LOG(warning) << "NvEnc: Reconfiguring to very low bitrate: " << new_bitrate_kbps 
+                         << " kbps (this may indicate minimum bitrate clamping by auto bitrate controller)";
+    }
+
     // Use stored encode config (NVENC API doesn't have a function to get current params)
     // This preserves the rate control mode (VBR/CBR) that was set during initialization
     NV_ENC_CONFIG enc_config = stored_encode_config;
 
+    // Get current bitrate for comparison
+    uint32_t current_bitrate_kbps = enc_config.rcParams.averageBitRate / 1000;
+    
     // Update bitrate (convert from kbps to bps)
     enc_config.rcParams.averageBitRate = new_bitrate_kbps * 1000;
     // Update maxBitRate to allow peaks above average (1.5x average)
     // Note: maxBitRate is ignored in CBR mode, but setting it ensures it's correct if mode changes
     enc_config.rcParams.maxBitRate = new_bitrate_kbps * 1500;  // 1.5x average to allow peaks
+    
+    BOOST_LOG(info) << "NvEnc: Reconfiguring bitrate - current=" << current_bitrate_kbps 
+                    << " kbps -> new=" << new_bitrate_kbps << " kbps"
+                    << " (averageBitRate=" << enc_config.rcParams.averageBitRate 
+                    << " bps, maxBitRate=" << enc_config.rcParams.maxBitRate << " bps)";
 
     // Update VBV buffer size proportionally if supported
     auto get_encoder_cap = [&](NV_ENC_CAPS cap) {

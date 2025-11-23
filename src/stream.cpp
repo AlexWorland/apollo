@@ -906,6 +906,21 @@ namespace stream {
             newStatus = session_t::connection_status_e::OKAY;
           }
           // Else: keep current status (stable zone)
+          
+          // Log connection status check with thresholds
+          std::string currentStatusStr = (session->connection_status == session_t::connection_status_e::POOR) ? "POOR" : "OKAY";
+          std::string newStatusStr = (newStatus == session_t::connection_status_e::POOR) ? "POOR" : "OKAY";
+          if (newStatus != session->connection_status) {
+            BOOST_LOG(info) << "AutoBitrate: [Connection] Status changed - " << currentStatusStr << " -> " << newStatusStr 
+                            << " (frame_loss: " << std::fixed << std::setprecision(2) << frameLossPercent 
+                            << "%, thresholds: good<" << config::video.auto_bitrate.good_network_threshold 
+                            << "%, poor>" << config::video.auto_bitrate.poor_network_threshold << "%)";
+          } else {
+            BOOST_LOG(info) << "AutoBitrate: [Connection] Status check - " << newStatusStr 
+                            << " (frame_loss: " << std::fixed << std::setprecision(2) << frameLossPercent 
+                            << "%, thresholds: good<" << config::video.auto_bitrate.good_network_threshold 
+                            << "%, poor>" << config::video.auto_bitrate.poor_network_threshold << "%)";
+          }
 
           // Send status update to client if status changed
           if (newStatus != session->connection_status && session->control.peer) {
