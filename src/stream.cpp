@@ -1028,6 +1028,25 @@ namespace stream {
       }
     });
 
+    server->map(packetTypes[IDX_CONNECTION_STATUS], [&](session_t *session, const std::string_view &payload) {
+      BOOST_LOG(debug) << "type [IDX_CONNECTION_STATUS]"sv;
+
+      if (payload.size() < sizeof(std::uint8_t)) {
+        BOOST_LOG(warning) << "AutoBitrate: [ConnectionStatus] Received invalid connection status message (payload size: " 
+                          << payload.size() << " bytes, expected: " << sizeof(std::uint8_t) << " bytes)";
+        return;
+      }
+
+      std::uint8_t status = payload[0];  // 0 = OKAY, 1 = POOR
+      
+      // Process connection status through auto-bitrate controller
+      if (session->auto_bitrate_enabled) {
+        auto_bitrate_controller.process_connection_status(session, status);
+        BOOST_LOG(verbose) << "AutoBitrate: [ConnectionStatus] Client reports status: " 
+                          << (status == 1 ? "POOR" : "OKAY");
+      }
+    });
+
     server->map(packetTypes[IDX_ENCRYPTED], [server](session_t *session, const std::string_view &payload) {
       BOOST_LOG(verbose) << "type [IDX_ENCRYPTED]"sv;
 
