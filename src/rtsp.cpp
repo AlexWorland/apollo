@@ -860,12 +860,13 @@ namespace rtsp_stream {
   }
 
   void cmd_setup(rtsp_server_t *server, tcp::socket &sock, launch_session_t &session, msg_t &&req) {
-    OPTION_ITEM options[4] {};
+    OPTION_ITEM options[5] {};
 
     auto &seqn = options[0];
     auto &session_option = options[1];
     auto &port_option = options[2];
     auto &payload_option = options[3];
+    auto &hostMaxBitrate_option = options[4];
 
     seqn.option = const_cast<char *>("CSeq");
 
@@ -914,6 +915,18 @@ namespace rtsp_stream {
     }
 
     port_option.next = &payload_option;
+
+    // Add host max bitrate limit for video stream
+    std::string hostMaxBitrate_str;
+    if (type == "video"sv && session.host_max_bitrate_kbps > 0) {
+      hostMaxBitrate_str = std::to_string(session.host_max_bitrate_kbps);
+      hostMaxBitrate_option.option = const_cast<char *>("x-ml-video.hostMaxBitrateKbps");
+      hostMaxBitrate_option.content = const_cast<char *>(hostMaxBitrate_str.c_str());
+      payload_option.next = &hostMaxBitrate_option;
+      hostMaxBitrate_option.next = nullptr;
+    } else {
+      payload_option.next = nullptr;
+    }
 
     respond(sock, session, &seqn, 200, "OK", req->sequenceNumber, {});
   }
@@ -989,6 +1002,7 @@ namespace rtsp_stream {
     stream::config_t config;
 
     std::int64_t configuredBitrateKbps;
+    std::int64_t maximumBitrateKbps = 0;  // Declare outside try block for use in else block
     config.audio.flags[audio::config_t::HOST_AUDIO] = session.host_audio;
     try {
       config.audio.channels = util::from_view(args.at("x-nv-audio.surround.numChannels"sv));
@@ -1014,7 +1028,12 @@ namespace rtsp_stream {
       config.monitor.height = util::from_view(args.at("x-nv-video[0].clientViewportHt"sv));
       config.monitor.width = util::from_view(args.at("x-nv-video[0].clientViewportWd"sv));
       config.monitor.framerate = util::from_view(args.at("x-nv-video[0].maxFPS"sv));
-      config.monitor.bitrate = util::from_view(args.at("x-nv-vqos[0].bw.maximumBitrateKbps"sv));
+      // Initialize bitrate to 0 - will be set later after adjustments
+      config.monitor.bitrate = 0;
+      // Read maximumBitrateKbps for reference, but don't use it as initial bitrate
+      // It's already adjusted down by the client (80% of original, minus 500 for remote)
+      // and should only be used as a maximum limit, not the starting bitrate
+      maximumBitrateKbps = util::from_view(args.at("x-nv-vqos[0].bw.maximumBitrateKbps"sv));
       config.monitor.slicesPerFrame = util::from_view(args.at("x-nv-video[0].videoEncoderSlicesPerFrame"sv));
       config.monitor.numRefFrames = util::from_view(args.at("x-nv-video[0].maxNumReferenceFrames"sv));
       config.monitor.encoderCscMode = util::from_view(args.at("x-nv-video[0].encoderCscMode"sv));
@@ -1024,13 +1043,12 @@ namespace rtsp_stream {
       config.monitor.enableIntraRefresh = util::from_view(args.at("x-ss-video[0].intraRefresh"sv));
 
       if (config::video.limit_framerate) {
+        // session.fps is in fps format (not fps*1000), so store it as-is
         config.monitor.encodingFramerate = session.fps;
       } else {
-        if (config.monitor.framerate > 1000) {
-          config.monitor.encodingFramerate = config.monitor.framerate;
-        } else {
-          config.monitor.encodingFramerate = config.monitor.framerate * 1000;
-        }
+        // config.monitor.framerate is always in fps*1000 format at this point (from client)
+        // The normalization to fps format happens later (line 1039-1041) if framerate > 4000
+        config.monitor.encodingFramerate = config.monitor.framerate;
       }
 
       // When fractional refresh rate requested from client side, it should be well above 1000fps
@@ -1041,27 +1059,53 @@ namespace rtsp_stream {
 
       config.monitor.input_only = session.input_only;
 
+      // Read the configured bitrate from the client (original user-selected bitrate)
       configuredBitrateKbps = util::from_view(args.at("x-ml-video.configuredBitrateKbps"sv));
+      BOOST_LOG(info) << "AutoBitrate: [RTSP] Client configured bitrate (raw): " << configuredBitrateKbps << " kbps";
 
+      // If configuredBitrateKbps is not provided (0), estimate the original bitrate from maximumBitrateKbps
+      // The client reduces the bitrate by 20% (multiplies by 0.80) and potentially subtracts 500 Kbps for remote streams
+      // To reverse this: original ≈ (maximumBitrateKbps + 500) / 0.80 for remote, or maximumBitrateKbps / 0.80 for local
+      // We use a conservative approach: reverse the 20% reduction and add 500 to account for potential remote adjustment
       if (!configuredBitrateKbps) {
-        configuredBitrateKbps = config.monitor.bitrate;
+        // Reverse the client's 20% reduction: divide by 0.80
+        // Also add 500 to account for potential remote stream adjustment
+        configuredBitrateKbps = static_cast<std::int64_t>((maximumBitrateKbps + 500) / 0.80);
+        BOOST_LOG(info) << "AutoBitrate: [RTSP] configuredBitrateKbps not provided, estimated from maximumBitrateKbps (" 
+                         << maximumBitrateKbps << " kbps): " << configuredBitrateKbps << " kbps";
       }
 
-      BOOST_LOG(info) << "Client Requested bitrate is [" << configuredBitrateKbps << "kbps]";
+      // Parse auto bitrate flag
+      try {
+        auto autoBitrateValue = util::from_view(args.at("x-ml-video.autoBitrateEnabled"sv));
+        config.autoBitrateEnabled = (autoBitrateValue == 1);
+        BOOST_LOG(info) << "AutoBitrate: [RTSP] " << (config.autoBitrateEnabled ? "Enabled" : "Disabled") << " by client (raw value: " << autoBitrateValue << ")";
+      } catch (std::out_of_range &) {
+        // Attribute not present, default to false for backward compatibility
+        config.autoBitrateEnabled = false;
+        BOOST_LOG(info) << "AutoBitrate: [RTSP] Not requested by client, defaulting to disabled";
+      }
+
+      BOOST_LOG(info) << "AutoBitrate: [RTSP] Client Requested bitrate (before host limits): " << configuredBitrateKbps << " kbps";
 
       if (config::video.max_bitrate > 0) {
         if (config::video.max_bitrate < configuredBitrateKbps) {
+          BOOST_LOG(info) << "AutoBitrate: [RTSP] Applying host max_bitrate limit: " << configuredBitrateKbps << " -> " << config::video.max_bitrate << " kbps";
           configuredBitrateKbps = config::video.max_bitrate;
         }
       }
 
-      BOOST_LOG(info) << "Host Streaming bitrate is [" << configuredBitrateKbps << "kbps]";
+      BOOST_LOG(info) << "AutoBitrate: [RTSP] Host Streaming bitrate (after host limits): " << configuredBitrateKbps << " kbps";
+
+      // Calculate and store host's max bitrate limit
+      session.host_max_bitrate_kbps = (config::video.max_bitrate > 0) ? config::video.max_bitrate : configuredBitrateKbps;
 
       // Hack: Restore bitrate for warp mode
       size_t warp_factor = std::round((float)config.monitor.framerate * 1000 / session.fps);
       if (config::video.limit_framerate && warp_factor >= 2) {
+        int bitrateBeforeWarp = configuredBitrateKbps;
         configuredBitrateKbps *= warp_factor;
-        BOOST_LOG(info) << "Warp factor [" << warp_factor << "] engaged";
+        BOOST_LOG(info) << "AutoBitrate: [RTSP] Warp factor [" << warp_factor << "] engaged: " << bitrateBeforeWarp << " -> " << configuredBitrateKbps << " kbps";
       }
 
     } catch (std::out_of_range &) {
@@ -1111,25 +1155,44 @@ namespace rtsp_stream {
     // too low, we'll allow it to exceed the limits rather than reducing the encoding bitrate
     // down to nearly nothing.
     if (configuredBitrateKbps) {
-      BOOST_LOG(debug) << "Client configured bitrate is "sv << configuredBitrateKbps << " Kbps"sv;
+      int bitrateBeforeAdjustments = configuredBitrateKbps;
+      BOOST_LOG(info) << "AutoBitrate: [RTSP] Starting bitrate adjustments from: " << configuredBitrateKbps << " kbps";
 
       // If the FEC percentage isn't too high, adjust the configured bitrate to ensure video
       // traffic doesn't exceed the user's selected bitrate when the FEC shards are included.
       if (config::stream.fec_percentage <= 80) {
+        int bitrateBeforeFec = configuredBitrateKbps;
         configuredBitrateKbps /= 100.f / (100 - config::stream.fec_percentage);
+        BOOST_LOG(info) << "AutoBitrate: [RTSP] FEC adjustment (" << config::stream.fec_percentage << "%): " << bitrateBeforeFec << " -> " << configuredBitrateKbps << " kbps";
+      } else {
+        BOOST_LOG(info) << "AutoBitrate: [RTSP] FEC percentage too high (" << config::stream.fec_percentage << "%), skipping FEC adjustment";
       }
 
       // Adjust the bitrate to account for audio traffic bandwidth usage (capped at 20% reduction).
       // The bitrate per channel is 256 Kbps for high quality mode and 96 Kbps for normal quality.
       auto audioBitrateAdjustment = (config.audio.flags[audio::config_t::HIGH_QUALITY] ? 256 : 96) * config.audio.channels;
+      int bitrateBeforeAudio = configuredBitrateKbps;
       configuredBitrateKbps -= std::min((std::int64_t) audioBitrateAdjustment, configuredBitrateKbps / 5);
+      BOOST_LOG(info) << "AutoBitrate: [RTSP] Audio adjustment (" << audioBitrateAdjustment << " kbps, " << config.audio.channels << " channels, " 
+                      << (config.audio.flags[audio::config_t::HIGH_QUALITY] ? "high" : "normal") << " quality): " 
+                      << bitrateBeforeAudio << " -> " << configuredBitrateKbps << " kbps";
 
       // Reduce it by another 500Kbps to account for A/V packet overhead and control data
       // traffic (capped at 10% reduction).
+      int bitrateBeforeOverhead = configuredBitrateKbps;
       configuredBitrateKbps -= std::min((std::int64_t) 500, configuredBitrateKbps / 10);
+      BOOST_LOG(info) << "AutoBitrate: [RTSP] Overhead adjustment (500 kbps, capped at 10%): " << bitrateBeforeOverhead << " -> " << configuredBitrateKbps << " kbps";
 
-      BOOST_LOG(debug) << "Final adjusted video encoding bitrate is "sv << configuredBitrateKbps << " Kbps"sv;
+      BOOST_LOG(info) << "AutoBitrate: [RTSP] Final adjusted video encoding bitrate: " << bitrateBeforeAdjustments << " -> " << configuredBitrateKbps << " kbps (total reduction: " 
+                      << (bitrateBeforeAdjustments - configuredBitrateKbps) << " kbps)";
       config.monitor.bitrate = configuredBitrateKbps;
+      config.monitor.autoBitrateEnabled = config.autoBitrateEnabled;
+    } else {
+      // Fallback: if configuredBitrateKbps is somehow 0 or invalid, use maximumBitrateKbps
+      // This should rarely happen, but ensures we always have a valid bitrate
+      config.monitor.bitrate = maximumBitrateKbps;
+      config.monitor.autoBitrateEnabled = config.autoBitrateEnabled;
+      BOOST_LOG(warning) << "AutoBitrate: [RTSP] configuredBitrateKbps is 0, using maximumBitrateKbps as fallback: " << maximumBitrateKbps << " kbps";
     }
 
     if (config.monitor.videoFormat == 1 && video::active_hevc_mode == 1) {
