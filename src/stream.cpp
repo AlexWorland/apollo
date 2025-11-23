@@ -840,7 +840,7 @@ namespace stream {
 
           // Initialize controller if not already done (fallback - should already be initialized at stream start)
           if (!session->auto_bitrate_controller) {
-            initialize_auto_bitrate_controller(*session);
+            session::initialize_auto_bitrate_controller(*session);
           }
 
           // Update network metrics
@@ -2053,7 +2053,7 @@ namespace stream {
      * @brief Initialize the AutoBitrate controller for a session if auto bitrate is enabled.
      * @param session The session to initialize the controller for.
      */
-    static void initialize_auto_bitrate_controller(session_t &session) {
+    void initialize_auto_bitrate_controller(session_t &session) {
       if (!session.config.autoBitrateEnabled) {
         return;
       }
