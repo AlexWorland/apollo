@@ -31,7 +31,14 @@ if (-not (Test-Path $msys2Bash)) {
 $env:PATH = "$msys2Ucrt;$env:PATH"
 
 # Convert Windows path to MSYS2 path format
-$workspacePath = (Get-Location).Path -replace '\\', '/' -replace 'C:', '/c' -replace 'D:', '/d' -replace 'E:', '/e' -replace 'F:', '/f'
+# Handle all drive letters A-Z by using regex replacement
+$path = (Get-Location).Path -replace '\\', '/'
+if ($path -match '^([A-Z]):') {
+    $drive = $matches[1].ToLower()
+    $workspacePath = $path -replace '^[A-Z]:', "/$drive"
+} else {
+    $workspacePath = $path
+}
 
 Write-Host "MSYS2 Workspace Path: $workspacePath" -ForegroundColor Yellow
 Write-Host ""

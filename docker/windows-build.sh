@@ -86,10 +86,32 @@ cleanup() {
 }
 trap cleanup EXIT
 
+# Convert Unix-style path to Windows-style path for Docker volume mount
+# Handle both Git Bash format (/c/Users/...) and WSL format (/mnt/c/Users/...)
+convert_to_windows_path() {
+    local unix_path="$1"
+    # Check if it's a WSL path (/mnt/c/...)
+    if [[ "$unix_path" =~ ^/mnt/([a-z])/(.*)$ ]]; then
+        local drive="${BASH_REMATCH[1]}"
+        local rest="${BASH_REMATCH[2]}"
+        echo "${drive^^}:\\${rest//\//\\}"
+    # Check if it's a Git Bash path (/c/...)
+    elif [[ "$unix_path" =~ ^/([a-z])/(.*)$ ]]; then
+        local drive="${BASH_REMATCH[1]}"
+        local rest="${BASH_REMATCH[2]}"
+        echo "${drive^^}:\\${rest//\//\\}"
+    else
+        # Already a Windows path or unknown format, return as-is
+        echo "$unix_path"
+    fi
+}
+
+WINDOWS_PROJECT_ROOT=$(convert_to_windows_path "$PROJECT_ROOT")
+
 # Run build
 docker run --rm \
     --name "$CONTAINER_NAME" \
-    -v "${PROJECT_ROOT}:C:\workspace" \
+    -v "${WINDOWS_PROJECT_ROOT}:C:\workspace" \
     -w C:\workspace \
     -e CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE:-Release}" \
     -e BUILD_TESTS="${BUILD_TESTS:-OFF}" \
