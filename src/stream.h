@@ -52,6 +52,14 @@ namespace stream {
   namespace session {
     enum class state_e : int;
   }
+}
+
+// Forward declaration for rtsp_stream namespace
+namespace rtsp_stream {
+  struct launch_session_t;
+}
+
+namespace stream {
 
   // Type aliases needed for broadcast_ctx_t
   enum class socket_e : int {
