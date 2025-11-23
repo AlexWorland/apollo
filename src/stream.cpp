@@ -895,6 +895,20 @@ namespace stream {
       if (session->auto_bitrate_enabled) {
         auto_bitrate_controller.process_loss_stats(session, lastGoodFrame, t);
 
+        // Check for bitrate change confirmations from video thread
+        // This ensures state is only updated after encoder successfully applies changes
+        auto bitrate_confirmation_events = session->mail->event<std::pair<int, bool>>(mail::bitrate_change_confirmation);
+        while (bitrate_confirmation_events->peek()) {
+          if (auto confirmation = bitrate_confirmation_events->pop(0ms)) {
+            auto_bitrate_controller.confirm_bitrate_change(session, confirmation->first, confirmation->second);
+            if (confirmation->second) {
+              BOOST_LOG(info) << "AutoBitrate: Encoder accepted bitrate change to " << confirmation->first << " Kbps";
+            } else {
+              BOOST_LOG(info) << "AutoBitrate: Encoder rejected bitrate change to " << confirmation->first << " Kbps (encoder may not support dynamic bitrate)";
+            }
+          }
+        }
+
         // Check if adjustment is needed
         if (auto_bitrate_controller.should_adjust_bitrate(session)) {
           int new_bitrate = auto_bitrate_controller.calculate_new_bitrate(session);

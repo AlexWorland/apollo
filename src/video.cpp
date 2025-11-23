@@ -1954,6 +1954,7 @@ namespace video {
     auto idr_events = mail->event<bool>(mail::idr);
     auto invalidate_ref_frames_events = mail->event<std::pair<int64_t, int64_t>>(mail::invalidate_ref_frames);
     auto bitrate_change_events = mail->event<int>(mail::bitrate_change);
+    auto bitrate_change_confirmation_events = mail->event<std::pair<int, bool>>(mail::bitrate_change_confirmation);
 
     {
       // Load a dummy image into the AVFrame to ensure we have something to encode
@@ -2003,11 +2004,15 @@ namespace video {
 
           if (reconfigured) {
             config.bitrate = *new_bitrate;
-            BOOST_LOG(info) << "Video: Bitrate adjusted to " << *new_bitrate << " Kbps";
+            BOOST_LOG(info) << "Video: Encoder accepted bitrate change to " << *new_bitrate << " Kbps";
           } else {
-            BOOST_LOG(warning) << "Video: Failed to reconfigure bitrate to " 
-                              << *new_bitrate << " Kbps (encoder may not support)";
+            BOOST_LOG(info) << "Video: Encoder rejected bitrate change to " 
+                            << *new_bitrate << " Kbps (encoder may not support dynamic bitrate)";
           }
+
+          // Send confirmation back to control thread so it can update its state
+          // only after the encoder has successfully applied the change
+          bitrate_change_confirmation_events->raise(std::make_pair(*new_bitrate, reconfigured));
         }
       }
 

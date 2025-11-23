@@ -119,15 +119,31 @@ namespace stream {
 
     new_bitrate = clamp_bitrate(new_bitrate, min_bitrate, max_bitrate);
 
-    // Update state's last adjustment time and increment count
-    auto &mutable_state = const_cast<auto_bitrate_controller_t*>(this)->get_or_create_state(session);
-    if (new_bitrate != mutable_state.current_bitrate_kbps) {
-      mutable_state.last_adjustment_time = now;
-      mutable_state.adjustment_count++;
-      mutable_state.current_bitrate_kbps = new_bitrate;
-    }
+    // Note: State is NOT updated here. It will be updated in confirm_bitrate_change()
+    // after the encoder successfully applies the change. This prevents the state from
+    // reflecting a bitrate that the encoder never actually used.
 
     return new_bitrate;
+  }
+
+  void auto_bitrate_controller_t::confirm_bitrate_change(session_t *session, int new_bitrate_kbps, bool success) {
+    if (!session || !session->auto_bitrate_enabled) {
+      return;
+    }
+
+    auto &state = get_or_create_state(session);
+    auto now = std::chrono::steady_clock::now();
+
+    if (success) {
+      // Only update state if the encoder successfully applied the change
+      if (new_bitrate_kbps != state.current_bitrate_kbps) {
+        state.last_adjustment_time = now;
+        state.adjustment_count++;
+        state.current_bitrate_kbps = new_bitrate_kbps;
+      }
+    }
+    // If success is false, we don't update the state - the encoder didn't apply the change,
+    // so the state should continue to reflect the previous (still active) bitrate.
   }
 
   void auto_bitrate_controller_t::reset(session_t *session) {

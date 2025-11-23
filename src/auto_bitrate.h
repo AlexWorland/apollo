@@ -52,6 +52,15 @@ namespace stream {
     int calculate_new_bitrate(session_t *session) const;
     
     /**
+     * @brief Confirm that a bitrate change was successfully applied by the encoder.
+     *        Updates the controller state only after encoder confirmation.
+     * @param session The streaming session.
+     * @param new_bitrate_kbps The bitrate that was successfully applied.
+     * @param success true if encoder successfully applied the change, false otherwise.
+     */
+    void confirm_bitrate_change(session_t *session, int new_bitrate_kbps, bool success);
+    
+    /**
      * @brief Reset controller state for a new session.
      * @param session The streaming session.
      */
