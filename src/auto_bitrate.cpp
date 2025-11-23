@@ -29,8 +29,9 @@ namespace stream {
     state.last_reported_good_frame = lastGoodFrame;
     state.last_loss_stats_time = now;
 
-    // Update current bitrate from session config
-    state.current_bitrate_kbps = session->config.monitor.bitrate;
+    // Note: current_bitrate_kbps is initialized in get_or_create_state() and
+    // updated in calculate_new_bitrate() when adjustments are made.
+    // We don't overwrite it here to preserve adjusted values.
   }
 
   void auto_bitrate_controller_t::process_connection_status(session_t *session,
