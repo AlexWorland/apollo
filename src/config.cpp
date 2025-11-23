@@ -519,7 +519,7 @@ namespace config {
 
     {
       500,      // min_bitrate
-      150000,   // max_bitrate
+      1000000,   // max_bitrate
       5.0f,     // poor_network_threshold
       1.0f,     // good_network_threshold
       1.2f,     // increase_factor
@@ -1154,8 +1154,8 @@ namespace config {
     bool_f(vars, "nvenc_latency_over_power", video.nv_sunshine_high_power_mode);
 
     // Auto bitrate configuration
-    int_between_f(vars, "auto_bitrate_min_bitrate", video.auto_bitrate.min_bitrate, {100, 150000});
-    int_between_f(vars, "auto_bitrate_max_bitrate", video.auto_bitrate.max_bitrate, {100, 150000});
+    int_between_f(vars, "auto_bitrate_min_bitrate", video.auto_bitrate.min_bitrate, {100, 1000000});
+    int_between_f(vars, "auto_bitrate_max_bitrate", video.auto_bitrate.max_bitrate, {100, 1000000});
     float_f(vars, "auto_bitrate_poor_network_threshold", video.auto_bitrate.poor_network_threshold);
     float_f(vars, "auto_bitrate_good_network_threshold", video.auto_bitrate.good_network_threshold);
     float_f(vars, "auto_bitrate_increase_factor", video.auto_bitrate.increase_factor);
@@ -1250,7 +1250,7 @@ namespace config {
     if (video.auto_bitrate.min_bitrate >= video.auto_bitrate.max_bitrate) {
       BOOST_LOG(warning) << "auto_bitrate_min_bitrate must be less than max_bitrate, using defaults";
       video.auto_bitrate.min_bitrate = 500;
-      video.auto_bitrate.max_bitrate = 150000;
+      video.auto_bitrate.max_bitrate = 1000000;
     }
 
     int_f(vars, "max_bitrate", video.max_bitrate);

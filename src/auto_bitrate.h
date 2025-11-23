@@ -34,7 +34,7 @@ namespace auto_bitrate {
      * @brief Construct a new AutoBitrateController.
      * @param initialBitrate Initial bitrate in kbps
      * @param minBitrate Minimum allowed bitrate in kbps (default: 500)
-     * @param maxBitrate Maximum allowed bitrate in kbps (default: 150000)
+     * @param maxBitrate Maximum allowed bitrate in kbps (default: 1000000)
      * @param poorNetworkThreshold Frame loss percentage threshold for poor network (default: 5.0%)
      * @param goodNetworkThreshold Frame loss percentage threshold for good network (default: 1.0%)
      * @param increaseFactor Multiplier for bitrate increase (default: 1.2)
@@ -45,7 +45,7 @@ namespace auto_bitrate {
     AutoBitrateController(
       int initialBitrate,
       int minBitrate = 500,
-      int maxBitrate = 150000,
+      int maxBitrate = 1000000,
       float poorNetworkThreshold = 5.0f,
       float goodNetworkThreshold = 1.0f,
       float increaseFactor = 1.2f,
