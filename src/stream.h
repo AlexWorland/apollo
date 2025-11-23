@@ -177,6 +177,11 @@ namespace stream {
     boost::asio::ip::address localAddress;
 
     std::unique_ptr<auto_bitrate::AutoBitrateController> auto_bitrate_controller;
+    std::chrono::steady_clock::time_point last_loss_stats_time;  // Track when loss stats were last received
+    std::chrono::steady_clock::time_point session_start_time;  // Track when session started for periodic good updates
+    std::chrono::steady_clock::time_point last_good_update_time;  // Track last time we updated with 0% loss
+    uint64_t last_reported_good_frame = 0;  // Track last good frame number from client to compute loss count
+    std::chrono::steady_clock::time_point last_loss_stats_report_time;  // Track when last loss stats report was received
 
     enum class connection_status_e : int {
       UNKNOWN = -1,
