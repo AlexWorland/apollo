@@ -28,6 +28,7 @@ extern "C" {
 #include "logging.h"
 #include "nvenc/nvenc_base.h"
 #include "platform/common.h"
+#include "stream.h"
 #include "sync.h"
 #include "video.h"
 
@@ -428,6 +429,13 @@ namespace video {
       auto result = device->nvenc->encode_frame(frame_index, force_idr);
       force_idr = false;
       return result;
+    }
+
+    bool reconfigure_bitrate(uint32_t new_bitrate_kbps) override {
+      if (!device || !device->nvenc) {
+        return false;
+      }
+      return device->nvenc->reconfigure_bitrate(new_bitrate_kbps);
     }
 
   private:
@@ -1946,6 +1954,7 @@ namespace video {
     auto packets = mail::man->queue<packet_t>(mail::video_packets);
     auto idr_events = mail->event<bool>(mail::idr);
     auto invalidate_ref_frames_events = mail->event<std::pair<int64_t, int64_t>>(mail::invalidate_ref_frames);
+    auto bitrate_update_events = mail->event<int>(mail::bitrate_update);
 
     {
       // Load a dummy image into the AVFrame to ensure we have something to encode
@@ -2005,6 +2014,26 @@ namespace video {
 
       if (requested_idr_frame) {
         session->request_idr_frame();
+      }
+
+      // Handle bitrate updates
+      if (bitrate_update_events->peek()) {
+        if (auto newBitrate = bitrate_update_events->pop()) {
+          // Cast channel_data to session_t* to access config and auto_bitrate_controller
+          auto stream_session = static_cast<stream::session_t *>(channel_data);
+          if (session->reconfigure_bitrate(*newBitrate)) {
+            // Update config only after successful reconfiguration
+            stream_session->config.monitor.bitrate = *newBitrate;
+            BOOST_LOG(info) << "Video: Bitrate updated to " << *newBitrate << " kbps";
+          } else {
+            // Reset controller to current config value (last successfully applied bitrate)
+            // to keep it in sync with the actual encoder state
+            if (stream_session->auto_bitrate_controller) {
+              stream_session->auto_bitrate_controller->reset(stream_session->config.monitor.bitrate);
+            }
+            BOOST_LOG(warning) << "Video: Failed to update bitrate to " << *newBitrate << " kbps, reset controller to " << stream_session->config.monitor.bitrate << " kbps";
+          }
+        }
       }
 
       std::optional<std::chrono::steady_clock::time_point> frame_timestamp;

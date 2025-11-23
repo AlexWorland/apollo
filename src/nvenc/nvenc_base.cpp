@@ -223,7 +223,13 @@ namespace nvenc {
     init_params.darWidth = encoder_params.width;
     init_params.encodeHeight = encoder_params.height;
     init_params.darHeight = encoder_params.height;
-    init_params.frameRateNum = client_config.framerate;
+    // NVENC expects framerate in fps*1000 format. client_config.framerate may be in fps format
+    // (if normalized in rtsp.cpp line 1039 when > 4000) or fps*1000 format. Normalize to fps*1000 format.
+    // Use 1000 threshold to correctly detect format after RTSP normalization.
+    // If framerate > 1000, it's in fps*1000 format (use as-is).
+    // If framerate <= 1000, it's in fps format (multiply by 1000).
+    int framerate_for_nvenc = (client_config.framerate > 1000) ? client_config.framerate : client_config.framerate * 1000;
+    init_params.frameRateNum = framerate_for_nvenc;
     init_params.frameRateDen = 1;
 
     NV_ENC_PRESET_CONFIG preset_config = {min_struct_version(NV_ENC_PRESET_CONFIG_VER), {min_struct_version(NV_ENC_CONFIG_VER, 7, 8)}};
@@ -248,7 +254,10 @@ namespace nvenc {
     enc_config.rcParams.averageBitRate = client_config.bitrate * 1000;
 
     if (get_encoder_cap(NV_ENC_CAPS_SUPPORT_CUSTOM_VBV_BUF_SIZE)) {
-      enc_config.rcParams.vbvBufferSize = client_config.bitrate * 1000 / client_config.framerate;
+      // VBV buffer size formula: bitrate_bps / framerate_fps
+      // framerate_for_nvenc is in fps*1000 format, so convert to fps for the calculation
+      int framerate_fps = framerate_for_nvenc / 1000;
+      enc_config.rcParams.vbvBufferSize = client_config.bitrate * 1000 / framerate_fps;
       if (config.vbv_percentage_increase > 0) {
         enc_config.rcParams.vbvBufferSize += enc_config.rcParams.vbvBufferSize * config.vbv_percentage_increase / 100;
       }
@@ -408,7 +417,9 @@ namespace nvenc {
 
     {
       auto f = stat_trackers::two_digits_after_decimal();
-      BOOST_LOG(debug) << "NvEnc: requested encoded frame size " << f % (client_config.bitrate / 8. / client_config.framerate) << " kB";
+      // Normalize framerate to fps format for calculation (bitrate is in kbps, framerate needs to be in fps)
+      float framerate_fps = (client_config.framerate > 1000) ? client_config.framerate / 1000.0f : static_cast<float>(client_config.framerate);
+      BOOST_LOG(debug) << "NvEnc: requested encoded frame size " << f % (client_config.bitrate / 8. / framerate_fps) << " kB";
     }
 
     {
@@ -452,6 +463,20 @@ namespace nvenc {
     }
 
     encoder_state = {};
+    stored_nvenc_config = config;
+    stored_encode_config = enc_config;  // Store encode config for reconfiguration
+    stored_encode_guid = init_params.encodeGUID;  // Store encode GUID for reconfiguration
+    // Store framerate in fps*1000 format for consistency with NVENC API expectations
+    // client_config.framerate may be in fps format (if normalized in rtsp.cpp line 1039 when > 4000)
+    // or fps*1000 format. Normalize to fps*1000 format for stored_framerate.
+    // Use 1000 threshold to correctly detect format after RTSP normalization.
+    // If framerate > 1000, it's in fps*1000 format (use as-is).
+    // If framerate <= 1000, it's in fps format (multiply by 1000).
+    if (client_config.framerate > 1000) {
+      stored_framerate = client_config.framerate;  // Already in fps*1000 format
+    } else {
+      stored_framerate = client_config.framerate * 1000;  // Convert from fps to fps*1000
+    }
     fail_guard.disable();
     return true;
   }
@@ -606,6 +631,63 @@ namespace nvenc {
       }
     }
 
+    return true;
+  }
+
+  bool nvenc_base::reconfigure_bitrate(uint32_t new_bitrate_kbps) {
+    if (!encoder || !nvenc) {
+      BOOST_LOG(error) << "NvEnc: Cannot reconfigure bitrate, encoder not initialized";
+      return false;
+    }
+
+    // Use stored encode config (NVENC API doesn't have a function to get current params)
+    NV_ENC_CONFIG enc_config = stored_encode_config;
+
+    // Update bitrate (convert from kbps to bps)
+    enc_config.rcParams.averageBitRate = new_bitrate_kbps * 1000;
+
+    // Update VBV buffer size proportionally if supported
+    auto get_encoder_cap = [&](NV_ENC_CAPS cap) {
+      NV_ENC_CAPS_PARAM param = {min_struct_version(NV_ENC_CAPS_PARAM_VER), cap};
+      int value = 0;
+      nvenc->nvEncGetEncodeCaps(encoder, stored_encode_guid, &param, &value);
+      return value;
+    };
+
+    if (get_encoder_cap(NV_ENC_CAPS_SUPPORT_CUSTOM_VBV_BUF_SIZE) && stored_framerate > 0) {
+      // VBV buffer size formula: bitrate_bps / framerate_fps
+      // stored_framerate is in fps*1000 format, so convert to fps for the calculation
+      int framerate_fps = stored_framerate / 1000;
+      enc_config.rcParams.vbvBufferSize = new_bitrate_kbps * 1000 / framerate_fps;
+      if (stored_nvenc_config.vbv_percentage_increase > 0) {
+        enc_config.rcParams.vbvBufferSize += enc_config.rcParams.vbvBufferSize * stored_nvenc_config.vbv_percentage_increase / 100;
+      }
+    } else if (stored_framerate == 0) {
+      BOOST_LOG(warning) << "NvEnc: Cannot update VBV buffer size, framerate not initialized";
+    }
+
+    // Prepare reconfiguration parameters
+    NV_ENC_INITIALIZE_PARAMS init_params = {min_struct_version(NV_ENC_INITIALIZE_PARAMS_VER)};
+    init_params.encodeGUID = stored_encode_guid;
+    init_params.encodeConfig = &enc_config;
+    init_params.encodeWidth = encoder_params.width;
+    init_params.encodeHeight = encoder_params.height;
+    init_params.darWidth = encoder_params.width;
+    init_params.darHeight = encoder_params.height;
+
+    // Reconfigure encoder without resetting it
+    NV_ENC_RECONFIGURE_PARAMS reconfigure_params = {min_struct_version(NV_ENC_RECONFIGURE_PARAMS_VER)};
+    reconfigure_params.resetEncoder = 0;  // Don't reset encoder
+    reconfigure_params.forceIDR = 0;      // Don't force IDR (optional, set to 1 for better quality)
+    reconfigure_params.reInitEncodeParams = init_params;
+
+    NVENCSTATUS status = nvenc->nvEncReconfigureEncoder(encoder, &reconfigure_params);
+    if (nvenc_failed(status)) {
+      BOOST_LOG(error) << "NvEnc: Failed to reconfigure bitrate: " << last_nvenc_error_string;
+      return false;
+    }
+
+    BOOST_LOG(info) << "NvEnc: Bitrate reconfigured to " << new_bitrate_kbps << " kbps";
     return true;
   }
 
