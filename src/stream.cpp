@@ -7,6 +7,7 @@
 #include <fstream>
 #include <future>
 #include <queue>
+#include <unordered_map>
 
 // lib includes
 #include <boost/endian/arithmetic.hpp>
@@ -20,6 +21,7 @@ extern "C" {
 }
 
 // local includes
+#include "auto_bitrate.h"
 #include "config.h"
 #include "crypto.h"
 #include "display_device.h"
@@ -53,6 +55,8 @@ extern "C" {
 #define IDX_SET_CLIPBOARD 16
 #define IDX_FILE_TRANSFER_NONCE_REQUEST 17
 #define IDX_SET_ADAPTIVE_TRIGGERS 18
+#define IDX_CONNECTION_STATUS 19
+#define IDX_BITRATE_STATS 20
 
 static const short packetTypes[] = {
   0x0305,  // Start A
@@ -74,6 +78,8 @@ static const short packetTypes[] = {
   0x3001,  // Set Clipboard (Apollo protocol extension)
   0x3002,  // File transfer nonce request (Apollo protocol extension)
   0x5503,  // Set Adaptive triggers (Sunshine protocol extension)
+  0x3003,  // Connection status (Apollo protocol extension)
+  0x5504,  // Bitrate Stats (Sunshine protocol extension)
 };
 
 namespace asio = boost::asio;
@@ -86,10 +92,6 @@ using namespace std::literals;
 
 namespace stream {
 
-  enum class socket_e : int {
-    video,  ///< Video
-    audio  ///< Audio
-  };
 
 #pragma pack(push, 1)
 
@@ -219,6 +221,15 @@ namespace stream {
     SS_HDR_METADATA metadata;
   };
 
+  struct control_bitrate_stats_t {
+    control_header_v2 header;
+
+    std::uint32_t current_bitrate_kbps;
+    std::uint64_t last_adjustment_time_ms;
+    std::uint32_t adjustment_count;
+    float loss_percentage;
+  };
+
   typedef struct control_encrypted_t {
     std::uint16_t encryptedHeaderType;  // Always LE 0x0001
     std::uint16_t length;  // sizeof(seq) + 16 byte tag + secondary header and data
@@ -233,11 +244,6 @@ namespace stream {
     // encrypted control_header_v2 and payload data follow
   } *control_encrypted_p;
 
-  struct audio_fec_packet_t {
-    RTP_PACKET rtp;
-    AUDIO_FEC_HEADER fecHeader;
-  };
-
 #pragma pack(pop)
 
   constexpr std::size_t round_to_pkcs7_padded(std::size_t size) {
@@ -248,9 +254,6 @@ namespace stream {
 
   using audio_aes_t = std::array<char, round_to_pkcs7_padded(MAX_AUDIO_PACKET_SIZE)>;
 
-  using av_session_id_t = std::variant<asio::ip::address, std::string>;  // IP address or SS-Ping-Payload from RTSP handshake
-  using message_queue_t = std::shared_ptr<safe::queue_t<std::pair<udp::endpoint, std::string>>>;
-  using message_queue_queue_t = std::shared_ptr<safe::queue_t<std::tuple<socket_e, av_session_id_t, message_queue_t>>>;
 
   // return bytes written on success
   // return -1 on error
@@ -270,160 +273,32 @@ namespace stream {
     }
   }
 
-  class control_server_t {
-  public:
-    int bind(net::af_e address_family, std::uint16_t port) {
-      _host = net::host_create(address_family, _addr, port);
+  // control_server_t inline method implementations
+  int control_server_t::bind(net::af_e address_family, std::uint16_t port) {
+    _host = net::host_create(address_family, _addr, port);
 
-      return !(bool) _host;
+    return !(bool) _host;
+  }
+
+  void control_server_t::map(uint16_t type, std::function<void(session_t *, const std::string_view &)> cb) {
+    _map_type_cb.emplace(type, std::move(cb));
+  }
+
+  int control_server_t::send(const std::string_view &payload, net::peer_t peer) {
+    auto packet = enet_packet_create(payload.data(), payload.size(), ENET_PACKET_FLAG_RELIABLE);
+    if (enet_peer_send(peer, 0, packet)) {
+      enet_packet_destroy(packet);
+
+      return -1;
     }
 
-    // Get session associated with address.
-    // If none are found, try to find a session not yet claimed. (It will be marked by a port of value 0
-    // If none of those are found, return nullptr
-    session_t *get_session(const net::peer_t peer, uint32_t connect_data);
+    return 0;
+  }
 
-    // Circular dependency:
-    //   iterate refers to session
-    //   session refers to broadcast_ctx_t
-    //   broadcast_ctx_t refers to control_server_t
-    // Therefore, iterate is implemented further down the source file
-    void iterate(std::chrono::milliseconds timeout);
+  void control_server_t::flush() {
+    enet_host_flush(_host.get());
+  }
 
-    /**
-     * @brief Call the handler for a given control stream message.
-     * @param type The message type.
-     * @param session The session the message was received on.
-     * @param payload The payload of the message.
-     * @param reinjected `true` if this message is being reprocessed after decryption.
-     */
-    void call(std::uint16_t type, session_t *session, const std::string_view &payload, bool reinjected);
-
-    void map(uint16_t type, std::function<void(session_t *, const std::string_view &)> cb) {
-      _map_type_cb.emplace(type, std::move(cb));
-    }
-
-    int send(const std::string_view &payload, net::peer_t peer) {
-      auto packet = enet_packet_create(payload.data(), payload.size(), ENET_PACKET_FLAG_RELIABLE);
-      if (enet_peer_send(peer, 0, packet)) {
-        enet_packet_destroy(packet);
-
-        return -1;
-      }
-
-      return 0;
-    }
-
-    void flush() {
-      enet_host_flush(_host.get());
-    }
-
-    // Callbacks
-    std::unordered_map<std::uint16_t, std::function<void(session_t *, const std::string_view &)>> _map_type_cb;
-
-    // All active sessions (including those still waiting for a peer to connect)
-    sync_util::sync_t<std::vector<session_t *>> _sessions;
-
-    // ENet peer to session mapping for sessions with a peer connected
-    sync_util::sync_t<std::map<net::peer_t, session_t *>> _peer_to_session;
-
-    ENetAddress _addr;
-    net::host_t _host;
-  };
-
-  struct broadcast_ctx_t {
-    message_queue_queue_t message_queue_queue;
-
-    std::thread recv_thread;
-    std::thread video_thread;
-    std::thread audio_thread;
-    std::thread control_thread;
-
-    asio::io_context io_context;
-
-    udp::socket video_sock {io_context};
-    udp::socket audio_sock {io_context};
-
-    control_server_t control_server;
-  };
-
-  struct session_t {
-    config_t config;
-
-    safe::mail_t mail;
-
-    std::shared_ptr<input::input_t> input;
-
-    std::thread audioThread;
-    std::thread videoThread;
-
-    std::chrono::steady_clock::time_point pingTimeout;
-
-    safe::shared_t<broadcast_ctx_t>::ptr_t broadcast_ref;
-
-    boost::asio::ip::address localAddress;
-
-    struct {
-      std::string ping_payload;
-
-      int lowseq;
-      udp::endpoint peer;
-
-      std::optional<crypto::cipher::gcm_t> cipher;
-      std::uint64_t gcm_iv_counter;
-
-      safe::mail_raw_t::event_t<bool> idr_events;
-      safe::mail_raw_t::event_t<std::pair<int64_t, int64_t>> invalidate_ref_frames_events;
-
-      std::unique_ptr<platf::deinit_t> qos;
-    } video;
-
-    struct {
-      crypto::cipher::cbc_t cipher;
-      std::string ping_payload;
-
-      std::uint16_t sequenceNumber;
-      // avRiKeyId == util::endian::big(First (sizeof(avRiKeyId)) bytes of launch_session->iv)
-      std::uint32_t avRiKeyId;
-      std::uint32_t timestamp;
-      udp::endpoint peer;
-
-      util::buffer_t<char> shards;
-      util::buffer_t<uint8_t *> shards_p;
-
-      audio_fec_packet_t fec_packet;
-      std::unique_ptr<platf::deinit_t> qos;
-    } audio;
-
-    struct {
-      crypto::cipher::gcm_t cipher;
-      crypto::aes_t legacy_input_enc_iv;  // Only used when the client doesn't support full control stream encryption
-      crypto::aes_t incoming_iv;
-      crypto::aes_t outgoing_iv;
-
-      std::uint32_t connect_data;  // Used for new clients with ML_FF_SESSION_ID_V1
-      std::string expected_peer_address;  // Only used for legacy clients without ML_FF_SESSION_ID_V1
-
-      net::peer_t peer;
-      std::uint32_t seq;
-
-      platf::feedback_queue_t feedback_queue;
-      safe::mail_raw_t::event_t<video::hdr_info_t> hdr_queue;
-    } control;
-
-    std::uint32_t launch_session_id;
-    std::string device_name;
-    std::string device_uuid;
-    crypto::PERM permission;
-
-    std::list<crypto::command_entry_t> do_cmds;
-    std::list<crypto::command_entry_t> undo_cmds;
-
-    safe::mail_raw_t::event_t<bool> shutdown_event;
-    safe::signal_t controlEnd;
-
-    std::atomic<session::state_e> state;
-  };
 
   /**
    * First part of cipher must be struct of type control_encrypted_t
@@ -725,6 +600,58 @@ namespace stream {
     }
   }  // namespace fec
 
+  // Global auto bitrate controller instance
+  static auto_bitrate_controller_t auto_bitrate_controller;
+
+  /**
+   * @brief Send auto bitrate statistics to client.
+   * @param session The streaming session.
+   * @return 0 on success, -1 on error.
+   */
+  int send_bitrate_stats(session_t *session) {
+    if (!session->control.peer || !session->auto_bitrate_enabled) {
+      return -1;
+    }
+
+    uint32_t current_bitrate_kbps;
+    uint64_t last_adjustment_time_ms;
+    uint32_t adjustment_count;
+    float loss_percentage;
+
+    if (!auto_bitrate_controller.get_stats(session, current_bitrate_kbps, 
+                                            last_adjustment_time_ms, 
+                                            adjustment_count, 
+                                            loss_percentage)) {
+      return -1;
+    }
+
+    control_bitrate_stats_t plaintext {};
+    plaintext.header.type = packetTypes[IDX_BITRATE_STATS];
+    plaintext.header.payloadLength = sizeof(control_bitrate_stats_t) - sizeof(control_header_v2);
+
+    plaintext.current_bitrate_kbps = util::endian::little(current_bitrate_kbps);
+    plaintext.last_adjustment_time_ms = util::endian::little(last_adjustment_time_ms);
+    plaintext.adjustment_count = util::endian::little(adjustment_count);
+    
+    // Copy float ensuring proper endianness
+    uint32_t loss_bits;
+    std::memcpy(&loss_bits, &loss_percentage, sizeof(float));
+    loss_bits = util::endian::little(loss_bits);
+    std::memcpy(&plaintext.loss_percentage, &loss_bits, sizeof(float));
+
+    std::array<std::uint8_t, sizeof(control_encrypted_t) + crypto::cipher::round_to_pkcs7_padded(sizeof(plaintext)) + crypto::cipher::tag_size>
+      encrypted_payload;
+
+    auto payload = encode_control(session, util::view(plaintext), encrypted_payload);
+    if (session->broadcast_ref->control_server.send(payload, session->control.peer)) {
+      TUPLE_2D(port, addr, platf::from_sockaddr_ex((sockaddr *) &session->control.peer->address.address));
+      BOOST_LOG(debug) << "Couldn't send bitrate stats to ["sv << addr << ':' << port << ']';
+      return -1;
+    }
+
+    return 0;
+  }
+
   /**
    * @brief Combines two buffers and inserts new buffers at each slice boundary of the result.
    * @param insert_size The number of bytes to insert.
@@ -941,11 +868,24 @@ namespace stream {
     });
 
     server->map(packetTypes[IDX_LOSS_STATS], [&](session_t *session, const std::string_view &payload) {
+      // Log actual payload size for investigation
+      BOOST_LOG(info) << "AutoBitrate: [LossStats] Received payload size: " 
+                      << payload.size() << " bytes";
+      
+      if (payload.size() < 32) {
+        BOOST_LOG(info) << "AutoBitrate: [LossStats] Invalid payload size: " 
+                        << payload.size() << " bytes (expected: 32 bytes)";
+        return;
+      }
+
       int32_t *stats = (int32_t *) payload.data();
       auto count = stats[0];
       std::chrono::milliseconds t {stats[1]};
 
-      auto lastGoodFrame = stats[3];
+      // Extract lastGoodFrame (64-bit at offset 12)
+      int64_t lastGoodFrame64;
+      std::memcpy(&lastGoodFrame64, &stats[3], sizeof(int64_t));
+      uint64_t lastGoodFrame = static_cast<uint64_t>(lastGoodFrame64);
 
       BOOST_LOG(verbose)
         << "type [IDX_LOSS_STATS]"sv << std::endl
@@ -954,6 +894,42 @@ namespace stream {
         << "time in milli since last report [" << t.count() << ']' << std::endl
         << "last good frame [" << lastGoodFrame << ']' << std::endl
         << "---end stats---";
+
+      // Process loss stats through controller (only if auto bitrate is enabled)
+      if (session->auto_bitrate_enabled) {
+        auto_bitrate_controller.process_loss_stats(session, lastGoodFrame, t);
+
+        // Check for bitrate change confirmations from video thread
+        // This ensures state is only updated after encoder successfully applies changes
+        auto bitrate_confirmation_events = session->mail->event<std::pair<int, bool>>(mail::bitrate_change_confirmation);
+        while (bitrate_confirmation_events->peek()) {
+          if (auto confirmation = bitrate_confirmation_events->pop(0ms)) {
+            auto_bitrate_controller.confirm_bitrate_change(session, confirmation->first, confirmation->second);
+            if (confirmation->second) {
+              BOOST_LOG(info) << "AutoBitrate: Encoder accepted bitrate change to " << confirmation->first << " Kbps";
+            } else {
+              BOOST_LOG(info) << "AutoBitrate: Encoder rejected bitrate change to " << confirmation->first << " Kbps (encoder may not support dynamic bitrate)";
+            }
+          }
+        }
+
+        // Check if adjustment is needed
+        if (auto_bitrate_controller.should_adjust_bitrate(session)) {
+          int new_bitrate = auto_bitrate_controller.calculate_new_bitrate(session);
+
+          // Raise mail event for video thread
+          session->mail->event<int>(mail::bitrate_change)->raise(new_bitrate);
+
+          BOOST_LOG(info) << "AutoBitrate: Adjusting bitrate to " << new_bitrate << " Kbps";
+        }
+
+        // Send bitrate stats to client periodically (every ~1 second, loss stats come every 50ms)
+        session->bitrate_stats_send_counter++;
+        if (session->bitrate_stats_send_counter >= 20) {  // Every 20 packets = ~1 second
+          session->bitrate_stats_send_counter = 0;
+          send_bitrate_stats(session);
+        }
+      }
     });
 
     server->map(packetTypes[IDX_REQUEST_IDR_FRAME], [&](session_t *session, const std::string_view &payload) {
@@ -1049,6 +1025,25 @@ namespace stream {
       if (!(session->permission & crypto::PERM::file_upload)) {
         BOOST_LOG(debug) << "Permission File Upload deined for [" << session->device_name << "]";
         return;
+      }
+    });
+
+    server->map(packetTypes[IDX_CONNECTION_STATUS], [&](session_t *session, const std::string_view &payload) {
+      BOOST_LOG(debug) << "type [IDX_CONNECTION_STATUS]"sv;
+
+      if (payload.size() < sizeof(std::uint8_t)) {
+        BOOST_LOG(warning) << "AutoBitrate: [ConnectionStatus] Received invalid connection status message (payload size: " 
+                          << payload.size() << " bytes, expected: " << sizeof(std::uint8_t) << " bytes)";
+        return;
+      }
+
+      std::uint8_t status = payload[0];  // 0 = OKAY, 1 = POOR
+      
+      // Process connection status through auto-bitrate controller
+      if (session->auto_bitrate_enabled) {
+        auto_bitrate_controller.process_connection_status(session, status);
+        BOOST_LOG(verbose) << "AutoBitrate: [ConnectionStatus] Client reports status: " 
+                          << (status == 1 ? "POOR" : "OKAY");
       }
     });
 
@@ -2047,6 +2042,9 @@ namespace stream {
       BOOST_LOG(debug) << "Resetting Input..."sv;
       input::reset(session.input);
 
+      // Clear auto bitrate session state
+      auto_bitrate_controller.reset(&session);
+
       if (!session.undo_cmds.empty()) {
         auto exec_thread = std::thread([cmd_list = session.undo_cmds]{
           for (auto &cmd : cmd_list) {
@@ -2160,6 +2158,8 @@ namespace stream {
       session->undo_cmds = std::move(launch_session.client_undo_cmds);
 
       session->config = config;
+
+      session->auto_bitrate_enabled = launch_session.auto_bitrate_enabled;
 
       session->control.connect_data = launch_session.control_connect_data;
       session->control.feedback_queue = mail->queue<platf::gamepad_feedback_msg_t>(mail::gamepad_feedback);

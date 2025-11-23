@@ -98,6 +98,10 @@ namespace nvenc {
   }
 
   bool nvenc_base::create_encoder(const nvenc_config &config, const video::config_t &client_config, const nvenc_colorspace_t &colorspace, NV_ENC_BUFFER_FORMAT buffer_format) {
+    // Store config for later reconfiguration
+    this->config = config;
+    this->client_config = client_config;
+    this->colorspace = colorspace;
     // Pick the minimum NvEncode API version required to support the specified codec
     // to maximize driver compatibility. AV1 was introduced in SDK v12.0.
     minimum_api_version = (client_config.videoFormat <= 1) ? MAKE_NVENC_VER(11U, 0U) : MAKE_NVENC_VER(12U, 0U);
@@ -677,5 +681,246 @@ namespace nvenc {
     }
 
     return version;
+  }
+
+  bool nvenc_base::reconfigure_bitrate(uint32_t new_bitrate_kbps) {
+    if (!encoder) {
+      BOOST_LOG(error) << "NvEnc: Cannot reconfigure - encoder not initialized";
+      return false;
+    }
+
+    NV_ENC_INITIALIZE_PARAMS init_params = {min_struct_version(NV_ENC_INITIALIZE_PARAMS_VER)};
+    
+    // Determine codec GUID
+    switch (client_config.videoFormat) {
+      case 0:
+        init_params.encodeGUID = NV_ENC_CODEC_H264_GUID;
+        break;
+      case 1:
+        init_params.encodeGUID = NV_ENC_CODEC_HEVC_GUID;
+        break;
+      case 2:
+        init_params.encodeGUID = NV_ENC_CODEC_AV1_GUID;
+        break;
+      default:
+        BOOST_LOG(error) << "NvEnc: Unknown video format for reconfiguration";
+        return false;
+    }
+
+    // Get current preset config
+    GUID preset_guid = quality_preset_guid_from_number(config.quality_preset);
+    NV_ENC_PRESET_CONFIG preset_config = {min_struct_version(NV_ENC_PRESET_CONFIG_VER), {min_struct_version(NV_ENC_CONFIG_VER, 7, 8)}};
+    if (nvenc_failed(nvenc->nvEncGetEncodePresetConfigEx(encoder, init_params.encodeGUID, preset_guid, NV_ENC_TUNING_INFO_ULTRA_LOW_LATENCY, &preset_config))) {
+      BOOST_LOG(error) << "NvEnc: Failed to get preset config for reconfiguration";
+      return false;
+    }
+
+    // Prepare reconfigure parameters
+    NV_ENC_RECONFIGURE_PARAMS reconfigure_params = {min_struct_version(NV_ENC_RECONFIGURE_PARAMS_VER)};
+    reconfigure_params.forceIDR = 0;  // Don't force IDR on bitrate change
+    reconfigure_params.resetEncoder = 0;
+
+    // Re-apply all encoder settings from create_encoder to preserve low-latency configuration
+    // Start from preset config and apply all custom settings, not just bitrate
+    NV_ENC_CONFIG enc_config = preset_config.presetCfg;
+    
+    // Re-apply all the encoder configuration settings that were set during create_encoder
+    enc_config.profileGUID = NV_ENC_CODEC_PROFILE_AUTOSELECT_GUID;
+    enc_config.gopLength = NVENC_INFINITE_GOPLENGTH;
+    enc_config.frameIntervalP = 1;
+    enc_config.rcParams.rateControlMode = NV_ENC_PARAMS_RC_CBR;
+    enc_config.rcParams.zeroReorderDelay = 1;
+    enc_config.rcParams.enableLookahead = 0;
+    enc_config.rcParams.lowDelayKeyFrameScale = 1;
+    enc_config.rcParams.multiPass = config.two_pass == nvenc_two_pass::quarter_resolution ? NV_ENC_TWO_PASS_QUARTER_RESOLUTION :
+                                    config.two_pass == nvenc_two_pass::full_resolution    ? NV_ENC_TWO_PASS_FULL_RESOLUTION :
+                                                                                            NV_ENC_MULTI_PASS_DISABLED;
+    enc_config.rcParams.enableAQ = config.adaptive_quantization;
+    enc_config.rcParams.averageBitRate = new_bitrate_kbps * 1000;  // Convert to bps
+
+    // Helper lambdas for buffer format checks
+    auto buffer_is_10bit = [&]() {
+      return encoder_params.buffer_format == NV_ENC_BUFFER_FORMAT_YUV420_10BIT || encoder_params.buffer_format == NV_ENC_BUFFER_FORMAT_YUV444_10BIT;
+    };
+
+    auto buffer_is_yuv444 = [&]() {
+      return encoder_params.buffer_format == NV_ENC_BUFFER_FORMAT_AYUV || encoder_params.buffer_format == NV_ENC_BUFFER_FORMAT_YUV444_10BIT;
+    };
+
+    // Recalculate VBV buffer size if custom VBV is enabled
+    auto get_encoder_cap = [&](NV_ENC_CAPS cap) {
+      NV_ENC_CAPS_PARAM param = {min_struct_version(NV_ENC_CAPS_PARAM_VER), cap};
+      int value = 0;
+      nvenc->nvEncGetEncodeCaps(encoder, init_params.encodeGUID, &param, &value);
+      return value;
+    };
+
+    if (get_encoder_cap(NV_ENC_CAPS_SUPPORT_CUSTOM_VBV_BUF_SIZE)) {
+      float framerate = static_cast<float>(client_config.framerate);
+      if (framerate > 1000) {
+        framerate = framerate / 1000.0f;  // Convert from millifps to fps
+      }
+      enc_config.rcParams.vbvBufferSize = new_bitrate_kbps * 1000 / static_cast<uint32_t>(framerate);
+      if (config.vbv_percentage_increase > 0) {
+        enc_config.rcParams.vbvBufferSize += enc_config.rcParams.vbvBufferSize * config.vbv_percentage_increase / 100;
+      }
+    }
+
+    // Re-apply codec-specific settings
+    auto set_h264_hevc_common_format_config = [&](auto &format_config) {
+      format_config.repeatSPSPPS = 1;
+      format_config.idrPeriod = NVENC_INFINITE_GOPLENGTH;
+      format_config.sliceMode = 3;
+      format_config.sliceModeData = client_config.slicesPerFrame;
+      if (buffer_is_yuv444()) {
+        format_config.chromaFormatIDC = 3;
+      }
+      format_config.enableFillerDataInsertion = config.insert_filler_data;
+    };
+
+    auto set_ref_frames = [&](uint32_t &ref_frames_option, NV_ENC_NUM_REF_FRAMES &L0_option, uint32_t ref_frames_default) {
+      if (client_config.numRefFrames > 0) {
+        ref_frames_option = client_config.numRefFrames;
+      } else {
+        ref_frames_option = ref_frames_default;
+      }
+      if (ref_frames_option > 0 && !get_encoder_cap(NV_ENC_CAPS_SUPPORT_MULTIPLE_REF_FRAMES)) {
+        ref_frames_option = 1;
+        encoder_params.rfi = false;
+      }
+      encoder_params.ref_frames_in_dpb = ref_frames_option;
+      // This limits ref frames any frame can use to 1, but allows larger buffer size for fallback if some frames are invalidated through rfi
+      L0_option = NV_ENC_NUM_REF_FRAMES_1;
+    };
+
+    auto set_minqp_if_enabled = [&](int value) {
+      if (config.enable_min_qp) {
+        enc_config.rcParams.enableMinQP = 1;
+        enc_config.rcParams.minQP.qpInterP = value;
+        enc_config.rcParams.minQP.qpIntra = value;
+      }
+    };
+
+    auto fill_h264_hevc_vui = [&](auto &vui_config) {
+      vui_config.videoSignalTypePresentFlag = 1;
+      vui_config.videoFormat = NV_ENC_VUI_VIDEO_FORMAT_UNSPECIFIED;
+      vui_config.videoFullRangeFlag = colorspace.full_range;
+      vui_config.colourDescriptionPresentFlag = 1;
+      vui_config.colourPrimaries = colorspace.primaries;
+      vui_config.transferCharacteristics = colorspace.tranfer_function;
+      vui_config.colourMatrix = colorspace.matrix;
+      vui_config.chromaSampleLocationFlag = buffer_is_yuv444() ? 0 : 1;
+      vui_config.chromaSampleLocationTop = 0;
+      vui_config.chromaSampleLocationBot = 0;
+    };
+
+    switch (client_config.videoFormat) {
+      case 0:
+        {
+          // H.264
+          enc_config.profileGUID = buffer_is_yuv444() ? NV_ENC_H264_PROFILE_HIGH_444_GUID : NV_ENC_H264_PROFILE_HIGH_GUID;
+          auto &format_config = enc_config.encodeCodecConfig.h264Config;
+          set_h264_hevc_common_format_config(format_config);
+          if (config.h264_cavlc || !get_encoder_cap(NV_ENC_CAPS_SUPPORT_CABAC)) {
+            format_config.entropyCodingMode = NV_ENC_H264_ENTROPY_CODING_MODE_CAVLC;
+          } else {
+            format_config.entropyCodingMode = NV_ENC_H264_ENTROPY_CODING_MODE_CABAC;
+          }
+          set_ref_frames(format_config.maxNumRefFrames, format_config.numRefL0, 5);
+          set_minqp_if_enabled(config.min_qp_h264);
+          fill_h264_hevc_vui(format_config.h264VUIParameters);
+          break;
+        }
+
+      case 1:
+        {
+          // HEVC
+          auto &format_config = enc_config.encodeCodecConfig.hevcConfig;
+          set_h264_hevc_common_format_config(format_config);
+          if (buffer_is_10bit()) {
+            format_config.pixelBitDepthMinus8 = 2;
+          }
+          set_ref_frames(format_config.maxNumRefFramesInDPB, format_config.numRefL0, 5);
+          set_minqp_if_enabled(config.min_qp_hevc);
+          fill_h264_hevc_vui(format_config.hevcVUIParameters);
+          if (client_config.enableIntraRefresh == 1) {
+            if (get_encoder_cap(NV_ENC_CAPS_SUPPORT_INTRA_REFRESH)) {
+              format_config.enableIntraRefresh = 1;
+              format_config.intraRefreshPeriod = 300;
+              format_config.intraRefreshCnt = 299;
+              if (get_encoder_cap(NV_ENC_CAPS_SINGLE_SLICE_INTRA_REFRESH)) {
+                format_config.singleSliceIntraRefresh = 1;
+              } else {
+                BOOST_LOG(warning) << "NvEnc: Single Slice Intra Refresh not supported";
+              }
+            } else {
+              BOOST_LOG(error) << "NvEnc: Client asked for intra-refresh but the encoder does not support intra-refresh";
+            }
+          }
+          break;
+        }
+
+      case 2:
+        {
+          // AV1
+          auto &format_config = enc_config.encodeCodecConfig.av1Config;
+          format_config.repeatSeqHdr = 1;
+          format_config.idrPeriod = NVENC_INFINITE_GOPLENGTH;
+          if (buffer_is_yuv444()) {
+            format_config.chromaFormatIDC = 3;
+          }
+          format_config.enableBitstreamPadding = config.insert_filler_data;
+          if (buffer_is_10bit()) {
+            format_config.inputPixelBitDepthMinus8 = 2;
+            format_config.pixelBitDepthMinus8 = 2;
+          }
+          format_config.colorPrimaries = colorspace.primaries;
+          format_config.transferCharacteristics = colorspace.tranfer_function;
+          format_config.matrixCoefficients = colorspace.matrix;
+          format_config.colorRange = colorspace.full_range;
+          format_config.chromaSamplePosition = buffer_is_yuv444() ? 0 : 1;
+          set_ref_frames(format_config.maxNumRefFramesInDPB, format_config.numFwdRefs, 8);
+          set_minqp_if_enabled(config.min_qp_av1);
+
+          if (client_config.slicesPerFrame > 1) {
+            // NVENC only supports slice counts that are powers of two, so we'll pick powers of two
+            // with bias to rows due to hopefully more similar macroblocks with a row vs a column.
+            format_config.numTileRows = std::pow(2, std::ceil(std::log2(client_config.slicesPerFrame) / 2));
+            format_config.numTileColumns = std::pow(2, std::floor(std::log2(client_config.slicesPerFrame) / 2));
+          }
+          break;
+        }
+    }
+
+    // Set up reinitialize parameters (preserve all settings from create_encoder)
+    init_params.presetGUID = preset_guid;
+    init_params.tuningInfo = NV_ENC_TUNING_INFO_ULTRA_LOW_LATENCY;
+    init_params.enablePTD = 1;
+    init_params.enableEncodeAsync = async_event_handle ? 1 : 0;
+    init_params.enableWeightedPrediction = config.weighted_prediction && get_encoder_cap(NV_ENC_CAPS_SUPPORT_WEIGHTED_PREDICTION);
+    init_params.encodeConfig = &enc_config;
+    init_params.encodeWidth = encoder_params.width;
+    init_params.darWidth = encoder_params.width;
+    init_params.encodeHeight = encoder_params.height;
+    init_params.darHeight = encoder_params.height;
+    init_params.maxEncodeWidth = encoder_params.width;
+    init_params.maxEncodeHeight = encoder_params.height;
+    init_params.frameRateNum = client_config.framerate;
+    init_params.frameRateDen = 1;
+
+    reconfigure_params.reInitEncodeParams = init_params;
+
+    // Perform reconfiguration
+    NVENCSTATUS status = nvenc->nvEncReconfigureEncoder(encoder, &reconfigure_params);
+    if (nvenc_failed(status)) {
+      BOOST_LOG(error) << "NvEnc: ReconfigureEncoder failed: " << last_nvenc_error_string;
+      return false;
+    }
+
+    // Update stored client config
+    client_config.bitrate = new_bitrate_kbps;
+
+    BOOST_LOG(info) << "NvEnc: Bitrate reconfigured to " << new_bitrate_kbps << " Kbps";
+    return true;
   }
 }  // namespace nvenc

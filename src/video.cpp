@@ -430,6 +430,13 @@ namespace video {
       return result;
     }
 
+    bool reconfigure_bitrate(int new_bitrate_kbps) override {
+      if (!device || !device->nvenc) {
+        return false;
+      }
+      return device->nvenc->reconfigure_bitrate(new_bitrate_kbps);
+    }
+
   private:
     std::unique_ptr<platf::nvenc_encode_device_t> device;
     bool force_idr = false;
@@ -1946,6 +1953,8 @@ namespace video {
     auto packets = mail::man->queue<packet_t>(mail::video_packets);
     auto idr_events = mail->event<bool>(mail::idr);
     auto invalidate_ref_frames_events = mail->event<std::pair<int64_t, int64_t>>(mail::invalidate_ref_frames);
+    auto bitrate_change_events = mail->event<int>(mail::bitrate_change);
+    auto bitrate_change_confirmation_events = mail->event<std::pair<int, bool>>(mail::bitrate_change_confirmation);
 
     {
       // Load a dummy image into the AVFrame to ensure we have something to encode
@@ -1979,6 +1988,34 @@ namespace video {
     std::chrono::steady_clock::time_point encode_frame_timestamp;
 
     while (true) {
+      // Check for bitrate change requests
+      if (bitrate_change_events->peek()) {
+        if (auto new_bitrate = bitrate_change_events->pop(0ms)) {
+          bool reconfigured = false;
+
+          // Try to reconfigure based on encoder type
+          if (auto nvenc_session = dynamic_cast<nvenc_encode_session_t*>(session.get())) {
+            reconfigured = nvenc_session->reconfigure_bitrate(*new_bitrate);
+          }
+          // Future: Add support for other encoders (AMD, QuickSync, etc.)
+          // else if (auto amd_session = dynamic_cast<amdvce_encode_session_t*>(session.get())) {
+          //   reconfigured = amd_session->reconfigure_bitrate(*new_bitrate);
+          // }
+
+          if (reconfigured) {
+            config.bitrate = *new_bitrate;
+            BOOST_LOG(info) << "Video: Encoder accepted bitrate change to " << *new_bitrate << " Kbps";
+          } else {
+            BOOST_LOG(info) << "Video: Encoder rejected bitrate change to " 
+                            << *new_bitrate << " Kbps (encoder may not support dynamic bitrate)";
+          }
+
+          // Send confirmation back to control thread so it can update its state
+          // only after the encoder has successfully applied the change
+          bitrate_change_confirmation_events->raise(std::make_pair(*new_bitrate, reconfigured));
+        }
+      }
+
       // Break out of the encoding loop if any of the following are true:
       // a) The stream is ending
       // b) Sunshine is quitting

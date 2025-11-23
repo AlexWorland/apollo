@@ -40,6 +40,7 @@ namespace rtsp_stream {
 
     bool input_only;
     bool host_audio;
+    bool auto_bitrate_enabled = false;  // Client-side auto bitrate checkbox state
     int width;
     int height;
     int fps;

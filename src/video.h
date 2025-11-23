@@ -213,6 +213,12 @@ namespace video {
     virtual void request_normal_frame() = 0;
 
     virtual void invalidate_ref_frames(int64_t first_frame, int64_t last_frame) = 0;
+
+    // Reconfigure bitrate during active session
+    virtual bool reconfigure_bitrate(int new_bitrate_kbps) {
+      // Default implementation: not supported
+      return false;
+    }
   };
 
   // encoders
