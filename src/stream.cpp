@@ -92,10 +92,6 @@ using namespace std::literals;
 
 namespace stream {
 
-  enum class socket_e : int {
-    video,  ///< Video
-    audio  ///< Audio
-  };
 
 #pragma pack(push, 1)
 
@@ -258,9 +254,6 @@ namespace stream {
 
   using audio_aes_t = std::array<char, round_to_pkcs7_padded(MAX_AUDIO_PACKET_SIZE)>;
 
-  using av_session_id_t = std::variant<asio::ip::address, std::string>;  // IP address or SS-Ping-Payload from RTSP handshake
-  using message_queue_t = std::shared_ptr<safe::queue_t<std::pair<udp::endpoint, std::string>>>;
-  using message_queue_queue_t = std::shared_ptr<safe::queue_t<std::tuple<socket_e, av_session_id_t, message_queue_t>>>;
 
   // return bytes written on success
   // return -1 on error
@@ -280,82 +273,31 @@ namespace stream {
     }
   }
 
-  class control_server_t {
-  public:
-    int bind(net::af_e address_family, std::uint16_t port) {
-      _host = net::host_create(address_family, _addr, port);
+  // control_server_t inline method implementations
+  int control_server_t::bind(net::af_e address_family, std::uint16_t port) {
+    _host = net::host_create(address_family, _addr, port);
 
-      return !(bool) _host;
+    return !(bool) _host;
+  }
+
+  void control_server_t::map(uint16_t type, std::function<void(session_t *, const std::string_view &)> cb) {
+    _map_type_cb.emplace(type, std::move(cb));
+  }
+
+  int control_server_t::send(const std::string_view &payload, net::peer_t peer) {
+    auto packet = enet_packet_create(payload.data(), payload.size(), ENET_PACKET_FLAG_RELIABLE);
+    if (enet_peer_send(peer, 0, packet)) {
+      enet_packet_destroy(packet);
+
+      return -1;
     }
 
-    // Get session associated with address.
-    // If none are found, try to find a session not yet claimed. (It will be marked by a port of value 0
-    // If none of those are found, return nullptr
-    session_t *get_session(const net::peer_t peer, uint32_t connect_data);
+    return 0;
+  }
 
-    // Circular dependency:
-    //   iterate refers to session
-    //   session refers to broadcast_ctx_t
-    //   broadcast_ctx_t refers to control_server_t
-    // Therefore, iterate is implemented further down the source file
-    void iterate(std::chrono::milliseconds timeout);
-
-    /**
-     * @brief Call the handler for a given control stream message.
-     * @param type The message type.
-     * @param session The session the message was received on.
-     * @param payload The payload of the message.
-     * @param reinjected `true` if this message is being reprocessed after decryption.
-     */
-    void call(std::uint16_t type, session_t *session, const std::string_view &payload, bool reinjected);
-
-    void map(uint16_t type, std::function<void(session_t *, const std::string_view &)> cb) {
-      _map_type_cb.emplace(type, std::move(cb));
-    }
-
-    int send(const std::string_view &payload, net::peer_t peer) {
-      auto packet = enet_packet_create(payload.data(), payload.size(), ENET_PACKET_FLAG_RELIABLE);
-      if (enet_peer_send(peer, 0, packet)) {
-        enet_packet_destroy(packet);
-
-        return -1;
-      }
-
-      return 0;
-    }
-
-    void flush() {
-      enet_host_flush(_host.get());
-    }
-
-    // Callbacks
-    std::unordered_map<std::uint16_t, std::function<void(session_t *, const std::string_view &)>> _map_type_cb;
-
-    // All active sessions (including those still waiting for a peer to connect)
-    sync_util::sync_t<std::vector<session_t *>> _sessions;
-
-    // ENet peer to session mapping for sessions with a peer connected
-    sync_util::sync_t<std::map<net::peer_t, session_t *>> _peer_to_session;
-
-    ENetAddress _addr;
-    net::host_t _host;
-  };
-
-  struct broadcast_ctx_t {
-    message_queue_queue_t message_queue_queue;
-
-    std::thread recv_thread;
-    std::thread video_thread;
-    std::thread audio_thread;
-    std::thread control_thread;
-
-    asio::io_context io_context;
-
-    udp::socket video_sock {io_context};
-    udp::socket audio_sock {io_context};
-
-    control_server_t control_server;
-  };
+  void control_server_t::flush() {
+    enet_host_flush(_host.get());
+  }
 
 
   /**
