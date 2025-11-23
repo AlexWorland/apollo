@@ -81,6 +81,12 @@ namespace auto_bitrate {
       return currentBitrateKbps;
     }
 
+    /**
+     * @brief Log current status if enough time has passed since last status log.
+     * @param statusLogIntervalMs Minimum time between status logs in milliseconds
+     */
+    void logStatusIfNeeded(int statusLogIntervalMs = 30000);
+
   private:
     int currentBitrateKbps;
     int baseBitrateKbps;
@@ -98,6 +104,7 @@ namespace auto_bitrate {
 
     NetworkMetrics metrics;
     std::chrono::steady_clock::time_point lastCheckTime;
+    std::chrono::steady_clock::time_point lastStatusLog;
     bool pendingAdjustment = false;
   };
 

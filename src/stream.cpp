@@ -851,6 +851,9 @@ namespace stream {
           // Update network metrics
           session->auto_bitrate_controller->updateNetworkMetrics(frameLossPercent, t.count());
 
+          // Log periodic status (every 30 seconds)
+          session->auto_bitrate_controller->logStatusIfNeeded(30000);
+
           // Check for bitrate adjustment
           auto newBitrate = session->auto_bitrate_controller->getAdjustedBitrate();
           if (newBitrate.has_value()) {

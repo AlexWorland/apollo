@@ -1050,9 +1050,11 @@ namespace rtsp_stream {
       try {
         auto autoBitrateValue = util::from_view(args.at("x-ml-video.autoBitrateEnabled"sv));
         config.autoBitrateEnabled = (autoBitrateValue == 1);
+        BOOST_LOG(info) << "AutoBitrate: " << (config.autoBitrateEnabled ? "Enabled" : "Disabled") << " by client";
       } catch (std::out_of_range &) {
         // Attribute not present, default to false for backward compatibility
         config.autoBitrateEnabled = false;
+        BOOST_LOG(debug) << "AutoBitrate: Not requested by client, defaulting to disabled";
       }
 
       BOOST_LOG(info) << "Client Requested bitrate is [" << configuredBitrateKbps << "kbps]";
