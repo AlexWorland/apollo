@@ -28,6 +28,17 @@ namespace stream {
     void process_loss_stats(session_t *session, 
                             uint64_t lastGoodFrame,
                             std::chrono::milliseconds time_interval);
+    /**
+     * @brief Process loss stats with a provided loss percentage (telemetry path).
+     * @param session The streaming session.
+     * @param loss_percentage_loss_pct Loss percentage (0-100).
+     * @param lastGoodFrame Last successfully received frame number.
+     * @param time_interval Time interval in milliseconds.
+     */
+    void process_loss_stats_direct(session_t *session,
+                                   double loss_percentage_loss_pct,
+                                   uint64_t lastGoodFrame,
+                                   std::chrono::milliseconds time_interval);
     
     /**
      * @brief Process connection status change.
@@ -106,4 +117,3 @@ namespace stream {
     session_state_t &get_or_create_state(session_t *session);
   };
 }
-

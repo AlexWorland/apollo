@@ -57,6 +57,7 @@ extern "C" {
 #define IDX_SET_ADAPTIVE_TRIGGERS 18
 #define IDX_CONNECTION_STATUS 19
 #define IDX_BITRATE_STATS 20
+#define IDX_AUTO_BITRATE_STATS_V2 21
 
 static const short packetTypes[] = {
   0x0305,  // Start A
@@ -80,6 +81,7 @@ static const short packetTypes[] = {
   0x5503,  // Set Adaptive triggers (Sunshine protocol extension)
   0x3003,  // Connection status (Apollo protocol extension)
   0x5504,  // Bitrate Stats (Sunshine protocol extension)
+  0x5505,  // Auto Bitrate Stats V2 (Sunshine protocol extension)
 };
 
 namespace asio = boost::asio;
@@ -89,6 +91,7 @@ using asio::ip::tcp;
 using asio::ip::udp;
 
 using namespace std::literals;
+constexpr uint32_t AUTO_BITRATE_DEFAULT_INTERVAL_MS = 50;
 
 namespace stream {
 
@@ -233,6 +236,17 @@ namespace stream {
   struct control_connection_status_t {
     control_header_v2 header;
     std::uint8_t status;  // 0 = OKAY, 1 = POOR
+  };
+
+  struct control_auto_bitrate_stats_v2_t {
+    control_header_v2 header;
+    std::uint32_t loss_pct_milli;
+    std::uint32_t loss_count;
+    std::uint32_t interval_ms;
+    std::uint64_t last_good_frame;
+    std::uint32_t client_max_bitrate_kbps;
+    std::uint8_t conn_status_hint;
+    std::uint8_t reserved[7];
   };
 
   typedef struct control_encrypted_t {
@@ -896,6 +910,61 @@ namespace stream {
   }
 
   void controlBroadcastThread(control_server_t *server) {
+    auto process_auto_bitrate_tick = [&](session_t *session) {
+      if (!session->auto_bitrate_enabled) {
+        return;
+      }
+
+      float loss_percentage;
+      uint32_t dummy_bitrate;
+      uint64_t dummy_time;
+      uint32_t dummy_count;
+      if (auto_bitrate_controller.get_stats(session, dummy_bitrate, dummy_time, dummy_count, loss_percentage)) {
+        int new_status;
+        if (loss_percentage > 5.0) {
+          new_status = 1;  // POOR
+        } else if (loss_percentage <= 1.0) {
+          new_status = 0;  // OKAY
+        } else {
+          if (session->last_sent_connection_status == 1) {
+            new_status = 1;
+          } else {
+            new_status = 0;
+          }
+        }
+
+        if (new_status != session->last_sent_connection_status) {
+          if (send_connection_status(session, new_status) == 0) {
+            session->last_sent_connection_status = new_status;
+          }
+        }
+      }
+
+      auto bitrate_confirmation_events = session->mail->event<std::pair<int, bool>>(mail::bitrate_change_confirmation);
+      while (bitrate_confirmation_events->peek()) {
+        if (auto confirmation = bitrate_confirmation_events->pop(0ms)) {
+          auto_bitrate_controller.confirm_bitrate_change(session, confirmation->first, confirmation->second);
+          if (confirmation->second) {
+            BOOST_LOG(info) << "AutoBitrate: Encoder accepted bitrate change to " << confirmation->first << " Kbps";
+          } else {
+            BOOST_LOG(info) << "AutoBitrate: Encoder rejected bitrate change to " << confirmation->first << " Kbps (encoder may not support dynamic bitrate)";
+          }
+        }
+      }
+
+      if (auto_bitrate_controller.should_adjust_bitrate(session)) {
+        int new_bitrate = auto_bitrate_controller.calculate_new_bitrate(session);
+        session->mail->event<int>(mail::bitrate_change)->raise(new_bitrate);
+        BOOST_LOG(info) << "AutoBitrate: Adjusting bitrate to " << new_bitrate << " Kbps";
+      }
+
+      session->bitrate_stats_send_counter++;
+      if (session->bitrate_stats_send_counter >= 20) {
+        session->bitrate_stats_send_counter = 0;
+        send_bitrate_stats(session);
+      }
+    };
+
     server->map(packetTypes[IDX_PERIODIC_PING], [](session_t *session, const std::string_view &payload) {
       BOOST_LOG(verbose) << "type [IDX_PERIODIC_PING]"sv;
     });
@@ -936,75 +1005,62 @@ namespace stream {
         << "last good frame [" << lastGoodFrame << ']' << std::endl
         << "---end stats---";
 
-      // Process loss stats through controller (only if auto bitrate is enabled)
-      if (session->auto_bitrate_enabled) {
+      // Process loss stats through controller (only if auto bitrate is enabled and V2 telemetry isn't active)
+      if (session->auto_bitrate_enabled && !session->auto_bitrate_v2_active) {
         auto_bitrate_controller.process_loss_stats(session, lastGoodFrame, t);
-
-        // Detect and send connection status changes based on loss percentage
-        float loss_percentage;
-        uint32_t dummy_bitrate;
-        uint64_t dummy_time;
-        uint32_t dummy_count;
-        if (auto_bitrate_controller.get_stats(session, dummy_bitrate, dummy_time, dummy_count, loss_percentage)) {
-          // Determine connection status based on loss thresholds
-          // POOR: loss > 5.0% OR (loss > 1.0% AND currently POOR)
-          // OKAY: loss <= 1.0%
-          int new_status;
-          if (loss_percentage > 5.0) {
-            // Severe loss - definitely POOR
-            new_status = 1;  // POOR
-          } else if (loss_percentage <= 1.0) {
-            // Good conditions - OKAY
-            new_status = 0;  // OKAY
-          } else {
-            // Moderate loss (1.0% - 5.0%) - use hysteresis
-            // If we were already POOR, stay POOR; otherwise OKAY
-            if (session->last_sent_connection_status == 1) {
-              new_status = 1;  // POOR (stay POOR)
-            } else {
-              new_status = 0;  // OKAY (not severe enough to go POOR yet)
-            }
-          }
-
-          // Send status if it changed
-          if (new_status != session->last_sent_connection_status) {
-            if (send_connection_status(session, new_status) == 0) {
-              session->last_sent_connection_status = new_status;
-            }
-          }
-        }
-
-        // Check for bitrate change confirmations from video thread
-        // This ensures state is only updated after encoder successfully applies changes
-        auto bitrate_confirmation_events = session->mail->event<std::pair<int, bool>>(mail::bitrate_change_confirmation);
-        while (bitrate_confirmation_events->peek()) {
-          if (auto confirmation = bitrate_confirmation_events->pop(0ms)) {
-            auto_bitrate_controller.confirm_bitrate_change(session, confirmation->first, confirmation->second);
-            if (confirmation->second) {
-              BOOST_LOG(info) << "AutoBitrate: Encoder accepted bitrate change to " << confirmation->first << " Kbps";
-            } else {
-              BOOST_LOG(info) << "AutoBitrate: Encoder rejected bitrate change to " << confirmation->first << " Kbps (encoder may not support dynamic bitrate)";
-            }
-          }
-        }
-
-        // Check if adjustment is needed
-        if (auto_bitrate_controller.should_adjust_bitrate(session)) {
-          int new_bitrate = auto_bitrate_controller.calculate_new_bitrate(session);
-
-          // Raise mail event for video thread
-          session->mail->event<int>(mail::bitrate_change)->raise(new_bitrate);
-
-          BOOST_LOG(info) << "AutoBitrate: Adjusting bitrate to " << new_bitrate << " Kbps";
-        }
-
-        // Send bitrate stats to client periodically (every ~1 second, loss stats come every 50ms)
-        session->bitrate_stats_send_counter++;
-        if (session->bitrate_stats_send_counter >= 20) {  // Every 20 packets = ~1 second
-          session->bitrate_stats_send_counter = 0;
-          send_bitrate_stats(session);
-        }
+        process_auto_bitrate_tick(session);
       }
+    });
+
+    server->map(packetTypes[IDX_AUTO_BITRATE_STATS_V2], [&](session_t *session, const std::string_view &payload) {
+      BOOST_LOG(verbose) << "type [IDX_AUTO_BITRATE_STATS_V2]"sv;
+
+      if (!session->auto_bitrate_enabled) {
+        return;
+      }
+
+      if (payload.size() < 32) {
+        BOOST_LOG(warning) << "AutoBitrate: [StatsV2] Invalid payload size: " << payload.size() << " bytes";
+        return;
+      }
+
+      uint32_t loss_pct_milli;
+      uint32_t loss_count;
+      uint32_t interval_ms;
+      uint64_t last_good_frame;
+      uint32_t client_max_bitrate_kbps;
+      uint8_t conn_status_hint;
+
+      std::memcpy(&loss_pct_milli, payload.data(), sizeof(loss_pct_milli));
+      std::memcpy(&loss_count, payload.data() + 4, sizeof(loss_count));
+      std::memcpy(&interval_ms, payload.data() + 8, sizeof(interval_ms));
+      std::memcpy(&last_good_frame, payload.data() + 12, sizeof(last_good_frame));
+      std::memcpy(&client_max_bitrate_kbps, payload.data() + 20, sizeof(client_max_bitrate_kbps));
+      conn_status_hint = static_cast<uint8_t>(payload[24]);
+
+      loss_pct_milli = util::endian::little(loss_pct_milli);
+      loss_count = util::endian::little(loss_count);
+      interval_ms = util::endian::little(interval_ms);
+      last_good_frame = util::endian::little(last_good_frame);
+      client_max_bitrate_kbps = util::endian::little(client_max_bitrate_kbps);
+
+      auto ms = interval_ms ? interval_ms : AUTO_BITRATE_DEFAULT_INTERVAL_MS;
+      session->auto_bitrate_v2_active = true;
+      auto_bitrate_controller.process_loss_stats_direct(session,
+                                                        loss_pct_milli / 1000.0,
+                                                        last_good_frame,
+                                                        std::chrono::milliseconds(ms));
+      if (conn_status_hint == 0 || conn_status_hint == 1) {
+        auto_bitrate_controller.process_connection_status(session, conn_status_hint);
+      }
+
+      BOOST_LOG(info) << "AutoBitrate: [StatsV2] loss=" << (loss_pct_milli / 1000.0f)
+                      << "% lost=" << loss_count << " interval_ms=" << interval_ms
+                      << " lastGoodFrame=" << last_good_frame
+                      << " clientMax=" << client_max_bitrate_kbps
+                      << " statusHint=" << (int)conn_status_hint;
+
+      process_auto_bitrate_tick(session);
     });
 
     server->map(packetTypes[IDX_REQUEST_IDR_FRAME], [&](session_t *session, const std::string_view &payload) {

@@ -34,6 +34,22 @@ namespace stream {
     // We don't overwrite it here to preserve adjusted values.
   }
 
+  void auto_bitrate_controller_t::process_loss_stats_direct(session_t *session,
+                                                            double loss_percentage_loss_pct,
+                                                            uint64_t lastGoodFrame,
+                                                            std::chrono::milliseconds /*time_interval*/) {
+    if (!session || !session->auto_bitrate_enabled) {
+      return;
+    }
+
+    auto &state = get_or_create_state(session);
+    auto now = std::chrono::steady_clock::now();
+
+    state.loss_percentage = loss_percentage_loss_pct;
+    state.last_reported_good_frame = lastGoodFrame;
+    state.last_loss_stats_time = now;
+  }
+
   void auto_bitrate_controller_t::process_connection_status(session_t *session,
                                                               int status) {
     if (!session || !session->auto_bitrate_enabled) {
@@ -300,4 +316,3 @@ namespace stream {
   }
 
 }  // namespace stream
-
