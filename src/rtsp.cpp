@@ -860,12 +860,13 @@ namespace rtsp_stream {
   }
 
   void cmd_setup(rtsp_server_t *server, tcp::socket &sock, launch_session_t &session, msg_t &&req) {
-    OPTION_ITEM options[4] {};
+    OPTION_ITEM options[5] {};
 
     auto &seqn = options[0];
     auto &session_option = options[1];
     auto &port_option = options[2];
     auto &payload_option = options[3];
+    auto &hostMaxBitrate_option = options[4];
 
     seqn.option = const_cast<char *>("CSeq");
 
@@ -914,6 +915,18 @@ namespace rtsp_stream {
     }
 
     port_option.next = &payload_option;
+
+    // Add host max bitrate limit for video stream
+    std::string hostMaxBitrate_str;
+    if (type == "video"sv && session.host_max_bitrate_kbps > 0) {
+      hostMaxBitrate_str = std::to_string(session.host_max_bitrate_kbps);
+      hostMaxBitrate_option.option = const_cast<char *>("x-ml-video.hostMaxBitrateKbps");
+      hostMaxBitrate_option.content = hostMaxBitrate_str.c_str();
+      payload_option.next = &hostMaxBitrate_option;
+      hostMaxBitrate_option.next = nullptr;
+    } else {
+      payload_option.next = nullptr;
+    }
 
     respond(sock, session, &seqn, 200, "OK", req->sequenceNumber, {});
   }
@@ -1066,6 +1079,9 @@ namespace rtsp_stream {
       }
 
       BOOST_LOG(info) << "Host Streaming bitrate is [" << configuredBitrateKbps << "kbps]";
+
+      // Calculate and store host's max bitrate limit
+      session.host_max_bitrate_kbps = (config::video.max_bitrate > 0) ? config::video.max_bitrate : configuredBitrateKbps;
 
       // Hack: Restore bitrate for warp mode
       size_t warp_factor = std::round((float)config.monitor.framerate * 1000 / session.fps);

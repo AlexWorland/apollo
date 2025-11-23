@@ -58,6 +58,8 @@ namespace rtsp_stream {
     std::list<crypto::command_entry_t> client_do_cmds;
     std::list<crypto::command_entry_t> client_undo_cmds;
 
+    int host_max_bitrate_kbps;  // Host's maximum bitrate limit (0 if unlimited)
+
   #ifdef _WIN32
     GUID display_guid{};
   #endif
