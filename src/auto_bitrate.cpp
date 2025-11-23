@@ -145,6 +145,7 @@ namespace stream {
       if (new_bitrate_kbps != state.current_bitrate_kbps) {
         state.adjustment_count++;
         state.current_bitrate_kbps = new_bitrate_kbps;
+        state.last_successful_adjustment_time = now;
       }
     }
     // If success is false, we don't update current_bitrate_kbps or adjustment_count
@@ -257,6 +258,7 @@ namespace stream {
       auto now = std::chrono::steady_clock::now();
       new_state.session_start_time = now;
       new_state.last_adjustment_time = now;
+      new_state.last_successful_adjustment_time = now;
       new_state.last_loss_stats_time = now;
       new_state.adjustment_count = 0;
       it = session_states.emplace(session, new_state).first;
@@ -286,7 +288,7 @@ namespace stream {
     // Calculate milliseconds since session start
     auto now = std::chrono::steady_clock::now();
     auto adjustment_duration = std::chrono::duration_cast<std::chrono::milliseconds>(
-        state.last_adjustment_time - state.session_start_time).count();
+        state.last_successful_adjustment_time - state.session_start_time).count();
     
     if (state.adjustment_count > 0 && adjustment_duration >= 0) {
       last_adjustment_time_ms = static_cast<uint64_t>(adjustment_duration);
