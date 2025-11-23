@@ -263,8 +263,6 @@ namespace stream {
 
     // Calculate milliseconds since session start
     auto now = std::chrono::steady_clock::now();
-    auto session_duration = std::chrono::duration_cast<std::chrono::milliseconds>(
-        now - state.session_start_time).count();
     auto adjustment_duration = std::chrono::duration_cast<std::chrono::milliseconds>(
         state.last_adjustment_time - state.session_start_time).count();
     
