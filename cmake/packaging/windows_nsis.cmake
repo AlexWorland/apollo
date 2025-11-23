@@ -1,9 +1,6 @@
 # NSIS Packaging
 # see options at: https://cmake.org/cmake/help/latest/cpack_gen/nsis.html
 
-# Set package icon for NSIS installer (ZIP generator doesn't support this)
-set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\apollo.ico")
-
 set(CPACK_NSIS_INSTALLED_ICON_NAME "${PROJECT__DIR}\\\\${PROJECT_EXE}")
 
 # Extra install commands
