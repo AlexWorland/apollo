@@ -134,16 +134,22 @@ namespace stream {
     auto &state = get_or_create_state(session);
     auto now = std::chrono::steady_clock::now();
 
+    // Always update last_adjustment_time to prevent immediate retries, even on failure.
+    // This ensures should_adjust_bitrate() respects the configured backoff interval
+    // (auto_bitrate_adjustment_interval_ms) and prevents endless retry loops when the
+    // encoder doesn't support runtime reconfiguration.
+    state.last_adjustment_time = now;
+
     if (success) {
-      // Only update state if the encoder successfully applied the change
+      // Only update bitrate and count if the encoder successfully applied the change
       if (new_bitrate_kbps != state.current_bitrate_kbps) {
-        state.last_adjustment_time = now;
         state.adjustment_count++;
         state.current_bitrate_kbps = new_bitrate_kbps;
       }
     }
-    // If success is false, we don't update the state - the encoder didn't apply the change,
-    // so the state should continue to reflect the previous (still active) bitrate.
+    // If success is false, we don't update current_bitrate_kbps or adjustment_count
+    // since the encoder didn't apply the change, so the state should continue to
+    // reflect the previous (still active) bitrate.
   }
 
   void auto_bitrate_controller_t::reset(session_t *session) {
