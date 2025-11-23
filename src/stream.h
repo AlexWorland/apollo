@@ -178,6 +178,13 @@ namespace stream {
 
     std::unique_ptr<auto_bitrate::AutoBitrateController> auto_bitrate_controller;
 
+    enum class connection_status_e : int {
+      UNKNOWN = -1,
+      OKAY = 0,
+      POOR = 1
+    };
+    connection_status_e connection_status;  // Track connection status for client sync
+
     struct {
       std::string ping_payload;
 
