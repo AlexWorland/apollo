@@ -85,9 +85,6 @@ function Cleanup {
     docker rm -f $CONTAINER_NAME 2>$null
 }
 
-# Register cleanup on exit
-Register-EngineEvent PowerShell.Exiting -Action { Cleanup } | Out-Null
-
 try {
     if ($Interactive) {
         Write-Info "Starting interactive container..."

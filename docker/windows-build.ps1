@@ -19,7 +19,7 @@ Write-Host ""
 
 # MSYS2 paths
 $msys2Bash = "C:\tools\msys64\usr\bin\bash.exe"
-$msys2Mingw = "C:\tools\msys64\mingw64\bin"
+$msys2Ucrt = "C:\tools\msys64\ucrt64\bin"
 
 # Verify MSYS2 is installed
 if (-not (Test-Path $msys2Bash)) {
@@ -28,7 +28,7 @@ if (-not (Test-Path $msys2Bash)) {
 }
 
 # Add MSYS2 to PATH for this session
-$env:PATH = "$msys2Mingw;$env:PATH"
+$env:PATH = "$msys2Ucrt;$env:PATH"
 
 # Convert Windows path to MSYS2 path format
 $workspacePath = (Get-Location).Path -replace '\\', '/' -replace 'C:', '/c' -replace 'D:', '/d' -replace 'E:', '/e' -replace 'F:', '/f'

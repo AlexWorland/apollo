@@ -19,7 +19,7 @@ RUN choco install msys2 -y --params '/NoUpdate'
 
 # Set environment variables for MSYS2
 ENV MSYS2_PATH=C:\tools\msys64
-ENV PATH="${MSYS2_PATH}\usr\bin;${MSYS2_PATH}\mingw64\bin;${PATH}"
+ENV PATH="${MSYS2_PATH}\usr\bin;${MSYS2_PATH}\ucrt64\bin;${PATH}"
 
 # Update MSYS2 and install build dependencies
 # Note: MSYS2 pacman commands need to be run in bash
