@@ -1002,6 +1002,7 @@ namespace rtsp_stream {
     stream::config_t config;
 
     std::int64_t configuredBitrateKbps;
+    std::int64_t maximumBitrateKbps = 0;  // Declare outside try block for use in else block
     config.audio.flags[audio::config_t::HOST_AUDIO] = session.host_audio;
     try {
       config.audio.channels = util::from_view(args.at("x-nv-audio.surround.numChannels"sv));
@@ -1030,7 +1031,7 @@ namespace rtsp_stream {
       // Read maximumBitrateKbps for reference, but don't use it as initial bitrate
       // It's already adjusted down by the client (80% of original, minus 500 for remote)
       // and should only be used as a maximum limit, not the starting bitrate
-      auto maximumBitrateKbps = util::from_view(args.at("x-nv-vqos[0].bw.maximumBitrateKbps"sv));
+      maximumBitrateKbps = util::from_view(args.at("x-nv-vqos[0].bw.maximumBitrateKbps"sv));
       config.monitor.slicesPerFrame = util::from_view(args.at("x-nv-video[0].videoEncoderSlicesPerFrame"sv));
       config.monitor.numRefFrames = util::from_view(args.at("x-nv-video[0].maxNumReferenceFrames"sv));
       config.monitor.encoderCscMode = util::from_view(args.at("x-nv-video[0].encoderCscMode"sv));
