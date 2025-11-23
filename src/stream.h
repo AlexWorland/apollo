@@ -238,6 +238,7 @@ namespace stream {
     bool auto_bitrate_enabled = false;  // Enable auto bitrate for this session
                                        // Set to true ONLY when client checkbox is checked
                                        // When false, use existing static bitrate flow
+    bool auto_bitrate_v2_active = false;  // True once V2 telemetry is received for this session
     
     int bitrate_stats_send_counter = 0;  // Counter for periodic stats sending
     int last_sent_connection_status = -1;  // Track last sent status to detect changes
