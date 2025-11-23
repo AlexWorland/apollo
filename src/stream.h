@@ -46,7 +46,6 @@ namespace stream {
   constexpr auto AUDIO_STREAM_PORT = 11;
 
   // Forward declarations
-  struct config_t;
   class control_server_t;
   struct session_t;
   
@@ -126,6 +125,22 @@ namespace stream {
     udp::socket audio_sock {io_context};
 
     control_server_t control_server;
+  };
+
+  struct config_t {
+    audio::config_t audio;
+    video::config_t monitor;
+
+    int packetsize;
+    int minRequiredFecPackets;
+    int mlFeatureFlags;
+    int controlProtocolType;
+    int audioQosType;
+    int videoQosType;
+
+    uint32_t encryptionFlagsEnabled;
+
+    std::optional<int> gcmap;
   };
 
 #pragma pack(push, 1)
@@ -217,22 +232,6 @@ namespace stream {
                                        // When false, use existing static bitrate flow
     
     int bitrate_stats_send_counter = 0;  // Counter for periodic stats sending
-  };
-
-  struct config_t {
-    audio::config_t audio;
-    video::config_t monitor;
-
-    int packetsize;
-    int minRequiredFecPackets;
-    int mlFeatureFlags;
-    int controlProtocolType;
-    int audioQosType;
-    int videoQosType;
-
-    uint32_t encryptionFlagsEnabled;
-
-    std::optional<int> gcmap;
   };
 
   namespace session {
