@@ -921,7 +921,7 @@ namespace rtsp_stream {
     if (type == "video"sv && session.host_max_bitrate_kbps > 0) {
       hostMaxBitrate_str = std::to_string(session.host_max_bitrate_kbps);
       hostMaxBitrate_option.option = const_cast<char *>("x-ml-video.hostMaxBitrateKbps");
-      hostMaxBitrate_option.content = hostMaxBitrate_str.c_str();
+      hostMaxBitrate_option.content = const_cast<char *>(hostMaxBitrate_str.c_str());
       payload_option.next = &hostMaxBitrate_option;
       hostMaxBitrate_option.next = nullptr;
     } else {
