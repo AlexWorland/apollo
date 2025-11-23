@@ -112,21 +112,28 @@ graph LR
 
 **Packet Structure**:
 
-```cpp
+Defined in `apollo/src/stream.cpp`:
+
+```224:231:apollo/src/stream.cpp
 struct control_bitrate_stats_t {
-    control_header_v2 header;
-    uint32_t current_bitrate_kbps;      // Current encoder bitrate
-    uint64_t last_adjustment_time_ms;   // Milliseconds since session start
-    uint32_t adjustment_count;          // Total adjustments made
-    float loss_percentage;              // Current frame loss percentage
+  control_header_v2 header;
+
+  std::uint32_t current_bitrate_kbps;
+  std::uint64_t last_adjustment_time_ms;
+  std::uint32_t adjustment_count;
+  float loss_percentage;
 };
 ```
 
 **Payload Layout**:
-- Bytes 0-3: `current_bitrate_kbps` (uint32_t, little-endian)
-- Bytes 4-11: `last_adjustment_time_ms` (uint64_t, little-endian)
-- Bytes 12-15: `adjustment_count` (uint32_t, little-endian)
-- Bytes 16-19: `loss_percentage` (float, little-endian)
+- Bytes 0-3: `current_bitrate_kbps` (std::uint32_t, little-endian)
+- Bytes 4-11: `last_adjustment_time_ms` (std::uint64_t, little-endian)
+- Bytes 12-15: `adjustment_count` (std::uint32_t, little-endian)
+- Bytes 16-19: `loss_percentage` (float, little-endian, converted via bit manipulation)
+
+**Note**: The float field requires special handling for endianness conversion. The host converts the float to a uint32_t, applies endian conversion, then copies back to float. The client reverses this process.
+
+**Note**: The float field requires special handling for endianness conversion. The host converts the float to a uint32_t, applies endian conversion, then copies back to float. The client reverses this process.
 
 ### Host-Side Implementation
 
@@ -136,28 +143,58 @@ The host collects statistics from the `auto_bitrate_controller_t` instance:
 
 **File**: `apollo/src/stream.cpp`
 
-```cpp
+```611:653:apollo/src/stream.cpp
 int send_bitrate_stats(session_t *session) {
-    uint32_t current_bitrate_kbps;
-    uint64_t last_adjustment_time_ms;
-    uint32_t adjustment_count;
-    float loss_percentage;
+  if (!session->control.peer || !session->auto_bitrate_enabled) {
+    return -1;
+  }
 
-    if (!auto_bitrate_controller.get_stats(session, 
-                                            current_bitrate_kbps, 
-                                            last_adjustment_time_ms, 
-                                            adjustment_count, 
-                                            loss_percentage)) {
-        return -1;
-    }
-    // ... encode and send packet
+  uint32_t current_bitrate_kbps;
+  uint64_t last_adjustment_time_ms;
+  uint32_t adjustment_count;
+  float loss_percentage;
+
+  if (!auto_bitrate_controller.get_stats(session, current_bitrate_kbps, 
+                                          last_adjustment_time_ms, 
+                                          adjustment_count, 
+                                          loss_percentage)) {
+    return -1;
+  }
+
+  control_bitrate_stats_t plaintext {};
+  plaintext.header.type = packetTypes[IDX_BITRATE_STATS];
+  plaintext.header.payloadLength = sizeof(control_bitrate_stats_t) - sizeof(control_header_v2);
+
+  plaintext.current_bitrate_kbps = util::endian::little(current_bitrate_kbps);
+  plaintext.last_adjustment_time_ms = util::endian::little(last_adjustment_time_ms);
+  plaintext.adjustment_count = util::endian::little(adjustment_count);
+  
+  // Copy float ensuring proper endianness
+  uint32_t loss_bits;
+  std::memcpy(&loss_bits, &loss_percentage, sizeof(float));
+  loss_bits = util::endian::little(loss_bits);
+  std::memcpy(&plaintext.loss_percentage, &loss_bits, sizeof(float));
+
+  std::array<std::uint8_t, sizeof(control_encrypted_t) + crypto::cipher::round_to_pkcs7_padded(sizeof(plaintext)) + crypto::cipher::tag_size>
+    encrypted_payload;
+
+  auto payload = encode_control(session, util::view(plaintext), encrypted_payload);
+  if (session->broadcast_ref->control_server.send(payload, session->control.peer)) {
+    TUPLE_2D(port, addr, platf::from_sockaddr_ex((sockaddr *) &session->control.peer->address.address));
+    BOOST_LOG(debug) << "Couldn't send bitrate stats to ["sv << addr << ':' << port << ']';
+    return -1;
+  }
+
+  return 0;
 }
 ```
 
 **Stats are sent periodically**:
 - Triggered every 20 loss stats packets (~1 second, since loss stats arrive every 50ms)
-- Only sent when `session->auto_bitrate_enabled == true`
-- Uses existing `encode_control()` infrastructure
+- Only sent when `session->auto_bitrate_enabled == true` and `session->control.peer` is available
+- Uses existing `encode_control()` infrastructure for encryption
+- All integer fields are converted to little-endian before transmission
+- Float field (`loss_percentage`) is converted via bit manipulation to ensure proper endianness
 
 #### Controller State Tracking
 
@@ -190,7 +227,7 @@ struct session_state_t {
 
 The client receives and processes `IDX_BITRATE_STATS` packets:
 
-```c
+```1373:1398:moonlight-common-c/src/ControlStream.c
 else if (ctlHdr->type == packetTypes[IDX_BITRATE_STATS]) {
     BYTE_BUFFER bb;
     uint32_t current_bitrate_kbps;
@@ -199,19 +236,23 @@ else if (ctlHdr->type == packetTypes[IDX_BITRATE_STATS]) {
     uint32_t loss_bits;
     float loss_percentage;
 
-    BbInitializeWrappedBuffer(&bb, ...);
+    BbInitializeWrappedBuffer(&bb, (char*)ctlHdr, sizeof(*ctlHdr), packetLength - sizeof(*ctlHdr), BYTE_ORDER_LITTLE);
+    
     BbGet32(&bb, &current_bitrate_kbps);
     BbGet64(&bb, &last_adjustment_time_ms);
     BbGet32(&bb, &adjustment_count);
     BbGet32(&bb, &loss_bits);
+    
+    // Convert loss bits back to float
     memcpy(&loss_percentage, &loss_bits, sizeof(float));
 
-    // Update global stats
+    // Update global auto bitrate stats
     autoBitrateStats.current_bitrate_kbps = current_bitrate_kbps;
     autoBitrateStats.last_adjustment_time_ms = last_adjustment_time_ms;
     autoBitrateStats.adjustment_count = adjustment_count;
     autoBitrateStats.loss_percentage = loss_percentage;
     autoBitrateStats.enabled = true;
+    lastStatsReceiveTimeMs = LiGetMillis();  // Track receive time in milliseconds
 }
 ```
 
@@ -219,7 +260,8 @@ else if (ctlHdr->type == packetTypes[IDX_BITRATE_STATS]) {
 
 **File**: `moonlight-common-c/src/Limelight.h`
 
-```c
+```904:914:moonlight-common-c/src/Limelight.h
+// Auto bitrate statistics structure
 typedef struct _AUTO_BITRATE_STATS {
     uint32_t current_bitrate_kbps;
     uint64_t last_adjustment_time_ms;
@@ -228,6 +270,8 @@ typedef struct _AUTO_BITRATE_STATS {
     bool enabled;
 } AUTO_BITRATE_STATS, *PAUTO_BITRATE_STATS;
 
+// Get current auto bitrate statistics
+// Returns NULL if auto bitrate is not enabled or stats are not available
 const AUTO_BITRATE_STATS* LiGetAutoBitrateStats(void);
 ```
 
@@ -237,28 +281,48 @@ const AUTO_BITRATE_STATS* LiGetAutoBitrateStats(void);
 
 The performance overlay displays stats when available:
 
-```cpp
+```943:984:moonlight-qt/app/streaming/video/ffmpeg.cpp
 const AUTO_BITRATE_STATS* autoBitrateStats = LiGetAutoBitrateStats();
 if (autoBitrateStats != NULL && autoBitrateStats->enabled) {
-    // Format last adjustment time
     char lastAdjustmentStr[64];
     if (autoBitrateStats->last_adjustment_time_ms > 0) {
-        double adjustment_time_sec = 
-            autoBitrateStats->last_adjustment_time_ms / 1000.0;
-        // Format as "Recently", "Xs into session", or "Xmin into session"
+        // last_adjustment_time_ms is relative to session start
+        // Since stats are sent every ~1 second, we can estimate "time ago" by comparing
+        // with current session time. For simplicity, show time since session start when adjustment occurred.
+        // In practice, this will be close to "time ago" since adjustments happen during active streaming.
+        double adjustment_time_sec = autoBitrateStats->last_adjustment_time_ms / 1000.0;
+        
+        // Estimate: if adjustment was very recent (within last 5 seconds of session), show "recently"
+        // Otherwise show the time
+        if (adjustment_time_sec < 5.0) {
+            snprintf(lastAdjustmentStr, sizeof(lastAdjustmentStr), "Recently");
+        } else if (adjustment_time_sec < 60.0) {
+            snprintf(lastAdjustmentStr, sizeof(lastAdjustmentStr), "%.0fs into session", adjustment_time_sec);
+        } else {
+            double minutes = adjustment_time_sec / 60.0;
+            snprintf(lastAdjustmentStr, sizeof(lastAdjustmentStr), "%.1fmin into session", minutes);
+        }
+    } else {
+        snprintf(lastAdjustmentStr, sizeof(lastAdjustmentStr), "Never");
     }
-    
-    // Display stats
-    snprintf(&output[offset], length - offset,
-        "\nAuto Bitrate:\n"
-        "Current encoder bitrate: %u Kbps\n"
-        "Frame loss: %.2f%%\n"
-        "Last adjustment: %s\n"
-        "Total adjustments: %u\n",
-        autoBitrateStats->current_bitrate_kbps,
-        autoBitrateStats->loss_percentage,
-        lastAdjustmentStr,
-        autoBitrateStats->adjustment_count);
+
+    ret = snprintf(&output[offset],
+                   length - offset,
+                   "\nAuto Bitrate:\n"
+                   "Current encoder bitrate: %u Kbps\n"
+                   "Frame loss: %.2f%%\n"
+                   "Last adjustment: %s\n"
+                   "Total adjustments: %u\n",
+                   autoBitrateStats->current_bitrate_kbps,
+                   autoBitrateStats->loss_percentage,
+                   lastAdjustmentStr,
+                   autoBitrateStats->adjustment_count);
+    if (ret < 0 || ret >= length - offset) {
+        SDL_assert(false);
+        return;
+    }
+
+    offset += ret;
 }
 ```
 
@@ -268,22 +332,60 @@ if (autoBitrateStats != NULL && autoBitrateStats->enabled) {
 
 **File**: `apollo/src_assets/common/assets/web/configs/tabs/AutoBitrate.vue`
 
-The Vue component provides three input fields with validation:
+The Vue component provides three input fields with validation and descriptive labels:
 
-```vue
+```45:96:apollo/src_assets/common/assets/web/configs/tabs/AutoBitrate.vue
 <template>
   <div id="auto-bitrate" class="config-page">
     <!-- Minimum Bitrate -->
-    <input type="number" v-model.number="config.auto_bitrate_min_kbps"
-           min="500" step="100" @input="validateMinBitrate" />
-    
+    <div class="mb-3">
+      <label for="auto_bitrate_min_kbps" class="form-label">{{ $t('config.auto_bitrate_min_kbps') }}</label>
+      <input
+        type="number"
+        class="form-control"
+        id="auto_bitrate_min_kbps"
+        v-model.number="config.auto_bitrate_min_kbps"
+        min="500"
+        step="100"
+        @input="validateMinBitrate"
+      />
+      <div class="form-text">{{ $t('config.auto_bitrate_min_kbps_desc') }}</div>
+    </div>
+
     <!-- Maximum Bitrate -->
-    <input type="number" v-model.number="config.auto_bitrate_max_kbps"
-           min="0" step="1000" @input="validateMaxBitrate" />
-    
+    <div class="mb-3">
+      <label for="auto_bitrate_max_kbps" class="form-label">{{ $t('config.auto_bitrate_max_kbps') }}</label>
+      <input
+        type="number"
+        class="form-control"
+        id="auto_bitrate_max_kbps"
+        v-model.number="config.auto_bitrate_max_kbps"
+        min="0"
+        step="1000"
+        @input="validateMaxBitrate"
+      />
+      <div class="form-text">{{ $t('config.auto_bitrate_max_kbps_desc') }}</div>
+    </div>
+
     <!-- Adjustment Interval -->
-    <input type="number" v-model.number="config.auto_bitrate_adjustment_interval_ms"
-           min="1000" step="500" @input="validateAdjustmentInterval" />
+    <div class="mb-3">
+      <label for="auto_bitrate_adjustment_interval_ms" class="form-label">{{ $t('config.auto_bitrate_adjustment_interval_ms') }}</label>
+      <input
+        type="number"
+        class="form-control"
+        id="auto_bitrate_adjustment_interval_ms"
+        v-model.number="config.auto_bitrate_adjustment_interval_ms"
+        min="1000"
+        step="500"
+        @input="validateAdjustmentInterval"
+      />
+      <div class="form-text">{{ $t('config.auto_bitrate_adjustment_interval_ms_desc') }}</div>
+    </div>
+
+    <div class="alert alert-info">
+      <i class="fa-solid fa-xl fa-circle-info"></i>
+      {{ $t('config.auto_bitrate_info') }}
+    </div>
   </div>
 </template>
 ```
@@ -422,8 +524,9 @@ graph LR
 #### Client-Side
 
 - **Invalid packet size**: Packet ignored, no crash
-- **Missing stats**: `LiGetAutoBitrateStats()` returns `NULL`, overlay hides section
+- **Missing stats**: `LiGetAutoBitrateStats()` returns `NULL` when `enabled == false`, overlay hides section
 - **Malformed data**: Parsing fails gracefully, old stats retained
+- **Stats receive tracking**: Client tracks `lastStatsReceiveTimeMs` to monitor stats freshness (though not currently displayed)
 
 ## Testing Recommendations
 
