@@ -140,6 +140,7 @@ namespace nvenc {
     // Stored config for reconfiguration
     nvenc_config config;
     video::config_t client_config;
+    nvenc_colorspace_t colorspace;
 
     // Derived classes set these variables
     void *device = nullptr;  ///< Platform-specific handle of encoding device.
