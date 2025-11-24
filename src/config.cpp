@@ -516,6 +516,16 @@ namespace config {
     500,  // auto_bitrate_min_kbps
     0,    // auto_bitrate_max_kbps (0 = use client max)
     3000, // auto_bitrate_adjustment_interval_ms
+    10,   // auto_bitrate_loss_severe_pct
+    5,    // auto_bitrate_loss_moderate_pct
+    1,    // auto_bitrate_loss_mild_pct
+    25,   // auto_bitrate_decrease_severe_pct
+    12,   // auto_bitrate_decrease_moderate_pct
+    5,    // auto_bitrate_decrease_mild_pct
+    5,    // auto_bitrate_increase_good_pct
+    5000, // auto_bitrate_good_stability_ms
+    3000, // auto_bitrate_increase_min_interval_ms
+    25,   // auto_bitrate_poor_status_cap_pct
 
     "1920x1080x60",  // fallback_mode
     false, // isolated Display
@@ -1214,6 +1224,16 @@ namespace config {
     int_f(vars, "auto_bitrate_min_kbps", video.auto_bitrate_min_kbps);
     int_f(vars, "auto_bitrate_max_kbps", video.auto_bitrate_max_kbps);
     int_f(vars, "auto_bitrate_adjustment_interval_ms", video.auto_bitrate_adjustment_interval_ms);
+    int_f(vars, "auto_bitrate_loss_severe_pct", video.auto_bitrate_loss_severe_pct);
+    int_f(vars, "auto_bitrate_loss_moderate_pct", video.auto_bitrate_loss_moderate_pct);
+    int_f(vars, "auto_bitrate_loss_mild_pct", video.auto_bitrate_loss_mild_pct);
+    int_f(vars, "auto_bitrate_decrease_severe_pct", video.auto_bitrate_decrease_severe_pct);
+    int_f(vars, "auto_bitrate_decrease_moderate_pct", video.auto_bitrate_decrease_moderate_pct);
+    int_f(vars, "auto_bitrate_decrease_mild_pct", video.auto_bitrate_decrease_mild_pct);
+    int_f(vars, "auto_bitrate_increase_good_pct", video.auto_bitrate_increase_good_pct);
+    int_f(vars, "auto_bitrate_good_stability_ms", video.auto_bitrate_good_stability_ms);
+    int_f(vars, "auto_bitrate_increase_min_interval_ms", video.auto_bitrate_increase_min_interval_ms);
+    int_f(vars, "auto_bitrate_poor_status_cap_pct", video.auto_bitrate_poor_status_cap_pct);
 
     string_f(vars, "fallback_mode", video.fallback_mode);
     bool_f(vars, "isolated_virtual_display_option", video.isolated_virtual_display_option);

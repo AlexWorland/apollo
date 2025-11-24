@@ -217,24 +217,31 @@ namespace stream {
                                                           std::chrono::steady_clock::time_point now) const {
     double adjustment_factor = 1.0;
 
+    auto severe_threshold = std::max(0, config::video.auto_bitrate_loss_severe_pct);
+    auto moderate_threshold = std::max(0, config::video.auto_bitrate_loss_moderate_pct);
+    auto mild_threshold = std::max(0, config::video.auto_bitrate_loss_mild_pct);
+
+    auto severe_reduction_pct = std::max(0, config::video.auto_bitrate_decrease_severe_pct);
+    auto moderate_reduction_pct = std::max(0, config::video.auto_bitrate_decrease_moderate_pct);
+    auto mild_reduction_pct = std::max(0, config::video.auto_bitrate_decrease_mild_pct);
+    auto increase_pct = std::max(0, config::video.auto_bitrate_increase_good_pct);
+    auto poor_status_cap_pct = std::max(0, config::video.auto_bitrate_poor_status_cap_pct);
+
     // Determine base adjustment factor from loss
-    if (state.loss_percentage > 10.0) {
-      // Aggressive reduction for severe loss
-      adjustment_factor = 0.75;
-    } else if (state.loss_percentage > 5.0) {
-      // Moderate reduction
-      adjustment_factor = 0.875;
-    } else if (state.loss_percentage > 1.0) {
-      // Conservative reduction
-      adjustment_factor = 0.95;
+    if (state.loss_percentage > severe_threshold) {
+      adjustment_factor = 1.0 - (severe_reduction_pct / 100.0);
+    } else if (state.loss_percentage > moderate_threshold) {
+      adjustment_factor = 1.0 - (moderate_reduction_pct / 100.0);
+    } else if (state.loss_percentage > mild_threshold) {
+      adjustment_factor = 1.0 - (mild_reduction_pct / 100.0);
     } else {
       // Consider increase only if stable
       auto time_since_last_adjustment = std::chrono::duration_cast<std::chrono::milliseconds>(
           now - state.last_adjustment_time).count();
       
-      // Require 5+ seconds of good conditions for increase
-      if (time_since_last_adjustment >= 5000 && state.connection_status == 0) {
-        adjustment_factor = 1.05;  // Gradual increase
+      // Require configured duration of good conditions for increase
+      if (time_since_last_adjustment >= config::video.auto_bitrate_good_stability_ms && state.connection_status == 0) {
+        adjustment_factor = 1.0 + (increase_pct / 100.0);
       } else {
         return 1.0;  // No change - return multiplier factor, not absolute bitrate
       }
@@ -242,14 +249,14 @@ namespace stream {
 
     // Apply connection status override
     if (state.connection_status == 1) {  // POOR
-      adjustment_factor = std::min(adjustment_factor, 0.75);  // Cap at 25% reduction
+      adjustment_factor = std::min(adjustment_factor, 1.0 - (poor_status_cap_pct / 100.0));
     }
 
     // Check minimum interval requirement for increases
     auto time_since_last_adjustment = std::chrono::duration_cast<std::chrono::milliseconds>(
         now - state.last_adjustment_time).count();
     
-    if (adjustment_factor > 1.0 && time_since_last_adjustment < 3000) {
+    if (adjustment_factor > 1.0 && time_since_last_adjustment < config::video.auto_bitrate_increase_min_interval_ms) {
       return 1.0;  // Too soon for increase
     }
 

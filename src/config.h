@@ -151,6 +151,16 @@ namespace config {
     int auto_bitrate_min_kbps = 500;  // Minimum bitrate (Kbps)
     int auto_bitrate_max_kbps = 0;    // Maximum bitrate (0 = use client max)
     int auto_bitrate_adjustment_interval_ms = 3000;  // Minimum time between adjustments
+    int auto_bitrate_loss_severe_pct = 10;    // Loss percentage considered severe
+    int auto_bitrate_loss_moderate_pct = 5;   // Loss percentage considered moderate
+    int auto_bitrate_loss_mild_pct = 1;       // Loss percentage considered mild
+    int auto_bitrate_decrease_severe_pct = 25;   // Reduce bitrate by this percent on severe loss
+    int auto_bitrate_decrease_moderate_pct = 12; // Reduce bitrate by this percent on moderate loss
+    int auto_bitrate_decrease_mild_pct = 5;      // Reduce bitrate by this percent on mild loss
+    int auto_bitrate_increase_good_pct = 5;       // Increase bitrate by this percent when stable
+    int auto_bitrate_good_stability_ms = 5000;    // Good-network duration required before increases
+    int auto_bitrate_increase_min_interval_ms = 3000; // Minimum interval between increases
+    int auto_bitrate_poor_status_cap_pct = 25;    // Cap reduction percent when status == POOR
 
     std::string fallback_mode;
     bool isolated_virtual_display_option;
