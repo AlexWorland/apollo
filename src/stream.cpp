@@ -623,6 +623,78 @@ namespace stream {
   static auto_bitrate_controller_t auto_bitrate_controller;
 
   /**
+   * @brief Calculate total bitrate from video encoder bitrate by reversing subdivision logic.
+   * 
+   * This reverses the bitrate subdivision process from rtsp.cpp that accounts for:
+   * - FEC overhead
+   * - Audio bitrate
+   * - Packet overhead
+   * 
+   * @param session The streaming session.
+   * @param video_bitrate_kbps The video encoder bitrate in Kbps.
+   * @return The total bitrate (video + FEC + audio + overhead) in Kbps.
+   */
+  static uint32_t calculate_total_bitrate(session_t *session, uint32_t video_bitrate_kbps) {
+    if (video_bitrate_kbps == 0) {
+      return 0;
+    }
+
+    // Reverse the bitrate subdivision process from rtsp.cpp (lines 1118-1129)
+    // Original process:
+    // 1. Start with configuredBitrateKbps (total)
+    // 2. If FEC <= 80: total = total * (100 - fec) / 100  [FEC adjustment]
+    // 3. total = total - min(audio, total / 5)  [Audio adjustment, capped at 20%]
+    // 4. total = total - min(500, total / 10)  [Overhead adjustment, capped at 10%]
+    // Result: video_bitrate_kbps
+    
+    // To reverse, work backwards. Since caps depend on the value at that step,
+    // we use the value after the adjustment to determine if it was capped.
+    auto &audio_config = session->config.audio;
+    uint32_t audio_bitrate = (audio_config.flags[audio::config_t::HIGH_QUALITY] ? 256 : 96) * audio_config.channels;
+    
+    uint32_t total = video_bitrate_kbps;
+    
+    // Step 1: Add back overhead (500 Kbps, capped at 10% of total before subtraction)
+    // Check: if 500 <= total/10, then overhead was capped, else not capped
+    // But we need to check against the total BEFORE overhead was subtracted
+    // If not capped: total_before = total_after + 500
+    // If capped: total_after = total_before * 9/10, so total_before = total_after * 10/9
+    // To determine: if (total + 500) / 10 >= 500, then it was capped
+    // This simplifies to: if total >= 4500, then it was capped
+    if (total >= 4500) {
+      // Overhead was capped at 10%
+      total = (total * 10) / 9;
+    } else {
+      // Overhead wasn't capped
+      total += 500;
+    }
+    
+    // Step 2: Add back audio bitrate (capped at 20% of total before subtraction)
+    // Check: if audio <= total/5, then audio was capped, else not capped
+    // But we need to check against the total BEFORE audio was subtracted
+    // If not capped: total_before = total_after + audio
+    // If capped: total_after = total_before * 4/5, so total_before = total_after * 5/4
+    // To determine: if audio <= (total + audio) / 5, then it was capped
+    // This simplifies to: if audio <= total/4, then it was capped
+    if (audio_bitrate <= total / 4) {
+      // Audio was capped at 20%
+      total = (total * 5) / 4;
+    } else {
+      // Audio wasn't capped
+      total += audio_bitrate;
+    }
+    
+    // Step 3: Add back FEC overhead (if FEC percentage <= 80)
+    // If FEC was applied: video = total * (100 - fec) / 100
+    // So reversing: total = video * 100 / (100 - fec)
+    if (config::stream.fec_percentage <= 80) {
+      total = static_cast<uint32_t>(total * 100.0f / (100.0f - config::stream.fec_percentage));
+    }
+
+    return total;
+  }
+
+  /**
    * @brief Send auto bitrate statistics to client.
    * @param session The streaming session.
    * @return 0 on success, -1 on error.
@@ -644,11 +716,14 @@ namespace stream {
       return -1;
     }
 
+    // Calculate total bitrate (video + FEC + audio + overhead) from video encoder bitrate
+    uint32_t total_bitrate_kbps = calculate_total_bitrate(session, current_bitrate_kbps);
+
     control_bitrate_stats_t plaintext {};
     plaintext.header.type = packetTypes[IDX_BITRATE_STATS];
     plaintext.header.payloadLength = sizeof(control_bitrate_stats_t) - sizeof(control_header_v2);
 
-    plaintext.current_bitrate_kbps = util::endian::little(current_bitrate_kbps);
+    plaintext.current_bitrate_kbps = util::endian::little(total_bitrate_kbps);
     plaintext.last_adjustment_time_ms = util::endian::little(last_adjustment_time_ms);
     plaintext.adjustment_count = util::endian::little(adjustment_count);
     
