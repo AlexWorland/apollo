@@ -668,13 +668,10 @@ namespace stream {
     }
     
     // Step 2: Add back audio bitrate (capped at 20% of total before subtraction)
-    // Check: if audio <= total/5, then audio was capped, else not capped
-    // But we need to check against the total BEFORE audio was subtracted
-    // If not capped: total_before = total_after + audio
-    // If capped: total_after = total_before * 4/5, so total_before = total_after * 5/4
-    // To determine: if audio <= (total + audio) / 5, then it was capped
-    // This simplifies to: if audio <= total/4, then it was capped
-    if (audio_bitrate <= total / 4) {
+    // Forward path: total_after = total_before - min(audio, total_before / 5)
+    // If audio was capped (audio > total_before / 5): total_before = total_after * 5/4
+    // Using total_after, this is equivalent to audio > total_after / 4
+    if (audio_bitrate > total / 4) {
       // Audio was capped at 20%
       total = (total * 5) / 4;
     } else {
