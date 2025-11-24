@@ -306,6 +306,23 @@ namespace config {
     std::vector<server_cmd_t> server_cmds;
   };
 
+  struct auto_bitrate_settings_t {
+    int min_kbps;
+    int max_kbps;
+    int adjustment_interval_ms;
+    int loss_severe_pct;
+    int loss_moderate_pct;
+    int loss_mild_pct;
+    int decrease_severe_pct;
+    int decrease_moderate_pct;
+    int decrease_mild_pct;
+    int increase_good_pct;
+    int good_stability_ms;
+    int increase_min_interval_ms;
+    int poor_status_cap_pct;
+    int max_bitrate_cap;
+  };
+
   extern video_t video;
   extern audio_t audio;
   extern stream_t stream;
@@ -315,4 +332,6 @@ namespace config {
 
   int parse(int argc, char *argv[]);
   std::unordered_map<std::string, std::string> parse_config(const std::string_view &file_content);
+  void apply_config(std::unordered_map<std::string, std::string> &&vars);
+  auto_bitrate_settings_t get_auto_bitrate_settings();
 }  // namespace config

@@ -456,6 +456,10 @@
 
         // delete default values from this.config
         this.tabs.forEach(tab => {
+          if (tab.id === "auto_bitrate") {
+            // Keep auto bitrate values (including defaults) so in-memory tuning updates immediately
+            return;
+          }
           Object.keys(tab.options).forEach(optionKey => {
             let delete_value = false
 

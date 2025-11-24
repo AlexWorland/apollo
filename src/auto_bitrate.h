@@ -8,6 +8,10 @@
 #include <chrono>
 #include <unordered_map>
 
+namespace config {
+  struct auto_bitrate_settings_t;
+}
+
 namespace stream {
   struct session_t;
 
@@ -112,7 +116,8 @@ namespace stream {
                                    uint64_t lastGoodFrame,
                                    std::chrono::milliseconds time_interval) const;
     double get_adjustment_factor(const session_state_t &state, 
-                                  std::chrono::steady_clock::time_point now) const;
+                                  std::chrono::steady_clock::time_point now,
+                                  const config::auto_bitrate_settings_t &settings) const;
     int clamp_bitrate(int bitrate, int min_bitrate, int max_bitrate) const;
     session_state_t &get_or_create_state(session_t *session);
   };
