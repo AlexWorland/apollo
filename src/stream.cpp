@@ -679,15 +679,19 @@ namespace stream {
       total += audio_bitrate;
     }
     
-    // Step 3: Add back FEC overhead
-    // For <= 80%, mirror the reduction applied in rtsp.cpp.
-    // For higher percentages, still account for the extra parity shards using a linear factor.
+    // Step 3: Add back FEC overhead based on the video bitrate (FEC applies only to video data).
+    // In rtsp.cpp, when FEC <= 80%, the video bitrate is reduced by (100 - fec) / 100.
+    // When FEC > 80%, no reduction is applied, so we just add the FEC overhead.
     auto fec_percentage = config::stream.fec_percentage;
     if (fec_percentage > 0) {
       if (fec_percentage <= 80) {
-        total = static_cast<uint32_t>(total * 100.0f / (100.0f - fec_percentage));
+        // Reverse the reduction: multiply by 100 / (100 - fec_percentage)
+        total = static_cast<uint32_t>((static_cast<uint64_t>(total) * 100) / (100 - fec_percentage));
       } else {
-        total = static_cast<uint32_t>(total * (100.0f + fec_percentage) / 100.0f);
+        // No reduction was applied in rtsp.cpp, so add FEC overhead directly
+        auto total_with_fec = static_cast<uint64_t>(total) +
+                              (static_cast<uint64_t>(video_bitrate_kbps) * fec_percentage) / 100;
+        total = static_cast<uint32_t>(total_with_fec);
       }
     }
 
