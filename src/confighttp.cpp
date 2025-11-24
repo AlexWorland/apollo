@@ -1060,15 +1060,33 @@ namespace confighttp {
       std::stringstream config_stream;
       nlohmann::json output_tree;
       nlohmann::json input_tree = nlohmann::json::parse(ss);
+      
+      // Convert JSON to unordered_map for apply_config to update in-memory values
+      std::unordered_map<std::string, std::string> config_vars;
+      
       for (const auto &[k, v] : input_tree.items()) {
         if (v.is_null() || (v.is_string() && v.get<std::string>().empty())) {
           continue;
         }
 
+        // Convert value to string for config map
+        std::string val_str;
+        if (v.is_string()) {
+          val_str = v.get<std::string>();
+        } else {
+          val_str = v.dump();
+        }
+        config_vars[k] = val_str;
+
         // v.dump() will dump valid json, which we do not want for strings in the config right now
         // we should migrate the config file to straight json and get rid of all this nonsense
         config_stream << k << " = " << (v.is_string() ? v.get<std::string>() : v.dump()) << std::endl;
       }
+      
+      // Update in-memory config values immediately so algorithm uses new values
+      config::apply_config(std::move(config_vars));
+      
+      // Write to config file for persistence
       file_handler::write_file(config::sunshine.config_file.c_str(), config_stream.str());
       output_tree["status"] = true;
       send_response(response, output_tree);

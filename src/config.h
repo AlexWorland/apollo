@@ -315,4 +315,5 @@ namespace config {
 
   int parse(int argc, char *argv[]);
   std::unordered_map<std::string, std::string> parse_config(const std::string_view &file_content);
+  void apply_config(std::unordered_map<std::string, std::string> &&vars);
 }  // namespace config
