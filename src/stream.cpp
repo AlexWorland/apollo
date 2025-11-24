@@ -655,18 +655,16 @@ namespace stream {
     uint32_t total = video_bitrate_kbps;
     
     // Step 1: Add back overhead (500 Kbps, capped at 10% of total before subtraction)
-    // Check: if 500 <= total/10, then overhead was capped, else not capped
-    // But we need to check against the total BEFORE overhead was subtracted
-    // If not capped: total_before = total_after + 500
-    // If capped: total_after = total_before * 9/10, so total_before = total_after * 10/9
-    // To determine: if (total + 500) / 10 >= 500, then it was capped
-    // This simplifies to: if total >= 4500, then it was capped
+    // Forward path: total_after = total_before - min(500, total_before / 10)
+    // If capped: total_before = total_after + 500
+    // If not capped: total_after = total_before * 9/10, so total_before = total_after * 10/9
+    // total_after >= 4500 implies total_before was at least 5000 (capped case)
     if (total >= 4500) {
       // Overhead was capped at 10%
-      total = (total * 10) / 9;
+      total += 500;
     } else {
       // Overhead wasn't capped
-      total += 500;
+      total = (total * 10) / 9;
     }
     
     // Step 2: Add back audio bitrate (capped at 20% of total before subtraction)
