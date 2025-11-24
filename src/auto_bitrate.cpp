@@ -71,12 +71,13 @@ namespace stream {
     }
 
     const auto &state = it->second;
+    const auto settings = config::get_auto_bitrate_settings();
     auto now = std::chrono::steady_clock::now();
     auto time_since_last_adjustment = std::chrono::duration_cast<std::chrono::milliseconds>(
         now - state.last_adjustment_time).count();
 
     // Minimum interval between adjustments (default 3 seconds)
-    int min_interval_ms = config::video.auto_bitrate_adjustment_interval_ms;
+    int min_interval_ms = settings.adjustment_interval_ms;
     if (min_interval_ms <= 0) {
       min_interval_ms = 3000;  // Default to 3 seconds
     }
@@ -87,7 +88,7 @@ namespace stream {
     }
 
     // Calculate what the new bitrate would be
-    double adjustment_factor = get_adjustment_factor(state, now);
+    double adjustment_factor = get_adjustment_factor(state, now, settings);
     
     // Only adjust if change is significant (at least 5%)
     if (std::abs(adjustment_factor - 1.0) < 0.05) {
@@ -108,28 +109,29 @@ namespace stream {
     }
 
     const auto &state = it->second;
+    const auto settings = config::get_auto_bitrate_settings();
     auto now = std::chrono::steady_clock::now();
     
-    double adjustment_factor = get_adjustment_factor(state, now);
+    double adjustment_factor = get_adjustment_factor(state, now, settings);
     int new_bitrate = static_cast<int>(state.current_bitrate_kbps * adjustment_factor);
 
     // Get min/max bounds
-    int min_bitrate = config::video.auto_bitrate_min_kbps;
+    int min_bitrate = settings.min_kbps;
     if (min_bitrate <= 0) {
       min_bitrate = 500;  // Default minimum
     }
 
-    int max_bitrate = config::video.auto_bitrate_max_kbps;
+    int max_bitrate = settings.max_kbps;
     if (max_bitrate <= 0) {
       // Use client's requested max or config max_bitrate
       max_bitrate = session->config.monitor.bitrate;
-      if (config::video.max_bitrate > 0 && config::video.max_bitrate < max_bitrate) {
-        max_bitrate = config::video.max_bitrate;
+      if (settings.max_bitrate_cap > 0 && settings.max_bitrate_cap < max_bitrate) {
+        max_bitrate = settings.max_bitrate_cap;
       }
     } else {
       // Use minimum of auto_bitrate_max_kbps and config max_bitrate
-      if (config::video.max_bitrate > 0 && config::video.max_bitrate < max_bitrate) {
-        max_bitrate = config::video.max_bitrate;
+      if (settings.max_bitrate_cap > 0 && settings.max_bitrate_cap < max_bitrate) {
+        max_bitrate = settings.max_bitrate_cap;
       }
     }
 
@@ -214,18 +216,19 @@ namespace stream {
   }
 
   double auto_bitrate_controller_t::get_adjustment_factor(const session_state_t &state, 
-                                                          std::chrono::steady_clock::time_point now) const {
+                                                          std::chrono::steady_clock::time_point now,
+                                                          const config::auto_bitrate_settings_t &settings) const {
     double adjustment_factor = 1.0;
 
-    auto severe_threshold = std::max(0, config::video.auto_bitrate_loss_severe_pct);
-    auto moderate_threshold = std::max(0, config::video.auto_bitrate_loss_moderate_pct);
-    auto mild_threshold = std::max(0, config::video.auto_bitrate_loss_mild_pct);
+    auto severe_threshold = std::max(0, settings.loss_severe_pct);
+    auto moderate_threshold = std::max(0, settings.loss_moderate_pct);
+    auto mild_threshold = std::max(0, settings.loss_mild_pct);
 
-    auto severe_reduction_pct = std::max(0, config::video.auto_bitrate_decrease_severe_pct);
-    auto moderate_reduction_pct = std::max(0, config::video.auto_bitrate_decrease_moderate_pct);
-    auto mild_reduction_pct = std::max(0, config::video.auto_bitrate_decrease_mild_pct);
-    auto increase_pct = std::max(0, config::video.auto_bitrate_increase_good_pct);
-    auto poor_status_cap_pct = std::max(0, config::video.auto_bitrate_poor_status_cap_pct);
+    auto severe_reduction_pct = std::max(0, settings.decrease_severe_pct);
+    auto moderate_reduction_pct = std::max(0, settings.decrease_moderate_pct);
+    auto mild_reduction_pct = std::max(0, settings.decrease_mild_pct);
+    auto increase_pct = std::max(0, settings.increase_good_pct);
+    auto poor_status_cap_pct = std::max(0, settings.poor_status_cap_pct);
 
     // Determine base adjustment factor from loss
     if (state.loss_percentage > severe_threshold) {
@@ -240,7 +243,7 @@ namespace stream {
           now - state.last_adjustment_time).count();
       
       // Require configured duration of good conditions for increase
-      if (time_since_last_adjustment >= config::video.auto_bitrate_good_stability_ms && state.connection_status == 0) {
+      if (time_since_last_adjustment >= settings.good_stability_ms && state.connection_status == 0) {
         adjustment_factor = 1.0 + (increase_pct / 100.0);
       } else {
         return 1.0;  // No change - return multiplier factor, not absolute bitrate
@@ -256,7 +259,7 @@ namespace stream {
     auto time_since_last_adjustment = std::chrono::duration_cast<std::chrono::milliseconds>(
         now - state.last_adjustment_time).count();
     
-    if (adjustment_factor > 1.0 && time_since_last_adjustment < config::video.auto_bitrate_increase_min_interval_ms) {
+    if (adjustment_factor > 1.0 && time_since_last_adjustment < settings.increase_min_interval_ms) {
       return 1.0;  // Too soon for increase
     }
 

@@ -8,6 +8,8 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
+#include <mutex>
+#include <shared_mutex>
 #include <thread>
 #include <unordered_map>
 #include <utility>
@@ -49,6 +51,9 @@ using namespace std::literals;
 #define APPS_JSON_PATH platf::appdata().string() + "/apps.json"
 
 namespace config {
+  namespace {
+    std::shared_mutex auto_bitrate_mutex;
+  }  // namespace
 
   namespace nv {
 
@@ -1217,23 +1222,27 @@ namespace config {
       video.dd.wa.hdr_toggle_delay = std::chrono::milliseconds {value};
     }
 
-    int_f(vars, "max_bitrate", video.max_bitrate);
     double_between_f(vars, "minimum_fps_target", video.minimum_fps_target, {0.0, 1000.0});
 
-    // Note: auto_bitrate_enabled is NOT a host config option - it's controlled by client checkbox
-    int_f(vars, "auto_bitrate_min_kbps", video.auto_bitrate_min_kbps);
-    int_f(vars, "auto_bitrate_max_kbps", video.auto_bitrate_max_kbps);
-    int_f(vars, "auto_bitrate_adjustment_interval_ms", video.auto_bitrate_adjustment_interval_ms);
-    int_f(vars, "auto_bitrate_loss_severe_pct", video.auto_bitrate_loss_severe_pct);
-    int_f(vars, "auto_bitrate_loss_moderate_pct", video.auto_bitrate_loss_moderate_pct);
-    int_f(vars, "auto_bitrate_loss_mild_pct", video.auto_bitrate_loss_mild_pct);
-    int_f(vars, "auto_bitrate_decrease_severe_pct", video.auto_bitrate_decrease_severe_pct);
-    int_f(vars, "auto_bitrate_decrease_moderate_pct", video.auto_bitrate_decrease_moderate_pct);
-    int_f(vars, "auto_bitrate_decrease_mild_pct", video.auto_bitrate_decrease_mild_pct);
-    int_f(vars, "auto_bitrate_increase_good_pct", video.auto_bitrate_increase_good_pct);
-    int_f(vars, "auto_bitrate_good_stability_ms", video.auto_bitrate_good_stability_ms);
-    int_f(vars, "auto_bitrate_increase_min_interval_ms", video.auto_bitrate_increase_min_interval_ms);
-    int_f(vars, "auto_bitrate_poor_status_cap_pct", video.auto_bitrate_poor_status_cap_pct);
+    {
+      std::unique_lock<std::shared_mutex> lock(auto_bitrate_mutex);
+      int_f(vars, "max_bitrate", video.max_bitrate);
+
+      // Note: auto_bitrate_enabled is NOT a host config option - it's controlled by client checkbox
+      int_f(vars, "auto_bitrate_min_kbps", video.auto_bitrate_min_kbps);
+      int_f(vars, "auto_bitrate_max_kbps", video.auto_bitrate_max_kbps);
+      int_f(vars, "auto_bitrate_adjustment_interval_ms", video.auto_bitrate_adjustment_interval_ms);
+      int_f(vars, "auto_bitrate_loss_severe_pct", video.auto_bitrate_loss_severe_pct);
+      int_f(vars, "auto_bitrate_loss_moderate_pct", video.auto_bitrate_loss_moderate_pct);
+      int_f(vars, "auto_bitrate_loss_mild_pct", video.auto_bitrate_loss_mild_pct);
+      int_f(vars, "auto_bitrate_decrease_severe_pct", video.auto_bitrate_decrease_severe_pct);
+      int_f(vars, "auto_bitrate_decrease_moderate_pct", video.auto_bitrate_decrease_moderate_pct);
+      int_f(vars, "auto_bitrate_decrease_mild_pct", video.auto_bitrate_decrease_mild_pct);
+      int_f(vars, "auto_bitrate_increase_good_pct", video.auto_bitrate_increase_good_pct);
+      int_f(vars, "auto_bitrate_good_stability_ms", video.auto_bitrate_good_stability_ms);
+      int_f(vars, "auto_bitrate_increase_min_interval_ms", video.auto_bitrate_increase_min_interval_ms);
+      int_f(vars, "auto_bitrate_poor_status_cap_pct", video.auto_bitrate_poor_status_cap_pct);
+    }
 
     string_f(vars, "fallback_mode", video.fallback_mode);
     bool_f(vars, "isolated_virtual_display_option", video.isolated_virtual_display_option);
@@ -1564,5 +1573,25 @@ namespace config {
 #endif
 
     return 0;
+  }
+
+  auto_bitrate_settings_t get_auto_bitrate_settings() {
+    std::shared_lock<std::shared_mutex> lock(auto_bitrate_mutex);
+    return {
+      video.auto_bitrate_min_kbps,
+      video.auto_bitrate_max_kbps,
+      video.auto_bitrate_adjustment_interval_ms,
+      video.auto_bitrate_loss_severe_pct,
+      video.auto_bitrate_loss_moderate_pct,
+      video.auto_bitrate_loss_mild_pct,
+      video.auto_bitrate_decrease_severe_pct,
+      video.auto_bitrate_decrease_moderate_pct,
+      video.auto_bitrate_decrease_mild_pct,
+      video.auto_bitrate_increase_good_pct,
+      video.auto_bitrate_good_stability_ms,
+      video.auto_bitrate_increase_min_interval_ms,
+      video.auto_bitrate_poor_status_cap_pct,
+      video.max_bitrate,
+    };
   }
 }  // namespace config
