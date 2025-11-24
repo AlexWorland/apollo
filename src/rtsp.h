@@ -41,6 +41,8 @@ namespace rtsp_stream {
     bool input_only;
     bool host_audio;
     bool auto_bitrate_enabled = false;  // Client-side auto bitrate checkbox state
+    int original_client_bitrate_kbps = 0;  // Original client-requested bitrate before FEC/audio/overhead adjustments
+                                          // Used as max bitrate cap for auto bitrate controller
     int width;
     int height;
     int fps;

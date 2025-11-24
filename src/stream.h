@@ -242,6 +242,9 @@ namespace stream {
     
     int bitrate_stats_send_counter = 0;  // Counter for periodic stats sending
     int last_sent_connection_status = -1;  // Track last sent status to detect changes
+    
+    int original_client_bitrate_kbps = 0;  // Original client-requested bitrate before FEC/audio/overhead adjustments
+                                           // Used as max bitrate cap for auto bitrate controller
   };
 
   namespace session {

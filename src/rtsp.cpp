@@ -1064,6 +1064,10 @@ namespace rtsp_stream {
         BOOST_LOG(info) << "Warp factor [" << warp_factor << "] engaged";
       }
 
+      // Store original client-requested bitrate (after host max_bitrate and warp factor, but before FEC/audio/overhead adjustments)
+      // This is used as the max bitrate cap for auto bitrate controller
+      session.original_client_bitrate_kbps = static_cast<int>(configuredBitrateKbps);
+
     } catch (std::out_of_range &) {
       respond(sock, session, &option, 400, "BAD REQUEST", req->sequenceNumber, {});
       return;

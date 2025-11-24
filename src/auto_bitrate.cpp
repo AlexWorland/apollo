@@ -123,8 +123,13 @@ namespace stream {
 
     int max_bitrate = settings.max_kbps;
     if (max_bitrate <= 0) {
-      // Use client's requested max or config max_bitrate
-      max_bitrate = session->config.monitor.bitrate;
+      // Use original client-requested bitrate (before FEC/audio/overhead adjustments) if available
+      // Otherwise fall back to adjusted bitrate
+      if (session->original_client_bitrate_kbps > 0) {
+        max_bitrate = session->original_client_bitrate_kbps;
+      } else {
+        max_bitrate = session->config.monitor.bitrate;
+      }
       if (settings.max_bitrate_cap > 0 && settings.max_bitrate_cap < max_bitrate) {
         max_bitrate = settings.max_bitrate_cap;
       }
@@ -132,6 +137,10 @@ namespace stream {
       // Use minimum of auto_bitrate_max_kbps and config max_bitrate
       if (settings.max_bitrate_cap > 0 && settings.max_bitrate_cap < max_bitrate) {
         max_bitrate = settings.max_bitrate_cap;
+      }
+      // Also respect original client bitrate if it's lower than configured max
+      if (session->original_client_bitrate_kbps > 0 && session->original_client_bitrate_kbps < max_bitrate) {
+        max_bitrate = session->original_client_bitrate_kbps;
       }
     }
 
