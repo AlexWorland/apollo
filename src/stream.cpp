@@ -623,6 +623,82 @@ namespace stream {
   static auto_bitrate_controller_t auto_bitrate_controller;
 
   /**
+   * @brief Calculate total bitrate from video encoder bitrate by reversing subdivision logic.
+   * 
+   * This reverses the bitrate subdivision process from rtsp.cpp that accounts for:
+   * - FEC overhead
+   * - Audio bitrate
+   * - Packet overhead
+   * 
+   * @param session The streaming session.
+   * @param video_bitrate_kbps The video encoder bitrate in Kbps.
+   * @return The total bitrate (video + FEC + audio + overhead) in Kbps.
+   */
+  static uint32_t calculate_total_bitrate(session_t *session, uint32_t video_bitrate_kbps) {
+    if (video_bitrate_kbps == 0) {
+      return 0;
+    }
+
+    // Reverse the bitrate subdivision process from rtsp.cpp (lines 1118-1129)
+    // Original process:
+    // 1. Start with configuredBitrateKbps (total)
+    // 2. If FEC <= 80: total = total * (100 - fec) / 100  [FEC adjustment]
+    // 3. total = total - min(audio, total / 5)  [Audio adjustment, capped at 20%]
+    // 4. total = total - min(500, total / 10)  [Overhead adjustment, capped at 10%]
+    // Result: video_bitrate_kbps
+    
+    // To reverse, work backwards. Since caps depend on the value at that step,
+    // we use the value after the adjustment to determine if it was capped.
+    auto &audio_config = session->config.audio;
+    uint32_t audio_bitrate = (audio_config.flags[audio::config_t::HIGH_QUALITY] ? 256 : 96) * audio_config.channels;
+    
+    uint32_t total = video_bitrate_kbps;
+    
+    // Step 1: Add back overhead (500 Kbps, capped at 10% of total before subtraction)
+    // Forward path: total_after = total_before - min(500, total_before / 10)
+    // If capped: total_before = total_after + 500
+    // If not capped: total_after = total_before * 9/10, so total_before = total_after * 10/9
+    // total_after >= 4500 implies total_before was at least 5000 (capped case)
+    if (total >= 4500) {
+      // Overhead was capped at 10%
+      total += 500;
+    } else {
+      // Overhead wasn't capped
+      total = (total * 10) / 9;
+    }
+    
+    // Step 2: Add back audio bitrate (capped at 20% of total before subtraction)
+    // Forward path: total_after = total_before - min(audio, total_before / 5)
+    // If audio was capped (audio > total_before / 5): total_before = total_after * 5/4
+    // Using total_after, this is equivalent to audio > total_after / 4
+    if (audio_bitrate > total / 4) {
+      // Audio was capped at 20%
+      total = (total * 5) / 4;
+    } else {
+      // Audio wasn't capped
+      total += audio_bitrate;
+    }
+    
+    // Step 3: Add back FEC overhead based on the video bitrate (FEC applies only to video data).
+    // In rtsp.cpp, when FEC <= 80%, the video bitrate is reduced by (100 - fec) / 100.
+    // When FEC > 80%, no reduction is applied, so we just add the FEC overhead.
+    auto fec_percentage = config::stream.fec_percentage;
+    if (fec_percentage > 0) {
+      if (fec_percentage <= 80) {
+        // Reverse the reduction: multiply by 100 / (100 - fec_percentage)
+        total = static_cast<uint32_t>((static_cast<uint64_t>(total) * 100) / (100 - fec_percentage));
+      } else {
+        // No reduction was applied in rtsp.cpp, so add FEC overhead directly
+        auto total_with_fec = static_cast<uint64_t>(total) +
+                              (static_cast<uint64_t>(video_bitrate_kbps) * fec_percentage) / 100;
+        total = static_cast<uint32_t>(total_with_fec);
+      }
+    }
+
+    return total;
+  }
+
+  /**
    * @brief Send auto bitrate statistics to client.
    * @param session The streaming session.
    * @return 0 on success, -1 on error.
@@ -644,11 +720,14 @@ namespace stream {
       return -1;
     }
 
+    // Calculate total bitrate (video + FEC + audio + overhead) from video encoder bitrate
+    uint32_t total_bitrate_kbps = calculate_total_bitrate(session, current_bitrate_kbps);
+
     control_bitrate_stats_t plaintext {};
     plaintext.header.type = packetTypes[IDX_BITRATE_STATS];
     plaintext.header.payloadLength = sizeof(control_bitrate_stats_t) - sizeof(control_header_v2);
 
-    plaintext.current_bitrate_kbps = util::endian::little(current_bitrate_kbps);
+    plaintext.current_bitrate_kbps = util::endian::little(total_bitrate_kbps);
     plaintext.last_adjustment_time_ms = util::endian::little(last_adjustment_time_ms);
     plaintext.adjustment_count = util::endian::little(adjustment_count);
     
