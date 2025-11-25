@@ -521,6 +521,7 @@ namespace config {
     500,  // auto_bitrate_min_kbps
     0,    // auto_bitrate_max_kbps (0 = use client max)
     3000, // auto_bitrate_adjustment_interval_ms
+    5,    // auto_bitrate_min_adjustment_pct
     10,   // auto_bitrate_loss_severe_pct
     5,    // auto_bitrate_loss_moderate_pct
     1,    // auto_bitrate_loss_mild_pct
@@ -1232,6 +1233,7 @@ namespace config {
       int_f(vars, "auto_bitrate_min_kbps", video.auto_bitrate_min_kbps);
       int_f(vars, "auto_bitrate_max_kbps", video.auto_bitrate_max_kbps);
       int_f(vars, "auto_bitrate_adjustment_interval_ms", video.auto_bitrate_adjustment_interval_ms);
+      int_f(vars, "auto_bitrate_min_adjustment_pct", video.auto_bitrate_min_adjustment_pct);
       int_f(vars, "auto_bitrate_loss_severe_pct", video.auto_bitrate_loss_severe_pct);
       int_f(vars, "auto_bitrate_loss_moderate_pct", video.auto_bitrate_loss_moderate_pct);
       int_f(vars, "auto_bitrate_loss_mild_pct", video.auto_bitrate_loss_mild_pct);
@@ -1581,6 +1583,7 @@ namespace config {
       video.auto_bitrate_min_kbps,
       video.auto_bitrate_max_kbps,
       video.auto_bitrate_adjustment_interval_ms,
+      video.auto_bitrate_min_adjustment_pct,
       video.auto_bitrate_loss_severe_pct,
       video.auto_bitrate_loss_moderate_pct,
       video.auto_bitrate_loss_mild_pct,

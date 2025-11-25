@@ -13,6 +13,7 @@ const defaults = {
   auto_bitrate_min_kbps: 500,
   auto_bitrate_max_kbps: 0,
   auto_bitrate_adjustment_interval_ms: 3000,
+  auto_bitrate_min_adjustment_pct: 5,
   auto_bitrate_loss_severe_pct: 10,
   auto_bitrate_loss_moderate_pct: 5,
   auto_bitrate_loss_mild_pct: 1,
@@ -187,6 +188,56 @@ const validatePercentage = (event) => {
 
     <hr class="my-4">
 
+    <h5 class="mb-3">{{ $t('config.auto_bitrate_section_thresholds') }}</h5>
+
+    <!-- Loss Thresholds -->
+    <div class="mb-3">
+      <label for="auto_bitrate_loss_severe_pct" class="form-label">{{ $t('config.auto_bitrate_loss_severe_pct') }}</label>
+      <input
+        type="number"
+        class="form-control"
+        id="auto_bitrate_loss_severe_pct"
+        v-model.number="config.auto_bitrate_loss_severe_pct"
+        min="0"
+        max="100"
+        step="1"
+        @input="validatePercentage"
+      />
+      <div class="form-text">{{ $t('config.auto_bitrate_loss_severe_pct_desc') }}</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="auto_bitrate_loss_moderate_pct" class="form-label">{{ $t('config.auto_bitrate_loss_moderate_pct') }}</label>
+      <input
+        type="number"
+        class="form-control"
+        id="auto_bitrate_loss_moderate_pct"
+        v-model.number="config.auto_bitrate_loss_moderate_pct"
+        min="0"
+        max="100"
+        step="1"
+        @input="validatePercentage"
+      />
+      <div class="form-text">{{ $t('config.auto_bitrate_loss_moderate_pct_desc') }}</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="auto_bitrate_loss_mild_pct" class="form-label">{{ $t('config.auto_bitrate_loss_mild_pct') }}</label>
+      <input
+        type="number"
+        class="form-control"
+        id="auto_bitrate_loss_mild_pct"
+        v-model.number="config.auto_bitrate_loss_mild_pct"
+        min="0"
+        max="100"
+        step="1"
+        @input="validatePercentage"
+      />
+      <div class="form-text">{{ $t('config.auto_bitrate_loss_mild_pct_desc') }}</div>
+    </div>
+
+    <hr class="my-4">
+
     <h5 class="mb-3">{{ $t('config.auto_bitrate_section_adjustments') }}</h5>
 
     <!-- Decrease Severe Percentage -->
@@ -251,6 +302,38 @@ const validatePercentage = (event) => {
         @input="validatePercentage"
       />
       <div class="form-text">{{ $t('config.auto_bitrate_increase_good_pct_desc') }}</div>
+    </div>
+
+    <!-- Minimum Adjustment Threshold -->
+    <div class="mb-3">
+      <label for="auto_bitrate_min_adjustment_pct" class="form-label">{{ $t('config.auto_bitrate_min_adjustment_pct') }}</label>
+      <input
+        type="number"
+        class="form-control"
+        id="auto_bitrate_min_adjustment_pct"
+        v-model.number="config.auto_bitrate_min_adjustment_pct"
+        min="0"
+        max="100"
+        step="1"
+        @input="validatePercentage"
+      />
+      <div class="form-text">{{ $t('config.auto_bitrate_min_adjustment_pct_desc') }}</div>
+    </div>
+
+    <!-- Poor Connection Status Cap -->
+    <div class="mb-3">
+      <label for="auto_bitrate_poor_status_cap_pct" class="form-label">{{ $t('config.auto_bitrate_poor_status_cap_pct') }}</label>
+      <input
+        type="number"
+        class="form-control"
+        id="auto_bitrate_poor_status_cap_pct"
+        v-model.number="config.auto_bitrate_poor_status_cap_pct"
+        min="0"
+        max="100"
+        step="1"
+        @input="validatePercentage"
+      />
+      <div class="form-text">{{ $t('config.auto_bitrate_poor_status_cap_pct_desc') }}</div>
     </div>
 
     <hr class="my-4">
