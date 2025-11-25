@@ -90,8 +90,14 @@ namespace stream {
     // Calculate what the new bitrate would be
     double adjustment_factor = get_adjustment_factor(state, now, settings);
     
-    // Only adjust if change is significant (at least 5%)
-    if (std::abs(adjustment_factor - 1.0) < 0.05) {
+    // Only adjust if change is significant (configurable threshold)
+    int min_adjustment_pct = settings.min_adjustment_pct;
+    if (min_adjustment_pct <= 0) {
+      min_adjustment_pct = 5;  // Default to 5%
+    }
+
+    auto min_adjustment_factor = static_cast<double>(min_adjustment_pct) / 100.0;
+    if (std::abs(adjustment_factor - 1.0) < min_adjustment_factor) {
       return false;
     }
 
