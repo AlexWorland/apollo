@@ -85,7 +85,7 @@ namespace {
     return "Unknown";
   }
 
-  NV_ENC_PARAMS_RC_MODE rate_control_mode(const nvenc_config &config) {
+  NV_ENC_PARAMS_RC_MODE rate_control_mode(const nvenc::nvenc_config &config) {
     return config.vbr_rate_control ? NV_ENC_PARAMS_RC_VBR : NV_ENC_PARAMS_RC_CBR;
   }
 
