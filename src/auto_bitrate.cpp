@@ -92,12 +92,13 @@ namespace stream {
     
     // Only adjust if change is significant (configurable threshold)
     int min_adjustment_pct = settings.min_adjustment_pct;
-    if (min_adjustment_pct <= 0) {
+    if (min_adjustment_pct < 0) {
       min_adjustment_pct = 5;  // Default to 5%
     }
 
     auto min_adjustment_factor = static_cast<double>(min_adjustment_pct) / 100.0;
-    if (std::abs(adjustment_factor - 1.0) < min_adjustment_factor) {
+    if ((min_adjustment_pct == 0 && adjustment_factor == 1.0) ||
+        (min_adjustment_pct > 0 && std::abs(adjustment_factor - 1.0) < min_adjustment_factor)) {
       return false;
     }
 
