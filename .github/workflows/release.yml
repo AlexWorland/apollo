@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       CI_VERSION: ${{ github.event.release.tag_name }}
+      BUILD_VERSION: ${{ github.event.release.tag_name }}
+      BRANCH: "master"
       SUNSHINE_COMPILE_DOXYGEN: "false"
 
     steps:
