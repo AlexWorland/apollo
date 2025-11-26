@@ -1,0 +1,41 @@
+---
+name: Release
+permissions:
+  contents: write
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build-deb:
+    runs-on: ubuntu-24.04
+    env:
+      CI_VERSION: ${{ github.event.release.tag_name }}
+      BUILD_VERSION: ${{ github.event.release.tag_name }}
+      BRANCH: "master"
+      SUNSHINE_COMPILE_DOXYGEN: "false"
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+        with:
+          submodules: 'recursive'
+          fetch-depth: 1
+
+      - name: Build DEB Package
+        run: |
+          # Run the full build process to generate DEB package
+          bash ./scripts/linux_build.sh \
+            --publisher-name="alexworland" \
+            --publisher-website="https://github.com/alexworland/apollo" \
+            --publisher-issue-url="https://github.com/alexworland/apollo/issues" \
+            --step=all
+
+      - name: Upload DEB Package
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/cpack_artifacts/*.deb
+          prerelease: ${{ github.event.release.prerelease }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
