@@ -530,6 +530,8 @@ namespace video {
     PARALLEL_ENCODING | REF_FRAMES_INVALIDATION | YUV444_SUPPORT | ASYNC_TEARDOWN  // flags
   };
 #elif !defined(__APPLE__)
+  auto nvenc_rate_control_mode = [] { return config::video.nv.vbr_rate_control ? NV_ENC_PARAMS_RC_VBR : NV_ENC_PARAMS_RC_CBR; };
+
   encoder_t nvenc {
     "nvenc"sv,
     std::make_unique<encoder_platform_formats_avcodec>(
@@ -562,7 +564,7 @@ namespace video {
         {"cbr_padding"s, false},
         {"preset"s, &config::video.nv_legacy.preset},
         {"tune"s, NV_ENC_TUNING_INFO_ULTRA_LOW_LATENCY},
-        {"rc"s, NV_ENC_PARAMS_RC_CBR},
+        {"rc"s, nvenc_rate_control_mode},
         {"multipass"s, &config::video.nv_legacy.multipass},
         {"aq"s, &config::video.nv_legacy.aq},
       },
@@ -583,7 +585,7 @@ namespace video {
         {"cbr_padding"s, false},
         {"preset"s, &config::video.nv_legacy.preset},
         {"tune"s, NV_ENC_TUNING_INFO_ULTRA_LOW_LATENCY},
-        {"rc"s, NV_ENC_PARAMS_RC_CBR},
+        {"rc"s, nvenc_rate_control_mode},
         {"multipass"s, &config::video.nv_legacy.multipass},
         {"aq"s, &config::video.nv_legacy.aq},
       },
@@ -609,7 +611,7 @@ namespace video {
         {"cbr_padding"s, false},
         {"preset"s, &config::video.nv_legacy.preset},
         {"tune"s, NV_ENC_TUNING_INFO_ULTRA_LOW_LATENCY},
-        {"rc"s, NV_ENC_PARAMS_RC_CBR},
+        {"rc"s, nvenc_rate_control_mode},
         {"coder"s, &config::video.nv_legacy.h264_coder},
         {"multipass"s, &config::video.nv_legacy.multipass},
         {"aq"s, &config::video.nv_legacy.aq},

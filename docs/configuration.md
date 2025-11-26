@@ -2236,6 +2236,42 @@ editing the `conf` file in a text editor. Use the examples as reference.
     </tr>
 </table>
 
+### nvenc_vbr
+
+<table>
+    <tr>
+        <td>Description</td>
+        <td colspan="2">
+            Use NVENC variable bitrate rate control (VBR) instead of constant bitrate (CBR).
+            This keeps the same target bitrate but allows the encoder to fluctuate within the VBV window,
+            which can help preserve quality during complex scenes or when automatic bitrate adjustments are applied.
+            See @ref vbr_vs_cbr for a quick comparison of when to use VBR vs CBR.
+            @note{This option only applies when using NVENC [encoder](#encoder).}
+        </td>
+    </tr>
+    <tr>
+        <td>Default</td>
+        <td colspan="2">@code{}
+            disabled
+            @endcode</td>
+    </tr>
+    <tr>
+        <td>Example</td>
+        <td colspan="2">@code{}
+            nvenc_vbr = enabled
+            @endcode</td>
+    </tr>
+    <tr>
+        <td rowspan="2">Choices</td>
+        <td>enabled</td>
+        <td>Use VBR rate control (NV_ENC_PARAMS_RC_VBR).</td>
+    </tr>
+    <tr>
+        <td>disabled</td>
+        <td>Use CBR rate control.</td>
+    </tr>
+</table>
+
 ### nvenc_vbv_increase
 
 <table>

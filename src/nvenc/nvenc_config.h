@@ -51,6 +51,9 @@ namespace nvenc {
 
     // Intra refresh for clients that doesn't request keyframe correctly
     bool intra_refresh = false;
+
+    // Use NVENC variable bitrate rate control instead of constant bitrate
+    bool vbr_rate_control = false;
   };
 
 }  // namespace nvenc

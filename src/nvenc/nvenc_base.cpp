@@ -85,6 +85,10 @@ namespace {
     return "Unknown";
   }
 
+  NV_ENC_PARAMS_RC_MODE rate_control_mode(const nvenc_config &config) {
+    return config.vbr_rate_control ? NV_ENC_PARAMS_RC_VBR : NV_ENC_PARAMS_RC_CBR;
+  }
+
 }  // namespace
 
 namespace nvenc {
@@ -240,7 +244,7 @@ namespace nvenc {
     enc_config.profileGUID = NV_ENC_CODEC_PROFILE_AUTOSELECT_GUID;
     enc_config.gopLength = NVENC_INFINITE_GOPLENGTH;
     enc_config.frameIntervalP = 1;
-    enc_config.rcParams.rateControlMode = NV_ENC_PARAMS_RC_CBR;
+    enc_config.rcParams.rateControlMode = rate_control_mode(config);
     enc_config.rcParams.zeroReorderDelay = 1;
     enc_config.rcParams.enableLookahead = 0;
     enc_config.rcParams.lowDelayKeyFrameScale = 1;
@@ -728,7 +732,7 @@ namespace nvenc {
     enc_config.profileGUID = NV_ENC_CODEC_PROFILE_AUTOSELECT_GUID;
     enc_config.gopLength = NVENC_INFINITE_GOPLENGTH;
     enc_config.frameIntervalP = 1;
-    enc_config.rcParams.rateControlMode = NV_ENC_PARAMS_RC_CBR;
+    enc_config.rcParams.rateControlMode = rate_control_mode(config);
     enc_config.rcParams.zeroReorderDelay = 1;
     enc_config.rcParams.enableLookahead = 0;
     enc_config.rcParams.lowDelayKeyFrameScale = 1;

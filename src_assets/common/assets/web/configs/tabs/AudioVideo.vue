@@ -129,6 +129,13 @@ const validateFallbackMode = (event) => {
         :config="config"
     />
 
+    <Checkbox class="mb-3"
+              id="nvenc_vbr"
+              locale-prefix="config"
+              v-model="config.nvenc_vbr"
+              default="false"
+    ></Checkbox>
+
     <!-- Fallback Display Mode -->
     <div class="mb-3">
       <label for="fallback_mode" class="form-label">{{ $t('config.fallback_mode') }}</label>
