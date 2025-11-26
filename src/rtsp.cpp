@@ -10,8 +10,10 @@ extern "C" {
 }
 
 // standard includes
+#include <algorithm>
 #include <array>
 #include <cctype>
+#include <cstdint>
 #include <format>
 #include <set>
 #include <unordered_map>
@@ -38,6 +40,8 @@ using asio::ip::tcp;
 using asio::ip::udp;
 
 using namespace std::literals;
+
+constexpr std::int64_t CLIENT_MAX_REQUESTED_BITRATE_KBPS = 1'000'000;
 
 namespace rtsp_stream {
   void free_msg(PRTSP_MESSAGE msg) {
@@ -1015,6 +1019,8 @@ namespace rtsp_stream {
       config.monitor.width = util::from_view(args.at("x-nv-video[0].clientViewportWd"sv));
       config.monitor.framerate = util::from_view(args.at("x-nv-video[0].maxFPS"sv));
       config.monitor.bitrate = util::from_view(args.at("x-nv-vqos[0].bw.maximumBitrateKbps"sv));
+      config.monitor.bitrate =
+        std::min(config.monitor.bitrate, static_cast<int>(CLIENT_MAX_REQUESTED_BITRATE_KBPS));
       config.monitor.slicesPerFrame = util::from_view(args.at("x-nv-video[0].videoEncoderSlicesPerFrame"sv));
       config.monitor.numRefFrames = util::from_view(args.at("x-nv-video[0].maxNumReferenceFrames"sv));
       config.monitor.encoderCscMode = util::from_view(args.at("x-nv-video[0].encoderCscMode"sv));
@@ -1045,6 +1051,12 @@ namespace rtsp_stream {
 
       if (!configuredBitrateKbps) {
         configuredBitrateKbps = config.monitor.bitrate;
+      }
+
+      if (configuredBitrateKbps > CLIENT_MAX_REQUESTED_BITRATE_KBPS) {
+        BOOST_LOG(info) << "Client requested bitrate above cap, clamping to ["
+                        << CLIENT_MAX_REQUESTED_BITRATE_KBPS << "kbps]";
+        configuredBitrateKbps = CLIENT_MAX_REQUESTED_BITRATE_KBPS;
       }
 
       BOOST_LOG(info) << "Client Requested bitrate is [" << configuredBitrateKbps << "kbps]";
