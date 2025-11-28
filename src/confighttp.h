@@ -17,12 +17,21 @@
 using namespace std::chrono_literals;
 
 namespace confighttp {
-  constexpr auto PORT_HTTPS = 1;
-  constexpr auto SESSION_EXPIRE_DURATION = 24h * 15;
+  constexpr auto PORT_HTTPS = 1;  ///< HTTPS port offset from base port
+  constexpr auto SESSION_EXPIRE_DURATION = 24h * 15;  ///< Session expiration duration (15 days)
+
+  /**
+   * @brief Start the configuration HTTP server.
+   * @examples
+   * confighttp::start();
+   * @examples_end
+   */
   void start();
 }  // namespace confighttp
 
-// mime types map
+/**
+ * @brief Map of file extensions to MIME types.
+ */
 const std::map<std::string, std::string> mime_types = {
   {"css", "text/css"},
   {"gif", "image/gif"},

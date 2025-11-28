@@ -168,70 +168,80 @@ namespace config {
     bool ignore_encoder_probe_failure;
   };
 
+  /**
+   * @brief Audio configuration structure.
+   */
   struct audio_t {
-    std::string sink;
-    std::string virtual_sink;
-    bool stream;
-    bool install_steam_drivers;
-    bool keep_default;
-    bool auto_capture;
+    std::string sink;  ///< Audio sink name
+    std::string virtual_sink;  ///< Virtual audio sink name
+    bool stream;  ///< Whether to stream audio
+    bool install_steam_drivers;  ///< Whether to install Steam audio drivers
+    bool keep_default;  ///< Whether to keep default audio sink
+    bool auto_capture;  ///< Whether to auto-capture audio
   };
 
-  constexpr int ENCRYPTION_MODE_NEVER = 0;  // Never use video encryption, even if the client supports it
-  constexpr int ENCRYPTION_MODE_OPPORTUNISTIC = 1;  // Use video encryption if available, but stream without it if not supported
-  constexpr int ENCRYPTION_MODE_MANDATORY = 2;  // Always use video encryption and refuse clients that can't encrypt
+  /**
+   * @def ENCRYPTION_MODE_NEVER
+   * @brief Encryption mode: never use video encryption, even if client supports it.
+   */
+  constexpr int ENCRYPTION_MODE_NEVER = 0;
 
+  /**
+   * @def ENCRYPTION_MODE_OPPORTUNISTIC
+   * @brief Encryption mode: use video encryption if available, but stream without it if not supported.
+   */
+  constexpr int ENCRYPTION_MODE_OPPORTUNISTIC = 1;
+
+  /**
+   * @def ENCRYPTION_MODE_MANDATORY
+   * @brief Encryption mode: always use video encryption and refuse clients that can't encrypt.
+   */
+  constexpr int ENCRYPTION_MODE_MANDATORY = 2;
+
+  /**
+   * @brief Streaming configuration structure.
+   */
   struct stream_t {
-    std::chrono::milliseconds ping_timeout;
-
-    std::string file_apps;
-
-    int fec_percentage;
-
-    // Video encryption settings for LAN and WAN streams
-    int lan_encryption_mode;
-    int wan_encryption_mode;
+    std::chrono::milliseconds ping_timeout;  ///< Ping timeout duration
+    std::string file_apps;  ///< Applications configuration file path
+    int fec_percentage;  ///< Forward Error Correction percentage
+    int lan_encryption_mode;  ///< Video encryption mode for LAN streams (ENCRYPTION_MODE_*)
+    int wan_encryption_mode;  ///< Video encryption mode for WAN streams (ENCRYPTION_MODE_*)
   };
 
+  /**
+   * @brief nvhttp (GameStream HTTP) configuration structure.
+   */
   struct nvhttp_t {
-    // Could be any of the following values:
-    // pc|lan|wan
-    std::string origin_web_ui_allowed;
-
-    std::string pkey;
-    std::string cert;
-
-    std::string sunshine_name;
-
-    std::string file_state;
-
-    std::string external_ip;
+    std::string origin_web_ui_allowed;  ///< Allowed origins for Web UI (pc|lan|wan)
+    std::string pkey;  ///< Private key file path
+    std::string cert;  ///< Certificate file path
+    std::string sunshine_name;  ///< Sunshine server name
+    std::string file_state;  ///< State file path
+    std::string external_ip;  ///< External IP address
   };
 
+  /**
+   * @brief Input configuration structure.
+   */
   struct input_t {
-    std::unordered_map<int, int> keybindings;
-
-    std::chrono::milliseconds back_button_timeout;
-    std::chrono::milliseconds key_repeat_delay;
-    std::chrono::duration<double> key_repeat_period;
-
-    std::string gamepad;
-    bool ds4_back_as_touchpad_click;
-    bool motion_as_ds4;
-    bool touchpad_as_ds4;
-    bool ds5_inputtino_randomize_mac;
-
-    bool keyboard;
-    bool mouse;
-    bool controller;
-
-    bool always_send_scancodes;
-
-    bool high_resolution_scrolling;
-    bool native_pen_touch;
-
-    bool enable_input_only_mode;
-    bool forward_rumble;
+    std::unordered_map<int, int> keybindings;  ///< Key binding mappings
+    std::chrono::milliseconds back_button_timeout;  ///< Back button timeout duration
+    std::chrono::milliseconds key_repeat_delay;  ///< Key repeat delay
+    std::chrono::duration<double> key_repeat_period;  ///< Key repeat period
+    std::string gamepad;  ///< Gamepad configuration
+    bool ds4_back_as_touchpad_click;  ///< Use DS4 back button as touchpad click
+    bool motion_as_ds4;  ///< Use motion controls as DS4
+    bool touchpad_as_ds4;  ///< Use touchpad as DS4
+    bool ds5_inputtino_randomize_mac;  ///< Randomize DS5 MAC address with inputtino
+    bool keyboard;  ///< Enable keyboard input
+    bool mouse;  ///< Enable mouse input
+    bool controller;  ///< Enable controller input
+    bool always_send_scancodes;  ///< Always send scancodes
+    bool high_resolution_scrolling;  ///< Enable high-resolution scrolling
+    bool native_pen_touch;  ///< Enable native pen/touch input
+    bool enable_input_only_mode;  ///< Enable input-only mode
+    bool forward_rumble;  ///< Forward rumble/haptic feedback
   };
 
   namespace flag {
@@ -245,84 +255,116 @@ namespace config {
     };
   }  // namespace flag
 
+  /**
+   * @brief Pre/post command structure for application lifecycle management.
+   */
   struct prep_cmd_t {
+    /**
+     * @brief Construct prep command with do and undo commands.
+     * @param do_cmd Command to execute.
+     * @param undo_cmd Command to undo the do command.
+     * @param elevated Whether to run with elevated privileges.
+     */
     prep_cmd_t(std::string &&do_cmd, std::string &&undo_cmd, bool &&elevated):
         do_cmd(std::move(do_cmd)),
         undo_cmd(std::move(undo_cmd)),
         elevated(std::move(elevated)) {
     }
 
+    /**
+     * @brief Construct prep command with only do command.
+     * @param do_cmd Command to execute.
+     * @param elevated Whether to run with elevated privileges.
+     */
     explicit prep_cmd_t(std::string &&do_cmd, bool &&elevated):
         do_cmd(std::move(do_cmd)),
         elevated(std::move(elevated)) {
     }
 
-    std::string do_cmd;
-    std::string undo_cmd;
-    bool elevated;
+    std::string do_cmd;  ///< Command to execute
+    std::string undo_cmd;  ///< Command to undo (optional)
+    bool elevated;  ///< Whether to run with elevated privileges
   };
 
+  /**
+   * @brief Server command structure.
+   */
   struct server_cmd_t {
+    /**
+     * @brief Construct server command.
+     * @param cmd_name Command name.
+     * @param cmd_val Command value.
+     * @param elevated Whether to run with elevated privileges.
+     */
     server_cmd_t(std::string &&cmd_name, std::string &&cmd_val, bool &&elevated):
         cmd_name(std::move(cmd_name)),
         cmd_val(std::move(cmd_val)),
         elevated(std::move(elevated)) {
     }
-    std::string cmd_name;
-    std::string cmd_val;
-    bool elevated;
+    std::string cmd_name;  ///< Command name
+    std::string cmd_val;  ///< Command value
+    bool elevated;  ///< Whether to run with elevated privileges
   };
 
+  /**
+   * @brief Main Sunshine configuration structure.
+   */
+  /**
+   * @brief Main Sunshine configuration structure.
+   */
   struct sunshine_t {
-    bool hide_tray_controls;
-    bool enable_pairing;
-    bool enable_discovery;
-    bool envvar_compatibility_mode;
-    std::string locale;
-    int min_log_level;
-    std::bitset<flag::FLAG_SIZE> flags;
-    std::string credentials_file;
+    bool hide_tray_controls;  ///< Hide system tray controls
+    bool enable_pairing;  ///< Enable device pairing
+    bool enable_discovery;  ///< Enable device discovery
+    bool envvar_compatibility_mode;  ///< Enable environment variable compatibility mode
+    std::string locale;  ///< Locale string
+    int min_log_level;  ///< Minimum log level
+    std::bitset<flag::FLAG_SIZE> flags;  ///< Configuration flags
+    std::string credentials_file;  ///< Credentials file path
+    std::string username;  ///< Username for authentication
+    std::string password;  ///< Password for authentication
+    std::string salt;  ///< Salt for password hashing
+    std::string config_file;  ///< Configuration file path
 
-    std::string username;
-    std::string password;
-    std::string salt;
-
-    std::string config_file;
-
+    /**
+     * @brief Command structure.
+     */
     struct cmd_t {
-      std::string name;
-      int argc;
-      char **argv;
-    } cmd;
+      std::string name;  ///< Command name
+      int argc;  ///< Argument count
+      char **argv;  ///< Argument vector
+    } cmd;  ///< Command configuration
 
-    std::uint16_t port;
-    std::string address_family;
-
-    std::string log_file;
-    bool notify_pre_releases;
-    bool legacy_ordering;
-    bool system_tray;
-    std::vector<prep_cmd_t> prep_cmds;
-    std::vector<prep_cmd_t> state_cmds;
-    std::vector<server_cmd_t> server_cmds;
+    std::uint16_t port;  ///< Server port
+    std::string address_family;  ///< Address family (IPv4/IPv6)
+    std::string log_file;  ///< Log file path
+    bool notify_pre_releases;  ///< Notify about pre-releases
+    bool legacy_ordering;  ///< Use legacy ordering
+    bool system_tray;  ///< Enable system tray
+    std::vector<prep_cmd_t> prep_cmds;  ///< Pre-application commands
+    std::vector<prep_cmd_t> state_cmds;  ///< State management commands
+    std::vector<server_cmd_t> server_cmds;  ///< Server commands
   };
 
+  /**
+   * @brief Auto bitrate adjustment settings structure.
+   */
   struct auto_bitrate_settings_t {
-    int min_kbps;
-    int max_kbps;
-    int adjustment_interval_ms;
-    int min_adjustment_pct;
-    int loss_severe_pct;
-    int loss_moderate_pct;
-    int loss_mild_pct;
-    int decrease_severe_pct;
-    int decrease_moderate_pct;
-    int decrease_mild_pct;
-    int increase_good_pct;
-    int good_stability_ms;
-    int increase_min_interval_ms;
-    int poor_status_cap_pct;
-    int max_bitrate_cap;
+    int min_kbps;  ///< Minimum bitrate in Kbps
+    int max_kbps;  ///< Maximum bitrate in Kbps
+    int adjustment_interval_ms;  ///< Minimum time between adjustments in milliseconds
+    int min_adjustment_pct;  ///< Minimum percentage change required to adjust
+    int loss_severe_pct;  ///< Loss percentage considered severe
+    int loss_moderate_pct;  ///< Loss percentage considered moderate
+    int loss_mild_pct;  ///< Loss percentage considered mild
+    int decrease_severe_pct;  ///< Bitrate decrease percentage for severe loss
+    int decrease_moderate_pct;  ///< Bitrate decrease percentage for moderate loss
+    int decrease_mild_pct;  ///< Bitrate decrease percentage for mild loss
+    int increase_good_pct;  ///< Bitrate increase percentage when network is good
+    int good_stability_ms;  ///< Duration of good network required before increases
+    int increase_min_interval_ms;  ///< Minimum interval between increases
+    int poor_status_cap_pct;  ///< Cap reduction percentage when status is poor
+    int max_bitrate_cap;  ///< Maximum bitrate cap
   };
 
   extern video_t video;

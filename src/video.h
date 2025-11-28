@@ -19,60 +19,94 @@ struct AVPacket;
 
 namespace video {
 
-  /* Encoding configuration requested by remote client */
+  /**
+   * @brief Encoding configuration requested by remote client.
+   * @warning DO NOT CHANGE ORDER OR ADD FIELDS IN THE MIDDLE!
+   *          ONLY APPEND NEW FIELD AFTERWARDS!
+   */
   struct config_t {
-    // DO NOT CHANGE ORDER OR ADD FIELDS IN THE MIDDLE!!!!!
-    // ONLY APPEND NEW FIELD AFTERWARDS!!!!!!!!!
-    // BIG F WORD to Sunshine!!!!!!!!!
-    int width;  // Video width in pixels
-    int height;  // Video height in pixels
-    int framerate;  // Requested framerate, used in individual frame bitrate budget calculation
-    int bitrate;  // Video bitrate in kilobits (1000 bits) for requested framerate
-    int slicesPerFrame;  // Number of slices per frame
-    int numRefFrames;  // Max number of reference frames
-
-    /* Requested color range and SDR encoding colorspace, HDR encoding colorspace is always BT.2020+ST2084
-       Color range (encoderCscMode & 0x1) : 0 - limited, 1 - full
-       SDR encoding colorspace (encoderCscMode >> 1) : 0 - BT.601, 1 - BT.709, 2 - BT.2020 */
-    int encoderCscMode;
-
-    int videoFormat;  // 0 - H.264, 1 - HEVC, 2 - AV1
-
-    /* Encoding color depth (bit depth): 0 - 8-bit, 1 - 10-bit
-       HDR encoding activates when color depth is higher than 8-bit and the display which is being captured is operating in HDR mode */
-    int dynamicRange;
-
-    int chromaSamplingType;  // 0 - 4:2:0, 1 - 4:4:4
-
-    int enableIntraRefresh;  // 0 - disabled, 1 - enabled
-
-    int encodingFramerate; // Requested display framerate
-    bool input_only;
+    int width;  ///< Video width in pixels
+    int height;  ///< Video height in pixels
+    int framerate;  ///< Requested framerate, used in individual frame bitrate budget calculation
+    int bitrate;  ///< Video bitrate in kilobits (1000 bits) for requested framerate
+    int slicesPerFrame;  ///< Number of slices per frame
+    int numRefFrames;  ///< Max number of reference frames
+    int encoderCscMode;  ///< Color range and SDR encoding colorspace. Color range (encoderCscMode & 0x1): 0=limited, 1=full. SDR colorspace (encoderCscMode >> 1): 0=BT.601, 1=BT.709, 2=BT.2020. HDR encoding colorspace is always BT.2020+ST2084.
+    int videoFormat;  ///< Video format: 0=H.264, 1=HEVC, 2=AV1
+    int dynamicRange;  ///< Encoding color depth (bit depth): 0=8-bit, 1=10-bit. HDR activates when >8-bit and display is in HDR mode.
+    int chromaSamplingType;  ///< Chroma sampling: 0=4:2:0, 1=4:4:4
+    int enableIntraRefresh;  ///< Intra refresh: 0=disabled, 1=enabled
+    int encodingFramerate;  ///< Requested display framerate
+    bool input_only;  ///< Whether this is an input-only session
   };
 
+  /**
+   * @brief Map AVCodec hardware device type to platform memory type.
+   * @param type AVCodec hardware device type.
+   * @return Platform memory type.
+   */
   platf::mem_type_e map_base_dev_type(AVHWDeviceType type);
+
+  /**
+   * @brief Map AVCodec pixel format to platform pixel format.
+   * @param fmt AVCodec pixel format.
+   * @return Platform pixel format.
+   */
   platf::pix_fmt_e map_pix_fmt(AVPixelFormat fmt);
 
+  /**
+   * @brief Free AVCodec context.
+   * @param ctx The codec context to free.
+   */
   void free_ctx(AVCodecContext *ctx);
+
+  /**
+   * @brief Free AVFrame.
+   * @param frame The frame to free.
+   */
   void free_frame(AVFrame *frame);
+
+  /**
+   * @brief Free AVBufferRef.
+   * @param ref The buffer reference to free.
+   */
   void free_buffer(AVBufferRef *ref);
 
-  using avcodec_ctx_t = util::safe_ptr<AVCodecContext, free_ctx>;
-  using avcodec_frame_t = util::safe_ptr<AVFrame, free_frame>;
-  using avcodec_buffer_t = util::safe_ptr<AVBufferRef, free_buffer>;
-  using sws_t = util::safe_ptr<SwsContext, sws_freeContext>;
-  using img_event_t = std::shared_ptr<safe::event_t<std::shared_ptr<platf::img_t>>>;
+  using avcodec_ctx_t = util::safe_ptr<AVCodecContext, free_ctx>;  ///< Safe pointer to AVCodec context
+  using avcodec_frame_t = util::safe_ptr<AVFrame, free_frame>;  ///< Safe pointer to AVFrame
+  using avcodec_buffer_t = util::safe_ptr<AVBufferRef, free_buffer>;  ///< Safe pointer to AVBufferRef
+  using sws_t = util::safe_ptr<SwsContext, sws_freeContext>;  ///< Safe pointer to SwsContext
+  using img_event_t = std::shared_ptr<safe::event_t<std::shared_ptr<platf::img_t>>>;  ///< Image event type
 
+  /**
+   * @brief Base structure for encoder platform formats.
+   */
   struct encoder_platform_formats_t {
     virtual ~encoder_platform_formats_t() = default;
-    platf::mem_type_e dev_type;
-    platf::pix_fmt_e pix_fmt_8bit, pix_fmt_10bit;
-    platf::pix_fmt_e pix_fmt_yuv444_8bit, pix_fmt_yuv444_10bit;
+    platf::mem_type_e dev_type;  ///< Device memory type
+    platf::pix_fmt_e pix_fmt_8bit;  ///< 8-bit pixel format
+    platf::pix_fmt_e pix_fmt_10bit;  ///< 10-bit pixel format
+    platf::pix_fmt_e pix_fmt_yuv444_8bit;  ///< YUV 4:4:4 8-bit pixel format
+    platf::pix_fmt_e pix_fmt_yuv444_10bit;  ///< YUV 4:4:4 10-bit pixel format
   };
 
+  /**
+   * @brief AVCodec-based encoder platform formats structure.
+   */
   struct encoder_platform_formats_avcodec: encoder_platform_formats_t {
-    using init_buffer_function_t = std::function<util::Either<avcodec_buffer_t, int>(platf::avcodec_encode_device_t *)>;
+    using init_buffer_function_t = std::function<util::Either<avcodec_buffer_t, int>(platf::avcodec_encode_device_t *)>;  ///< Buffer initialization function type
 
+    /**
+     * @brief Construct AVCodec encoder platform formats.
+     * @param avcodec_base_dev_type Base AVCodec hardware device type.
+     * @param avcodec_derived_dev_type Derived AVCodec hardware device type.
+     * @param avcodec_dev_pix_fmt Device pixel format.
+     * @param avcodec_pix_fmt_8bit 8-bit pixel format.
+     * @param avcodec_pix_fmt_10bit 10-bit pixel format.
+     * @param avcodec_pix_fmt_yuv444_8bit YUV 4:4:4 8-bit pixel format.
+     * @param avcodec_pix_fmt_yuv444_10bit YUV 4:4:4 10-bit pixel format.
+     * @param init_avcodec_hardware_input_buffer_function Function to initialize hardware input buffer.
+     */
     encoder_platform_formats_avcodec(
       const AVHWDeviceType &avcodec_base_dev_type,
       const AVHWDeviceType &avcodec_derived_dev_type,
@@ -98,15 +132,28 @@ namespace video {
       pix_fmt_yuv444_10bit = map_pix_fmt(avcodec_pix_fmt_yuv444_10bit);
     }
 
-    AVHWDeviceType avcodec_base_dev_type, avcodec_derived_dev_type;
-    AVPixelFormat avcodec_dev_pix_fmt;
-    AVPixelFormat avcodec_pix_fmt_8bit, avcodec_pix_fmt_10bit;
-    AVPixelFormat avcodec_pix_fmt_yuv444_8bit, avcodec_pix_fmt_yuv444_10bit;
-
-    init_buffer_function_t init_avcodec_hardware_input_buffer;
+    AVHWDeviceType avcodec_base_dev_type;  ///< Base AVCodec hardware device type
+    AVHWDeviceType avcodec_derived_dev_type;  ///< Derived AVCodec hardware device type
+    AVPixelFormat avcodec_dev_pix_fmt;  ///< Device pixel format
+    AVPixelFormat avcodec_pix_fmt_8bit;  ///< 8-bit pixel format
+    AVPixelFormat avcodec_pix_fmt_10bit;  ///< 10-bit pixel format
+    AVPixelFormat avcodec_pix_fmt_yuv444_8bit;  ///< YUV 4:4:4 8-bit pixel format
+    AVPixelFormat avcodec_pix_fmt_yuv444_10bit;  ///< YUV 4:4:4 10-bit pixel format
+    init_buffer_function_t init_avcodec_hardware_input_buffer;  ///< Hardware input buffer initialization function
   };
 
+  /**
+   * @brief NVENC encoder platform formats structure.
+   */
   struct encoder_platform_formats_nvenc: encoder_platform_formats_t {
+    /**
+     * @brief Construct NVENC encoder platform formats.
+     * @param dev_type Device memory type.
+     * @param pix_fmt_8bit 8-bit pixel format.
+     * @param pix_fmt_10bit 10-bit pixel format.
+     * @param pix_fmt_yuv444_8bit YUV 4:4:4 8-bit pixel format.
+     * @param pix_fmt_yuv444_10bit YUV 4:4:4 10-bit pixel format.
+     */
     encoder_platform_formats_nvenc(
       const platf::mem_type_e &dev_type,
       const platf::pix_fmt_e &pix_fmt_8bit,
@@ -122,9 +169,15 @@ namespace video {
     }
   };
 
+  /**
+   * @brief Encoder structure containing codec configurations and capabilities.
+   */
   struct encoder_t {
-    std::string_view name;
+    std::string_view name;  ///< Encoder name
 
+    /**
+     * @brief Encoder capability flags.
+     */
     enum flag_e {
       PASSED,  ///< Indicates the encoder is supported.
       REF_FRAMES_RESTRICT,  ///< Set maximum reference frames.
@@ -134,6 +187,11 @@ namespace video {
       MAX_FLAGS  ///< Maximum number of flags.
     };
 
+    /**
+     * @brief Convert flag enum to string view.
+     * @param flag The flag to convert.
+     * @return String representation of the flag.
+     */
     static std::string_view from_flag(flag_e flag) {
 #define _CONVERT(x) \
   case flag_e::x: \
@@ -151,40 +209,62 @@ namespace video {
       return {"unknown"};
     }
 
+    /**
+     * @brief Encoder option structure.
+     */
     struct option_t {
       KITTY_DEFAULT_CONSTR_MOVE(option_t)
       option_t(const option_t &) = default;
 
-      std::string name;
-      std::variant<int, int *, std::optional<int> *, std::function<int()>, std::string, std::string *, std::function<const std::string(const config_t &)>> value;
+      std::string name;  ///< Option name
+      std::variant<int, int *, std::optional<int> *, std::function<int()>, std::string, std::string *, std::function<const std::string(const config_t &)>> value;  ///< Option value (can be various types)
 
+      /**
+       * @brief Construct encoder option.
+       * @param name Option name.
+       * @param value Option value.
+       */
       option_t(std::string &&name, decltype(value) &&value):
           name {std::move(name)},
           value {std::move(value)} {
       }
     };
 
-    const std::unique_ptr<const encoder_platform_formats_t> platform_formats;
+    const std::unique_ptr<const encoder_platform_formats_t> platform_formats;  ///< Platform-specific formats
 
+    /**
+     * @brief Codec configuration structure.
+     */
     struct codec_t {
-      std::vector<option_t> common_options;
-      std::vector<option_t> sdr_options;
-      std::vector<option_t> hdr_options;
-      std::vector<option_t> sdr444_options;
-      std::vector<option_t> hdr444_options;
-      std::vector<option_t> fallback_options;
+      std::vector<option_t> common_options;  ///< Common encoder options
+      std::vector<option_t> sdr_options;  ///< SDR-specific options
+      std::vector<option_t> hdr_options;  ///< HDR-specific options
+      std::vector<option_t> sdr444_options;  ///< SDR 4:4:4-specific options
+      std::vector<option_t> hdr444_options;  ///< HDR 4:4:4-specific options
+      std::vector<option_t> fallback_options;  ///< Fallback options
+      std::string name;  ///< Codec name
+      std::bitset<MAX_FLAGS> capabilities;  ///< Codec capability flags
 
-      std::string name;
-      std::bitset<MAX_FLAGS> capabilities;
-
+      /**
+       * @brief Check if a capability flag is set (const).
+       * @param flag The flag to check.
+       * @return `true` if flag is set, `false` otherwise.
+       */
       bool operator[](flag_e flag) const {
         return capabilities[(std::size_t) flag];
       }
 
+      /**
+       * @brief Get reference to a capability flag.
+       * @param flag The flag to access.
+       * @return Reference to the flag bit.
+       */
       std::bitset<MAX_FLAGS>::reference operator[](flag_e flag) {
         return capabilities[(std::size_t) flag];
       }
-    } av1, hevc, h264;
+    } av1;  ///< AV1 codec configuration
+    codec_t hevc;  ///< HEVC codec configuration
+    codec_t h264;  ///< H.264 codec configuration
 
     const codec_t &codec_from_config(const config_t &config) const {
       switch (config.videoFormat) {

@@ -11,6 +11,10 @@
 
 namespace stream {
 
+  /**
+   * @brief Constructs an auto bitrate controller.
+   *        Initializes an empty controller with no active sessions.
+   */
   auto_bitrate_controller_t::auto_bitrate_controller_t() {
   }
 
@@ -226,6 +230,24 @@ namespace stream {
     }
   }
 
+  /**
+   * @brief Computes frame loss percentage based on expected vs actual frame progression.
+   * 
+   * This method calculates packet loss by comparing the expected frame number (based on
+   * framerate and time elapsed) with the last good frame reported by the client.
+   * 
+   * Algorithm:
+   * 1. Get the last reported good frame from session state
+   * 2. Calculate expected frames based on framerate and time interval
+   * 3. Compute expected current frame = last_reported + expected_frames
+   * 4. If client's lastGoodFrame < expected_current_frame, frames were lost
+   * 5. Loss percentage = (lost_frames / expected_frames) * 100
+   * 
+   * @param session The streaming session.
+   * @param lastGoodFrame Last successfully received frame number from client.
+   * @param time_interval Time interval in milliseconds since last report.
+   * @return Loss percentage (0-100), or 0.0 if calculation cannot be performed.
+   */
   double auto_bitrate_controller_t::compute_loss_percentage(session_t *session, 
                                                              uint64_t lastGoodFrame,
                                                              std::chrono::milliseconds time_interval) const {
@@ -236,30 +258,35 @@ namespace stream {
 
     const auto &state = it->second;
     
+    // First report from client - no baseline to compare against yet
     if (state.last_reported_good_frame == 0) {
-      // First report, no loss yet
       return 0.0;
     }
 
-    // Calculate expected frame progression
+    // Calculate expected frame progression based on configured framerate
+    // Framerate may be in fps (if <= 1000) or millifps (if > 1000)
     float framerate = static_cast<float>(session->config.monitor.framerate);
     if (framerate > 1000) {
       framerate = framerate / 1000.0f;  // Convert from millifps to fps
     }
 
+    // Expected frames = framerate (fps) * time_interval (seconds)
     float expected_frames = framerate * (time_interval.count() / 1000.0f);
     uint64_t expected_current_frame = state.last_reported_good_frame + static_cast<uint64_t>(expected_frames);
 
-    // Calculate loss
+    // Calculate actual loss: if client reports a frame number less than expected,
+    // the difference represents lost frames
     int64_t loss_count = 0;
     if (lastGoodFrame < expected_current_frame) {
       loss_count = static_cast<int64_t>(expected_current_frame - lastGoodFrame);
     }
 
+    // Safety check: avoid division by zero
     if (expected_frames <= 0) {
       return 0.0;
     }
 
+    // Convert loss count to percentage
     double loss_percentage = (static_cast<double>(loss_count) / expected_frames) * 100.0;
     return loss_percentage;
   }

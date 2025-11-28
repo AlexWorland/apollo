@@ -62,23 +62,46 @@ namespace nvhttp {
    */
   void start();
 
+  /**
+   * @brief Get an argument value from the arguments map.
+   * @param args The arguments map.
+   * @param name The argument name.
+   * @param default_value The default value if not found (default: nullptr).
+   * @return The argument value or default.
+   */
   std::string
   get_arg(const args_t &args, const char *name, const char *default_value = nullptr);
 
-  // Helper function to extract command entries
+  /**
+   * @brief Extract command entries from JSON.
+   * @param j The JSON object.
+   * @param key The JSON key containing command entries.
+   * @return List of command entries.
+   */
   cmd_list_t
   extract_command_entries(const nlohmann::json& j, const std::string& key);
 
+  /**
+   * @brief Create a launch session from arguments.
+   * @param host_audio Whether to enable host audio.
+   * @param input_only Whether this is an input-only session.
+   * @param args The request arguments.
+   * @param named_cert_p Pointer to named certificate (can be nullptr).
+   * @return Shared pointer to launch session.
+   */
   std::shared_ptr<rtsp_stream::launch_session_t>
   make_launch_session(bool host_audio, bool input_only, const args_t &args, const crypto::named_cert_t* named_cert_p);
 
   /**
-   * @brief Setup the nvhttp server.
-   * @param pkey
-   * @param cert
+   * @brief Setup the nvhttp server with credentials.
+   * @param pkey The private key in PEM format.
+   * @param cert The certificate in PEM format.
    */
   void setup(const std::string &pkey, const std::string &cert);
 
+  /**
+   * @brief Custom HTTPS server class that gracefully shuts down TLS connections.
+   */
   class SunshineHTTPS: public SimpleWeb::HTTPS {
   public:
     SunshineHTTPS(boost::asio::io_context &io_context, boost::asio::ssl::context &ctx):
@@ -92,6 +115,9 @@ namespace nvhttp {
     }
   };
 
+  /**
+   * @brief Pairing phase enumeration.
+   */
   enum class PAIR_PHASE {
     NONE,  ///< Sunshine is not in a pairing phase
     GETSERVERCERT,  ///< Sunshine is in the get server certificate phase
@@ -100,36 +126,39 @@ namespace nvhttp {
     CLIENTPAIRINGSECRET  ///< Sunshine is in the client pairing secret phase
   };
 
+  /**
+   * @brief Pairing session structure.
+   */
   struct pair_session_t {
     struct {
-      std::string uniqueID = {};
-      std::string cert = {};
-      std::string name = {};
+      std::string uniqueID = {};  ///< Client unique identifier
+      std::string cert = {};  ///< Client certificate
+      std::string name = {};  ///< Client device name
     } client;
 
-    std::unique_ptr<crypto::aes_t> cipher_key = {};
-    std::vector<uint8_t> clienthash = {};
+    std::unique_ptr<crypto::aes_t> cipher_key = {};  ///< AES cipher key for pairing
+    std::vector<uint8_t> clienthash = {};  ///< Client hash for verification
 
-    std::string serversecret = {};
-    std::string serverchallenge = {};
+    std::string serversecret = {};  ///< Server secret for pairing
+    std::string serverchallenge = {};  ///< Server challenge for pairing
 
     struct {
       util::Either<
         std::shared_ptr<typename SimpleWeb::ServerBase<SimpleWeb::HTTP>::Response>,
         std::shared_ptr<typename SimpleWeb::ServerBase<SunshineHTTPS>::Response>>
-        response;
-      std::string salt = {};
+        response;  ///< HTTP response for async PIN insertion
+      std::string salt = {};  ///< Salt for key derivation
     } async_insert_pin;
 
     /**
-     * @brief used as a security measure to prevent out of order calls
+     * @brief Used as a security measure to prevent out of order calls.
      */
     PAIR_PHASE last_phase = PAIR_PHASE::NONE;
   };
 
   /**
-   * @brief removes the temporary pairing session
-   * @param sess
+   * @brief Remove the temporary pairing session.
+   * @param sess The pairing session to remove.
    */
   void remove_session(const pair_session_t &sess);
 
@@ -195,6 +224,12 @@ namespace nvhttp {
    */
   bool pin(std::string pin, std::string name);
 
+  /**
+   * @brief Request a one-time password (OTP) for pairing.
+   * @param passphrase The passphrase for OTP generation.
+   * @param deviceName The device name requesting the OTP.
+   * @return The OTP string.
+   */
   std::string request_otp(const std::string& passphrase, const std::string& deviceName);
 
   /**

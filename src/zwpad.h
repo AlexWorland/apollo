@@ -1,4 +1,8 @@
-// zero_width_pad.hpp
+/**
+ * @file src/zwpad.h
+ * @brief Zero-width padding utilities for string ordering.
+ */
+
 #pragma once
 #include <string>
 #include <bit>      // std::bit_width – C++20
