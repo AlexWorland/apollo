@@ -24,7 +24,7 @@ The client-side stats display shows real-time information about automatic bitrat
 
 A dedicated "Auto Bitrate" tab in Sunshine's web configuration interface (`https://localhost:47990`) provides three tuning parameters:
 
-- **Minimum Bitrate**: Lower bound for bitrate adjustments (default: 500 Kbps)
+- **Minimum Bitrate**: Lower bound for bitrate adjustments (default: 1 Kbps)
 - **Maximum Bitrate**: Upper bound for bitrate adjustments (default: 0 = use client max)
 - **Adjustment Interval**: Minimum time between adjustments (default: 3000 ms)
 
@@ -275,7 +275,7 @@ The Vue component provides three input fields with validation:
   <div id="auto-bitrate" class="config-page">
     <!-- Minimum Bitrate -->
     <input type="number" v-model.number="config.auto_bitrate_min_kbps"
-           min="500" step="100" @input="validateMinBitrate" />
+          min="1" step="1" @input="validateMinBitrate" />
     
     <!-- Maximum Bitrate -->
     <input type="number" v-model.number="config.auto_bitrate_max_kbps"
@@ -290,7 +290,7 @@ The Vue component provides three input fields with validation:
 
 #### Validation Rules
 
-- **Minimum Bitrate**: Must be ≥ 500 Kbps
+- **Minimum Bitrate**: Must be ≥ 1 Kbps
 - **Maximum Bitrate**: Must be 0 (use client max) or ≥ minimum bitrate
 - **Adjustment Interval**: Must be ≥ 1000 ms
 
@@ -302,7 +302,7 @@ Configuration values are parsed from `sunshine.conf`:
 
 ```cpp
 video.auto_bitrate_min_kbps = 
-    util::from_view(config_file["video"]["auto_bitrate_min_kbps"], 500);
+    util::from_view(config_file["video"]["auto_bitrate_min_kbps"], 1);
 video.auto_bitrate_max_kbps = 
     util::from_view(config_file["video"]["auto_bitrate_max_kbps"], 0);
 video.auto_bitrate_adjustment_interval_ms = 
@@ -313,7 +313,7 @@ video.auto_bitrate_adjustment_interval_ms =
 
 ```ini
 [video]
-auto_bitrate_min_kbps = 500
+auto_bitrate_min_kbps = 1
 auto_bitrate_max_kbps = 0
 auto_bitrate_adjustment_interval_ms = 3000
 ```
@@ -358,7 +358,7 @@ Total adjustments: 3
 
 | Parameter | Default | Range | Description |
 |-----------|---------|-------|-------------|
-| Minimum Bitrate | 500 Kbps | ≥ 500 | Lower bound for bitrate adjustments |
+| Minimum Bitrate | 1 Kbps | ≥ 1 | Lower bound for bitrate adjustments |
 | Maximum Bitrate | 0 (client max) | 0 or ≥ min | Upper bound (0 = use client's max) |
 | Adjustment Interval | 3000 ms | ≥ 1000 | Minimum time between adjustments |
 

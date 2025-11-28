@@ -8,7 +8,7 @@ This document is both a quick-start guide for using automatic bitrate adjustment
 - **Protocol requirement:** Moonlight ≥ 7.1.415 (periodic ping path) for Sunshine targets. Older clients fall back to legacy loss stats.
 - **Encoder support:** Dynamic bitrate reconfigure is implemented for NVENC only. Other encoders will reject changes (logged) and the controller will keep its last confirmed bitrate.
 - **Tuning (sunshine.conf):**
-  - `video.auto_bitrate_min_kbps` (default 500)
+  - `video.auto_bitrate_min_kbps` (default 1)
   - `video.auto_bitrate_max_kbps` (default 0 = use client max)
   - `video.auto_bitrate_adjustment_interval_ms` (default 3000)
 

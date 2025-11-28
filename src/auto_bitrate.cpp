@@ -125,7 +125,7 @@ namespace stream {
     // Get min/max bounds
     int min_bitrate = settings.min_kbps;
     if (min_bitrate <= 0) {
-      min_bitrate = 500;  // Default minimum
+      min_bitrate = 1;  // Default minimum
     }
 
     int max_bitrate = settings.max_kbps;
