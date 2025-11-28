@@ -343,7 +343,7 @@
     "max_bitrate_desc": "The maximum bitrate (in Kbps) that Apollo will encode the stream at. If set to 0, it will always use the bitrate requested by the client.",
     "auto_bitrate_min_kbps": "Minimum Bitrate",
     "auto_bitrate_min_kbps_desc": "The minimum bitrate (in Kbps) for automatic bitrate adjustment. The encoder bitrate will never go below this value when auto bitrate is enabled.",
-    "auto_bitrate_min_kbps_error": "Minimum bitrate must be at least 500 Kbps",
+    "auto_bitrate_min_kbps_error": "Minimum bitrate must be at least 1 Kbps",
     "auto_bitrate_max_kbps": "Maximum Bitrate",
     "auto_bitrate_max_kbps_desc": "The maximum bitrate (in Kbps) for automatic bitrate adjustment. Set to 0 to use the client's requested maximum bitrate as the limit.",
     "auto_bitrate_max_kbps_error": "Maximum bitrate must be 0 or greater than minimum bitrate",

@@ -1147,10 +1147,56 @@ namespace rtsp_stream {
     // Parse auto bitrate enabled flag from client
     // This flag is sent ONLY when the client-side checkbox is checked
     bool auto_bitrate_enabled = false;
+    int auto_bitrate_min_kbps = 0;
+    int auto_bitrate_max_kbps = 0;
     try {
       auto auto_bitrate_str = args.at("x-ml-video.autoBitrateEnabled"sv);
       auto_bitrate_enabled = (util::from_view(auto_bitrate_str) != 0);
       BOOST_LOG(info) << "Client auto bitrate enabled: " << (auto_bitrate_enabled ? "yes" : "no");
+      
+      // Parse min/max bitrate if auto bitrate is enabled
+      if (auto_bitrate_enabled) {
+        try {
+          auto min_bitrate_str = args.at("x-ml-video.autoBitrateMinKbps"sv);
+          auto_bitrate_min_kbps = util::from_view(min_bitrate_str);
+          BOOST_LOG(info) << "Client auto bitrate min: " << auto_bitrate_min_kbps << " Kbps";
+        } catch (std::out_of_range &) {
+          // Default to 1 Kbps if not provided
+          auto_bitrate_min_kbps = 1;
+          BOOST_LOG(debug) << "Client auto bitrate min not provided, defaulting to 1 Kbps";
+        }
+        
+        try {
+          auto max_bitrate_str = args.at("x-ml-video.autoBitrateMaxKbps"sv);
+          auto_bitrate_max_kbps = util::from_view(max_bitrate_str);
+          BOOST_LOG(info) << "Client auto bitrate max: " << auto_bitrate_max_kbps << " Kbps";
+        } catch (std::out_of_range &) {
+          // Default to configured bitrate if not provided
+          auto_bitrate_max_kbps = configuredBitrateKbps > 0 ? configuredBitrateKbps : 10000;  // Fallback to 10 Mbps if configured bitrate is invalid
+          BOOST_LOG(debug) << "Client auto bitrate max not provided, defaulting to configured bitrate: " << auto_bitrate_max_kbps << " Kbps";
+        }
+        
+        // Validate min <= max
+        if (auto_bitrate_min_kbps > auto_bitrate_max_kbps) {
+          BOOST_LOG(warning) << "Client auto bitrate min (" << auto_bitrate_min_kbps 
+                            << " Kbps) > max (" << auto_bitrate_max_kbps 
+                            << " Kbps), adjusting max to min";
+          auto_bitrate_max_kbps = auto_bitrate_min_kbps;
+        }
+        
+        // Validate values are reasonable
+        if (auto_bitrate_min_kbps < 1) {
+          BOOST_LOG(warning) << "Client auto bitrate min (" << auto_bitrate_min_kbps 
+                            << " Kbps) < 1, clamping to 1 Kbps";
+          auto_bitrate_min_kbps = 1;
+        }
+        if (auto_bitrate_max_kbps > CLIENT_MAX_REQUESTED_BITRATE_KBPS) {
+          BOOST_LOG(warning) << "Client auto bitrate max (" << auto_bitrate_max_kbps 
+                            << " Kbps) > limit (" << CLIENT_MAX_REQUESTED_BITRATE_KBPS 
+                            << " Kbps), clamping to limit";
+          auto_bitrate_max_kbps = CLIENT_MAX_REQUESTED_BITRATE_KBPS;
+        }
+      }
     } catch (std::out_of_range &) {
       // Flag not present = checkbox unchecked = use existing static bitrate flow
       auto_bitrate_enabled = false;
@@ -1181,8 +1227,10 @@ namespace rtsp_stream {
       return;
     }
 
-    // Store auto bitrate flag in launch session - will be copied to stream session during alloc
+    // Store auto bitrate flag and min/max in launch session - will be copied to stream session during alloc
     session.auto_bitrate_enabled = auto_bitrate_enabled;
+    session.auto_bitrate_min_kbps = auto_bitrate_min_kbps;
+    session.auto_bitrate_max_kbps = auto_bitrate_max_kbps;
     
     auto stream_session = stream::session::alloc(config, session);
     

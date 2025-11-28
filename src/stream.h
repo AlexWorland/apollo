@@ -238,6 +238,8 @@ namespace stream {
     bool auto_bitrate_enabled = false;  // Enable auto bitrate for this session
                                        // Set to true ONLY when client checkbox is checked
                                        // When false, use existing static bitrate flow
+    int auto_bitrate_min_kbps = 0;  // Client-requested minimum bitrate (0 = not set, use server config default)
+    int auto_bitrate_max_kbps = 0;  // Client-requested maximum bitrate (0 = not set, use configured bitrate)
     bool auto_bitrate_v2_active = false;  // True once V2 telemetry is received for this session
     
     int bitrate_stats_send_counter = 0;  // Counter for periodic stats sending
