@@ -22,25 +22,37 @@ namespace audio {
     MAX_STREAM_CONFIG  ///< Maximum audio stream configuration
   };
 
+  /**
+   * @brief Opus stream configuration structure.
+   */
   struct opus_stream_config_t {
-    std::int32_t sampleRate;
-    int channelCount;
-    int streams;
-    int coupledStreams;
-    const std::uint8_t *mapping;
-    int bitrate;
+    std::int32_t sampleRate;  ///< Sample rate in Hz
+    int channelCount;  ///< Number of audio channels
+    int streams;  ///< Number of Opus streams
+    int coupledStreams;  ///< Number of coupled streams
+    const std::uint8_t *mapping;  ///< Channel mapping array
+    int bitrate;  ///< Bitrate in bits per second
   };
 
+  /**
+   * @brief Stream parameters structure.
+   */
   struct stream_params_t {
-    int channelCount;
-    int streams;
-    int coupledStreams;
-    std::uint8_t mapping[8];
+    int channelCount;  ///< Number of audio channels
+    int streams;  ///< Number of Opus streams
+    int coupledStreams;  ///< Number of coupled streams
+    std::uint8_t mapping[8];  ///< Channel mapping array
   };
 
-  extern opus_stream_config_t stream_configs[MAX_STREAM_CONFIG];
+  extern opus_stream_config_t stream_configs[MAX_STREAM_CONFIG];  ///< Predefined stream configurations
 
+  /**
+   * @brief Audio configuration structure.
+   */
   struct config_t {
+    /**
+     * @brief Audio configuration flags.
+     */
     enum flags_e : int {
       HIGH_QUALITY,  ///< High quality audio
       HOST_AUDIO,  ///< Host audio
@@ -48,29 +60,23 @@ namespace audio {
       MAX_FLAGS  ///< Maximum number of flags
     };
 
-    int packetDuration;
-    int channels;
-    int mask;
-
-    stream_params_t customStreamParams;
-
-    std::bitset<MAX_FLAGS> flags;
-
-    // Who TF knows what Sunshine did
-    // putting input_only at the end of flags will always be over written to true
-    uint64_t __padding;
-
-    bool input_only;
+    int packetDuration;  ///< Packet duration in milliseconds
+    int channels;  ///< Number of audio channels
+    int mask;  ///< Channel mask
+    stream_params_t customStreamParams;  ///< Custom stream parameters
+    std::bitset<MAX_FLAGS> flags;  ///< Configuration flags
+    uint64_t __padding;  ///< Padding to prevent input_only from being overwritten
+    bool input_only;  ///< Whether this is input-only mode
   };
 
+  /**
+   * @brief Audio context structure.
+   */
   struct audio_ctx_t {
-    // We want to change the sink for the first stream only
-    std::unique_ptr<std::atomic_bool> sink_flag;
-
-    std::unique_ptr<platf::audio_control_t> control;
-
-    bool restore_sink;
-    platf::sink_t sink;
+    std::unique_ptr<std::atomic_bool> sink_flag;  ///< Flag to change sink for first stream only
+    std::unique_ptr<platf::audio_control_t> control;  ///< Platform audio control
+    bool restore_sink;  ///< Whether to restore original sink
+    platf::sink_t sink;  ///< Audio sink
   };
 
   using buffer_t = util::buffer_t<std::uint8_t>;
