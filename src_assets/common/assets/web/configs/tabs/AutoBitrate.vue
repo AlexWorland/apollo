@@ -10,7 +10,7 @@ const props = defineProps([
 
 // Default values (mirrors config.cpp/config.h defaults)
 const defaults = {
-  auto_bitrate_min_kbps: 500,
+  auto_bitrate_min_kbps: 1,
   auto_bitrate_max_kbps: 0,
   auto_bitrate_adjustment_interval_ms: 3000,
   auto_bitrate_min_adjustment_pct: 5,
@@ -43,7 +43,7 @@ const resetToDefaults = () => {
 
 const validateMinBitrate = (event) => {
   const value = parseInt(event.target.value);
-  if (isNaN(value) || value < 500) {
+  if (isNaN(value) || value < 1) {
     event.target.setCustomValidity($t('config.auto_bitrate_min_kbps_error'));
   } else {
     event.target.setCustomValidity('');
@@ -53,7 +53,7 @@ const validateMinBitrate = (event) => {
 
 const validateMaxBitrate = (event) => {
   const value = parseInt(event.target.value);
-  const minValue = parseInt(config.value.auto_bitrate_min_kbps) || 500;
+  const minValue = parseInt(config.value.auto_bitrate_min_kbps) || 1;
   if (value !== 0 && (isNaN(value) || value < minValue)) {
     event.target.setCustomValidity($t('config.auto_bitrate_max_kbps_error'));
   } else {
@@ -115,7 +115,7 @@ const validatePercentage = (event) => {
         class="form-control"
         id="auto_bitrate_min_kbps"
         v-model.number="config.auto_bitrate_min_kbps"
-        min="500"
+        min="1"
         step="100"
         @input="validateMinBitrate"
       />

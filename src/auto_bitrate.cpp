@@ -123,23 +123,65 @@ namespace stream {
     int new_bitrate = static_cast<int>(state.current_bitrate_kbps * adjustment_factor);
 
     // Get min/max bounds
-    int min_bitrate = settings.min_kbps;
-    if (min_bitrate <= 0) {
-      min_bitrate = 500;  // Default minimum
+    // Start with client-provided values (if set)
+    int client_min = session->auto_bitrate_min_kbps > 0 ? session->auto_bitrate_min_kbps : 0;
+    int client_max = session->auto_bitrate_max_kbps > 0 ? session->auto_bitrate_max_kbps : 0;
+    
+    // Get server config bounds
+    int server_min = settings.min_kbps;
+    if (server_min <= 0) {
+      server_min = 1;  // Default minimum (changed from 500 to 1 Kbps)
     }
-
-    int max_bitrate = settings.max_kbps;
-    if (max_bitrate <= 0) {
-      // Use client's requested max or config max_bitrate
-      max_bitrate = session->config.monitor.bitrate;
-      if (settings.max_bitrate_cap > 0 && settings.max_bitrate_cap < max_bitrate) {
-        max_bitrate = settings.max_bitrate_cap;
+    
+    int server_max = settings.max_kbps;
+    if (server_max <= 0) {
+      // Use config max_bitrate cap if set, otherwise no server limit
+      server_max = settings.max_bitrate_cap > 0 ? settings.max_bitrate_cap : 0;
+    } else {
+      // Server max is set, apply cap if configured
+      if (settings.max_bitrate_cap > 0 && settings.max_bitrate_cap < server_max) {
+        server_max = settings.max_bitrate_cap;
+      }
+    }
+    
+    // Calculate final bounds: use client values as base, clamp by server config
+    int min_bitrate = client_min > 0 ? client_min : server_min;
+    // Apply server minimum clamp (server min is absolute minimum)
+    if (server_min > 0 && min_bitrate < server_min) {
+      min_bitrate = server_min;
+    }
+    
+    int max_bitrate;
+    if (client_max > 0) {
+      max_bitrate = client_max;
+      // Apply server maximum clamp (server max is absolute maximum if set)
+      if (server_max > 0 && max_bitrate > server_max) {
+        max_bitrate = server_max;
       }
     } else {
-      // Use minimum of auto_bitrate_max_kbps and config max_bitrate
-      if (settings.max_bitrate_cap > 0 && settings.max_bitrate_cap < max_bitrate) {
-        max_bitrate = settings.max_bitrate_cap;
+      // No client max provided, use server max or configured bitrate
+      if (server_max > 0) {
+        max_bitrate = server_max;
+      } else {
+        max_bitrate = session->config.monitor.bitrate;
+        // Ensure max is at least 1 Kbps (safety check)
+        if (max_bitrate < 1) {
+          max_bitrate = 1000;  // Fallback to 1 Mbps if configured bitrate is invalid
+        }
       }
+    }
+    
+    // Ensure min <= max
+    if (min_bitrate > max_bitrate) {
+      min_bitrate = max_bitrate;
+    }
+    
+    // Final safety check: ensure both are at least 1 Kbps
+    if (min_bitrate < 1) {
+      min_bitrate = 1;
+    }
+    if (max_bitrate < 1) {
+      max_bitrate = 1;
     }
 
     new_bitrate = clamp_bitrate(new_bitrate, min_bitrate, max_bitrate);

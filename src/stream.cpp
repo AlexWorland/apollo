@@ -2370,6 +2370,8 @@ namespace stream {
       session->config = config;
 
       session->auto_bitrate_enabled = launch_session.auto_bitrate_enabled;
+      session->auto_bitrate_min_kbps = launch_session.auto_bitrate_min_kbps;
+      session->auto_bitrate_max_kbps = launch_session.auto_bitrate_max_kbps;
 
       session->control.connect_data = launch_session.control_connect_data;
       session->control.feedback_queue = mail->queue<platf::gamepad_feedback_msg_t>(mail::gamepad_feedback);

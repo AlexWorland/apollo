@@ -148,7 +148,7 @@ namespace config {
 
     // Auto bitrate adjustment settings (only used when client enables it)
     // Note: Feature is controlled by client checkbox, these are host-side tuning parameters
-    int auto_bitrate_min_kbps = 500;  // Minimum bitrate (Kbps)
+    int auto_bitrate_min_kbps = 1;  // Minimum bitrate (Kbps)
     int auto_bitrate_max_kbps = 0;    // Maximum bitrate (0 = use client max)
     int auto_bitrate_adjustment_interval_ms = 3000;  // Minimum time between adjustments
     int auto_bitrate_min_adjustment_pct = 5;  // Minimum % delta required to change bitrate

@@ -518,7 +518,7 @@ namespace config {
     0,  // max_bitrate
     0,  // minimum_fps_target (0 = framerate)
 
-    500,  // auto_bitrate_min_kbps
+    1,  // auto_bitrate_min_kbps
     0,    // auto_bitrate_max_kbps (0 = use client max)
     3000, // auto_bitrate_adjustment_interval_ms
     5,    // auto_bitrate_min_adjustment_pct
