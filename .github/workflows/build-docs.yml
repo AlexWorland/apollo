@@ -4,9 +4,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
-      - 'apollo/src/**'
-      - 'moonlight-common-c/src/**'
-      - 'moonlight-qt/app/**'
+      - 'src/**'
       - '.github/workflows/build-docs.yml'
   workflow_dispatch:  # Allow manual triggering
 
@@ -53,9 +51,8 @@ jobs:
             build-essential \
             libssl-dev
 
-      - name: Build Apollo documentation
+      - name: Build documentation
         if: steps.check-skip.outputs.skip != 'true'
-        working-directory: apollo
         run: |
           mkdir -p build-docs
           cd build-docs
@@ -63,77 +60,41 @@ jobs:
           cmake --build . --target docs
         continue-on-error: true
 
-      - name: Build moonlight-common-c documentation
+      - name: Prepare documentation directory
         if: steps.check-skip.outputs.skip != 'true'
-        working-directory: moonlight-common-c
         run: |
-          mkdir -p build-docs
-          cd build-docs
-          cmake .. -DBUILD_DOCS=ON
-          cmake --build . --target docs
-        continue-on-error: true
+          mkdir -p docs/html
 
-      - name: Build moonlight-qt documentation
-        if: steps.check-skip.outputs.skip != 'true'
-        working-directory: moonlight-qt/docs
+      - name: Copy documentation
+        if: steps.check-skip.outputs.skip != 'true' && (success() || failure())
         run: |
-          mkdir -p build-docs
-          cd build-docs
-          cmake .. -DBUILD_DOCS=ON
-          cmake --build . --target docs
-        continue-on-error: true
-
-      - name: Prepare documentation directories
-        run: |
-          mkdir -p docs/apollo
-          mkdir -p docs/moonlight-common-c
-          mkdir -p docs/moonlight-qt
-
-      - name: Copy Apollo documentation
-        if: success() || failure()
-        run: |
-          if [ -d "apollo/build-docs/docs/html" ]; then
-            cp -r apollo/build-docs/docs/html/* docs/apollo/ || true
-          fi
-        continue-on-error: true
-
-      - name: Copy moonlight-common-c documentation
-        if: success() || failure()
-        run: |
-          if [ -d "moonlight-common-c/build-docs/docs/html" ]; then
-            cp -r moonlight-common-c/build-docs/docs/html/* docs/moonlight-common-c/ || true
-          fi
-        continue-on-error: true
-
-      - name: Copy moonlight-qt documentation
-        if: success() || failure()
-        run: |
-          if [ -d "moonlight-qt/docs/build-docs/html" ]; then
-            cp -r moonlight-qt/docs/build-docs/html/* docs/moonlight-qt/ || true
+          if [ -d "build-docs/docs/html" ]; then
+            cp -r build-docs/docs/html/* docs/html/ || true
           fi
         continue-on-error: true
 
       - name: Check for documentation changes
         id: check-changes
+        if: steps.check-skip.outputs.skip != 'true'
         run: |
-          if [ -n "$(git status --porcelain docs/)" ]; then
+          if [ -n "$(git status --porcelain docs/html/)" ]; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            git status --short docs/
+            git status --short docs/html/
           else
             echo "has_changes=false" >> $GITHUB_OUTPUT
             echo "No documentation changes detected"
           fi
 
       - name: Commit and push documentation
-        if: steps.check-changes.outputs.has_changes == 'true' && github.event.pull_request.head.repo.full_name == github.repository
+        if: steps.check-skip.outputs.skip != 'true' && steps.check-changes.outputs.has_changes == 'true' && github.event.pull_request.head.repo.full_name == github.repository
         run: |
-          git add docs/
+          git add docs/html/
           git commit -m "docs: Auto-generate Doxygen documentation [skip ci]" || exit 0
           # Only push if PR is from same repository (not a fork)
           git push origin HEAD:${{ github.event.pull_request.head.ref }} || exit 0
 
       - name: Comment on PR (docs committed)
-        if: steps.check-changes.outputs.has_changes == 'true' && github.event.pull_request.head.repo.full_name == github.repository
+        if: steps.check-skip.outputs.skip != 'true' && steps.check-changes.outputs.has_changes == 'true' && github.event.pull_request.head.repo.full_name == github.repository
         uses: actions/github-script@v7
         with:
           script: |
@@ -142,14 +103,11 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: '📚 Documentation has been automatically generated and committed to this PR.\n\n' +
-                    'The generated documentation is available in the `docs/` directory:\n' +
-                    '- `docs/apollo/` - Apollo documentation\n' +
-                    '- `docs/moonlight-common-c/` - Moonlight Common C documentation\n' +
-                    '- `docs/moonlight-qt/` - Moonlight Qt documentation'
+                    'The generated documentation is available in the `docs/html/` directory.'
             })
 
       - name: Comment on PR (fork - docs generated but not committed)
-        if: steps.check-changes.outputs.has_changes == 'true' && github.event.pull_request.head.repo.full_name != github.repository
+        if: steps.check-skip.outputs.skip != 'true' && steps.check-changes.outputs.has_changes == 'true' && github.event.pull_request.head.repo.full_name != github.repository
         uses: actions/github-script@v7
         with:
           script: |
@@ -160,15 +118,15 @@ jobs:
               body: '📚 Documentation has been generated, but cannot be automatically committed to this PR because it is from a fork.\n\n' +
                     'To include the generated documentation, please run the following commands locally:\n' +
                     '```bash\n' +
-                    'cd apollo && mkdir -p build-docs && cd build-docs && cmake .. -DBUILD_DOCS=ON && cmake --build . --target docs\n' +
-                    'cd ../../moonlight-common-c && mkdir -p build-docs && cd build-docs && cmake .. -DBUILD_DOCS=ON && cmake --build . --target docs\n' +
-                    'cd ../../moonlight-qt/docs && mkdir -p build-docs && cd build-docs && cmake .. -DBUILD_DOCS=ON && cmake --build . --target docs\n' +
+                    'mkdir -p build-docs && cd build-docs\n' +
+                    'cmake .. -DBUILD_DOCS=ON\n' +
+                    'cmake --build . --target docs\n' +
                     '```\n\n' +
-                    'Then copy the generated HTML files to the `docs/` directory and commit them.'
+                    'Then copy the generated HTML files from `build-docs/docs/html/` to the `docs/html/` directory and commit them.'
             })
 
       - name: Comment on PR (no changes)
-        if: steps.check-changes.outputs.has_changes == 'false'
+        if: steps.check-skip.outputs.skip != 'true' && steps.check-changes.outputs.has_changes == 'false'
         uses: actions/github-script@v7
         with:
           script: |
