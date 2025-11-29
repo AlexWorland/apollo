@@ -1,0 +1,206 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/nvhttp.cpp File Reference}
+\hypertarget{nvhttp_8cpp}{}\label{nvhttp_8cpp}\index{/Users/alexworland/autoBitrate/apollo/src/nvhttp.cpp@{/Users/alexworland/autoBitrate/apollo/src/nvhttp.cpp}}
+
+
+Definitions for the nvhttp (Game\+Stream) server.  
+
+
+{\ttfamily \#include $<$filesystem$>$}\newline
+{\ttfamily \#include $<$format$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+{\ttfamily \#include $<$boost/asio/ssl/context.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/asio/ssl/context\+\_\+base.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/property\+\_\+tree/json\+\_\+parser.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/property\+\_\+tree/ptree.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/property\+\_\+tree/xml\+\_\+parser.\+hpp$>$}\newline
+{\ttfamily \#include $<$Simple-\/\+Web-\/\+Server/server\+\_\+http.\+hpp$>$}\newline
+{\ttfamily \#include "{}config.\+h"{}}\newline
+{\ttfamily \#include "{}display\+\_\+device.\+h"{}}\newline
+{\ttfamily \#include "{}file\+\_\+handler.\+h"{}}\newline
+{\ttfamily \#include "{}globals.\+h"{}}\newline
+{\ttfamily \#include "{}httpcommon.\+h"{}}\newline
+{\ttfamily \#include "{}logging.\+h"{}}\newline
+{\ttfamily \#include "{}network.\+h"{}}\newline
+{\ttfamily \#include "{}nvhttp.\+h"{}}\newline
+{\ttfamily \#include "{}platform/common.\+h"{}}\newline
+{\ttfamily \#include "{}process.\+h"{}}\newline
+{\ttfamily \#include "{}rtsp.\+h"{}}\newline
+{\ttfamily \#include "{}stream.\+h"{}}\newline
+{\ttfamily \#include "{}system\+\_\+tray.\+h"{}}\newline
+{\ttfamily \#include "{}utility.\+h"{}}\newline
+{\ttfamily \#include "{}uuid.\+h"{}}\newline
+{\ttfamily \#include "{}video.\+h"{}}\newline
+{\ttfamily \#include "{}zwpad.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structnvhttp_1_1client__t}{nvhttp\+::client\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Client information structure. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classnvhttp_1_1_sunshine_h_t_t_p_s_server}{nvhttp\+::\+Sunshine\+HTTPSServer}}
+\begin{DoxyCompactList}\small\item\em HTTPS server for Game\+Stream protocol. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structnvhttp_1_1conf__intern__t}{nvhttp\+::conf\+\_\+intern\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Internal configuration structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structnvhttp_1_1tunnel_3_01_sunshine_h_t_t_p_s_01_4}{nvhttp\+::tunnel$<$ Sunshine\+HTTPS $>$}}
+\begin{DoxyCompactList}\small\item\em Tunnel specialization for HTTPS. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structnvhttp_1_1tunnel_3_01_simple_web_1_1_h_t_t_p_01_4}{nvhttp\+::tunnel$<$ Simple\+Web\+::\+HTTP $>$}}
+\begin{DoxyCompactList}\small\item\em Tunnel specialization for HTTP. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacenvhttp}{nvhttp}}
+\begin{DoxyCompactList}\small\item\em Contains all the functions and variables related to the nvhttp (Game\+Stream) server. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{namespacenvhttp_a24ed61c8fe37dbab100a0ade92aa2be1}\label{namespacenvhttp_a24ed61c8fe37dbab100a0ade92aa2be1} 
+using {\bfseries nvhttp\+::p\+\_\+named\+\_\+cert\+\_\+t} = \mbox{\hyperlink{crypto_8h_a9cf8f8956296bebc0933bbc8baa0ca01}{crypto\+::p\+\_\+named\+\_\+cert\+\_\+t}}
+\item 
+\Hypertarget{namespacenvhttp_a46b2b96f93a48e7c718feeccd654adc2}\label{namespacenvhttp_a46b2b96f93a48e7c718feeccd654adc2} 
+using {\bfseries nvhttp\+::\+PERM} = \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{crypto\+::\+PERM}}
+\item 
+\Hypertarget{namespacenvhttp_af2982ad59aeb705dad88a70904bfd2d7}\label{namespacenvhttp_af2982ad59aeb705dad88a70904bfd2d7} 
+using {\bfseries nvhttp\+::https\+\_\+server\+\_\+t} = \mbox{\hyperlink{classnvhttp_1_1_sunshine_h_t_t_p_s_server}{Sunshine\+HTTPSServer}}
+\item 
+\Hypertarget{namespacenvhttp_ae04837747ce65e10afe89f6dc4c319ba}\label{namespacenvhttp_ae04837747ce65e10afe89f6dc4c319ba} 
+using {\bfseries nvhttp\+::http\+\_\+server\+\_\+t} = Simple\+Web\+::\+Server$<$Simple\+Web\+::\+HTTP$>$
+\item 
+\Hypertarget{namespacenvhttp_afcee58a1d7061c809a53dec51a61c496}\label{namespacenvhttp_afcee58a1d7061c809a53dec51a61c496} 
+using {\bfseries nvhttp\+::resp\+\_\+https\+\_\+t} = std\+::shared\+\_\+ptr$<$typename Simple\+Web\+::\+Server\+Base$<$\mbox{\hyperlink{classnvhttp_1_1_sunshine_h_t_t_p_s}{Sunshine\+HTTPS}}$>$\+::\+Response$>$
+\item 
+\Hypertarget{namespacenvhttp_a5e47f20c01cfab385f04fd5edc9a7377}\label{namespacenvhttp_a5e47f20c01cfab385f04fd5edc9a7377} 
+using {\bfseries nvhttp\+::req\+\_\+https\+\_\+t} = std\+::shared\+\_\+ptr$<$typename Simple\+Web\+::\+Server\+Base$<$\mbox{\hyperlink{classnvhttp_1_1_sunshine_h_t_t_p_s}{Sunshine\+HTTPS}}$>$\+::\+Request$>$
+\item 
+\Hypertarget{namespacenvhttp_a1c33b0f7565510310a9524ce886cf047}\label{namespacenvhttp_a1c33b0f7565510310a9524ce886cf047} 
+using {\bfseries nvhttp\+::resp\+\_\+http\+\_\+t} = std\+::shared\+\_\+ptr$<$typename Simple\+Web\+::\+Server\+Base$<$Simple\+Web\+::\+HTTP$>$\+::\+Response$>$
+\item 
+\Hypertarget{namespacenvhttp_ac6f476750ab3876886e21e65af759ea3}\label{namespacenvhttp_ac6f476750ab3876886e21e65af759ea3} 
+using {\bfseries nvhttp\+::req\+\_\+http\+\_\+t} = std\+::shared\+\_\+ptr$<$typename Simple\+Web\+::\+Server\+Base$<$Simple\+Web\+::\+HTTP$>$\+::\+Request$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{namespacenvhttp_a31ca46e87cb64e974c8e6f43b350984b}{nvhttp\+::op\+\_\+e}} \{ \mbox{\hyperlink{namespacenvhttp_a31ca46e87cb64e974c8e6f43b350984ba9eeb52badb613229884838847294b90d}{nvhttp\+::\+ADD}}
+, \mbox{\hyperlink{namespacenvhttp_a31ca46e87cb64e974c8e6f43b350984ba78baf367c4626442174307cdf41c6538}{nvhttp\+::\+REMOVE}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{namespacenvhttp_af718f9ddf07dcb7169ffb562e2c43f64}{nvhttp\+::get\+\_\+arg}} (const args\+\_\+t \&\mbox{\hyperlink{namespaceargs}{args}}, const char \texorpdfstring{$\ast$}{*}name, const char \texorpdfstring{$\ast$}{*}default\+\_\+value=nullptr)
+\begin{DoxyCompactList}\small\item\em Get an argument value from the arguments map. \end{DoxyCompactList}\item 
+cmd\+\_\+list\+\_\+t \mbox{\hyperlink{namespacenvhttp_adb69a626615666236fbfa4bb9334fbbc}{nvhttp\+::extract\+\_\+command\+\_\+entries}} (const nlohmann\+::json \&j, const std\+::string \&key)
+\begin{DoxyCompactList}\small\item\em Extract command entries from JSON. \end{DoxyCompactList}\item 
+\Hypertarget{namespacenvhttp_a69d6d24bb79bb5fef75880c7553f2a8a}\label{namespacenvhttp_a69d6d24bb79bb5fef75880c7553f2a8a} 
+void {\bfseries nvhttp\+::save\+\_\+state} ()
+\item 
+\Hypertarget{namespacenvhttp_ace1aeaef6c5b6c8ca1655033821a4cc2}\label{namespacenvhttp_ace1aeaef6c5b6c8ca1655033821a4cc2} 
+void {\bfseries nvhttp\+::load\+\_\+state} ()
+\item 
+\Hypertarget{namespacenvhttp_a8b26771a25e86a5cdade98a005a71265}\label{namespacenvhttp_a8b26771a25e86a5cdade98a005a71265} 
+void {\bfseries nvhttp\+::add\+\_\+authorized\+\_\+client} (const p\+\_\+named\+\_\+cert\+\_\+t \&named\+\_\+cert\+\_\+p)
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+t}} $>$ \mbox{\hyperlink{namespacenvhttp_a87410012497fa06704ab11aea68206b3}{nvhttp\+::make\+\_\+launch\+\_\+session}} (bool host\+\_\+audio, bool input\+\_\+only, const args\+\_\+t \&\mbox{\hyperlink{namespaceargs}{args}}, const \mbox{\hyperlink{structcrypto_1_1named__cert__t}{crypto\+::named\+\_\+cert\+\_\+t}} \texorpdfstring{$\ast$}{*}named\+\_\+cert\+\_\+p)
+\begin{DoxyCompactList}\small\item\em Create a launch session from arguments. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacenvhttp_ad3de46ad4dc8a2d5e43bcf52325e23de}{nvhttp\+::remove\+\_\+session}} (const \mbox{\hyperlink{structnvhttp_1_1pair__session__t}{pair\+\_\+session\+\_\+t}} \&sess)
+\begin{DoxyCompactList}\small\item\em Remove the temporary pairing session. \end{DoxyCompactList}\item 
+\Hypertarget{namespacenvhttp_a27c821ce8ca0396973c169b3e746c917}\label{namespacenvhttp_a27c821ce8ca0396973c169b3e746c917} 
+void {\bfseries nvhttp\+::fail\+\_\+pair} (\mbox{\hyperlink{structnvhttp_1_1pair__session__t}{pair\+\_\+session\+\_\+t}} \&sess, pt\+::ptree \&tree, const std\+::string status\+\_\+msg)
+\item 
+\Hypertarget{namespacenvhttp_aab961438c02a68c25015c4668d938907}\label{namespacenvhttp_aab961438c02a68c25015c4668d938907} 
+void {\bfseries nvhttp\+::getservercert} (\mbox{\hyperlink{structnvhttp_1_1pair__session__t}{pair\+\_\+session\+\_\+t}} \&sess, pt\+::ptree \&tree, const std\+::string \&\mbox{\hyperlink{namespacenvhttp_a941330f65943656e005c425a5b608b0e}{pin}})
+\item 
+\Hypertarget{namespacenvhttp_a7f4c0cace6db7385ab678439793979a9}\label{namespacenvhttp_a7f4c0cace6db7385ab678439793979a9} 
+void {\bfseries nvhttp\+::clientchallenge} (\mbox{\hyperlink{structnvhttp_1_1pair__session__t}{pair\+\_\+session\+\_\+t}} \&sess, pt\+::ptree \&tree, const std\+::string \&challenge)
+\item 
+\Hypertarget{namespacenvhttp_a01d89f4a2adb189fc2b10272dc258cfd}\label{namespacenvhttp_a01d89f4a2adb189fc2b10272dc258cfd} 
+void {\bfseries nvhttp\+::serverchallengeresp} (\mbox{\hyperlink{structnvhttp_1_1pair__session__t}{pair\+\_\+session\+\_\+t}} \&sess, pt\+::ptree \&tree, const std\+::string \&encrypted\+\_\+response)
+\item 
+\Hypertarget{namespacenvhttp_a20c88be54a5c8f8c8c506b883f815de7}\label{namespacenvhttp_a20c88be54a5c8f8c8c506b883f815de7} 
+void {\bfseries nvhttp\+::clientpairingsecret} (\mbox{\hyperlink{structnvhttp_1_1pair__session__t}{pair\+\_\+session\+\_\+t}} \&sess, pt\+::ptree \&tree, const std\+::string \&client\+\_\+pairing\+\_\+secret)
+\item 
+\Hypertarget{namespacenvhttp_ac4d5efb0f0b26f5166f832553f398272}\label{namespacenvhttp_ac4d5efb0f0b26f5166f832553f398272} 
+\mbox{\hyperlink{structcrypto_1_1named__cert__t}{crypto\+::named\+\_\+cert\+\_\+t}} \texorpdfstring{$\ast$}{*} {\bfseries nvhttp\+::get\+\_\+verified\+\_\+cert} (req\+\_\+https\+\_\+t request)
+\item 
+\Hypertarget{namespacenvhttp_ae6e1460702cabfbd34da6910943295fb}\label{namespacenvhttp_ae6e1460702cabfbd34da6910943295fb} 
+{\footnotesize template$<$class T$>$ }\\void {\bfseries nvhttp\+::print\+\_\+req} (std\+::shared\+\_\+ptr$<$ typename Simple\+Web\+::\+Server\+Base$<$ T $>$\+::\+Request $>$ request)
+\item 
+\Hypertarget{namespacenvhttp_a0504e5f852dd1a0c518acee3dc424f89}\label{namespacenvhttp_a0504e5f852dd1a0c518acee3dc424f89} 
+{\footnotesize template$<$class T$>$ }\\void {\bfseries nvhttp\+::not\+\_\+found} (std\+::shared\+\_\+ptr$<$ typename Simple\+Web\+::\+Server\+Base$<$ T $>$\+::\+Response $>$ response, std\+::shared\+\_\+ptr$<$ typename Simple\+Web\+::\+Server\+Base$<$ T $>$\+::\+Request $>$ request)
+\item 
+\Hypertarget{namespacenvhttp_a84c3bd9afaecbb451102ca375a775009}\label{namespacenvhttp_a84c3bd9afaecbb451102ca375a775009} 
+{\footnotesize template$<$class T$>$ }\\void {\bfseries nvhttp\+::pair} (std\+::shared\+\_\+ptr$<$ typename Simple\+Web\+::\+Server\+Base$<$ T $>$\+::\+Response $>$ response, std\+::shared\+\_\+ptr$<$ typename Simple\+Web\+::\+Server\+Base$<$ T $>$\+::\+Request $>$ request)
+\item 
+bool \mbox{\hyperlink{namespacenvhttp_a941330f65943656e005c425a5b608b0e}{nvhttp\+::pin}} (std\+::string pin, std\+::string name)
+\begin{DoxyCompactList}\small\item\em Compare the user supplied pin to the Moonlight pin. \end{DoxyCompactList}\item 
+\Hypertarget{namespacenvhttp_a3d293c86ea63c8fa7fc32c17b8454754}\label{namespacenvhttp_a3d293c86ea63c8fa7fc32c17b8454754} 
+{\footnotesize template$<$class T$>$ }\\void {\bfseries nvhttp\+::serverinfo} (std\+::shared\+\_\+ptr$<$ typename Simple\+Web\+::\+Server\+Base$<$ T $>$\+::\+Response $>$ response, std\+::shared\+\_\+ptr$<$ typename Simple\+Web\+::\+Server\+Base$<$ T $>$\+::\+Request $>$ request)
+\item 
+nlohmann\+::json \mbox{\hyperlink{namespacenvhttp_af50e779196756a8c3ddb47ad55dfab00}{nvhttp\+::get\+\_\+all\+\_\+clients}} ()
+\begin{DoxyCompactList}\small\item\em Get all paired clients. \end{DoxyCompactList}\item 
+\Hypertarget{namespacenvhttp_aa95e501716a25994742fa0c2af8e357f}\label{namespacenvhttp_aa95e501716a25994742fa0c2af8e357f} 
+void {\bfseries nvhttp\+::applist} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\item 
+\Hypertarget{namespacenvhttp_ab7f4ac563c7f8e59f0dd6f076de34800}\label{namespacenvhttp_ab7f4ac563c7f8e59f0dd6f076de34800} 
+void {\bfseries nvhttp\+::launch} (bool \&host\+\_\+audio, resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\item 
+\Hypertarget{namespacenvhttp_a677fa7ec676174f78dc0607688234192}\label{namespacenvhttp_a677fa7ec676174f78dc0607688234192} 
+void {\bfseries nvhttp\+::resume} (bool \&host\+\_\+audio, resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\item 
+\Hypertarget{namespacenvhttp_abd2f8ee1705fafb8543aeedf50c7be95}\label{namespacenvhttp_abd2f8ee1705fafb8543aeedf50c7be95} 
+void {\bfseries nvhttp\+::cancel} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\item 
+\Hypertarget{namespacenvhttp_a051cb6ed7847d262fa493563c394e305}\label{namespacenvhttp_a051cb6ed7847d262fa493563c394e305} 
+void {\bfseries nvhttp\+::appasset} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\item 
+\Hypertarget{namespacenvhttp_aff4b7c7533b19f706484bd819a3039b9}\label{namespacenvhttp_aff4b7c7533b19f706484bd819a3039b9} 
+void {\bfseries nvhttp\+::get\+Clipboard} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\item 
+\Hypertarget{namespacenvhttp_af2ec2292d2ffe81d940eb9cdd2753025}\label{namespacenvhttp_af2ec2292d2ffe81d940eb9cdd2753025} 
+void {\bfseries nvhttp\+::set\+Clipboard} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\item 
+void \mbox{\hyperlink{namespacenvhttp_a7c61ccf236799f23e47f6b9ba8ad2e84}{nvhttp\+::setup}} (const std\+::string \&pkey, const std\+::string \&cert)
+\begin{DoxyCompactList}\small\item\em Setup the nvhttp server with credentials. \end{DoxyCompactList}\item 
+\Hypertarget{namespacenvhttp_a63239afdbcdd7797e82f0b18ee9902d1}\label{namespacenvhttp_a63239afdbcdd7797e82f0b18ee9902d1} 
+void {\bfseries nvhttp\+::start} ()
+\begin{DoxyCompactList}\small\item\em Start the nvhttp server. @examples \doxylink{namespacenvhttp_a63239afdbcdd7797e82f0b18ee9902d1}{nvhttp\+::start()}; @examples\+\_\+end. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{namespacenvhttp_a12ca4c709b6d002bbdb5af0ef1ed7a7f}{nvhttp\+::request\+\_\+otp}} (const std\+::string \&passphrase, const std\+::string \&device\+Name)
+\begin{DoxyCompactList}\small\item\em Request a one-\/time password (OTP) for pairing. \end{DoxyCompactList}\item 
+\Hypertarget{namespacenvhttp_ab8f632f498bb1e96166ec40172fb495f}\label{namespacenvhttp_ab8f632f498bb1e96166ec40172fb495f} 
+void {\bfseries nvhttp\+::erase\+\_\+all\+\_\+clients} ()
+\begin{DoxyCompactList}\small\item\em Remove all paired clients. @examples \doxylink{namespacenvhttp_ab8f632f498bb1e96166ec40172fb495f}{nvhttp\+::erase\+\_\+all\+\_\+clients()}; @examples\+\_\+end. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacenvhttp_aa084b6961b1a7633eb1a93e0db3662b8}{nvhttp\+::stop\+\_\+session}} (\mbox{\hyperlink{structstream_1_1session__t}{stream\+::session\+\_\+t}} \&session, bool graceful)
+\begin{DoxyCompactList}\small\item\em Stops a session. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacenvhttp_ae962e9026957d8dfd5f8fec86b824c2a}{nvhttp\+::find\+\_\+and\+\_\+stop\+\_\+session}} (const std\+::string \&uuid, bool graceful)
+\begin{DoxyCompactList}\small\item\em Finds and stop session. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacenvhttp_a083681f10226486c2844b39406d01a57}{nvhttp\+::update\+\_\+session\+\_\+info}} (\mbox{\hyperlink{structstream_1_1session__t}{stream\+::session\+\_\+t}} \&session, const std\+::string \&name, const \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{crypto\+::\+PERM}} new\+Perm)
+\begin{DoxyCompactList}\small\item\em Update device info associated to the session. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacenvhttp_a30442d086f228e6c0616a4f7ff74e32e}{nvhttp\+::find\+\_\+and\+\_\+udpate\+\_\+session\+\_\+info}} (const std\+::string \&uuid, const std\+::string \&name, const \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{crypto\+::\+PERM}} new\+Perm)
+\begin{DoxyCompactList}\small\item\em Finds and udpate session information. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacenvhttp_ac7c7825d88690df55524b5bde63f11a9}{nvhttp\+::update\+\_\+device\+\_\+info}} (const std\+::string \&uuid, const std\+::string \&name, const std\+::string \&display\+\_\+mode, const cmd\+\_\+list\+\_\+t \&do\+\_\+cmds, const cmd\+\_\+list\+\_\+t \&undo\+\_\+cmds, const \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{crypto\+::\+PERM}} new\+Perm, const bool enable\+\_\+legacy\+\_\+ordering, const bool allow\+\_\+client\+\_\+commands, const bool always\+\_\+use\+\_\+virtual\+\_\+display)
+\begin{DoxyCompactList}\small\item\em Update device info. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacenvhttp_a96fc5345d0d17e402ca9449983ab1d8d}{nvhttp\+::unpair\+\_\+client}} (std\+::string\+\_\+view uuid)
+\begin{DoxyCompactList}\small\item\em Remove single client. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{namespacenvhttp_a5ca7882b46647eae5d012be2cc07675b}\label{namespacenvhttp_a5ca7882b46647eae5d012be2cc07675b} 
+\mbox{\hyperlink{classcrypto_1_1cert__chain__t}{crypto\+::cert\+\_\+chain\+\_\+t}} {\bfseries nvhttp\+::cert\+\_\+chain}
+\item 
+\Hypertarget{namespacenvhttp_a50d7b57ccff85fdf0111471ce9c29f8e}\label{namespacenvhttp_a50d7b57ccff85fdf0111471ce9c29f8e} 
+struct \mbox{\hyperlink{structnvhttp_1_1conf__intern__t}{nvhttp\+::conf\+\_\+intern\+\_\+t}} {\bfseries nvhttp\+::conf\+\_\+intern}
+\item 
+\Hypertarget{namespacenvhttp_aee077985488c656560db46eac2cf9cd6}\label{namespacenvhttp_aee077985488c656560db46eac2cf9cd6} 
+std\+::unordered\+\_\+map$<$ std\+::string, \mbox{\hyperlink{structnvhttp_1_1pair__session__t}{pair\+\_\+session\+\_\+t}} $>$ {\bfseries nvhttp\+::map\+\_\+id\+\_\+sess}
+\item 
+\Hypertarget{namespacenvhttp_a54b4e01f69084d037fd77727be27ebda}\label{namespacenvhttp_a54b4e01f69084d037fd77727be27ebda} 
+\mbox{\hyperlink{structnvhttp_1_1client__t}{client\+\_\+t}} {\bfseries nvhttp\+::client\+\_\+root}
+\item 
+\Hypertarget{namespacenvhttp_a8cd5e4ae4a0eb1d622a82d790d87556b}\label{namespacenvhttp_a8cd5e4ae4a0eb1d622a82d790d87556b} 
+std\+::atomic$<$ uint32\+\_\+t $>$ {\bfseries nvhttp\+::session\+\_\+id\+\_\+counter}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Definitions for the nvhttp (Game\+Stream) server. 
+

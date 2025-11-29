@@ -1,0 +1,35 @@
+\doxysection{stream\+::control\+\_\+encrypted\+\_\+t Struct Reference}
+\hypertarget{structstream_1_1control__encrypted__t}{}\label{structstream_1_1control__encrypted__t}\index{stream::control\_encrypted\_t@{stream::control\_encrypted\_t}}
+
+
+Encrypted control message wrapper.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structstream_1_1control__encrypted__t_afdbad571eace7b271f3b0adeaecd7cf7}\label{structstream_1_1control__encrypted__t_afdbad571eace7b271f3b0adeaecd7cf7} 
+uint8\+\_\+t \texorpdfstring{$\ast$}{*} {\bfseries payload} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structstream_1_1control__encrypted__t_a5abd9d9e8e95d7c3155aadb1e1b230af}\label{structstream_1_1control__encrypted__t_a5abd9d9e8e95d7c3155aadb1e1b230af} 
+std\+::uint16\+\_\+t {\bfseries encrypted\+Header\+Type}
+\item 
+\Hypertarget{structstream_1_1control__encrypted__t_a7fefbcd21fb9afe0f3e30a64e8bd9041}\label{structstream_1_1control__encrypted__t_a7fefbcd21fb9afe0f3e30a64e8bd9041} 
+std\+::uint16\+\_\+t {\bfseries length}
+\item 
+\Hypertarget{structstream_1_1control__encrypted__t_aa9cd523b0a13657d5b93a3dff78ffc6d}\label{structstream_1_1control__encrypted__t_aa9cd523b0a13657d5b93a3dff78ffc6d} 
+std\+::uint32\+\_\+t {\bfseries seq}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Encrypted control message wrapper. 
+
+Wraps control messages with encryption metadata including sequence number, initialization vector, and authentication tag for AES-\/\+GCM encryption. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{stream_8cpp}{stream.\+cpp}}\end{DoxyCompactItemize}

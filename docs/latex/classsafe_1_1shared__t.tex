@@ -1,0 +1,56 @@
+\doxysection{safe\+::shared\+\_\+t\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classsafe_1_1shared__t}{}\label{classsafe_1_1shared__t}\index{safe::shared\_t$<$ T $>$@{safe::shared\_t$<$ T $>$}}
+
+
+Thread-\/safe shared object manager.  
+
+
+
+
+{\ttfamily \#include $<$thread\+\_\+safe.\+h$>$}
+
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structsafe_1_1shared__t_1_1ptr__t}{ptr\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Smart pointer to a shared object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classsafe_1_1shared__t_a57002777af1f8984bdee480bcd4780a3}\label{classsafe_1_1shared__t_a57002777af1f8984bdee480bcd4780a3} 
+using {\bfseries element\+\_\+type} = T
+\item 
+\Hypertarget{classsafe_1_1shared__t_a4333617b4c113046fb2e61b3bc229d28}\label{classsafe_1_1shared__t_a4333617b4c113046fb2e61b3bc229d28} 
+using {\bfseries construct\+\_\+f} = std\+::function$<$int(element\+\_\+type \&)$>$
+\item 
+\Hypertarget{classsafe_1_1shared__t_a4abcca326b79348a296655ce70b034db}\label{classsafe_1_1shared__t_a4abcca326b79348a296655ce70b034db} 
+using {\bfseries destruct\+\_\+f} = std\+::function$<$void(element\+\_\+type \&)$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classsafe_1_1shared__t_a77e722fd56aec993f5795e2228b2cf27}\label{classsafe_1_1shared__t_a77e722fd56aec993f5795e2228b2cf27} 
+{\footnotesize template$<$class FC, class FD$>$ }\\{\bfseries shared\+\_\+t} (FC \&\&fc, FD \&\&fd)
+\item 
+\Hypertarget{classsafe_1_1shared__t_a90e432e5e9cba241dd91b2a2fa777440}\label{classsafe_1_1shared__t_a90e432e5e9cba241dd91b2a2fa777440} 
+\mbox{\hyperlink{structsafe_1_1shared__t_1_1ptr__t}{ptr\+\_\+t}} {\bfseries ref} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T$>$\newline
+class safe\+::shared\+\_\+t$<$ T $>$}
+Thread-\/safe shared object manager. 
+
+Manages a single instance of an object with reference counting. The object is constructed on first access and destructed when the last reference is released. Thread-\/safe\+: all operations are protected by internal mutex.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The type of object to manage. \\
+\hline
+\end{DoxyTemplParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{thread__safe_8h}{thread\+\_\+safe.\+h}}\end{DoxyCompactItemize}

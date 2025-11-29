@@ -1,0 +1,49 @@
+\doxysection{stream\+::broadcast\+\_\+ctx\+\_\+t Struct Reference}
+\hypertarget{structstream_1_1broadcast__ctx__t}{}\label{structstream_1_1broadcast__ctx__t}\index{stream::broadcast\_ctx\_t@{stream::broadcast\_ctx\_t}}
+
+
+Broadcast context for managing streaming threads and sockets.  
+
+
+
+
+{\ttfamily \#include $<$stream.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structstream_1_1broadcast__ctx__t_af124759e15b04b82d031b413fb29a4b5}\label{structstream_1_1broadcast__ctx__t_af124759e15b04b82d031b413fb29a4b5} 
+\mbox{\hyperlink{stream_8h_a6c43be23082f69bc7d8b9920e279e4fc}{message\+\_\+queue\+\_\+queue\+\_\+t}} {\bfseries message\+\_\+queue\+\_\+queue}
+\begin{DoxyCompactList}\small\item\em Queue of message queues. \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1broadcast__ctx__t_ac7330df6cc1fc3b8b03375231ca155f1}\label{structstream_1_1broadcast__ctx__t_ac7330df6cc1fc3b8b03375231ca155f1} 
+std\+::thread {\bfseries recv\+\_\+thread}
+\begin{DoxyCompactList}\small\item\em Receive thread. \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1broadcast__ctx__t_abcbdd9c833a675f75b7c266917652673}\label{structstream_1_1broadcast__ctx__t_abcbdd9c833a675f75b7c266917652673} 
+std\+::thread {\bfseries video\+\_\+thread}
+\begin{DoxyCompactList}\small\item\em Video processing thread. \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1broadcast__ctx__t_a53db7806fdb2487cde45f954de196789}\label{structstream_1_1broadcast__ctx__t_a53db7806fdb2487cde45f954de196789} 
+std\+::thread {\bfseries audio\+\_\+thread}
+\begin{DoxyCompactList}\small\item\em Audio processing thread. \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1broadcast__ctx__t_a36e55d1bcafaa28f016bdea70f283f70}\label{structstream_1_1broadcast__ctx__t_a36e55d1bcafaa28f016bdea70f283f70} 
+std\+::thread {\bfseries control\+\_\+thread}
+\begin{DoxyCompactList}\small\item\em Control message processing thread. \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1broadcast__ctx__t_a22889e934c46794681f81da2c64d122c}\label{structstream_1_1broadcast__ctx__t_a22889e934c46794681f81da2c64d122c} 
+asio\+::io\+\_\+context {\bfseries io\+\_\+context}
+\begin{DoxyCompactList}\small\item\em ASIO I/O context. \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1broadcast__ctx__t_a397cb755aea512d7fa58c949d0d0c841}\label{structstream_1_1broadcast__ctx__t_a397cb755aea512d7fa58c949d0d0c841} 
+udp\+::socket {\bfseries video\+\_\+sock} \{\mbox{\hyperlink{structstream_1_1broadcast__ctx__t_a22889e934c46794681f81da2c64d122c}{io\+\_\+context}}\}
+\begin{DoxyCompactList}\small\item\em Video UDP socket. \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1broadcast__ctx__t_ad79a088c89babd04326e7e960f424a6e}\label{structstream_1_1broadcast__ctx__t_ad79a088c89babd04326e7e960f424a6e} 
+udp\+::socket {\bfseries audio\+\_\+sock} \{\mbox{\hyperlink{structstream_1_1broadcast__ctx__t_a22889e934c46794681f81da2c64d122c}{io\+\_\+context}}\}
+\begin{DoxyCompactList}\small\item\em Audio UDP socket. \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1broadcast__ctx__t_ac0ab0f147d2c75e9dc0fef1e83b322e4}\label{structstream_1_1broadcast__ctx__t_ac0ab0f147d2c75e9dc0fef1e83b322e4} 
+\mbox{\hyperlink{classstream_1_1control__server__t}{control\+\_\+server\+\_\+t}} {\bfseries control\+\_\+server}
+\begin{DoxyCompactList}\small\item\em Control server instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Broadcast context for managing streaming threads and sockets. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{stream_8h}{stream.\+h}}\end{DoxyCompactItemize}

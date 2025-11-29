@@ -1,0 +1,120 @@
+\doxysection{crypto\+::cipher\+::ecb\+\_\+t Class Reference}
+\hypertarget{classcrypto_1_1cipher_1_1ecb__t}{}\label{classcrypto_1_1cipher_1_1ecb__t}\index{crypto::cipher::ecb\_t@{crypto::cipher::ecb\_t}}
+
+
+ECB (Electronic Codebook) mode cipher.  
+
+
+
+
+{\ttfamily \#include $<$crypto.\+h$>$}
+
+Inheritance diagram for crypto\+::cipher\+::ecb\+\_\+t\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcrypto_1_1cipher_1_1ecb__t}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcrypto_1_1cipher_1_1ecb__t_a87ecd13d0b9723892766cd27595f9565}\label{classcrypto_1_1cipher_1_1ecb__t_a87ecd13d0b9723892766cd27595f9565} 
+{\bfseries ecb\+\_\+t} (ecb\+\_\+t \&\&) noexcept=default
+\item 
+\Hypertarget{classcrypto_1_1cipher_1_1ecb__t_a881b3afccec80a7860e59974618990ca}\label{classcrypto_1_1cipher_1_1ecb__t_a881b3afccec80a7860e59974618990ca} 
+ecb\+\_\+t \& {\bfseries operator=} (ecb\+\_\+t \&\&) noexcept=default
+\item 
+\mbox{\hyperlink{classcrypto_1_1cipher_1_1ecb__t_ae6b906beba912f0d95b14151e073692c}{ecb\+\_\+t}} (const \mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{aes\+\_\+t}} \&\mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t_addbb52889e36b3bb1b4dd8481f09e09d}{key}}, bool \mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t_aaf069d5288955df1b8ff9fea9d26084a}{padding}}=true)
+\begin{DoxyCompactList}\small\item\em Construct ECB cipher with key and padding option. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classcrypto_1_1cipher_1_1ecb__t_aef27bfef27bdb879099800c949b3f596}{encrypt}} (const std\+::string\+\_\+view \&plaintext, std\+::vector$<$ std\+::uint8\+\_\+t $>$ \&\mbox{\hyperlink{namespacecrypto_1_1cipher}{cipher}})
+\begin{DoxyCompactList}\small\item\em Encrypt plaintext using ECB mode. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classcrypto_1_1cipher_1_1ecb__t_a1a97b100cd3340d33e3d4d203250fb5c}{decrypt}} (const std\+::string\+\_\+view \&\mbox{\hyperlink{namespacecrypto_1_1cipher}{cipher}}, std\+::vector$<$ std\+::uint8\+\_\+t $>$ \&plaintext)
+\begin{DoxyCompactList}\small\item\em Decrypt ciphertext using ECB mode. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t}{crypto\+::cipher\+::cipher\+\_\+t}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{crypto_8h_a95350377f46087f06a43f30b694ccd10}{cipher\+\_\+ctx\+\_\+t}} {\bfseries decrypt\+\_\+ctx}
+\begin{DoxyCompactList}\small\item\em Decryption context. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{crypto_8h_a95350377f46087f06a43f30b694ccd10}{cipher\+\_\+ctx\+\_\+t}} {\bfseries encrypt\+\_\+ctx}
+\begin{DoxyCompactList}\small\item\em Encryption context. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{aes\+\_\+t}} {\bfseries key}
+\begin{DoxyCompactList}\small\item\em AES key. \end{DoxyCompactList}\item 
+bool {\bfseries padding}
+\begin{DoxyCompactList}\small\item\em Whether to use PKCS\#7 padding. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+ECB (Electronic Codebook) mode cipher. 
+
+\label{doc-constructors}
+\Hypertarget{classcrypto_1_1cipher_1_1ecb__t_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classcrypto_1_1cipher_1_1ecb__t_ae6b906beba912f0d95b14151e073692c}\index{crypto::cipher::ecb\_t@{crypto::cipher::ecb\_t}!ecb\_t@{ecb\_t}}
+\index{ecb\_t@{ecb\_t}!crypto::cipher::ecb\_t@{crypto::cipher::ecb\_t}}
+\doxysubsubsection{\texorpdfstring{ecb\_t()}{ecb\_t()}}
+{\footnotesize\ttfamily \label{classcrypto_1_1cipher_1_1ecb__t_ae6b906beba912f0d95b14151e073692c} 
+crypto\+::cipher\+::ecb\+\_\+t\+::ecb\+\_\+t (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{aes\+\_\+t}} \&}]{key}{, }\item[{bool}]{padding}{ = {\ttfamily true}}\end{DoxyParamCaption})}
+
+
+
+Construct ECB cipher with key and padding option. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & The AES key. \\
+\hline
+{\em padding} & Whether to use PKCS\#7 padding (default\+: true). \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-func-members}
+\Hypertarget{classcrypto_1_1cipher_1_1ecb__t_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcrypto_1_1cipher_1_1ecb__t_a1a97b100cd3340d33e3d4d203250fb5c}\index{crypto::cipher::ecb\_t@{crypto::cipher::ecb\_t}!decrypt@{decrypt}}
+\index{decrypt@{decrypt}!crypto::cipher::ecb\_t@{crypto::cipher::ecb\_t}}
+\doxysubsubsection{\texorpdfstring{decrypt()}{decrypt()}}
+{\footnotesize\ttfamily \label{classcrypto_1_1cipher_1_1ecb__t_a1a97b100cd3340d33e3d4d203250fb5c} 
+int crypto\+::cipher\+::ecb\+\_\+t\+::decrypt (\begin{DoxyParamCaption}\item[{const std\+::string\+\_\+view \&}]{cipher}{, }\item[{std\+::vector$<$ std\+::uint8\+\_\+t $>$ \&}]{plaintext}{}\end{DoxyParamCaption})}
+
+
+
+Decrypt ciphertext using ECB mode. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cipher} & The ciphertext to decrypt. \\
+\hline
+{\em plaintext} & Output buffer for plaintext. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of bytes written, or -\/1 on error. 
+\end{DoxyReturn}
+\Hypertarget{classcrypto_1_1cipher_1_1ecb__t_aef27bfef27bdb879099800c949b3f596}\index{crypto::cipher::ecb\_t@{crypto::cipher::ecb\_t}!encrypt@{encrypt}}
+\index{encrypt@{encrypt}!crypto::cipher::ecb\_t@{crypto::cipher::ecb\_t}}
+\doxysubsubsection{\texorpdfstring{encrypt()}{encrypt()}}
+{\footnotesize\ttfamily \label{classcrypto_1_1cipher_1_1ecb__t_aef27bfef27bdb879099800c949b3f596} 
+int crypto\+::cipher\+::ecb\+\_\+t\+::encrypt (\begin{DoxyParamCaption}\item[{const std\+::string\+\_\+view \&}]{plaintext}{, }\item[{std\+::vector$<$ std\+::uint8\+\_\+t $>$ \&}]{cipher}{}\end{DoxyParamCaption})}
+
+
+
+Encrypt plaintext using ECB mode. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em plaintext} & The plaintext to encrypt. \\
+\hline
+{\em cipher} & Output buffer for ciphertext. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of bytes written, or -\/1 on error. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{crypto_8h}{crypto.\+h}}\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{crypto_8cpp}{crypto.\+cpp}}\end{DoxyCompactItemize}

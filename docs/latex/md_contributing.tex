@@ -1,0 +1,197 @@
+\chapter{Contributing }
+\hypertarget{md_contributing}{}\label{md_contributing}\index{Contributing@{Contributing}}
+\label{md_contributing_autotoc_md288}%
+\Hypertarget{md_contributing_autotoc_md288}%
+
+
+Read our contribution guide in our organization level \href{https://docs.lizardbyte.dev/latest/developers/contributing.html}{\texttt{docs}}.\hypertarget{md_contributing_autotoc_md289}{}\doxysection{\texorpdfstring{Recommended Tools}{Recommended Tools}}\label{md_contributing_autotoc_md289}
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Tool  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Description  \\
+\href{https://www.jetbrains.com/clion/}{\texttt{}}~\newline
+CLion  &Recommended IDE for C and C++ development. Free for non-\/commercial use.  \\
+\end{DoxyTable}
+\hypertarget{md_contributing_autotoc_md290}{}\doxysection{\texorpdfstring{Project Patterns}{Project Patterns}}\label{md_contributing_autotoc_md290}
+\hypertarget{md_contributing_autotoc_md291}{}\doxysubsection{\texorpdfstring{Web UI}{Web UI}}\label{md_contributing_autotoc_md291}
+
+\begin{DoxyItemize}
+\item The Web UI uses \href{https://vitejs.dev}{\texttt{Vite}} as its build system.
+\item The HTML pages used by the Web UI are found in {\ttfamily ./src\+\_\+assets/common/assets/web}.
+\item \href{https://www.npmjs.com/package/vite-plugin-ejs}{\texttt{EJS}} is used as a templating system for the pages (check {\ttfamily template\+\_\+header.\+html} and {\ttfamily template\+\_\+header\+\_\+main.\+html}).
+\item The Style System is provided by \href{https://getbootstrap.com}{\texttt{Bootstrap}}.
+\item The JS framework used by the more interactive pages is \href{https://vuejs.org}{\texttt{Vue.\+js}}.
+\end{DoxyItemize}\hypertarget{md_contributing_autotoc_md292}{}\doxysubsubsection{\texorpdfstring{Building}{Building}}\label{md_contributing_autotoc_md292}
+@tabs\{ @tab\{CMake \texorpdfstring{$\vert$}{|} {\ttfamily bash cmake -\/B build -\/G Ninja -\/S . -\/-\/target web-\/ui ninja -\/C build web-\/ui }\} @tab\{Manual \texorpdfstring{$\vert$}{|} {\ttfamily bash npm run dev }\} \}\hypertarget{md_contributing_autotoc_md293}{}\doxysubsection{\texorpdfstring{Localization}{Localization}}\label{md_contributing_autotoc_md293}
+Sunshine and related Lizard\+Byte projects are being localized into various languages. The default language is {\ttfamily en} (English).
+
+
+
+@admonition\{Community \texorpdfstring{$\vert$}{|} We are looking for language coordinators to help approve translations. The goal is to have the bars above filled with green! If you are interesting, please reach out to us on our Discord server.\}\hypertarget{md_contributing_autotoc_md294}{}\doxysubsubsection{\texorpdfstring{Crowd\+In}{Crowd\+In}}\label{md_contributing_autotoc_md294}
+The translations occur on \href{https://translate.lizardbyte.dev}{\texttt{Crowd\+In}}. Anyone is free to contribute to the localization there.\hypertarget{md_contributing_autotoc_md295}{}\doxysubsubsubsection{\texorpdfstring{Translation Basics}{Translation Basics}}\label{md_contributing_autotoc_md295}
+
+\begin{DoxyItemize}
+\item The brand names {\itshape Lizard\+Byte} and {\itshape Sunshine} should never be translated.
+\item Other brand names should never be translated. Examples include {\itshape AMD}, {\itshape Intel}, and {\itshape NVIDIA}.
+\end{DoxyItemize}\hypertarget{md_contributing_autotoc_md296}{}\doxysubsubsubsection{\texorpdfstring{Crowd\+In Integration}{Crowd\+In Integration}}\label{md_contributing_autotoc_md296}
+How does it work?
+
+When a change is made to Sunshine source code, a workflow generates new translation templates that get pushed to Crowd\+In automatically.
+
+When translations are updated on Crowd\+In, a push gets made to the {\itshape l10n\+\_\+master} branch and a PR is made against the {\itshape master} branch. Once the PR is merged, all updated translations are part of the project and will be included in the next release.\hypertarget{md_contributing_autotoc_md297}{}\doxysubsubsection{\texorpdfstring{Extraction}{Extraction}}\label{md_contributing_autotoc_md297}
+\hypertarget{md_contributing_autotoc_md298}{}\doxysubsubsubsection{\texorpdfstring{Web UI}{Web UI}}\label{md_contributing_autotoc_md298}
+Sunshine uses \href{https://vue-i18n.intlify.dev}{\texttt{Vue I18n}} for localizing the UI. The following is a simple example of how to use it.
+
+
+\begin{DoxyItemize}
+\item Add the string to the {\ttfamily ./src\+\_\+assets/common/assets/web/public/assets/locale/en.json} file, in English. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ "{}index"{}:\ \{}
+\DoxyCodeLine{\ \ \ "{}welcome"{}:\ "{}Hello,\ Sunshine!"{}}
+\DoxyCodeLine{\ \}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+\end{DoxyItemize}
+
+\begin{DoxyNote}{Note}
+The JSON keys should be sorted alphabetically. You can use \href{https://novicelab.org/jsonabc}{\texttt{jsonabc}} to sort the keys.
+\end{DoxyNote}
+\begin{DoxyImportant}{Important}
+Due to the integration with Crowdin, it is important to only add strings to the {\itshape en.\+json} file, and to not modify any other language files. After the PR is merged, the translations can take place on \href{https://translate.lizardbyte.dev}{\texttt{Crowd\+In}}. Once the translations are complete, a PR will be made to merge the translations into Sunshine.
+\end{DoxyImportant}
+
+\begin{DoxyItemize}
+\item Use the string in the Vue component. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{<template>}
+\DoxyCodeLine{\ \ <div>}
+\DoxyCodeLine{\ \ \ \ <p>\{\{\ \$t('index.welcome')\ \}\}</p>}
+\DoxyCodeLine{\ \ </div>}
+\DoxyCodeLine{</template>}
+
+\end{DoxyCode}
+
+\end{DoxyItemize}
+
+\begin{DoxyRemark}{Remarks}
+More formatting examples can be found in the \href{https://kazupon.github.io/vue-i18n/guide/formatting.html}{\texttt{Vue I18n guide}}.
+\end{DoxyRemark}
+\hypertarget{md_contributing_autotoc_md299}{}\doxysubsubsubsection{\texorpdfstring{C++}{C++}}\label{md_contributing_autotoc_md299}
+There should be minimal cases where strings need to be extracted from C++ source code; however it may be necessary in some situations. For example the system tray icon could be localized as it is user interfacing.
+
+
+\begin{DoxyItemize}
+\item Wrap the string to be extracted in a function as shown. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ <boost/locale.hpp>}}
+\DoxyCodeLine{\textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{}
+\DoxyCodeLine{std::string\ msg\ =\ boost::locale::translate(\textcolor{stringliteral}{"{}Hello\ world!"{}});}
+
+\end{DoxyCode}
+
+\end{DoxyItemize}
+
+\begin{DoxyRemark}{Remarks}
+More examples can be found in the documentation for \href{https://www.boost.org/doc/libs/1_70_0/libs/locale/doc/html/messages_formatting.html}{\texttt{boost locale}}.
+\end{DoxyRemark}
+\begin{DoxyWarning}{Warning}
+The below is for information only. Contributors should never include manually updated template files, or manually compiled language files in Pull Requests.
+\end{DoxyWarning}
+Strings are automatically extracted from the code to the {\ttfamily locale/sunshine.\+po} template file. The generated file is used by Crowd\+In to generate language specific template files. The file is generated using the {\ttfamily .github/workflows/localize.\+yml} workflow and is run on any push event into the {\ttfamily master} branch. Jobs are only run if any of the following paths are modified.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{-\/\ 'src/**'}
+
+\end{DoxyCode}
+
+
+When testing locally it may be desirable to manually extract, initialize, update, and compile strings. Python is required for this, along with the python dependencies in the {\ttfamily ./scripts/requirements.txt} file. Additionally, \href{https://www.gnu.org/software/gettext}{\texttt{xgettext}} must be installed.
+
+
+\begin{DoxyItemize}
+\item Extract, initialize, and update 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{python\ ./scripts/\_locale.py\ -\/-\/extract\ -\/-\/init\ -\/-\/update}
+
+\end{DoxyCode}
+
+\item Compile 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{python\ ./scripts/\_locale.py\ -\/-\/compile}
+
+\end{DoxyCode}
+
+\end{DoxyItemize}
+
+\begin{DoxyImportant}{Important}
+Due to the integration with Crowd\+In, it is important to not include any extracted or compiled files in Pull Requests. The files are automatically generated and updated by the workflow. Once the PR is merged, the translations can take place on \href{https://translate.lizardbyte.dev}{\texttt{Crowd\+In}}. Once the translations are complete, a PR will be made to merge the translations into Sunshine.
+\end{DoxyImportant}
+\hypertarget{md_contributing_autotoc_md300}{}\doxysubsection{\texorpdfstring{Testing}{Testing}}\label{md_contributing_autotoc_md300}
+\hypertarget{md_contributing_autotoc_md301}{}\doxysubsubsection{\texorpdfstring{Clang Format}{Clang Format}}\label{md_contributing_autotoc_md301}
+Source code is tested against the {\ttfamily .clang-\/format} file for linting errors. The workflow file responsible for clang format testing is {\ttfamily .github/workflows/cpp-\/clang-\/format-\/lint.\+yml}.
+
+Option 1\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{find\ ./\ -\/iname\ *.cpp\ -\/o\ -\/iname\ *.h\ -\/iname\ *.m\ -\/iname\ *.mm\ |\ xargs\ clang-\/format\ -\/i}
+
+\end{DoxyCode}
+
+
+Option 2 (will modify files)\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{python\ ./scripts/update\_clang\_format.py}
+
+\end{DoxyCode}
+\hypertarget{md_contributing_autotoc_md302}{}\doxysubsubsection{\texorpdfstring{Unit Testing}{Unit Testing}}\label{md_contributing_autotoc_md302}
+Sunshine uses \href{https://github.com/google/googletest}{\texttt{Google Test}} for unit testing. Google Test is included in the repo as a submodule. The test sources are located in the {\ttfamily ./tests} directory.
+
+The tests need to be compiled into an executable, and then run. The tests are built using the normal build process, but can be disabled by setting the {\ttfamily BUILD\+\_\+\+TESTS} CMake option to {\ttfamily OFF}.
+
+To run the tests, execute the following command.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{./build/tests/test\_sunshine}
+
+\end{DoxyCode}
+
+
+To see all available options, run the tests with the {\ttfamily -\/-\/help} flag.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{./build/tests/test\_sunshine\ -\/-\/help}
+
+\end{DoxyCode}
+
+
+\begin{DoxyRemark}{Remarks}
+See the googletest \href{https://google.github.io/googletest/faq.html}{\texttt{FAQ}} for more information on how to use Google Test.
+\end{DoxyRemark}
+We use \href{https://www.gcovr.com}{\texttt{gcovr}} to generate code coverage reports, and \href{https://about.codecov.io}{\texttt{Codecov}} to analyze the reports for all PRs and commits.
+
+Codecov will fail a PR if the total coverage is reduced too much, or if not enough of the diff is covered by tests. In some cases, the code cannot be covered when running the tests inside of Git\+Hub runners. For example, any test that needs access to the GPU will not be able to run. In these cases, the coverage can be omitted by adding comments to the code. See the \href{https://gcovr.com/en/stable/guide/exclusion-markers.html\#exclusion-markers}{\texttt{gcovr documentation}} for more information.
+
+Even if your changes cannot be covered in the CI, we still encourage you to write the tests for them. This will allow maintainers to run the tests locally.
+
+
+
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{bg=\tableheadbgcolor,font=\bfseries}Previous  &\SetCell{r,bg=\tableheadbgcolor,font=\bfseries}Next  \\
+\doxysectlink{md_building}{Building}{0}  &\SetCell{r}\doxysectlink{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code}{Source Code}{0}  \\
+\end{DoxyTable}
+
+
+
+
+
+
+{\bfseries{}}\begin{adjustwidth}{1em}{0em}
+
+
+\end{adjustwidth}

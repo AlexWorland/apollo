@@ -1,0 +1,200 @@
+\doxysection{stream\+::auto\+\_\+bitrate\+\_\+controller\+\_\+t Class Reference}
+\hypertarget{classstream_1_1auto__bitrate__controller__t}{}\label{classstream_1_1auto__bitrate__controller__t}\index{stream::auto\_bitrate\_controller\_t@{stream::auto\_bitrate\_controller\_t}}
+
+
+Automatic bitrate adjustment controller. Adaptively adjusts encoder bitrate based on network quality metrics.  
+
+
+
+
+{\ttfamily \#include $<$auto\+\_\+bitrate.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classstream_1_1auto__bitrate__controller__t_a96cda901b721630f4509175ff0cc54ff}\label{classstream_1_1auto__bitrate__controller__t_a96cda901b721630f4509175ff0cc54ff} 
+{\bfseries auto\+\_\+bitrate\+\_\+controller\+\_\+t} ()
+\begin{DoxyCompactList}\small\item\em Constructs an auto bitrate controller. Initializes an empty controller with no active sessions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classstream_1_1auto__bitrate__controller__t_a81bb4bf67c81106875daa8b22efa74ee}{process\+\_\+loss\+\_\+stats}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespacestream_1_1session}{session}}, uint64\+\_\+t last\+Good\+Frame, std\+::chrono\+::milliseconds time\+\_\+interval)
+\begin{DoxyCompactList}\small\item\em Process loss statistics from client. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classstream_1_1auto__bitrate__controller__t_a61717a6330db9c0bc3d043e61bf25db3}{process\+\_\+loss\+\_\+stats\+\_\+direct}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespacestream_1_1session}{session}}, double loss\+\_\+percentage\+\_\+loss\+\_\+pct, uint64\+\_\+t last\+Good\+Frame, std\+::chrono\+::milliseconds time\+\_\+interval)
+\begin{DoxyCompactList}\small\item\em Process loss stats with a provided loss percentage (telemetry path). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classstream_1_1auto__bitrate__controller__t_a22cb74be60d5e97cd61b452ede9b5960}{process\+\_\+connection\+\_\+status}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespacestream_1_1session}{session}}, int status)
+\begin{DoxyCompactList}\small\item\em Process connection status change. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classstream_1_1auto__bitrate__controller__t_aa240a0c06d1abe0fdfb77aac22e3e440}{should\+\_\+adjust\+\_\+bitrate}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespacestream_1_1session}{session}}) const
+\begin{DoxyCompactList}\small\item\em Check if bitrate adjustment is needed. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classstream_1_1auto__bitrate__controller__t_ac39126a90aac2405d952cc7d94e65a8c}{calculate\+\_\+new\+\_\+bitrate}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespacestream_1_1session}{session}}) const
+\begin{DoxyCompactList}\small\item\em Calculate new bitrate value. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classstream_1_1auto__bitrate__controller__t_a78f4a3b15f5791a7fcba43809b18fac6}{confirm\+\_\+bitrate\+\_\+change}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespacestream_1_1session}{session}}, int new\+\_\+bitrate\+\_\+kbps, bool success)
+\begin{DoxyCompactList}\small\item\em Confirm that a bitrate change was successfully applied by the encoder. Updates the controller state only after encoder confirmation. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classstream_1_1auto__bitrate__controller__t_a4c0e5695b25aafba2f604e8ff1fcc738}{reset}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespacestream_1_1session}{session}})
+\begin{DoxyCompactList}\small\item\em Reset controller state for a new session. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classstream_1_1auto__bitrate__controller__t_aba998cb0ed9236e87199c9251f309417}{get\+\_\+stats}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespacestream_1_1session}{session}}, uint32\+\_\+t \&current\+\_\+bitrate\+\_\+kbps, uint64\+\_\+t \&last\+\_\+adjustment\+\_\+time\+\_\+ms, uint32\+\_\+t \&adjustment\+\_\+count, float \&loss\+\_\+percentage) const
+\begin{DoxyCompactList}\small\item\em Get bitrate statistics for a session. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Automatic bitrate adjustment controller. Adaptively adjusts encoder bitrate based on network quality metrics. 
+
+\label{doc-func-members}
+\Hypertarget{classstream_1_1auto__bitrate__controller__t_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classstream_1_1auto__bitrate__controller__t_ac39126a90aac2405d952cc7d94e65a8c}\index{stream::auto\_bitrate\_controller\_t@{stream::auto\_bitrate\_controller\_t}!calculate\_new\_bitrate@{calculate\_new\_bitrate}}
+\index{calculate\_new\_bitrate@{calculate\_new\_bitrate}!stream::auto\_bitrate\_controller\_t@{stream::auto\_bitrate\_controller\_t}}
+\doxysubsubsection{\texorpdfstring{calculate\_new\_bitrate()}{calculate\_new\_bitrate()}}
+{\footnotesize\ttfamily \label{classstream_1_1auto__bitrate__controller__t_ac39126a90aac2405d952cc7d94e65a8c} 
+int stream\+::auto\+\_\+bitrate\+\_\+controller\+\_\+t\+::calculate\+\_\+new\+\_\+bitrate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{session}{}\end{DoxyParamCaption}) const}
+
+
+
+Calculate new bitrate value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The streaming session. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+New bitrate in Kbps. 
+\end{DoxyReturn}
+\Hypertarget{classstream_1_1auto__bitrate__controller__t_a78f4a3b15f5791a7fcba43809b18fac6}\index{stream::auto\_bitrate\_controller\_t@{stream::auto\_bitrate\_controller\_t}!confirm\_bitrate\_change@{confirm\_bitrate\_change}}
+\index{confirm\_bitrate\_change@{confirm\_bitrate\_change}!stream::auto\_bitrate\_controller\_t@{stream::auto\_bitrate\_controller\_t}}
+\doxysubsubsection{\texorpdfstring{confirm\_bitrate\_change()}{confirm\_bitrate\_change()}}
+{\footnotesize\ttfamily \label{classstream_1_1auto__bitrate__controller__t_a78f4a3b15f5791a7fcba43809b18fac6} 
+void stream\+::auto\+\_\+bitrate\+\_\+controller\+\_\+t\+::confirm\+\_\+bitrate\+\_\+change (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{session}{, }\item[{int}]{new\+\_\+bitrate\+\_\+kbps}{, }\item[{bool}]{success}{}\end{DoxyParamCaption})}
+
+
+
+Confirm that a bitrate change was successfully applied by the encoder. Updates the controller state only after encoder confirmation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The streaming session. \\
+\hline
+{\em new\+\_\+bitrate\+\_\+kbps} & The bitrate that was successfully applied. \\
+\hline
+{\em success} & true if encoder successfully applied the change, false otherwise. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classstream_1_1auto__bitrate__controller__t_aba998cb0ed9236e87199c9251f309417}\index{stream::auto\_bitrate\_controller\_t@{stream::auto\_bitrate\_controller\_t}!get\_stats@{get\_stats}}
+\index{get\_stats@{get\_stats}!stream::auto\_bitrate\_controller\_t@{stream::auto\_bitrate\_controller\_t}}
+\doxysubsubsection{\texorpdfstring{get\_stats()}{get\_stats()}}
+{\footnotesize\ttfamily \label{classstream_1_1auto__bitrate__controller__t_aba998cb0ed9236e87199c9251f309417} 
+bool stream\+::auto\+\_\+bitrate\+\_\+controller\+\_\+t\+::get\+\_\+stats (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{session}{, }\item[{uint32\+\_\+t \&}]{current\+\_\+bitrate\+\_\+kbps}{, }\item[{uint64\+\_\+t \&}]{last\+\_\+adjustment\+\_\+time\+\_\+ms}{, }\item[{uint32\+\_\+t \&}]{adjustment\+\_\+count}{, }\item[{float \&}]{loss\+\_\+percentage}{}\end{DoxyParamCaption}) const}
+
+
+
+Get bitrate statistics for a session. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The streaming session. \\
+\hline
+{\em current\+\_\+bitrate\+\_\+kbps} & Output\+: Current encoder bitrate in Kbps. \\
+\hline
+{\em last\+\_\+adjustment\+\_\+time\+\_\+ms} & Output\+: Milliseconds since session start when last successful adjustment occurred (0 if never). \\
+\hline
+{\em adjustment\+\_\+count} & Output\+: Total number of successful adjustments made. \\
+\hline
+{\em loss\+\_\+percentage} & Output\+: Current frame loss percentage. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if stats are available, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{classstream_1_1auto__bitrate__controller__t_a22cb74be60d5e97cd61b452ede9b5960}\index{stream::auto\_bitrate\_controller\_t@{stream::auto\_bitrate\_controller\_t}!process\_connection\_status@{process\_connection\_status}}
+\index{process\_connection\_status@{process\_connection\_status}!stream::auto\_bitrate\_controller\_t@{stream::auto\_bitrate\_controller\_t}}
+\doxysubsubsection{\texorpdfstring{process\_connection\_status()}{process\_connection\_status()}}
+{\footnotesize\ttfamily \label{classstream_1_1auto__bitrate__controller__t_a22cb74be60d5e97cd61b452ede9b5960} 
+void stream\+::auto\+\_\+bitrate\+\_\+controller\+\_\+t\+::process\+\_\+connection\+\_\+status (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{session}{, }\item[{int}]{status}{}\end{DoxyParamCaption})}
+
+
+
+Process connection status change. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The streaming session. \\
+\hline
+{\em status} & New connection status (OKAY or POOR). \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classstream_1_1auto__bitrate__controller__t_a81bb4bf67c81106875daa8b22efa74ee}\index{stream::auto\_bitrate\_controller\_t@{stream::auto\_bitrate\_controller\_t}!process\_loss\_stats@{process\_loss\_stats}}
+\index{process\_loss\_stats@{process\_loss\_stats}!stream::auto\_bitrate\_controller\_t@{stream::auto\_bitrate\_controller\_t}}
+\doxysubsubsection{\texorpdfstring{process\_loss\_stats()}{process\_loss\_stats()}}
+{\footnotesize\ttfamily \label{classstream_1_1auto__bitrate__controller__t_a81bb4bf67c81106875daa8b22efa74ee} 
+void stream\+::auto\+\_\+bitrate\+\_\+controller\+\_\+t\+::process\+\_\+loss\+\_\+stats (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{session}{, }\item[{uint64\+\_\+t}]{last\+Good\+Frame}{, }\item[{std\+::chrono\+::milliseconds}]{time\+\_\+interval}{}\end{DoxyParamCaption})}
+
+
+
+Process loss statistics from client. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The streaming session. \\
+\hline
+{\em last\+Good\+Frame} & Last successfully received frame number. \\
+\hline
+{\em time\+\_\+interval} & Time interval in milliseconds. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classstream_1_1auto__bitrate__controller__t_a61717a6330db9c0bc3d043e61bf25db3}\index{stream::auto\_bitrate\_controller\_t@{stream::auto\_bitrate\_controller\_t}!process\_loss\_stats\_direct@{process\_loss\_stats\_direct}}
+\index{process\_loss\_stats\_direct@{process\_loss\_stats\_direct}!stream::auto\_bitrate\_controller\_t@{stream::auto\_bitrate\_controller\_t}}
+\doxysubsubsection{\texorpdfstring{process\_loss\_stats\_direct()}{process\_loss\_stats\_direct()}}
+{\footnotesize\ttfamily \label{classstream_1_1auto__bitrate__controller__t_a61717a6330db9c0bc3d043e61bf25db3} 
+void stream\+::auto\+\_\+bitrate\+\_\+controller\+\_\+t\+::process\+\_\+loss\+\_\+stats\+\_\+direct (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{session}{, }\item[{double}]{loss\+\_\+percentage\+\_\+loss\+\_\+pct}{, }\item[{uint64\+\_\+t}]{last\+Good\+Frame}{, }\item[{std\+::chrono\+::milliseconds}]{time\+\_\+interval}{}\end{DoxyParamCaption})}
+
+
+
+Process loss stats with a provided loss percentage (telemetry path). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The streaming session. \\
+\hline
+{\em loss\+\_\+percentage\+\_\+loss\+\_\+pct} & Loss percentage (0-\/100). \\
+\hline
+{\em last\+Good\+Frame} & Last successfully received frame number. \\
+\hline
+{\em time\+\_\+interval} & Time interval in milliseconds. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classstream_1_1auto__bitrate__controller__t_a4c0e5695b25aafba2f604e8ff1fcc738}\index{stream::auto\_bitrate\_controller\_t@{stream::auto\_bitrate\_controller\_t}!reset@{reset}}
+\index{reset@{reset}!stream::auto\_bitrate\_controller\_t@{stream::auto\_bitrate\_controller\_t}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily \label{classstream_1_1auto__bitrate__controller__t_a4c0e5695b25aafba2f604e8ff1fcc738} 
+void stream\+::auto\+\_\+bitrate\+\_\+controller\+\_\+t\+::reset (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{session}{}\end{DoxyParamCaption})}
+
+
+
+Reset controller state for a new session. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The streaming session. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classstream_1_1auto__bitrate__controller__t_aa240a0c06d1abe0fdfb77aac22e3e440}\index{stream::auto\_bitrate\_controller\_t@{stream::auto\_bitrate\_controller\_t}!should\_adjust\_bitrate@{should\_adjust\_bitrate}}
+\index{should\_adjust\_bitrate@{should\_adjust\_bitrate}!stream::auto\_bitrate\_controller\_t@{stream::auto\_bitrate\_controller\_t}}
+\doxysubsubsection{\texorpdfstring{should\_adjust\_bitrate()}{should\_adjust\_bitrate()}}
+{\footnotesize\ttfamily \label{classstream_1_1auto__bitrate__controller__t_aa240a0c06d1abe0fdfb77aac22e3e440} 
+bool stream\+::auto\+\_\+bitrate\+\_\+controller\+\_\+t\+::should\+\_\+adjust\+\_\+bitrate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{session}{}\end{DoxyParamCaption}) const}
+
+
+
+Check if bitrate adjustment is needed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The streaming session. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if adjustment should be made, false otherwise. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{auto__bitrate_8h}{auto\+\_\+bitrate.\+h}}\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{auto__bitrate_8cpp}{auto\+\_\+bitrate.\+cpp}}\end{DoxyCompactItemize}

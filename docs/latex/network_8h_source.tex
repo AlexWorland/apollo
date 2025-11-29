@@ -1,0 +1,61 @@
+\doxysection{network.\+h}
+\hypertarget{network_8h_source}{}\label{network_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/network.h@{/Users/alexworland/autoBitrate/apollo/src/network.h}}
+\mbox{\hyperlink{network_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ standard\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <tuple>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ lib\ includes}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <boost/asio.hpp>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <enet/enet.h>}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ local\ includes}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{utility_8h}{utility.h}}"{}}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{namespace\ }net\ \{}
+\DoxyCodeLine{00019\ \ \ \textcolor{keywordtype}{void}\ free\_host(ENetHost\ *host);}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00030\ \ \ std::uint16\_t\ \mbox{\hyperlink{network_8cpp_a0a37be704ccaa8d04aaecb8d9434c5d4}{map\_port}}(\textcolor{keywordtype}{int}\ port);}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{using\ }host\_t\ =\ util::safe\_ptr<ENetHost,\ free\_host>;}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{using\ }peer\_t\ =\ ENetPeer\ *;}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{using\ }packet\_t\ =\ util::safe\_ptr<ENetPacket,\ enet\_packet\_destroy>;}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{network_8h_af265c335edb963e60ec75f612b9eef13}{net\_e}}\ :\ \textcolor{keywordtype}{int}\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \mbox{\hyperlink{network_8h_af265c335edb963e60ec75f612b9eef13a474497f4d17b63685911b74f306160a2}{PC}},\ \ }
+\DoxyCodeLine{00038\ \ \ \ \ \mbox{\hyperlink{network_8h_af265c335edb963e60ec75f612b9eef13af733f5db0a940c4097312653ca0c960c}{LAN}},\ \ }
+\DoxyCodeLine{00039\ \ \ \ \ \mbox{\hyperlink{network_8h_af265c335edb963e60ec75f612b9eef13a4a6b5798854f8e5527c1cc40a54cff0f}{WAN}}\ \ }
+\DoxyCodeLine{00040\ \ \ \};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{network_8h_a1ed5da07a6d5b35033bd4de7bca12dab}{af\_e}}\ :\ \textcolor{keywordtype}{int}\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \mbox{\hyperlink{network_8h_a1ed5da07a6d5b35033bd4de7bca12daba897b89539a9ed02e81e4aae60b92f8ae}{IPV4}},\ \ }
+\DoxyCodeLine{00044\ \ \ \ \ \mbox{\hyperlink{network_8h_a1ed5da07a6d5b35033bd4de7bca12dababc6c5aa4d1701ee38eb95a5ca15ab657}{BOTH}}\ \ }
+\DoxyCodeLine{00045\ \ \ \};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ net\_e\ from\_enum\_string(\textcolor{keyword}{const}\ std::string\_view\ \&view);}
+\DoxyCodeLine{00048\ \ \ std::string\_view\ to\_enum\_string(net\_e\ net);}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ net\_e\ from\_address(\textcolor{keyword}{const}\ std::string\_view\ \&view);}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ host\_t\ host\_create(af\_e\ af,\ ENetAddress\ \&addr,\ std::uint16\_t\ port);}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00059\ \ \ af\_e\ af\_from\_enum\_string(\textcolor{keyword}{const}\ std::string\_view\ \&view);}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00066\ \ \ std::string\_view\ af\_to\_any\_address\_string(af\_e\ af);}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00074\ \ \ boost::asio::ip::address\ normalize\_address(boost::asio::ip::address\ address);}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00082\ \ \ std::string\ addr\_to\_normalized\_string(boost::asio::ip::address\ address);}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00090\ \ \ std::string\ addr\_to\_url\_escaped\_string(boost::asio::ip::address\ address);}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00097\ \ \ \textcolor{keywordtype}{int}\ encryption\_mode\_for\_address(boost::asio::ip::address\ address);}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00104\ \ \ std::string\ mdns\_instance\_name(\textcolor{keyword}{const}\ std::string\_view\ \&hostname);}
+\DoxyCodeLine{00105\ \}\ \ \textcolor{comment}{//\ namespace\ net}}
+
+\end{DoxyCode}

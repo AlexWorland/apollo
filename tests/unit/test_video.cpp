@@ -48,3 +48,27 @@ INSTANTIATE_TEST_SUITE_P(
 TEST_P(EncoderTest, ValidateEncoder) {
   // todo:: test something besides fixture setup
 }
+
+TEST(PacketRawTests, ReplacementsDefaultNullptr) {
+  // Define a simple concrete packet type for testing the base class behaviour
+  struct test_packet_t: video::packet_raw_t {
+    bool is_idr() override {
+      return false;
+    }
+
+    int64_t frame_index() override {
+      return 0;
+    }
+
+    uint8_t *data() override {
+      return nullptr;
+    }
+
+    size_t data_size() override {
+      return 0;
+    }
+  };
+
+  test_packet_t packet;
+  ASSERT_EQ(packet.replacements, nullptr);
+}

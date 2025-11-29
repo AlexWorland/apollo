@@ -1,0 +1,46 @@
+\doxysection{util\+::Destroy\texorpdfstring{$<$}{<} T, Return\+Type, function \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structutil_1_1_destroy}{}\label{structutil_1_1_destroy}\index{util::Destroy$<$ T, ReturnType, function $>$@{util::Destroy$<$ T, ReturnType, function $>$}}
+
+
+Deleter wrapper for function pointers.  
+
+
+
+
+{\ttfamily \#include $<$utility.\+h$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structutil_1_1_destroy_a8eaead73b934ed2ff9475e4ef1d9260e}\label{structutil_1_1_destroy_a8eaead73b934ed2ff9475e4ef1d9260e} 
+typedef T {\bfseries pointer}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structutil_1_1_destroy_ad58491a8d726353aa84985f224dd7983}\label{structutil_1_1_destroy_ad58491a8d726353aa84985f224dd7983} 
+void {\bfseries operator()} (pointer p)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T, class Return\+Type, typename \mbox{\hyperlink{structutil_1_1_function}{Function}}$<$ Return\+Type, T $>$\+::type function$>$\newline
+struct util\+::\+Destroy$<$ T, Return\+Type, function $>$}
+Deleter wrapper for function pointers. 
+
+Wraps a function pointer to be used as a deleter for smart pointers.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Pointer type. \\
+\hline
+{\em Return\+Type} & Return type of the destroy function. \\
+\hline
+{\em function} & \doxylink{structutil_1_1_function}{Function} pointer to call for destruction. \\
+\hline
+\end{DoxyTemplParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{utility_8h}{utility.\+h}}\end{DoxyCompactItemize}

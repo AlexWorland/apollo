@@ -1,0 +1,46 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/upnp.cpp File Reference}
+\hypertarget{upnp_8cpp}{}\label{upnp_8cpp}\index{/Users/alexworland/autoBitrate/apollo/src/upnp.cpp@{/Users/alexworland/autoBitrate/apollo/src/upnp.cpp}}
+
+
+Definitions for UPnP port mapping.  
+
+
+{\ttfamily \#include $<$stddef.\+h$>$}\newline
+{\ttfamily \#include $<$cstddef$>$}\newline
+{\ttfamily \#include $<$miniupnpc/miniupnpc.\+h$>$}\newline
+{\ttfamily \#include $<$miniupnpc/upnpcommands.\+h$>$}\newline
+{\ttfamily \#include "{}config.\+h"{}}\newline
+{\ttfamily \#include "{}confighttp.\+h"{}}\newline
+{\ttfamily \#include "{}globals.\+h"{}}\newline
+{\ttfamily \#include "{}logging.\+h"{}}\newline
+{\ttfamily \#include "{}network.\+h"{}}\newline
+{\ttfamily \#include "{}nvhttp.\+h"{}}\newline
+{\ttfamily \#include "{}rtsp.\+h"{}}\newline
+{\ttfamily \#include "{}stream.\+h"{}}\newline
+{\ttfamily \#include "{}upnp.\+h"{}}\newline
+{\ttfamily \#include "{}utility.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structupnp_1_1mapping__t}{upnp\+::mapping\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em UPnP port mapping structure. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classupnp_1_1deinit__t}{upnp\+::deinit\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em RAII deinitialization helper for UPnP. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespaceupnp}{upnp}}
+\begin{DoxyCompactList}\small\item\em UPnP port mapping. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{namespaceupnp_abc289edc95d71e1b541726d57951f827}{upnp\+::\+UPNP\+\_\+\+Get\+Valid\+IGDStatus}} (device\+\_\+t \&device, urls\+\_\+t \texorpdfstring{$\ast$}{*}urls, IGDdatas \texorpdfstring{$\ast$}{*}data, std\+::array$<$ char, INET6\+\_\+\+ADDRESS\+\_\+\+STRLEN $>$ \&lan\+\_\+addr)
+\begin{DoxyCompactList}\small\item\em Get the valid IGD status. \end{DoxyCompactList}\item 
+\Hypertarget{namespaceupnp_a6fd49e0fff52011b76742c1f5c202527}\label{namespaceupnp_a6fd49e0fff52011b76742c1f5c202527} 
+std\+::unique\+\_\+ptr$<$ platf\+::deinit\+\_\+t $>$ {\bfseries upnp\+::start} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Definitions for UPnP port mapping. 
+

@@ -1,0 +1,135 @@
+\doxysection{video\+::encoder\+\_\+t Struct Reference}
+\hypertarget{structvideo_1_1encoder__t}{}\label{structvideo_1_1encoder__t}\index{video::encoder\_t@{video::encoder\_t}}
+
+
+Encoder structure containing codec configurations and capabilities.  
+
+
+
+
+{\ttfamily \#include $<$video.\+h$>$}
+
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structvideo_1_1encoder__t_1_1option__t}{option\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Encoder option structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structvideo_1_1encoder__t_1_1codec__t}{codec\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Codec configuration structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028f}{flag\+\_\+e}} \{ \newline
+\mbox{\hyperlink{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028fa6ac88f788aab7148618c310a8a99b644}{PASSED}}
+, \mbox{\hyperlink{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028fa9b9b156ea04a99773bbad23b96639b87}{REF\+\_\+\+FRAMES\+\_\+\+RESTRICT}}
+, \mbox{\hyperlink{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028fa09bad7f9c786925ce4c35023afb15903}{DYNAMIC\+\_\+\+RANGE}}
+, \mbox{\hyperlink{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028faab4947eb7c0a2892f905efb4b9bc87a0}{YUV444}}
+, \newline
+\mbox{\hyperlink{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028fa0c4e7b93cf495ddddcc91a635a5ee64d}{VUI\+\_\+\+PARAMETERS}}
+, \mbox{\hyperlink{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028faca38e2782440d2ec4d6b094502e53167}{MAX\+\_\+\+FLAGS}}
+ \}
+\begin{DoxyCompactList}\small\item\em Encoder capability flags. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structvideo_1_1encoder__t_a993ebdf48a015857bca869bfeea484e4}\label{structvideo_1_1encoder__t_a993ebdf48a015857bca869bfeea484e4} 
+const \mbox{\hyperlink{structvideo_1_1encoder__t_1_1codec__t}{codec\+\_\+t}} \& {\bfseries codec\+\_\+from\+\_\+config} (const \mbox{\hyperlink{structvideo_1_1config__t}{config\+\_\+t}} \&config) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static std\+::string\+\_\+view \mbox{\hyperlink{structvideo_1_1encoder__t_a44682e41ea691b52bab57bb01d3da999}{from\+\_\+flag}} (\mbox{\hyperlink{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028f}{flag\+\_\+e}} flag)
+\begin{DoxyCompactList}\small\item\em Convert flag enum to string view. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structvideo_1_1encoder__t_aa4a49c3ef49d0958388ed2621e05e476}\label{structvideo_1_1encoder__t_aa4a49c3ef49d0958388ed2621e05e476} 
+std\+::string\+\_\+view {\bfseries name}
+\begin{DoxyCompactList}\small\item\em Encoder name. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1encoder__t_a4920190c210aa7699bcf9a0f6fed1fc9}\label{structvideo_1_1encoder__t_a4920190c210aa7699bcf9a0f6fed1fc9} 
+const std\+::unique\+\_\+ptr$<$ const \mbox{\hyperlink{structvideo_1_1encoder__platform__formats__t}{encoder\+\_\+platform\+\_\+formats\+\_\+t}} $>$ {\bfseries platform\+\_\+formats}
+\begin{DoxyCompactList}\small\item\em Platform-\/specific formats. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1encoder__t_a58cf0a47d6fdc6b94d38f36438a95637}\label{structvideo_1_1encoder__t_a58cf0a47d6fdc6b94d38f36438a95637} 
+struct \mbox{\hyperlink{structvideo_1_1encoder__t_1_1codec__t}{video\+::encoder\+\_\+t\+::codec\+\_\+t}} {\bfseries av1}
+\begin{DoxyCompactList}\small\item\em AV1 codec configuration. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1encoder__t_a42758bd7db4012c3078a0178210802a6}\label{structvideo_1_1encoder__t_a42758bd7db4012c3078a0178210802a6} 
+\mbox{\hyperlink{structvideo_1_1encoder__t_1_1codec__t}{codec\+\_\+t}} {\bfseries hevc}
+\begin{DoxyCompactList}\small\item\em HEVC codec configuration. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1encoder__t_adde30f954ed0e2cc4ca4e35b22f06d1c}\label{structvideo_1_1encoder__t_adde30f954ed0e2cc4ca4e35b22f06d1c} 
+\mbox{\hyperlink{structvideo_1_1encoder__t_1_1codec__t}{codec\+\_\+t}} {\bfseries h264}
+\begin{DoxyCompactList}\small\item\em H.\+264 codec configuration. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1encoder__t_ad326b786f951a6dcc30bb0b45bfc17ae}\label{structvideo_1_1encoder__t_ad326b786f951a6dcc30bb0b45bfc17ae} 
+uint32\+\_\+t {\bfseries flags}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Encoder structure containing codec configurations and capabilities. 
+
+\label{doc-enum-members}
+\Hypertarget{structvideo_1_1encoder__t_doc-enum-members}
+\doxysubsection{Member Enumeration Documentation}
+\Hypertarget{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028f}\index{video::encoder\_t@{video::encoder\_t}!flag\_e@{flag\_e}}
+\index{flag\_e@{flag\_e}!video::encoder\_t@{video::encoder\_t}}
+\doxysubsubsection{\texorpdfstring{flag\_e}{flag\_e}}
+{\footnotesize\ttfamily \label{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028f} 
+enum \mbox{\hyperlink{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028f}{video\+::encoder\+\_\+t\+::flag\+\_\+e}}}
+
+
+
+Encoder capability flags. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{PASSED@{PASSED}!video::encoder\_t@{video::encoder\_t}}\index{video::encoder\_t@{video::encoder\_t}!PASSED@{PASSED}}}\Hypertarget{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028fa6ac88f788aab7148618c310a8a99b644}\label{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028fa6ac88f788aab7148618c310a8a99b644} 
+PASSED&Indicates the encoder is supported. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{REF\_FRAMES\_RESTRICT@{REF\_FRAMES\_RESTRICT}!video::encoder\_t@{video::encoder\_t}}\index{video::encoder\_t@{video::encoder\_t}!REF\_FRAMES\_RESTRICT@{REF\_FRAMES\_RESTRICT}}}\Hypertarget{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028fa9b9b156ea04a99773bbad23b96639b87}\label{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028fa9b9b156ea04a99773bbad23b96639b87} 
+REF\+\_\+\+FRAMES\+\_\+\+RESTRICT&Set maximum reference frames. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{DYNAMIC\_RANGE@{DYNAMIC\_RANGE}!video::encoder\_t@{video::encoder\_t}}\index{video::encoder\_t@{video::encoder\_t}!DYNAMIC\_RANGE@{DYNAMIC\_RANGE}}}\Hypertarget{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028fa09bad7f9c786925ce4c35023afb15903}\label{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028fa09bad7f9c786925ce4c35023afb15903} 
+DYNAMIC\+\_\+\+RANGE&HDR support. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{YUV444@{YUV444}!video::encoder\_t@{video::encoder\_t}}\index{video::encoder\_t@{video::encoder\_t}!YUV444@{YUV444}}}\Hypertarget{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028faab4947eb7c0a2892f905efb4b9bc87a0}\label{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028faab4947eb7c0a2892f905efb4b9bc87a0} 
+YUV444&YUV 4\+:4\+:4 support. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{VUI\_PARAMETERS@{VUI\_PARAMETERS}!video::encoder\_t@{video::encoder\_t}}\index{video::encoder\_t@{video::encoder\_t}!VUI\_PARAMETERS@{VUI\_PARAMETERS}}}\Hypertarget{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028fa0c4e7b93cf495ddddcc91a635a5ee64d}\label{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028fa0c4e7b93cf495ddddcc91a635a5ee64d} 
+VUI\+\_\+\+PARAMETERS&AMD encoder with VAAPI doesn\textquotesingle{}t add VUI parameters to SPS. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MAX\_FLAGS@{MAX\_FLAGS}!video::encoder\_t@{video::encoder\_t}}\index{video::encoder\_t@{video::encoder\_t}!MAX\_FLAGS@{MAX\_FLAGS}}}\Hypertarget{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028faca38e2782440d2ec4d6b094502e53167}\label{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028faca38e2782440d2ec4d6b094502e53167} 
+MAX\+\_\+\+FLAGS&Maximum number of flags. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\label{doc-func-members}
+\Hypertarget{structvideo_1_1encoder__t_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structvideo_1_1encoder__t_a44682e41ea691b52bab57bb01d3da999}\index{video::encoder\_t@{video::encoder\_t}!from\_flag@{from\_flag}}
+\index{from\_flag@{from\_flag}!video::encoder\_t@{video::encoder\_t}}
+\doxysubsubsection{\texorpdfstring{from\_flag()}{from\_flag()}}
+{\footnotesize\ttfamily \label{structvideo_1_1encoder__t_a44682e41ea691b52bab57bb01d3da999} 
+std\+::string\+\_\+view video\+::encoder\+\_\+t\+::from\+\_\+flag (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028f}{flag\+\_\+e}}}]{flag}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Convert flag enum to string view. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em flag} & The flag to convert. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+String representation of the flag. 
+\end{DoxyReturn}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{video_8h}{video.\+h}}\end{DoxyCompactItemize}

@@ -1,0 +1,140 @@
+\doxysection{nvhttp.\+h}
+\hypertarget{nvhttp_8h_source}{}\label{nvhttp_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/nvhttp.h@{/Users/alexworland/autoBitrate/apollo/src/nvhttp.h}}
+\mbox{\hyperlink{nvhttp_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ macros}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ standard\ includes}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <chrono>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <list>}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ lib\ includes}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <boost/property\_tree/ptree.hpp>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <nlohmann/json.hpp>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <Simple-\/Web-\/Server/server\_https.hpp>}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ local\ includes}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{crypto_8h}{crypto.h}}"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{rtsp_8h}{rtsp.h}}"{}}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{thread__safe_8h}{thread\_safe.h}}"{}}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{using\ namespace\ }std::chrono\_literals;}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacenvhttp}{nvhttp}}\ \{}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{using\ }args\_t\ =\ SimpleWeb::CaseInsensitiveMultimap;}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{using\ }cmd\_list\_t\ =\ std::list<crypto::command\_entry\_t>;}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespacenvhttp_a610976c6532c85fde22a4a6fc5ea787c}{VERSION}}\ =\ \textcolor{stringliteral}{"{}7.1.431.-\/1"{}};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespacenvhttp_a01beed0b82a8e45f4ecb8869c73e60ed}{GFE\_VERSION}}\ =\ \textcolor{stringliteral}{"{}3.23.0.74"{}};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespacenvhttp_a7d7cc320875ff1f64e4f9b4abd583fbb}{PORT\_HTTP}}\ =\ 0;}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{namespacenvhttp_a386ed69b6622e36c28587a16daaf46f9}{PORT\_HTTPS}}\ =\ -\/5;}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ OTP\_EXPIRE\_DURATION\ =\ 180s;}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00063\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacenvhttp_a63239afdbcdd7797e82f0b18ee9902d1}{start}}();}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00072\ \ \ std::string}
+\DoxyCodeLine{00073\ \ \ \mbox{\hyperlink{namespacenvhttp_af718f9ddf07dcb7169ffb562e2c43f64}{get\_arg}}(\textcolor{keyword}{const}\ args\_t\ \&\mbox{\hyperlink{namespaceargs}{args}},\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *name,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *default\_value\ =\ \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00081\ \ \ cmd\_list\_t}
+\DoxyCodeLine{00082\ \ \ \mbox{\hyperlink{namespacenvhttp_adb69a626615666236fbfa4bb9334fbbc}{extract\_command\_entries}}(\textcolor{keyword}{const}\ nlohmann::json\&\ j,\ \textcolor{keyword}{const}\ std::string\&\ key);}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00092\ \ \ std::shared\_ptr<rtsp\_stream::launch\_session\_t>}
+\DoxyCodeLine{00093\ \ \ \mbox{\hyperlink{namespacenvhttp_a87410012497fa06704ab11aea68206b3}{make\_launch\_session}}(\textcolor{keywordtype}{bool}\ host\_audio,\ \textcolor{keywordtype}{bool}\ input\_only,\ \textcolor{keyword}{const}\ args\_t\ \&\mbox{\hyperlink{namespaceargs}{args}},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structcrypto_1_1named__cert__t}{crypto::named\_cert\_t}}*\ named\_cert\_p);}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacenvhttp_a7c61ccf236799f23e47f6b9ba8ad2e84}{setup}}(\textcolor{keyword}{const}\ std::string\ \&pkey,\ \textcolor{keyword}{const}\ std::string\ \&cert);}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00105\ \ \ \textcolor{keyword}{class\ }SunshineHTTPS:\ \textcolor{keyword}{public}\ SimpleWeb::HTTPS\ \{}
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00107\ \ \ \ \ SunshineHTTPS(boost::asio::io\_context\ \&io\_context,\ boost::asio::ssl::context\ \&ctx):}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ SimpleWeb::HTTPS(io\_context,\ ctx)\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~SunshineHTTPS()\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \textcolor{comment}{//\ Gracefully\ shutdown\ the\ TLS\ connection}}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ SimpleWeb::error\_code\ ec;}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ shutdown(ec);}
+\DoxyCodeLine{00115\ \ \ \ \ \}}
+\DoxyCodeLine{00116\ \ \ \};}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00121\ \ \ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{namespacenvhttp_a32c863c532893110e08c2746d919b07a}{PAIR\_PHASE}}\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \mbox{\hyperlink{namespacenvhttp_a32c863c532893110e08c2746d919b07aab50339a10e1de285ac99d4c3990b8693}{NONE}},\ \ }
+\DoxyCodeLine{00123\ \ \ \ \ \mbox{\hyperlink{namespacenvhttp_a32c863c532893110e08c2746d919b07aace1b9e431a8b8bb1f38ed19aca9a3d25}{GETSERVERCERT}},\ \ }
+\DoxyCodeLine{00124\ \ \ \ \ \mbox{\hyperlink{namespacenvhttp_a32c863c532893110e08c2746d919b07aa8fdceb38bd5504b2723f1c3e79c9e61c}{CLIENTCHALLENGE}},\ \ }
+\DoxyCodeLine{00125\ \ \ \ \ \mbox{\hyperlink{namespacenvhttp_a32c863c532893110e08c2746d919b07aa689726b92262b6e72706910e8b130187}{SERVERCHALLENGERESP}},\ \ }
+\DoxyCodeLine{00126\ \ \ \ \ \mbox{\hyperlink{namespacenvhttp_a32c863c532893110e08c2746d919b07aabe756171b30e9406909628efb22bad48}{CLIENTPAIRINGSECRET}}\ \ }
+\DoxyCodeLine{00127\ \ \ \};}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00132\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structnvhttp_1_1pair__session__t}{pair\_session\_t}}\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{structnvhttp_1_1pair__session__t_adeae171002ba6e6ed69a5038fb2dbc0a}{uniqueID}}\ =\ \{\};\ \ }
+\DoxyCodeLine{00135\ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{structnvhttp_1_1pair__session__t_abba8017c5bbad1cd0a627f782622c000}{cert}}\ =\ \{\};\ \ }
+\DoxyCodeLine{00136\ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{structnvhttp_1_1pair__session__t_a5ad6ae9f86a4bf6f24408cc027b4f150}{name}}\ =\ \{\};\ \ }
+\DoxyCodeLine{00137\ \ \ \ \ \}\ client;}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00139\ \ \ \ \ std::unique\_ptr<crypto::aes\_t>\ \mbox{\hyperlink{structnvhttp_1_1pair__session__t_ac62197d5c55056e8aa808253c7fd8d8e}{cipher\_key}}\ =\ \{\};\ \ }
+\DoxyCodeLine{00140\ \ \ \ \ std::vector<uint8\_t>\ \mbox{\hyperlink{structnvhttp_1_1pair__session__t_aad99e16a8fc428079cf693cbd4064a42}{clienthash}}\ =\ \{\};\ \ }
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \ \ \ \ std::string\ \mbox{\hyperlink{structnvhttp_1_1pair__session__t_abbf0fd97296938b928edec7fe3218593}{serversecret}}\ =\ \{\};\ \ }
+\DoxyCodeLine{00143\ \ \ \ \ std::string\ \mbox{\hyperlink{structnvhttp_1_1pair__session__t_a0a553e8f65eba6bc4ea4cf2f2c653807}{serverchallenge}}\ =\ \{\};\ \ }
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \mbox{\hyperlink{classutil_1_1_either}{util::Either}}<}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ std::shared\_ptr<typename\ SimpleWeb::ServerBase<SimpleWeb::HTTP>::Response>,}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ std::shared\_ptr<typename\ SimpleWeb::ServerBase<SunshineHTTPS>::Response>>}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structnvhttp_1_1pair__session__t_ad26e90fce1b2998b8ee02599979b2e76}{response}};\ \ }
+\DoxyCodeLine{00150\ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{structnvhttp_1_1pair__session__t_a6cb2d5f167e309c46d5c66c31225c53d}{salt}}\ =\ \{\};\ \ }
+\DoxyCodeLine{00151\ \ \ \ \ \}\ async\_insert\_pin;}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00156\ \ \ \ \ \mbox{\hyperlink{namespacenvhttp_a32c863c532893110e08c2746d919b07a}{PAIR\_PHASE}}\ \mbox{\hyperlink{structnvhttp_1_1pair__session__t_af88082cd64c8dcdfb9f9b697f5ce4af3}{last\_phase}}\ =\ \mbox{\hyperlink{namespacenvhttp_a32c863c532893110e08c2746d919b07aab50339a10e1de285ac99d4c3990b8693}{PAIR\_PHASE::NONE}};}
+\DoxyCodeLine{00157\ \ \ \};}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00163\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacenvhttp_ad3de46ad4dc8a2d5e43bcf52325e23de}{remove\_session}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structnvhttp_1_1pair__session__t}{pair\_session\_t}}\ \&sess);}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00175\ \ \ \textcolor{keywordtype}{void}\ getservercert(\mbox{\hyperlink{structnvhttp_1_1pair__session__t}{pair\_session\_t}}\ \&sess,\ boost::property\_tree::ptree\ \&tree,\ \textcolor{keyword}{const}\ std::string\ \&\mbox{\hyperlink{namespacenvhttp_a941330f65943656e005c425a5b608b0e}{pin}});}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00189\ \ \ \textcolor{keywordtype}{void}\ clientchallenge(\mbox{\hyperlink{structnvhttp_1_1pair__session__t}{pair\_session\_t}}\ \&sess,\ boost::property\_tree::ptree\ \&tree,\ \textcolor{keyword}{const}\ std::string\ \&challenge);}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00198\ \ \ \textcolor{keywordtype}{void}\ serverchallengeresp(\mbox{\hyperlink{structnvhttp_1_1pair__session__t}{pair\_session\_t}}\ \&sess,\ boost::property\_tree::ptree\ \&tree,\ \textcolor{keyword}{const}\ std::string\ \&encrypted\_response);}
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00214\ \ \ \textcolor{keywordtype}{void}\ clientpairingsecret(\mbox{\hyperlink{structnvhttp_1_1pair__session__t}{pair\_session\_t}}\ \&sess,\ boost::property\_tree::ptree\ \&tree,\ \textcolor{keyword}{const}\ std::string\ \&client\_pairing\_secret);}
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00225\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacenvhttp_a941330f65943656e005c425a5b608b0e}{pin}}(std::string\ \mbox{\hyperlink{namespacenvhttp_a941330f65943656e005c425a5b608b0e}{pin}},\ std::string\ name);}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00233\ \ \ std::string\ \mbox{\hyperlink{namespacenvhttp_a12ca4c709b6d002bbdb5af0ef1ed7a7f}{request\_otp}}(\textcolor{keyword}{const}\ std::string\&\ passphrase,\ \textcolor{keyword}{const}\ std::string\&\ deviceName);}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00242\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacenvhttp_a96fc5345d0d17e402ca9449983ab1d8d}{unpair\_client}}(std::string\_view\ uuid);}
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00251\ \ \ nlohmann::json\ \mbox{\hyperlink{namespacenvhttp_af50e779196756a8c3ddb47ad55dfab00}{get\_all\_clients}}();}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00259\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacenvhttp_ab8f632f498bb1e96166ec40172fb495f}{erase\_all\_clients}}();}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00267\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacenvhttp_aa084b6961b1a7633eb1a93e0db3662b8}{stop\_session}}(\mbox{\hyperlink{structstream_1_1session__t}{stream::session\_t}}\&\ session,\ \textcolor{keywordtype}{bool}\ graceful);}
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00275\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacenvhttp_ae962e9026957d8dfd5f8fec86b824c2a}{find\_and\_stop\_session}}(\textcolor{keyword}{const}\ std::string\&\ uuid,\ \textcolor{keywordtype}{bool}\ graceful);}
+\DoxyCodeLine{00276\ }
+\DoxyCodeLine{00284\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacenvhttp_a083681f10226486c2844b39406d01a57}{update\_session\_info}}(\mbox{\hyperlink{structstream_1_1session__t}{stream::session\_t}}\&\ session,\ \textcolor{keyword}{const}\ std::string\&\ name,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{crypto::PERM}}\ newPerm);}
+\DoxyCodeLine{00285\ }
+\DoxyCodeLine{00293\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacenvhttp_a30442d086f228e6c0616a4f7ff74e32e}{find\_and\_udpate\_session\_info}}(\textcolor{keyword}{const}\ std::string\&\ uuid,\ \textcolor{keyword}{const}\ std::string\&\ name,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{crypto::PERM}}\ newPerm);}
+\DoxyCodeLine{00294\ }
+\DoxyCodeLine{00309\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacenvhttp_ac7c7825d88690df55524b5bde63f11a9}{update\_device\_info}}(}
+\DoxyCodeLine{00310\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ uuid,}
+\DoxyCodeLine{00311\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ name,}
+\DoxyCodeLine{00312\ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ display\_mode,}
+\DoxyCodeLine{00313\ \ \ \ \ \textcolor{keyword}{const}\ cmd\_list\_t\&\ do\_cmds,}
+\DoxyCodeLine{00314\ \ \ \ \ \textcolor{keyword}{const}\ cmd\_list\_t\&\ undo\_cmds,}
+\DoxyCodeLine{00315\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{crypto::PERM}}\ newPerm,}
+\DoxyCodeLine{00316\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ enable\_legacy\_ordering,}
+\DoxyCodeLine{00317\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ allow\_client\_commands,}
+\DoxyCodeLine{00318\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ always\_use\_virtual\_display}
+\DoxyCodeLine{00319\ \ \ );}
+\DoxyCodeLine{00320\ \}\ \ \textcolor{comment}{//\ namespace\ nvhttp}}
+
+\end{DoxyCode}

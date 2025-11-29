@@ -1,0 +1,37 @@
+\doxysection{cbs.\+h}
+\hypertarget{cbs_8h_source}{}\label{cbs_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/cbs.h@{/Users/alexworland/autoBitrate/apollo/src/cbs.h}}
+\mbox{\hyperlink{cbs_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ local\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{utility_8h}{utility.h}}"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{struct\ }AVPacket;}
+\DoxyCodeLine{00011\ \textcolor{keyword}{struct\ }AVCodecContext;}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }cbs\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structcbs_1_1nal__t}{nal\_t}}\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \mbox{\hyperlink{classutil_1_1buffer__t}{util::buffer\_t<std::uint8\_t>}}\ \mbox{\hyperlink{structcbs_1_1nal__t_a1c320dc823969e9a3bfcae7b4d02d5f9}{\_new}};\ \ }
+\DoxyCodeLine{00020\ \ \ \ \ \mbox{\hyperlink{classutil_1_1buffer__t}{util::buffer\_t<std::uint8\_t>}}\ \mbox{\hyperlink{structcbs_1_1nal__t_a4c97be229219be0cbd4f1f413d2172a0}{old}};\ \ }
+\DoxyCodeLine{00021\ \ \ \};}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structcbs_1_1hevc__t}{hevc\_t}}\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \mbox{\hyperlink{structcbs_1_1nal__t}{nal\_t}}\ \mbox{\hyperlink{structcbs_1_1hevc__t_acacc1e6990d14f92d1a75c3a9fd49b6e}{vps}};\ \ }
+\DoxyCodeLine{00028\ \ \ \ \ \mbox{\hyperlink{structcbs_1_1nal__t}{nal\_t}}\ \mbox{\hyperlink{structcbs_1_1hevc__t_a471e1d40d14544145a033ad1770ca43a}{sps}};\ \ }
+\DoxyCodeLine{00029\ \ \ \};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structcbs_1_1h264__t}{h264\_t}}\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \mbox{\hyperlink{structcbs_1_1nal__t}{nal\_t}}\ \mbox{\hyperlink{structcbs_1_1h264__t_a0b7dd0a542537537e133967f8c20bb7f}{sps}};\ \ }
+\DoxyCodeLine{00036\ \ \ \};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00044\ \ \ \mbox{\hyperlink{structcbs_1_1hevc__t}{hevc\_t}}\ \mbox{\hyperlink{cbs_8cpp_a3479e9b4b8233a0496c0e781ca264580}{make\_sps\_hevc}}(\textcolor{keyword}{const}\ AVCodecContext\ *ctx,\ \textcolor{keyword}{const}\ AVPacket\ *packet);}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00052\ \ \ \mbox{\hyperlink{structcbs_1_1h264__t}{h264\_t}}\ \mbox{\hyperlink{cbs_8cpp_ac408f4ef0aaacd29695429d20f8268c4}{make\_sps\_h264}}(\textcolor{keyword}{const}\ AVCodecContext\ *ctx,\ \textcolor{keyword}{const}\ AVPacket\ *packet);}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{cbs_8cpp_a4982caca63442cb3e81cd22b713c2069}{validate\_sps}}(\textcolor{keyword}{const}\ AVPacket\ *packet,\ \textcolor{keywordtype}{int}\ codec\_id);}
+\DoxyCodeLine{00061\ \}\ \ \textcolor{comment}{//\ namespace\ cbs}}
+
+\end{DoxyCode}

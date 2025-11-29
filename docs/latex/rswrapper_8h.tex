@@ -1,0 +1,82 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/rswrapper.h File Reference}
+\hypertarget{rswrapper_8h}{}\label{rswrapper_8h}\index{/Users/alexworland/autoBitrate/apollo/src/rswrapper.h@{/Users/alexworland/autoBitrate/apollo/src/rswrapper.h}}
+
+
+Wrappers for nanors vectorization.  
+
+
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{rswrapper_8h_a18caaf113f1217ad6f0b94198a831620}\label{rswrapper_8h_a18caaf113f1217ad6f0b94198a831620} 
+\#define {\bfseries reed\+\_\+solomon\+\_\+new}~reed\+\_\+solomon\+\_\+new\+\_\+fn
+\item 
+\Hypertarget{rswrapper_8h_aa74a8e1727562e28688e401e9555ff5b}\label{rswrapper_8h_aa74a8e1727562e28688e401e9555ff5b} 
+\#define {\bfseries reed\+\_\+solomon\+\_\+release}~reed\+\_\+solomon\+\_\+release\+\_\+fn
+\item 
+\Hypertarget{rswrapper_8h_a79410e11f5d32410eb0d7d458e6352d7}\label{rswrapper_8h_a79410e11f5d32410eb0d7d458e6352d7} 
+\#define {\bfseries reed\+\_\+solomon\+\_\+encode}~reed\+\_\+solomon\+\_\+encode\+\_\+fn
+\item 
+\Hypertarget{rswrapper_8h_a65d680b2175a0b0d670072c33886813b}\label{rswrapper_8h_a65d680b2175a0b0d670072c33886813b} 
+\#define {\bfseries reed\+\_\+solomon\+\_\+decode}~reed\+\_\+solomon\+\_\+decode\+\_\+fn
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{rswrapper_8h_ab59e5f5ed4c6b7b5abfd5769e9247db0}\label{rswrapper_8h_ab59e5f5ed4c6b7b5abfd5769e9247db0} 
+typedef struct \+\_\+reed\+\_\+solomon {\bfseries reed\+\_\+solomon}
+\item 
+\Hypertarget{rswrapper_8h_ab2705f56ec23fce8c78dc4cb89cc511d}\label{rswrapper_8h_ab2705f56ec23fce8c78dc4cb89cc511d} 
+typedef reed\+\_\+solomon \texorpdfstring{$\ast$}{*}(\texorpdfstring{$\ast$}{*} {\bfseries reed\+\_\+solomon\+\_\+new\+\_\+t}) (int data\+\_\+shards, int parity\+\_\+shards)
+\item 
+\Hypertarget{rswrapper_8h_ae960d8a46302b94363eee3442878908b}\label{rswrapper_8h_ae960d8a46302b94363eee3442878908b} 
+typedef void(\texorpdfstring{$\ast$}{*} {\bfseries reed\+\_\+solomon\+\_\+release\+\_\+t}) (reed\+\_\+solomon \texorpdfstring{$\ast$}{*}rs)
+\item 
+\Hypertarget{rswrapper_8h_aa2a99ceec42d8d033e63fa804d27572f}\label{rswrapper_8h_aa2a99ceec42d8d033e63fa804d27572f} 
+typedef int(\texorpdfstring{$\ast$}{*} {\bfseries reed\+\_\+solomon\+\_\+encode\+\_\+t}) (reed\+\_\+solomon \texorpdfstring{$\ast$}{*}rs, uint8\+\_\+t \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}shards, int nr\+\_\+shards, int bs)
+\item 
+\Hypertarget{rswrapper_8h_a2a9c82bb213645c5292cb87e017cc2c3}\label{rswrapper_8h_a2a9c82bb213645c5292cb87e017cc2c3} 
+typedef int(\texorpdfstring{$\ast$}{*} {\bfseries reed\+\_\+solomon\+\_\+decode\+\_\+t}) (reed\+\_\+solomon \texorpdfstring{$\ast$}{*}rs, uint8\+\_\+t \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}shards, uint8\+\_\+t \texorpdfstring{$\ast$}{*}marks, int nr\+\_\+shards, int bs)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{rswrapper_8h_a349a52fa4bbaa694e75198cd1a394fb6}{reed\+\_\+solomon\+\_\+init}} (void)
+\begin{DoxyCompactList}\small\item\em This initializes the RS function pointers to the best vectorized version available. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{rswrapper_8h_a13514f2f013a6ed0fd45bf0dd00ef62c}\label{rswrapper_8h_a13514f2f013a6ed0fd45bf0dd00ef62c} 
+reed\+\_\+solomon\+\_\+new\+\_\+t {\bfseries reed\+\_\+solomon\+\_\+new\+\_\+fn}
+\item 
+\Hypertarget{rswrapper_8h_a08ba7b90381f72c07859ed1119213ca4}\label{rswrapper_8h_a08ba7b90381f72c07859ed1119213ca4} 
+reed\+\_\+solomon\+\_\+release\+\_\+t {\bfseries reed\+\_\+solomon\+\_\+release\+\_\+fn}
+\item 
+\Hypertarget{rswrapper_8h_a3dd757a259281a6bde8a747cd16c8218}\label{rswrapper_8h_a3dd757a259281a6bde8a747cd16c8218} 
+reed\+\_\+solomon\+\_\+encode\+\_\+t {\bfseries reed\+\_\+solomon\+\_\+encode\+\_\+fn}
+\item 
+\Hypertarget{rswrapper_8h_ac3d1a47cf33fa4666840638548939dfb}\label{rswrapper_8h_ac3d1a47cf33fa4666840638548939dfb} 
+reed\+\_\+solomon\+\_\+decode\+\_\+t {\bfseries reed\+\_\+solomon\+\_\+decode\+\_\+fn}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Wrappers for nanors vectorization. 
+
+This is a drop-\/in replacement for nanors rs.\+h 
+
+\label{doc-func-members}
+\Hypertarget{rswrapper_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{rswrapper_8h_a349a52fa4bbaa694e75198cd1a394fb6}\index{rswrapper.h@{rswrapper.h}!reed\_solomon\_init@{reed\_solomon\_init}}
+\index{reed\_solomon\_init@{reed\_solomon\_init}!rswrapper.h@{rswrapper.h}}
+\doxysubsubsection{\texorpdfstring{reed\_solomon\_init()}{reed\_solomon\_init()}}
+{\footnotesize\ttfamily \label{rswrapper_8h_a349a52fa4bbaa694e75198cd1a394fb6} 
+void reed\+\_\+solomon\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+This initializes the RS function pointers to the best vectorized version available. 
+
+The streaming code will directly invoke these function pointers during encoding. 

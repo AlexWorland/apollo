@@ -1,0 +1,35 @@
+\doxysection{video\+::capture\+\_\+thread\+\_\+async\+\_\+ctx\+\_\+t Struct Reference}
+\hypertarget{structvideo_1_1capture__thread__async__ctx__t}{}\label{structvideo_1_1capture__thread__async__ctx__t}\index{video::capture\_thread\_async\_ctx\_t@{video::capture\_thread\_async\_ctx\_t}}
+
+
+Asynchronous video capture thread context.  
+
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structvideo_1_1capture__thread__async__ctx__t_a4bead538f42d0927dcce687be09de904}\label{structvideo_1_1capture__thread__async__ctx__t_a4bead538f42d0927dcce687be09de904} 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classsafe_1_1queue__t}{safe\+::queue\+\_\+t}}$<$ \mbox{\hyperlink{structvideo_1_1capture__ctx__t}{capture\+\_\+ctx\+\_\+t}} $>$ $>$ {\bfseries capture\+\_\+ctx\+\_\+queue}
+\item 
+\Hypertarget{structvideo_1_1capture__thread__async__ctx__t_abbe22597de1e7dc150f1e65974c520fd}\label{structvideo_1_1capture__thread__async__ctx__t_abbe22597de1e7dc150f1e65974c520fd} 
+std\+::thread {\bfseries capture\+\_\+thread}
+\item 
+\Hypertarget{structvideo_1_1capture__thread__async__ctx__t_af459f1c56e682327ff6a26aabef77537}\label{structvideo_1_1capture__thread__async__ctx__t_af459f1c56e682327ff6a26aabef77537} 
+safe\+::signal\+\_\+t {\bfseries reinit\+\_\+event}
+\item 
+\Hypertarget{structvideo_1_1capture__thread__async__ctx__t_a78c44670850007b78f1deeeec4e825e4}\label{structvideo_1_1capture__thread__async__ctx__t_a78c44670850007b78f1deeeec4e825e4} 
+const encoder\+\_\+t \texorpdfstring{$\ast$}{*} {\bfseries encoder\+\_\+p}
+\item 
+\Hypertarget{structvideo_1_1capture__thread__async__ctx__t_ad7c160d1394ec41e7eb3bdb4b820cdcf}\label{structvideo_1_1capture__thread__async__ctx__t_ad7c160d1394ec41e7eb3bdb4b820cdcf} 
+\mbox{\hyperlink{classsync__util_1_1sync__t}{sync\+\_\+util\+::sync\+\_\+t}}$<$ std\+::weak\+\_\+ptr$<$ platf\+::display\+\_\+t $>$ $>$ {\bfseries display\+\_\+wp}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Asynchronous video capture thread context. 
+
+Contains thread-\/safe queues and synchronization primitives for asynchronous video capture operations. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{video_8cpp}{video.\+cpp}}\end{DoxyCompactItemize}

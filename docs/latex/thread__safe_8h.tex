@@ -1,0 +1,64 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/thread\+\_\+safe.h File Reference}
+\hypertarget{thread__safe_8h}{}\label{thread__safe_8h}\index{/Users/alexworland/autoBitrate/apollo/src/thread\_safe.h@{/Users/alexworland/autoBitrate/apollo/src/thread\_safe.h}}
+
+
+Declarations for thread-\/safe data structures.  
+
+
+{\ttfamily \#include $<$array$>$}\newline
+{\ttfamily \#include $<$atomic$>$}\newline
+{\ttfamily \#include $<$condition\+\_\+variable$>$}\newline
+{\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include $<$map$>$}\newline
+{\ttfamily \#include $<$mutex$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include "{}utility.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classsafe_1_1event__t}{safe\+::event\+\_\+t$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Thread-\/safe event/signal class. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classsafe_1_1alarm__raw__t}{safe\+::alarm\+\_\+raw\+\_\+t$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Thread-\/safe alarm class. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classsafe_1_1queue__t}{safe\+::queue\+\_\+t$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Thread-\/safe queue class. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classsafe_1_1shared__t}{safe\+::shared\+\_\+t$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Thread-\/safe shared object manager. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structsafe_1_1shared__t_1_1ptr__t}{safe\+::shared\+\_\+t$<$ T $>$\+::ptr\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Smart pointer to a shared object. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classsafe_1_1post__t}{safe\+::post\+\_\+t$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Post wrapper for mail-\/based communication. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classsafe_1_1mail__raw__t}{safe\+::mail\+\_\+raw\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Mail container for named events and queues. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{thread__safe_8h_a4ee30b16384744249b20390bc5b75740}\label{thread__safe_8h_a4ee30b16384744249b20390bc5b75740} 
+{\footnotesize template$<$class T$>$ }\\using {\bfseries safe\+::alarm\+\_\+t} = std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{classsafe_1_1alarm__raw__t}{alarm\+\_\+raw\+\_\+t}}$<$T$>$$>$
+\item 
+\Hypertarget{thread__safe_8h_a71312250a9f0833633709099662e3ee8}\label{thread__safe_8h_a71312250a9f0833633709099662e3ee8} 
+using {\bfseries safe\+::signal\+\_\+t} = \mbox{\hyperlink{classsafe_1_1event__t}{event\+\_\+t}}$<$bool$>$
+\item 
+\Hypertarget{thread__safe_8h_a02ae18c9d0e7da0df413f0333977b62d}\label{thread__safe_8h_a02ae18c9d0e7da0df413f0333977b62d} 
+using {\bfseries safe\+::mail\+\_\+t} = std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{classsafe_1_1mail__raw__t}{mail\+\_\+raw\+\_\+t}}$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{thread__safe_8h_a48ce75181ed371e58a33586214bd6546}\label{thread__safe_8h_a48ce75181ed371e58a33586214bd6546} 
+{\footnotesize template$<$class T$>$ }\\alarm\+\_\+t$<$ T $>$ {\bfseries safe\+::make\+\_\+alarm} ()
+\item 
+\Hypertarget{thread__safe_8h_a444523a930d7e9681c577a87977a9c9a}\label{thread__safe_8h_a444523a930d7e9681c577a87977a9c9a} 
+{\footnotesize template$<$class T, class F\+\_\+\+Construct, class F\+\_\+\+Destruct$>$ }\\auto {\bfseries safe\+::make\+\_\+shared} (F\+\_\+\+Construct \&\&fc, F\+\_\+\+Destruct \&\&fd)
+\item 
+\Hypertarget{thread__safe_8h_aa14a0e9af98fa74488e545a3512dac89}\label{thread__safe_8h_aa14a0e9af98fa74488e545a3512dac89} 
+void {\bfseries safe\+::cleanup} (\mbox{\hyperlink{classsafe_1_1mail__raw__t}{mail\+\_\+raw\+\_\+t}} \texorpdfstring{$\ast$}{*})
+\item 
+\Hypertarget{thread__safe_8h_a8784fe6e52346b7dbb236a700b177464}\label{thread__safe_8h_a8784fe6e52346b7dbb236a700b177464} 
+{\footnotesize template$<$class T$>$ }\\auto {\bfseries safe\+::lock} (const std\+::weak\+\_\+ptr$<$ void $>$ \&wp)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Declarations for thread-\/safe data structures. 
+

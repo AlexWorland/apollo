@@ -1,0 +1,178 @@
+\doxysection{config\+::video\+\_\+t\+::dd\+\_\+t Struct Reference}
+\hypertarget{structconfig_1_1video__t_1_1dd__t}{}\label{structconfig_1_1video__t_1_1dd__t}\index{config::video\_t::dd\_t@{config::video\_t::dd\_t}}
+
+
+Display device configuration structure.  
+
+
+
+
+{\ttfamily \#include $<$config.\+h$>$}
+
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_1_1workarounds__t}{workarounds\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Display device workarounds configuration. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_1_1mode__remapping__entry__t}{mode\+\_\+remapping\+\_\+entry\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Mode remapping entry structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_1_1mode__remapping__t}{mode\+\_\+remapping\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Mode remapping configuration structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a71167e8deb326e952cc07359386306ec}{config\+\_\+option\+\_\+e}} \{ \newline
+\mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a71167e8deb326e952cc07359386306eca075ae3d2fc31640504f814f60e5ef713}{disabled}}
+, \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a71167e8deb326e952cc07359386306eca3aa1a80d61b82a1fc9fc066c634f6ead}{verify\+\_\+only}}
+, \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a71167e8deb326e952cc07359386306eca30e4c2a0052b4aae3c8642f14485d789}{ensure\+\_\+active}}
+, \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a71167e8deb326e952cc07359386306ecac412cebeb3d418e7ef81163b800b862e}{ensure\+\_\+primary}}
+, \newline
+\mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a71167e8deb326e952cc07359386306eca2b5e38a9436495e0d9762ef3892644f2}{ensure\+\_\+only\+\_\+display}}
+ \}
+\item 
+enum class \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a947ad18e495a814418634d6a84eb53c4}{resolution\+\_\+option\+\_\+e}} \{ \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a947ad18e495a814418634d6a84eb53c4a075ae3d2fc31640504f814f60e5ef713}{disabled}}
+, \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a947ad18e495a814418634d6a84eb53c4a2bd9c0ed00116be1258e0cc66617d7c8}{automatic}}
+, \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a947ad18e495a814418634d6a84eb53c4a3c78b35502b2693fefdfc51cba3a53a5}{manual}}
+ \}
+\item 
+enum class \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a1a9c5b605ab8ad8a58ee728fdaf78c85}{refresh\+\_\+rate\+\_\+option\+\_\+e}} \{ \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a1a9c5b605ab8ad8a58ee728fdaf78c85a075ae3d2fc31640504f814f60e5ef713}{disabled}}
+, \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a1a9c5b605ab8ad8a58ee728fdaf78c85a2bd9c0ed00116be1258e0cc66617d7c8}{automatic}}
+, \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a1a9c5b605ab8ad8a58ee728fdaf78c85a3c78b35502b2693fefdfc51cba3a53a5}{manual}}
+ \}
+\item 
+enum class \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a1dbaacf45623b1add275aafb80426bad}{hdr\+\_\+option\+\_\+e}} \{ \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a1dbaacf45623b1add275aafb80426bada075ae3d2fc31640504f814f60e5ef713}{disabled}}
+, \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a1dbaacf45623b1add275aafb80426bada2bd9c0ed00116be1258e0cc66617d7c8}{automatic}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structconfig_1_1video__t_1_1dd__t_adb007247dff1b2648836465677b3faa1}\label{structconfig_1_1video__t_1_1dd__t_adb007247dff1b2648836465677b3faa1} 
+\mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a71167e8deb326e952cc07359386306ec}{config\+\_\+option\+\_\+e}} {\bfseries configuration\+\_\+option}
+\item 
+\Hypertarget{structconfig_1_1video__t_1_1dd__t_af2247743cc2be6eb7e691e1d4040f893}\label{structconfig_1_1video__t_1_1dd__t_af2247743cc2be6eb7e691e1d4040f893} 
+\mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a947ad18e495a814418634d6a84eb53c4}{resolution\+\_\+option\+\_\+e}} {\bfseries resolution\+\_\+option}
+\item 
+\Hypertarget{structconfig_1_1video__t_1_1dd__t_a1382ba8847055d4c48635c455c6d13f0}\label{structconfig_1_1video__t_1_1dd__t_a1382ba8847055d4c48635c455c6d13f0} 
+std\+::string {\bfseries manual\+\_\+resolution}
+\begin{DoxyCompactList}\small\item\em Manual resolution in case {\ttfamily resolution\+\_\+option == \doxylink{structconfig_1_1video__t_1_1dd__t_a947ad18e495a814418634d6a84eb53c4a3c78b35502b2693fefdfc51cba3a53a5}{resolution\+\_\+option\+\_\+e\+::manual}}. \end{DoxyCompactList}\item 
+\Hypertarget{structconfig_1_1video__t_1_1dd__t_a059925a1e2d3af9b670fe6da483142b2}\label{structconfig_1_1video__t_1_1dd__t_a059925a1e2d3af9b670fe6da483142b2} 
+\mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a1a9c5b605ab8ad8a58ee728fdaf78c85}{refresh\+\_\+rate\+\_\+option\+\_\+e}} {\bfseries refresh\+\_\+rate\+\_\+option}
+\item 
+\Hypertarget{structconfig_1_1video__t_1_1dd__t_a6b4a1c6a4090f7cd1e1dae649016b5a0}\label{structconfig_1_1video__t_1_1dd__t_a6b4a1c6a4090f7cd1e1dae649016b5a0} 
+std\+::string {\bfseries manual\+\_\+refresh\+\_\+rate}
+\begin{DoxyCompactList}\small\item\em Manual refresh rate in case {\ttfamily refresh\+\_\+rate\+\_\+option == \doxylink{structconfig_1_1video__t_1_1dd__t_a1a9c5b605ab8ad8a58ee728fdaf78c85a3c78b35502b2693fefdfc51cba3a53a5}{refresh\+\_\+rate\+\_\+option\+\_\+e\+::manual}}. \end{DoxyCompactList}\item 
+\Hypertarget{structconfig_1_1video__t_1_1dd__t_a8cfc651191e5a889c01853f71b3ea63d}\label{structconfig_1_1video__t_1_1dd__t_a8cfc651191e5a889c01853f71b3ea63d} 
+\mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a1dbaacf45623b1add275aafb80426bad}{hdr\+\_\+option\+\_\+e}} {\bfseries hdr\+\_\+option}
+\item 
+\Hypertarget{structconfig_1_1video__t_1_1dd__t_a66bab8f52516b81293653fb9ff3e318e}\label{structconfig_1_1video__t_1_1dd__t_a66bab8f52516b81293653fb9ff3e318e} 
+std\+::chrono\+::milliseconds {\bfseries config\+\_\+revert\+\_\+delay}
+\begin{DoxyCompactList}\small\item\em Time to wait until settings are reverted (after stream ends/app exists). \end{DoxyCompactList}\item 
+\Hypertarget{structconfig_1_1video__t_1_1dd__t_a4c5b47970d0452fe1b73c16b0bf88ce1}\label{structconfig_1_1video__t_1_1dd__t_a4c5b47970d0452fe1b73c16b0bf88ce1} 
+bool {\bfseries config\+\_\+revert\+\_\+on\+\_\+disconnect}
+\begin{DoxyCompactList}\small\item\em Specify whether to revert display configuration on client disconnect. \end{DoxyCompactList}\item 
+\Hypertarget{structconfig_1_1video__t_1_1dd__t_aa221bc59e8c78b25e1dd5934b6e2f64c}\label{structconfig_1_1video__t_1_1dd__t_aa221bc59e8c78b25e1dd5934b6e2f64c} 
+\mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_1_1mode__remapping__t}{mode\+\_\+remapping\+\_\+t}} {\bfseries mode\+\_\+remapping}
+\item 
+\Hypertarget{structconfig_1_1video__t_1_1dd__t_ac088313a8d75ce097afcfeb076eeb1b1}\label{structconfig_1_1video__t_1_1dd__t_ac088313a8d75ce097afcfeb076eeb1b1} 
+\mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_1_1workarounds__t}{workarounds\+\_\+t}} {\bfseries wa}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Display device configuration structure. 
+
+Contains settings for managing display device configuration, resolution, refresh rate, HDR, and mode remapping during streaming sessions. 
+
+\label{doc-enum-members}
+\Hypertarget{structconfig_1_1video__t_1_1dd__t_doc-enum-members}
+\doxysubsection{Member Enumeration Documentation}
+\Hypertarget{structconfig_1_1video__t_1_1dd__t_a71167e8deb326e952cc07359386306ec}\index{config::video\_t::dd\_t@{config::video\_t::dd\_t}!config\_option\_e@{config\_option\_e}}
+\index{config\_option\_e@{config\_option\_e}!config::video\_t::dd\_t@{config::video\_t::dd\_t}}
+\doxysubsubsection{\texorpdfstring{config\_option\_e}{config\_option\_e}}
+{\footnotesize\ttfamily \label{structconfig_1_1video__t_1_1dd__t_a71167e8deb326e952cc07359386306ec} 
+enum class \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a71167e8deb326e952cc07359386306ec}{config\+::video\+\_\+t\+::dd\+\_\+t\+::config\+\_\+option\+\_\+e}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{disabled@{disabled}!config::video\_t::dd\_t@{config::video\_t::dd\_t}}\index{config::video\_t::dd\_t@{config::video\_t::dd\_t}!disabled@{disabled}}}\Hypertarget{structconfig_1_1video__t_1_1dd__t_a71167e8deb326e952cc07359386306eca075ae3d2fc31640504f814f60e5ef713}\label{structconfig_1_1video__t_1_1dd__t_a71167e8deb326e952cc07359386306eca075ae3d2fc31640504f814f60e5ef713} 
+disabled&Disable the configuration for the device. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{verify\_only@{verify\_only}!config::video\_t::dd\_t@{config::video\_t::dd\_t}}\index{config::video\_t::dd\_t@{config::video\_t::dd\_t}!verify\_only@{verify\_only}}}\Hypertarget{structconfig_1_1video__t_1_1dd__t_a71167e8deb326e952cc07359386306eca3aa1a80d61b82a1fc9fc066c634f6ead}\label{structconfig_1_1video__t_1_1dd__t_a71167e8deb326e952cc07359386306eca3aa1a80d61b82a1fc9fc066c634f6ead} 
+verify\+\_\+only&@seealso\{display\+\_\+device\+::\+Single\+Display\+Configuration\+::\+Device\+Preparation\} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ensure\_active@{ensure\_active}!config::video\_t::dd\_t@{config::video\_t::dd\_t}}\index{config::video\_t::dd\_t@{config::video\_t::dd\_t}!ensure\_active@{ensure\_active}}}\Hypertarget{structconfig_1_1video__t_1_1dd__t_a71167e8deb326e952cc07359386306eca30e4c2a0052b4aae3c8642f14485d789}\label{structconfig_1_1video__t_1_1dd__t_a71167e8deb326e952cc07359386306eca30e4c2a0052b4aae3c8642f14485d789} 
+ensure\+\_\+active&@seealso\{display\+\_\+device\+::\+Single\+Display\+Configuration\+::\+Device\+Preparation\} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ensure\_primary@{ensure\_primary}!config::video\_t::dd\_t@{config::video\_t::dd\_t}}\index{config::video\_t::dd\_t@{config::video\_t::dd\_t}!ensure\_primary@{ensure\_primary}}}\Hypertarget{structconfig_1_1video__t_1_1dd__t_a71167e8deb326e952cc07359386306ecac412cebeb3d418e7ef81163b800b862e}\label{structconfig_1_1video__t_1_1dd__t_a71167e8deb326e952cc07359386306ecac412cebeb3d418e7ef81163b800b862e} 
+ensure\+\_\+primary&@seealso\{display\+\_\+device\+::\+Single\+Display\+Configuration\+::\+Device\+Preparation\} \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ensure\_only\_display@{ensure\_only\_display}!config::video\_t::dd\_t@{config::video\_t::dd\_t}}\index{config::video\_t::dd\_t@{config::video\_t::dd\_t}!ensure\_only\_display@{ensure\_only\_display}}}\Hypertarget{structconfig_1_1video__t_1_1dd__t_a71167e8deb326e952cc07359386306eca2b5e38a9436495e0d9762ef3892644f2}\label{structconfig_1_1video__t_1_1dd__t_a71167e8deb326e952cc07359386306eca2b5e38a9436495e0d9762ef3892644f2} 
+ensure\+\_\+only\+\_\+display&@seealso\{display\+\_\+device\+::\+Single\+Display\+Configuration\+::\+Device\+Preparation\} \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{structconfig_1_1video__t_1_1dd__t_a1dbaacf45623b1add275aafb80426bad}\index{config::video\_t::dd\_t@{config::video\_t::dd\_t}!hdr\_option\_e@{hdr\_option\_e}}
+\index{hdr\_option\_e@{hdr\_option\_e}!config::video\_t::dd\_t@{config::video\_t::dd\_t}}
+\doxysubsubsection{\texorpdfstring{hdr\_option\_e}{hdr\_option\_e}}
+{\footnotesize\ttfamily \label{structconfig_1_1video__t_1_1dd__t_a1dbaacf45623b1add275aafb80426bad} 
+enum class \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a1dbaacf45623b1add275aafb80426bad}{config\+::video\+\_\+t\+::dd\+\_\+t\+::hdr\+\_\+option\+\_\+e}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{disabled@{disabled}!config::video\_t::dd\_t@{config::video\_t::dd\_t}}\index{config::video\_t::dd\_t@{config::video\_t::dd\_t}!disabled@{disabled}}}\Hypertarget{structconfig_1_1video__t_1_1dd__t_a1dbaacf45623b1add275aafb80426bada075ae3d2fc31640504f814f60e5ef713}\label{structconfig_1_1video__t_1_1dd__t_a1dbaacf45623b1add275aafb80426bada075ae3d2fc31640504f814f60e5ef713} 
+disabled&Do not change HDR settings. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{automatic@{automatic}!config::video\_t::dd\_t@{config::video\_t::dd\_t}}\index{config::video\_t::dd\_t@{config::video\_t::dd\_t}!automatic@{automatic}}}\Hypertarget{structconfig_1_1video__t_1_1dd__t_a1dbaacf45623b1add275aafb80426bada2bd9c0ed00116be1258e0cc66617d7c8}\label{structconfig_1_1video__t_1_1dd__t_a1dbaacf45623b1add275aafb80426bada2bd9c0ed00116be1258e0cc66617d7c8} 
+automatic&Change HDR settings and use the state requested by Moonlight. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{structconfig_1_1video__t_1_1dd__t_a1a9c5b605ab8ad8a58ee728fdaf78c85}\index{config::video\_t::dd\_t@{config::video\_t::dd\_t}!refresh\_rate\_option\_e@{refresh\_rate\_option\_e}}
+\index{refresh\_rate\_option\_e@{refresh\_rate\_option\_e}!config::video\_t::dd\_t@{config::video\_t::dd\_t}}
+\doxysubsubsection{\texorpdfstring{refresh\_rate\_option\_e}{refresh\_rate\_option\_e}}
+{\footnotesize\ttfamily \label{structconfig_1_1video__t_1_1dd__t_a1a9c5b605ab8ad8a58ee728fdaf78c85} 
+enum class \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a1a9c5b605ab8ad8a58ee728fdaf78c85}{config\+::video\+\_\+t\+::dd\+\_\+t\+::refresh\+\_\+rate\+\_\+option\+\_\+e}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{disabled@{disabled}!config::video\_t::dd\_t@{config::video\_t::dd\_t}}\index{config::video\_t::dd\_t@{config::video\_t::dd\_t}!disabled@{disabled}}}\Hypertarget{structconfig_1_1video__t_1_1dd__t_a1a9c5b605ab8ad8a58ee728fdaf78c85a075ae3d2fc31640504f814f60e5ef713}\label{structconfig_1_1video__t_1_1dd__t_a1a9c5b605ab8ad8a58ee728fdaf78c85a075ae3d2fc31640504f814f60e5ef713} 
+disabled&Do not change refresh rate. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{automatic@{automatic}!config::video\_t::dd\_t@{config::video\_t::dd\_t}}\index{config::video\_t::dd\_t@{config::video\_t::dd\_t}!automatic@{automatic}}}\Hypertarget{structconfig_1_1video__t_1_1dd__t_a1a9c5b605ab8ad8a58ee728fdaf78c85a2bd9c0ed00116be1258e0cc66617d7c8}\label{structconfig_1_1video__t_1_1dd__t_a1a9c5b605ab8ad8a58ee728fdaf78c85a2bd9c0ed00116be1258e0cc66617d7c8} 
+automatic&Change refresh rate and use the one received from Moonlight. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{manual@{manual}!config::video\_t::dd\_t@{config::video\_t::dd\_t}}\index{config::video\_t::dd\_t@{config::video\_t::dd\_t}!manual@{manual}}}\Hypertarget{structconfig_1_1video__t_1_1dd__t_a1a9c5b605ab8ad8a58ee728fdaf78c85a3c78b35502b2693fefdfc51cba3a53a5}\label{structconfig_1_1video__t_1_1dd__t_a1a9c5b605ab8ad8a58ee728fdaf78c85a3c78b35502b2693fefdfc51cba3a53a5} 
+manual&Change refresh rate and use the manually provided one. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{structconfig_1_1video__t_1_1dd__t_a947ad18e495a814418634d6a84eb53c4}\index{config::video\_t::dd\_t@{config::video\_t::dd\_t}!resolution\_option\_e@{resolution\_option\_e}}
+\index{resolution\_option\_e@{resolution\_option\_e}!config::video\_t::dd\_t@{config::video\_t::dd\_t}}
+\doxysubsubsection{\texorpdfstring{resolution\_option\_e}{resolution\_option\_e}}
+{\footnotesize\ttfamily \label{structconfig_1_1video__t_1_1dd__t_a947ad18e495a814418634d6a84eb53c4} 
+enum class \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a947ad18e495a814418634d6a84eb53c4}{config\+::video\+\_\+t\+::dd\+\_\+t\+::resolution\+\_\+option\+\_\+e}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{disabled@{disabled}!config::video\_t::dd\_t@{config::video\_t::dd\_t}}\index{config::video\_t::dd\_t@{config::video\_t::dd\_t}!disabled@{disabled}}}\Hypertarget{structconfig_1_1video__t_1_1dd__t_a947ad18e495a814418634d6a84eb53c4a075ae3d2fc31640504f814f60e5ef713}\label{structconfig_1_1video__t_1_1dd__t_a947ad18e495a814418634d6a84eb53c4a075ae3d2fc31640504f814f60e5ef713} 
+disabled&Do not change resolution. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{automatic@{automatic}!config::video\_t::dd\_t@{config::video\_t::dd\_t}}\index{config::video\_t::dd\_t@{config::video\_t::dd\_t}!automatic@{automatic}}}\Hypertarget{structconfig_1_1video__t_1_1dd__t_a947ad18e495a814418634d6a84eb53c4a2bd9c0ed00116be1258e0cc66617d7c8}\label{structconfig_1_1video__t_1_1dd__t_a947ad18e495a814418634d6a84eb53c4a2bd9c0ed00116be1258e0cc66617d7c8} 
+automatic&Change resolution and use the one received from Moonlight. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{manual@{manual}!config::video\_t::dd\_t@{config::video\_t::dd\_t}}\index{config::video\_t::dd\_t@{config::video\_t::dd\_t}!manual@{manual}}}\Hypertarget{structconfig_1_1video__t_1_1dd__t_a947ad18e495a814418634d6a84eb53c4a3c78b35502b2693fefdfc51cba3a53a5}\label{structconfig_1_1video__t_1_1dd__t_a947ad18e495a814418634d6a84eb53c4a3c78b35502b2693fefdfc51cba3a53a5} 
+manual&Change resolution and use the manually provided one. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{config_8h}{config.\+h}}\end{DoxyCompactItemize}

@@ -1,0 +1,66 @@
+\doxysection{video\+::config\+\_\+t Struct Reference}
+\hypertarget{structvideo_1_1config__t}{}\label{structvideo_1_1config__t}\index{video::config\_t@{video::config\_t}}
+
+
+Encoding configuration requested by remote client.  
+
+
+
+
+{\ttfamily \#include $<$video.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structvideo_1_1config__t_a9d8fa2923d7ef2363b279d307d303642}\label{structvideo_1_1config__t_a9d8fa2923d7ef2363b279d307d303642} 
+int {\bfseries width}
+\begin{DoxyCompactList}\small\item\em Video width in pixels. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1config__t_abf58614ed9e1cbc1fab1b77477c957de}\label{structvideo_1_1config__t_abf58614ed9e1cbc1fab1b77477c957de} 
+int {\bfseries height}
+\begin{DoxyCompactList}\small\item\em Video height in pixels. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1config__t_ae8cd1bfaf5a88a674031c93535c1a3dd}\label{structvideo_1_1config__t_ae8cd1bfaf5a88a674031c93535c1a3dd} 
+int {\bfseries framerate}
+\begin{DoxyCompactList}\small\item\em Requested framerate, used in individual frame bitrate budget calculation. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1config__t_abce340545152f9b1ebf4a1603889e80b}\label{structvideo_1_1config__t_abce340545152f9b1ebf4a1603889e80b} 
+int {\bfseries bitrate}
+\begin{DoxyCompactList}\small\item\em Video bitrate in kilobits (1000 bits) for requested framerate. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1config__t_ae7e4270ae53529b3ab9894218b82ddfc}\label{structvideo_1_1config__t_ae7e4270ae53529b3ab9894218b82ddfc} 
+int {\bfseries slices\+Per\+Frame}
+\begin{DoxyCompactList}\small\item\em Number of slices per frame. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1config__t_abe45db0319215817376ee9c148a3c5d6}\label{structvideo_1_1config__t_abe45db0319215817376ee9c148a3c5d6} 
+int {\bfseries num\+Ref\+Frames}
+\begin{DoxyCompactList}\small\item\em Max number of reference frames. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1config__t_a2adbf430d5477fdc2a675ccd8ccc651d}\label{structvideo_1_1config__t_a2adbf430d5477fdc2a675ccd8ccc651d} 
+int {\bfseries encoder\+Csc\+Mode}
+\begin{DoxyCompactList}\small\item\em Color range and SDR encoding colorspace. Color range (encoder\+Csc\+Mode \& 0x1)\+: 0=limited, 1=full. SDR colorspace (encoder\+Csc\+Mode \texorpdfstring{$>$}{>}\texorpdfstring{$>$}{>} 1)\+: 0=BT.\+601, 1=BT.\+709, 2=BT.\+2020. HDR encoding colorspace is always BT.\+2020+ST2084. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1config__t_a893a2617a7d5286765981039dd47fd00}\label{structvideo_1_1config__t_a893a2617a7d5286765981039dd47fd00} 
+int {\bfseries video\+Format}
+\begin{DoxyCompactList}\small\item\em Video format\+: 0=H.\+264, 1=HEVC, 2=AV1. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1config__t_af18b9c67fbc3f8e4861d55edfd33f143}\label{structvideo_1_1config__t_af18b9c67fbc3f8e4861d55edfd33f143} 
+int {\bfseries dynamic\+Range}
+\begin{DoxyCompactList}\small\item\em Encoding color depth (bit depth)\+: 0=8-\/bit, 1=10-\/bit. HDR activates when \texorpdfstring{$>$}{>}8-\/bit and display is in HDR mode. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1config__t_af7c38ea082ac18d8f18aeedebd6f3a69}\label{structvideo_1_1config__t_af7c38ea082ac18d8f18aeedebd6f3a69} 
+int {\bfseries chroma\+Sampling\+Type}
+\begin{DoxyCompactList}\small\item\em Chroma sampling\+: 0=4\+:2\+:0, 1=4\+:4\+:4. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1config__t_a2e4e82b46bd2d89923df9ace822ee258}\label{structvideo_1_1config__t_a2e4e82b46bd2d89923df9ace822ee258} 
+int {\bfseries enable\+Intra\+Refresh}
+\begin{DoxyCompactList}\small\item\em Intra refresh\+: 0=disabled, 1=enabled. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1config__t_adaf33e959d7dfd8a1306fda931053b41}\label{structvideo_1_1config__t_adaf33e959d7dfd8a1306fda931053b41} 
+int {\bfseries encoding\+Framerate}
+\begin{DoxyCompactList}\small\item\em Requested display framerate. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1config__t_a20c574ded14a90861d64a6445ff5bcbf}\label{structvideo_1_1config__t_a20c574ded14a90861d64a6445ff5bcbf} 
+bool {\bfseries input\+\_\+only}
+\begin{DoxyCompactList}\small\item\em Whether this is an input-\/only session. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Encoding configuration requested by remote client. 
+
+\begin{DoxyWarning}{Warning}
+DO NOT CHANGE ORDER OR ADD FIELDS IN THE MIDDLE! ONLY APPEND NEW FIELD AFTERWARDS! 
+\end{DoxyWarning}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{video_8h}{video.\+h}}\end{DoxyCompactItemize}

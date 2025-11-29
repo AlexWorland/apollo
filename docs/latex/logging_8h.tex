@@ -1,0 +1,81 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/logging.h File Reference}
+\hypertarget{logging_8h}{}\label{logging_8h}\index{/Users/alexworland/autoBitrate/apollo/src/logging.h@{/Users/alexworland/autoBitrate/apollo/src/logging.h}}
+
+
+Declarations for logging related functions.  
+
+
+{\ttfamily \#include $<$boost/log/common.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/log/sinks.\+hpp$>$}\newline
+{\ttfamily \#include "{}config.\+h"{}}\newline
+{\ttfamily \#include "{}stat\+\_\+trackers.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classlogging_1_1deinit__t}{logging\+::deinit\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em RAII deinitialization helper for logging system. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classlogging_1_1min__max__avg__periodic__logger}{logging\+::min\+\_\+max\+\_\+avg\+\_\+periodic\+\_\+logger$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em A helper class for tracking and logging numerical values across a period of time @examples \doxylink{classlogging_1_1min__max__avg__periodic__logger}{min\+\_\+max\+\_\+avg\+\_\+periodic\+\_\+logger$<$int$>$} logger(debug, "{}\+Test time value"{}, "{}ms"{}, 5s); logger.\+collect\+\_\+and\+\_\+log(1); // ... logger.\+collect\+\_\+and\+\_\+log(2); // after 5 seconds logger.\+collect\+\_\+and\+\_\+log(3); // In the log\+: // \mbox{[}2024\+:01\+:01\+:12\+:00\+:00\mbox{]}\+: Debug\+: Test time value (min/max/avg)\+: 1ms/3ms/2.\+00ms @examples\+\_\+end. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classlogging_1_1time__delta__periodic__logger}{logging\+::time\+\_\+delta\+\_\+periodic\+\_\+logger}}
+\begin{DoxyCompactList}\small\item\em A helper class for tracking and logging short time intervals across a period of time @examples \doxylink{classlogging_1_1time__delta__periodic__logger}{time\+\_\+delta\+\_\+periodic\+\_\+logger} logger(debug, "{}\+Test duration"{}, 5s); logger.\+first\+\_\+point\+\_\+now(); // ... logger.\+second\+\_\+point\+\_\+now\+\_\+and\+\_\+log(); // after 5 seconds logger.\+first\+\_\+point\+\_\+now(); // ... logger.\+second\+\_\+point\+\_\+now\+\_\+and\+\_\+log(); // In the log\+: // \mbox{[}2024\+:01\+:01\+:12\+:00\+:00\mbox{]}\+: Debug\+: Test duration (min/max/avg)\+: 1.\+23ms/3.21ms/2.\+31ms @examples\+\_\+end. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacelogging}{logging}}
+\begin{DoxyCompactList}\small\item\em Handles the initialization and deinitialization of the logging system. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{logging_8h_a7113b26c3664dfb25a910a9ac92ed1cf}\label{logging_8h_a7113b26c3664dfb25a910a9ac92ed1cf} 
+using {\bfseries text\+\_\+sink} = boost\+::log\+::sinks\+::asynchronous\+\_\+sink$<$boost\+::log\+::sinks\+::text\+\_\+ostream\+\_\+backend$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{namespacelogging_a11f171cd89599eef361b13bd85d250a0}\label{namespacelogging_a11f171cd89599eef361b13bd85d250a0} 
+void {\bfseries logging\+::deinit} ()
+\begin{DoxyCompactList}\small\item\em Deinitialize the logging system. @examples \doxylink{namespacelogging_a11f171cd89599eef361b13bd85d250a0}{deinit()}; @examples\+\_\+end. \end{DoxyCompactList}\item 
+\Hypertarget{namespacelogging_a5eb9856c7a727aa78ec41a69dde3973d}\label{namespacelogging_a5eb9856c7a727aa78ec41a69dde3973d} 
+void {\bfseries logging\+::formatter} (const boost\+::log\+::record\+\_\+view \&view, boost\+::log\+::formatting\+\_\+ostream \&os)
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classlogging_1_1deinit__t}{deinit\+\_\+t}} $>$ \mbox{\hyperlink{namespacelogging_a3609795d7d5469929c8d6aa5c8563f1e}{logging\+::init}} (int min\+\_\+log\+\_\+level, const std\+::string \&log\+\_\+file)
+\begin{DoxyCompactList}\small\item\em Initialize the logging system. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacelogging_a1d7b8d4f36fbbce1bb2ea95222c1032e}{logging\+::setup\+\_\+av\+\_\+logging}} (int min\+\_\+log\+\_\+level)
+\begin{DoxyCompactList}\small\item\em Setup AV logging. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacelogging_a8d229a92cdf8a81494f80298e322ef43}{logging\+::setup\+\_\+libdisplaydevice\+\_\+logging}} (int min\+\_\+log\+\_\+level)
+\begin{DoxyCompactList}\small\item\em Setup logging for libdisplaydevice. \end{DoxyCompactList}\item 
+\Hypertarget{namespacelogging_a96f754b0ebd0874dd7387f0f016fdab8}\label{namespacelogging_a96f754b0ebd0874dd7387f0f016fdab8} 
+void {\bfseries logging\+::log\+\_\+flush} ()
+\begin{DoxyCompactList}\small\item\em Flush the log. @examples \doxylink{namespacelogging_a96f754b0ebd0874dd7387f0f016fdab8}{log\+\_\+flush()}; @examples\+\_\+end. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacelogging_a2e9cc953e537ca48326eadba8e948947}{logging\+::print\+\_\+help}} (const char \texorpdfstring{$\ast$}{*}name)
+\begin{DoxyCompactList}\small\item\em Print help to stdout. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{namespacelogging_a2598089e9a171456a1e4dcd95ce47223}{logging\+::bracket}} (const std\+::string \&input)
+\begin{DoxyCompactList}\small\item\em Enclose string in square brackets. \end{DoxyCompactList}\item 
+std\+::wstring \mbox{\hyperlink{namespacelogging_a985fdcfe216bba1a3a572a6fa60942d8}{logging\+::bracket}} (const std\+::wstring \&input)
+\begin{DoxyCompactList}\small\item\em Enclose string in square brackets. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{logging_8h_a08114e461fe2006b04c0004cd39b5250}\label{logging_8h_a08114e461fe2006b04c0004cd39b5250} 
+boost\+::log\+::sources\+::severity\+\_\+logger$<$ int $>$ {\bfseries verbose}
+\item 
+\Hypertarget{logging_8h_a9011d612c1282f997739986e8eeb5516}\label{logging_8h_a9011d612c1282f997739986e8eeb5516} 
+boost\+::log\+::sources\+::severity\+\_\+logger$<$ int $>$ {\bfseries debug}
+\item 
+\Hypertarget{logging_8h_afa80caf3eb78cfd055af18716d935eca}\label{logging_8h_afa80caf3eb78cfd055af18716d935eca} 
+boost\+::log\+::sources\+::severity\+\_\+logger$<$ int $>$ {\bfseries info}
+\item 
+\Hypertarget{logging_8h_aade5275d4f1bad29ac7ebec5923f3b35}\label{logging_8h_aade5275d4f1bad29ac7ebec5923f3b35} 
+boost\+::log\+::sources\+::severity\+\_\+logger$<$ int $>$ {\bfseries warning}
+\item 
+\Hypertarget{logging_8h_a858aed5d8c5870a1d3a2d454f06f5557}\label{logging_8h_a858aed5d8c5870a1d3a2d454f06f5557} 
+boost\+::log\+::sources\+::severity\+\_\+logger$<$ int $>$ {\bfseries error}
+\item 
+\Hypertarget{logging_8h_a1b8a50d60487267a83921c906fdce398}\label{logging_8h_a1b8a50d60487267a83921c906fdce398} 
+boost\+::log\+::sources\+::severity\+\_\+logger$<$ int $>$ {\bfseries fatal}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Declarations for logging related functions. 
+

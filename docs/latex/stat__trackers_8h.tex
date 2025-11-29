@@ -1,0 +1,59 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/stat\+\_\+trackers.h File Reference}
+\hypertarget{stat__trackers_8h}{}\label{stat__trackers_8h}\index{/Users/alexworland/autoBitrate/apollo/src/stat\_trackers.h@{/Users/alexworland/autoBitrate/apollo/src/stat\_trackers.h}}
+
+
+Declarations for streaming statistic tracking.  
+
+
+{\ttfamily \#include $<$chrono$>$}\newline
+{\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include $<$limits$>$}\newline
+{\ttfamily \#include $<$boost/format.\+hpp$>$}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classstat__trackers_1_1min__max__avg__tracker}{stat\+\_\+trackers\+::min\+\_\+max\+\_\+avg\+\_\+tracker$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Template class for tracking minimum, maximum, and average values. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+boost\+::format \mbox{\hyperlink{stat__trackers_8cpp_a393959b036f3d10a1c648d5bb899a73a}{stat\+\_\+trackers\+::one\+\_\+digit\+\_\+after\+\_\+decimal}} ()
+\begin{DoxyCompactList}\small\item\em Create a boost\+::format for one digit after decimal point. \end{DoxyCompactList}\item 
+boost\+::format \mbox{\hyperlink{stat__trackers_8cpp_a43215955146150d9ceaca7ec8165bfdc}{stat\+\_\+trackers\+::two\+\_\+digits\+\_\+after\+\_\+decimal}} ()
+\begin{DoxyCompactList}\small\item\em Create a boost\+::format for two digits after decimal point. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Declarations for streaming statistic tracking. 
+
+
+
+\label{doc-func-members}
+\Hypertarget{stat__trackers_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{stat__trackers_8cpp_a393959b036f3d10a1c648d5bb899a73a}\index{stat\_trackers.h@{stat\_trackers.h}!one\_digit\_after\_decimal@{one\_digit\_after\_decimal}}
+\index{one\_digit\_after\_decimal@{one\_digit\_after\_decimal}!stat\_trackers.h@{stat\_trackers.h}}
+\doxysubsubsection{\texorpdfstring{one\_digit\_after\_decimal()}{one\_digit\_after\_decimal()}}
+{\footnotesize\ttfamily \label{stat__trackers_8cpp_a393959b036f3d10a1c648d5bb899a73a} 
+boost\+::format stat\+\_\+trackers\+::one\+\_\+digit\+\_\+after\+\_\+decimal (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Create a boost\+::format for one digit after decimal point. 
+
+\begin{DoxyReturn}{Returns}
+Format object for "{}\%.\+1f"{} style formatting. 
+\end{DoxyReturn}
+\Hypertarget{stat__trackers_8cpp_a43215955146150d9ceaca7ec8165bfdc}\index{stat\_trackers.h@{stat\_trackers.h}!two\_digits\_after\_decimal@{two\_digits\_after\_decimal}}
+\index{two\_digits\_after\_decimal@{two\_digits\_after\_decimal}!stat\_trackers.h@{stat\_trackers.h}}
+\doxysubsubsection{\texorpdfstring{two\_digits\_after\_decimal()}{two\_digits\_after\_decimal()}}
+{\footnotesize\ttfamily \label{stat__trackers_8cpp_a43215955146150d9ceaca7ec8165bfdc} 
+boost\+::format stat\+\_\+trackers\+::two\+\_\+digits\+\_\+after\+\_\+decimal (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Create a boost\+::format for two digits after decimal point. 
+
+\begin{DoxyReturn}{Returns}
+Format object for "{}\%.\+2f"{} style formatting. 
+\end{DoxyReturn}

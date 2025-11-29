@@ -1,0 +1,56 @@
+\doxysection{crypto\+::command\+\_\+entry\+\_\+t Struct Reference}
+\hypertarget{structcrypto_1_1command__entry__t}{}\label{structcrypto_1_1command__entry__t}\index{crypto::command\_entry\_t@{crypto::command\_entry\_t}}
+
+
+Command entry structure for pre/post commands.  
+
+
+
+
+{\ttfamily \#include $<$crypto.\+h$>$}
+
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static nlohmann\+::json \mbox{\hyperlink{structcrypto_1_1command__entry__t_a7fc8172aebd874e75d4387fda0dde85b}{serialize}} (const \mbox{\hyperlink{structcrypto_1_1command__entry__t}{command\+\_\+entry\+\_\+t}} \&entry)
+\begin{DoxyCompactList}\small\item\em Serialize command entry to JSON. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structcrypto_1_1command__entry__t_a4a2c73d3864878d1c172529f7d4bc6ae}\label{structcrypto_1_1command__entry__t_a4a2c73d3864878d1c172529f7d4bc6ae} 
+std\+::string {\bfseries cmd}
+\begin{DoxyCompactList}\small\item\em Command to execute. \end{DoxyCompactList}\item 
+\Hypertarget{structcrypto_1_1command__entry__t_aef364892f03992f1043143b6e24189e2}\label{structcrypto_1_1command__entry__t_aef364892f03992f1043143b6e24189e2} 
+bool {\bfseries elevated}
+\begin{DoxyCompactList}\small\item\em Whether to run the command with elevated privileges. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Command entry structure for pre/post commands. 
+
+\label{doc-func-members}
+\Hypertarget{structcrypto_1_1command__entry__t_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structcrypto_1_1command__entry__t_a7fc8172aebd874e75d4387fda0dde85b}\index{crypto::command\_entry\_t@{crypto::command\_entry\_t}!serialize@{serialize}}
+\index{serialize@{serialize}!crypto::command\_entry\_t@{crypto::command\_entry\_t}}
+\doxysubsubsection{\texorpdfstring{serialize()}{serialize()}}
+{\footnotesize\ttfamily \label{structcrypto_1_1command__entry__t_a7fc8172aebd874e75d4387fda0dde85b} 
+nlohmann\+::json crypto\+::command\+\_\+entry\+\_\+t\+::serialize (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structcrypto_1_1command__entry__t}{command\+\_\+entry\+\_\+t}} \&}]{entry}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Serialize command entry to JSON. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em entry} & The command entry to serialize. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+JSON representation of the command entry. 
+\end{DoxyReturn}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{crypto_8h}{crypto.\+h}}\end{DoxyCompactItemize}

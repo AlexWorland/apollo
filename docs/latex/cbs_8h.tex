@@ -1,0 +1,98 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/cbs.h File Reference}
+\hypertarget{cbs_8h}{}\label{cbs_8h}\index{/Users/alexworland/autoBitrate/apollo/src/cbs.h@{/Users/alexworland/autoBitrate/apollo/src/cbs.h}}
+
+
+Declarations for FFmpeg Coded Bitstream API.  
+
+
+{\ttfamily \#include "{}utility.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structcbs_1_1nal__t}{cbs\+::nal\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Network Abstraction Layer (NAL) unit structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structcbs_1_1hevc__t}{cbs\+::hevc\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em HEVC (H.\+265) parameter set structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structcbs_1_1h264__t}{cbs\+::h264\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em H.\+264 parameter set structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structcbs_1_1hevc__t}{hevc\+\_\+t}} \mbox{\hyperlink{cbs_8cpp_a3479e9b4b8233a0496c0e781ca264580}{cbs\+::make\+\_\+sps\+\_\+hevc}} (const AVCodec\+Context \texorpdfstring{$\ast$}{*}ctx, const AVPacket \texorpdfstring{$\ast$}{*}packet)
+\begin{DoxyCompactList}\small\item\em Create HEVC Sequence Parameter Set from codec context and packet. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structcbs_1_1h264__t}{h264\+\_\+t}} \mbox{\hyperlink{cbs_8cpp_ac408f4ef0aaacd29695429d20f8268c4}{cbs\+::make\+\_\+sps\+\_\+h264}} (const AVCodec\+Context \texorpdfstring{$\ast$}{*}ctx, const AVPacket \texorpdfstring{$\ast$}{*}packet)
+\begin{DoxyCompactList}\small\item\em Create H.\+264 Sequence Parameter Set from codec context and packet. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{cbs_8cpp_a4982caca63442cb3e81cd22b713c2069}{cbs\+::validate\+\_\+sps}} (const AVPacket \texorpdfstring{$\ast$}{*}packet, int codec\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Validates the Sequence Parameter Set (SPS) of a given packet. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Declarations for FFmpeg Coded Bitstream API. 
+
+
+
+\label{doc-func-members}
+\Hypertarget{cbs_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{cbs_8cpp_ac408f4ef0aaacd29695429d20f8268c4}\index{cbs.h@{cbs.h}!make\_sps\_h264@{make\_sps\_h264}}
+\index{make\_sps\_h264@{make\_sps\_h264}!cbs.h@{cbs.h}}
+\doxysubsubsection{\texorpdfstring{make\_sps\_h264()}{make\_sps\_h264()}}
+{\footnotesize\ttfamily \label{cbs_8cpp_ac408f4ef0aaacd29695429d20f8268c4} 
+h264\+\_\+t cbs\+::make\+\_\+sps\+\_\+h264 (\begin{DoxyParamCaption}\item[{const AVCodec\+Context \texorpdfstring{$\ast$}{*}}]{ctx}{, }\item[{const AVPacket \texorpdfstring{$\ast$}{*}}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+Create H.\+264 Sequence Parameter Set from codec context and packet. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ctx} & The AVCodec\+Context containing codec information. \\
+\hline
+{\em packet} & The AVPacket containing encoded data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+H.\+264 parameter set structure. 
+\end{DoxyReturn}
+\Hypertarget{cbs_8cpp_a3479e9b4b8233a0496c0e781ca264580}\index{cbs.h@{cbs.h}!make\_sps\_hevc@{make\_sps\_hevc}}
+\index{make\_sps\_hevc@{make\_sps\_hevc}!cbs.h@{cbs.h}}
+\doxysubsubsection{\texorpdfstring{make\_sps\_hevc()}{make\_sps\_hevc()}}
+{\footnotesize\ttfamily \label{cbs_8cpp_a3479e9b4b8233a0496c0e781ca264580} 
+hevc\+\_\+t cbs\+::make\+\_\+sps\+\_\+hevc (\begin{DoxyParamCaption}\item[{const AVCodec\+Context \texorpdfstring{$\ast$}{*}}]{ctx}{, }\item[{const AVPacket \texorpdfstring{$\ast$}{*}}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+Create HEVC Sequence Parameter Set from codec context and packet. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ctx} & The AVCodec\+Context containing codec information. \\
+\hline
+{\em packet} & The AVPacket containing encoded data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+HEVC parameter set structure. 
+\end{DoxyReturn}
+\Hypertarget{cbs_8cpp_a4982caca63442cb3e81cd22b713c2069}\index{cbs.h@{cbs.h}!validate\_sps@{validate\_sps}}
+\index{validate\_sps@{validate\_sps}!cbs.h@{cbs.h}}
+\doxysubsubsection{\texorpdfstring{validate\_sps()}{validate\_sps()}}
+{\footnotesize\ttfamily \label{cbs_8cpp_a4982caca63442cb3e81cd22b713c2069} 
+bool cbs\+::validate\+\_\+sps (\begin{DoxyParamCaption}\item[{const AVPacket \texorpdfstring{$\ast$}{*}}]{packet}{, }\item[{int}]{codec\+\_\+id}{}\end{DoxyParamCaption})}
+
+
+
+Validates the Sequence Parameter Set (SPS) of a given packet. 
+
+This function initializes a Coded Bitstream Context and reads the packet into a Coded Bitstream Fragment. It then checks if the SPS-\/\texorpdfstring{$>$}{>}VUI (Video Usability Information) is present in the active SPS of the packet. This is done for both H264 and H265 codecs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em packet} & The packet to validate. \\
+\hline
+{\em codec\+\_\+id} & The ID of the codec used (either AV\+\_\+\+CODEC\+\_\+\+ID\+\_\+\+H264 or AV\+\_\+\+CODEC\+\_\+\+ID\+\_\+\+H265). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the SPS-\/\texorpdfstring{$>$}{>}VUI is present in the active SPS of the packet, false otherwise. 
+\end{DoxyReturn}

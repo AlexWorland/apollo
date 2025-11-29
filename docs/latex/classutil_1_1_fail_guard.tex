@@ -1,0 +1,57 @@
+\doxysection{util\+::Fail\+Guard\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classutil_1_1_fail_guard}{}\label{classutil_1_1_fail_guard}\index{util::FailGuard$<$ T $>$@{util::FailGuard$<$ T $>$}}
+
+
+RAII guard that executes a function on failure.  
+
+
+
+
+{\ttfamily \#include $<$utility.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classutil_1_1_fail_guard_ae81d8135f5a5578674f6ccde73d52962}\label{classutil_1_1_fail_guard_ae81d8135f5a5578674f6ccde73d52962} 
+{\bfseries Fail\+Guard} (T \&\&f) noexcept
+\item 
+\Hypertarget{classutil_1_1_fail_guard_a51f0f72e011dbc7569027c0203f56414}\label{classutil_1_1_fail_guard_a51f0f72e011dbc7569027c0203f56414} 
+{\bfseries Fail\+Guard} (Fail\+Guard \&\&other) noexcept
+\item 
+\Hypertarget{classutil_1_1_fail_guard_ab9d57cbeebff056f6f9bdcafc353a74c}\label{classutil_1_1_fail_guard_ab9d57cbeebff056f6f9bdcafc353a74c} 
+{\bfseries Fail\+Guard} (const Fail\+Guard \&)=delete
+\item 
+\Hypertarget{classutil_1_1_fail_guard_a7e938ab3cb696a8ab3d559abf075b881}\label{classutil_1_1_fail_guard_a7e938ab3cb696a8ab3d559abf075b881} 
+Fail\+Guard \& {\bfseries operator=} (const Fail\+Guard \&)=delete
+\item 
+\Hypertarget{classutil_1_1_fail_guard_aad2bf7509c0980c17222270362813451}\label{classutil_1_1_fail_guard_aad2bf7509c0980c17222270362813451} 
+Fail\+Guard \& {\bfseries operator=} (Fail\+Guard \&\&other)=delete
+\item 
+\Hypertarget{classutil_1_1_fail_guard_aa28c6365c876d615678f85c787cbfe05}\label{classutil_1_1_fail_guard_aa28c6365c876d615678f85c787cbfe05} 
+void {\bfseries disable} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classutil_1_1_fail_guard_af3ebb733aa10244d7e0a0936b6c5ef07}\label{classutil_1_1_fail_guard_af3ebb733aa10244d7e0a0936b6c5ef07} 
+bool {\bfseries failure} \{true\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T$>$\newline
+class util\+::\+Fail\+Guard$<$ T $>$}
+RAII guard that executes a function on failure. 
+
+Executes a cleanup function when the guard is destroyed if failure is true. Useful for ensuring cleanup code runs when an operation fails.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \doxylink{structutil_1_1_function}{Function} or callable type to execute on failure. \\
+\hline
+\end{DoxyTemplParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{utility_8h}{utility.\+h}}\end{DoxyCompactItemize}

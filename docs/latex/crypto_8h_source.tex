@@ -1,0 +1,207 @@
+\doxysection{crypto.\+h}
+\hypertarget{crypto_8h_source}{}\label{crypto_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/crypto.h@{/Users/alexworland/autoBitrate/apollo/src/crypto.h}}
+\mbox{\hyperlink{crypto_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ standard\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <array>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ lib\ includes}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <list>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <openssl/evp.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <openssl/rand.h>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <openssl/sha.h>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <openssl/x509.h>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <nlohmann/json.hpp>}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ local\ includes}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{utility_8h}{utility.h}}"{}}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{namespace\ }crypto\ \{}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structcrypto_1_1creds__t}{creds\_t}}\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ std::string\ \mbox{\hyperlink{structcrypto_1_1creds__t_a078c462e5f5f647d611157b8ebaeab69}{x509}};\ \ }
+\DoxyCodeLine{00027\ \ \ \ \ std::string\ \mbox{\hyperlink{structcrypto_1_1creds__t_a720330a019ef6cf9c75b464f68a02a69}{pkey}};\ \ }
+\DoxyCodeLine{00028\ \ \ \};}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00034\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{crypto_8cpp_a7cc606e3e3a864b15423c499d201896c}{md\_ctx\_destroy}}(EVP\_MD\_CTX\ *);}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{crypto_8h_a7696eb7fa157b5aecea9e05310af15f8}{sha256\_t}}\ =\ std::array<std::uint8\_t,\ SHA256\_DIGEST\_LENGTH>;\ \ }
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{aes\_t}}\ =\ std::vector<std::uint8\_t>;\ \ }
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{crypto_8h_a48d41be6bb46e6a718cc9b53ae46e968}{x509\_t}}\ =\ util::safe\_ptr<X509,\ X509\_free>;\ \ }
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{crypto_8h_aac17241b3768ddf4b4bb2948a67347cb}{x509\_store\_t}}\ =\ util::safe\_ptr<X509\_STORE,\ X509\_STORE\_free>;\ \ }
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{crypto_8h_ac0db8f446a4fb4fb6024601581930f9e}{x509\_store\_ctx\_t}}\ =\ util::safe\_ptr<X509\_STORE\_CTX,\ X509\_STORE\_CTX\_free>;\ \ }
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{crypto_8h_a95350377f46087f06a43f30b694ccd10}{cipher\_ctx\_t}}\ =\ util::safe\_ptr<EVP\_CIPHER\_CTX,\ EVP\_CIPHER\_CTX\_free>;\ \ }
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{crypto_8h_aba2a75ea98a3dd4fb34da4f64ec90593}{md\_ctx\_t}}\ =\ util::safe\_ptr<EVP\_MD\_CTX,\ md\_ctx\_destroy>;\ \ }
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{crypto_8h_a70a0e2e88ed3509b42e41930346dd474}{bio\_t}}\ =\ util::safe\_ptr<BIO,\ BIO\_free\_all>;\ \ }
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{crypto_8h_a662a3669fbae0e3f49699ce03c1b2f40}{pkey\_t}}\ =\ util::safe\_ptr<EVP\_PKEY,\ EVP\_PKEY\_free>;\ \ }
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{crypto_8h_ab09332cf768de10383525cced4798aa3}{pkey\_ctx\_t}}\ =\ util::safe\_ptr<EVP\_PKEY\_CTX,\ EVP\_PKEY\_CTX\_free>;\ \ }
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{crypto_8h_a2e889b56979a4b65411b71605173c1d6}{bignum\_t}}\ =\ util::safe\_ptr<BIGNUM,\ BN\_free>;\ \ }
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{PERM}}:\ uint32\_t\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \_reserved\ \ \ \ \ \ \ \ =\ 1,}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \ \ \_input\ \ \ \ \ \ \ \ \ \ \ =\ \_reserved\ <<\ 8,\ \ \ \textcolor{comment}{//\ Input\ permission\ group}}
+\DoxyCodeLine{00056\ \ \ \ \ input\_controller\ =\ \_input\ <<\ 0,\ \ \ \ \ \ \textcolor{comment}{//\ Allow\ controller\ input}}
+\DoxyCodeLine{00057\ \ \ \ \ input\_touch\ \ \ \ \ \ =\ \_input\ <<\ 1,\ \ \ \ \ \ \textcolor{comment}{//\ Allow\ touch\ input}}
+\DoxyCodeLine{00058\ \ \ \ \ input\_pen\ \ \ \ \ \ \ \ =\ \_input\ <<\ 2,\ \ \ \ \ \ \textcolor{comment}{//\ Allow\ pen\ input}}
+\DoxyCodeLine{00059\ \ \ \ \ input\_mouse\ \ \ \ \ \ =\ \_input\ <<\ 3,\ \ \ \ \ \ \textcolor{comment}{//\ Allow\ mouse\ input}}
+\DoxyCodeLine{00060\ \ \ \ \ input\_kbd\ \ \ \ \ \ \ \ =\ \_input\ <<\ 4,\ \ \ \ \ \ \textcolor{comment}{//\ Allow\ keyboard\ input}}
+\DoxyCodeLine{00061\ \ \ \ \ \_all\_inputs\ \ \ \ \ \ =\ input\_controller\ |\ input\_touch\ |\ input\_pen\ |\ input\_mouse\ |\ input\_kbd,}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \ \ \_operation\ \ \ \ \ \ \ =\ \_input\ <<\ 8,\ \ \ \ \ \ \textcolor{comment}{//\ Operation\ permission\ group}}
+\DoxyCodeLine{00064\ \ \ \ \ clipboard\_set\ \ \ \ =\ \_operation\ <<\ 0,\ \ \textcolor{comment}{//\ Allow\ set\ clipboard\ from\ client}}
+\DoxyCodeLine{00065\ \ \ \ \ clipboard\_read\ \ \ =\ \_operation\ <<\ 1,\ \ \textcolor{comment}{//\ Allow\ read\ clipboard\ from\ host}}
+\DoxyCodeLine{00066\ \ \ \ \ file\_upload\ \ \ \ \ \ =\ \_operation\ <<\ 2,\ \ \textcolor{comment}{//\ Allow\ upload\ files\ to\ host}}
+\DoxyCodeLine{00067\ \ \ \ \ file\_dwnload\ \ \ \ \ =\ \_operation\ <<\ 3,\ \ \textcolor{comment}{//\ Allow\ download\ files\ from\ host}}
+\DoxyCodeLine{00068\ \ \ \ \ server\_cmd\ \ \ \ \ \ \ =\ \_operation\ <<\ 4,\ \ \textcolor{comment}{//\ Allow\ execute\ server\ cmd}}
+\DoxyCodeLine{00069\ \ \ \ \ \_all\_opeiations\ \ =\ clipboard\_set\ |\ clipboard\_read\ |\ file\_upload\ |\ file\_dwnload\ |\ server\_cmd,}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \ \ \_action\ \ \ \ \ \ \ \ \ \ =\ \_operation\ <<\ 8,\ \ \textcolor{comment}{//\ Action\ permission\ group}}
+\DoxyCodeLine{00072\ \ \ \ \ list\ \ \ \ \ \ \ \ \ \ \ \ \ =\ \_action\ <<\ 0,\ \ \ \ \ \textcolor{comment}{//\ Allow\ list\ apps}}
+\DoxyCodeLine{00073\ \ \ \ \ view\ \ \ \ \ \ \ \ \ \ \ \ \ =\ \_action\ <<\ 1,\ \ \ \ \ \textcolor{comment}{//\ Allow\ view\ streams}}
+\DoxyCodeLine{00074\ \ \ \ \ launch\ \ \ \ \ \ \ \ \ \ \ =\ \_action\ <<\ 2,\ \ \ \ \ \textcolor{comment}{//\ Allow\ launch\ apps}}
+\DoxyCodeLine{00075\ \ \ \ \ \_allow\_view\ \ \ \ \ \ =\ view\ |\ launch,\ \ \ \ \textcolor{comment}{//\ If\ no\ view\ permission\ is\ granted,\ disconnect\ the\ device\ upon\ permission\ update}}
+\DoxyCodeLine{00076\ \ \ \ \ \_all\_actions\ \ \ \ \ =\ list\ |\ view\ |\ launch,}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \ \ \_default\ \ \ \ \ \ \ \ \ =\ view\ |\ list,\ \ \ \ \ \ \textcolor{comment}{//\ Default\ permissions\ for\ new\ clients}}
+\DoxyCodeLine{00079\ \ \ \ \ \_no\ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ 0,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ No\ permissions\ are\ granted}}
+\DoxyCodeLine{00080\ \ \ \ \ \_all\ \ \ \ \ \ \ \ \ \ \ \ \ =\ \_all\_inputs\ |\ \_all\_opeiations\ |\ \_all\_actions,\ \textcolor{comment}{//\ All\ current\ permissions}}
+\DoxyCodeLine{00081\ \ \ \};}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ PERM}
+\DoxyCodeLine{00090\ \ \ \mbox{\hyperlink{crypto_8h_ac5a657874b29f9901cbf3f17397d42c0}{operator\&}}(\mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{PERM}}\ x,\ \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{PERM}}\ y)\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{PERM}}\textcolor{keyword}{>}(\textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(x)\ \&\ \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(y));}
+\DoxyCodeLine{00092\ \ \ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{00100\ \ \ \mbox{\hyperlink{crypto_8h_a22c0465bde0bd12f22d95638685f7a3c}{operator!}}(\mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{PERM}}\ p)\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(p)\ ==\ 0;}
+\DoxyCodeLine{00102\ \ \ \}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structcrypto_1_1command__entry__t}{command\_entry\_t}}\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ std::string\ \mbox{\hyperlink{structcrypto_1_1command__entry__t_a4a2c73d3864878d1c172529f7d4bc6ae}{cmd}};\ \ }
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structcrypto_1_1command__entry__t_aef364892f03992f1043143b6e24189e2}{elevated}};\ \ }
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ nlohmann::json\ \mbox{\hyperlink{structcrypto_1_1command__entry__t_a7fc8172aebd874e75d4387fda0dde85b}{serialize}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structcrypto_1_1command__entry__t}{command\_entry\_t}}\&\ entry)\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ nlohmann::json\ node;}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ node[\textcolor{stringliteral}{"{}cmd"{}}]\ =\ entry.\mbox{\hyperlink{structcrypto_1_1command__entry__t_a4a2c73d3864878d1c172529f7d4bc6ae}{cmd}};}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ node[\textcolor{stringliteral}{"{}elevated"{}}]\ =\ entry.\mbox{\hyperlink{structcrypto_1_1command__entry__t_aef364892f03992f1043143b6e24189e2}{elevated}};}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ node;}
+\DoxyCodeLine{00121\ \ \ \ \ \}}
+\DoxyCodeLine{00122\ \ \ \};}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00127\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structcrypto_1_1named__cert__t}{named\_cert\_t}}\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ std::string\ \mbox{\hyperlink{structcrypto_1_1named__cert__t_acab7cfc6040ad0e2cb4f660c0e98948a}{name}};\ \ }
+\DoxyCodeLine{00129\ \ \ \ \ std::string\ \mbox{\hyperlink{structcrypto_1_1named__cert__t_a260d522bc7f0723e2c1c877d9f1b08bb}{uuid}};\ \ }
+\DoxyCodeLine{00130\ \ \ \ \ std::string\ \mbox{\hyperlink{structcrypto_1_1named__cert__t_ac9d572ba1e8e19e353dff0ba14d5f955}{cert}};\ \ }
+\DoxyCodeLine{00131\ \ \ \ \ std::string\ \mbox{\hyperlink{structcrypto_1_1named__cert__t_acc617ca4899664c05ac62464182aab1f}{display\_mode}};\ \ }
+\DoxyCodeLine{00132\ \ \ \ \ std::list<command\_entry\_t>\ \mbox{\hyperlink{structcrypto_1_1named__cert__t_ace6aaa48d4a8d69792fe6ce86d0e8177}{do\_cmds}};\ \ }
+\DoxyCodeLine{00133\ \ \ \ \ std::list<command\_entry\_t>\ \mbox{\hyperlink{structcrypto_1_1named__cert__t_ac7ebeaf99f3561c3b2d0328477b35523}{undo\_cmds}};\ \ }
+\DoxyCodeLine{00134\ \ \ \ \ \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{PERM}}\ \mbox{\hyperlink{structcrypto_1_1named__cert__t_a71d9847a9b9da819adacacb34f53411e}{perm}};\ \ }
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structcrypto_1_1named__cert__t_a5ff3269fa177daf8c92fa5d30950df5a}{enable\_legacy\_ordering}};\ \ }
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structcrypto_1_1named__cert__t_aac3af5d6f035e199121e2690c338e4aa}{allow\_client\_commands}};\ \ }
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structcrypto_1_1named__cert__t_a095b187d5fd6acd7c1e637662e9aa687}{always\_use\_virtual\_display}};\ \ }
+\DoxyCodeLine{00138\ \ \ \};}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{crypto_8h_a9cf8f8956296bebc0933bbc8baa0ca01}{p\_named\_cert\_t}}\ =\ std::shared\_ptr<named\_cert\_t>;\ \ }
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00147\ \ \ \mbox{\hyperlink{crypto_8h_a7696eb7fa157b5aecea9e05310af15f8}{sha256\_t}}\ \mbox{\hyperlink{crypto_8cpp_a9b16e05955ed429ef3ee677d79b4fd15}{hash}}(\textcolor{keyword}{const}\ std::string\_view\ \&plaintext);}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00155\ \ \ \mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{aes\_t}}\ \mbox{\hyperlink{crypto_8cpp_a11319c26d01a31377811f310eee0caec}{gen\_aes\_key}}(\textcolor{keyword}{const}\ std::array<uint8\_t,\ 16>\ \&salt,\ \textcolor{keyword}{const}\ std::string\_view\ \&pin);}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00162\ \ \ \mbox{\hyperlink{crypto_8h_a48d41be6bb46e6a718cc9b53ae46e968}{x509\_t}}\ \mbox{\hyperlink{crypto_8cpp_a62889f196a9be911e8d29b770b229478}{x509}}(\textcolor{keyword}{const}\ std::string\_view\ \&x);}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00169\ \ \ \mbox{\hyperlink{crypto_8h_a662a3669fbae0e3f49699ce03c1b2f40}{pkey\_t}}\ \mbox{\hyperlink{crypto_8cpp_aae41ddd5d053c4a01494c2d83ae02d6e}{pkey}}(\textcolor{keyword}{const}\ std::string\_view\ \&k);}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00176\ \ \ std::string\ \mbox{\hyperlink{crypto_8cpp_abf01644e86fce7d7480b2efbfd6f83bd}{pem}}(\mbox{\hyperlink{crypto_8h_a48d41be6bb46e6a718cc9b53ae46e968}{x509\_t}}\ \&\mbox{\hyperlink{crypto_8cpp_a62889f196a9be911e8d29b770b229478}{x509}});}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00183\ \ \ std::string\ \mbox{\hyperlink{crypto_8cpp_abf01644e86fce7d7480b2efbfd6f83bd}{pem}}(\mbox{\hyperlink{crypto_8h_a662a3669fbae0e3f49699ce03c1b2f40}{pkey\_t}}\ \&\mbox{\hyperlink{crypto_8cpp_aae41ddd5d053c4a01494c2d83ae02d6e}{pkey}});}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00191\ \ \ std::vector<uint8\_t>\ \mbox{\hyperlink{crypto_8cpp_ab153ce0f7b496848078798882c943579}{sign256}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{crypto_8h_a662a3669fbae0e3f49699ce03c1b2f40}{pkey\_t}}\ \&\mbox{\hyperlink{crypto_8cpp_aae41ddd5d053c4a01494c2d83ae02d6e}{pkey}},\ \textcolor{keyword}{const}\ std::string\_view\ \&data);}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00200\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{crypto_8cpp_a3fa8b6de27512e652cb4842dfa1aadef}{verify256}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{crypto_8h_a48d41be6bb46e6a718cc9b53ae46e968}{x509\_t}}\ \&\mbox{\hyperlink{crypto_8cpp_a62889f196a9be911e8d29b770b229478}{x509}},\ \textcolor{keyword}{const}\ std::string\_view\ \&data,\ \textcolor{keyword}{const}\ std::string\_view\ \&\mbox{\hyperlink{crypto_8cpp_a0d6c1279d1495e3875b68e14ae0eae4b}{signature}});}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00208\ \ \ \mbox{\hyperlink{structcrypto_1_1creds__t}{creds\_t}}\ \mbox{\hyperlink{crypto_8cpp_ad3916837476f7024d9bb090b3a8959e3}{gen\_creds}}(\textcolor{keyword}{const}\ std::string\_view\ \&cn,\ std::uint32\_t\ key\_bits);}
+\DoxyCodeLine{00209\ }
+\DoxyCodeLine{00215\ \ \ std::string\_view\ \mbox{\hyperlink{crypto_8cpp_a0d6c1279d1495e3875b68e14ae0eae4b}{signature}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{crypto_8h_a48d41be6bb46e6a718cc9b53ae46e968}{x509\_t}}\ \&x);}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00222\ \ \ std::string\ \mbox{\hyperlink{crypto_8cpp_a190b13cdad89e7d1bd08de67690419c9}{rand}}(std::size\_t\ bytes);}
+\DoxyCodeLine{00223\ }
+\DoxyCodeLine{00230\ \ \ std::string\ \mbox{\hyperlink{crypto_8cpp_afe48ce90e7a39698f5af748412639fe9}{rand\_alphabet}}(std::size\_t\ bytes,\ \textcolor{keyword}{const}\ std::string\_view\ \&alphabet\ =\ std::string\_view\ \{\textcolor{stringliteral}{"{}ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\%\&()=-\/"{}}\});}
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00235\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classcrypto_1_1cert__chain__t}{cert\_chain\_t}}\ \{}
+\DoxyCodeLine{00236\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00237\ \ \ \ \ KITTY\_DECL\_CONSTR(\mbox{\hyperlink{classcrypto_1_1cert__chain__t}{cert\_chain\_t}})}
+\DoxyCodeLine{00238\ }
+\DoxyCodeLine{00239\ \ \ \ \ }
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcrypto_1_1cert__chain__t_a697102db943445c385af7cf3f9f1a614}{add}}(\mbox{\hyperlink{crypto_8h_a9cf8f8956296bebc0933bbc8baa0ca01}{p\_named\_cert\_t}}\&\ named\_cert\_p);}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcrypto_1_1cert__chain__t_ac49aabffbfb41c312667955736d87d54}{clear}}();}
+\DoxyCodeLine{00249\ }
+\DoxyCodeLine{00256\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *\mbox{\hyperlink{classcrypto_1_1cert__chain__t_a5fe1c7904667a3c1293130cbac62a8cc}{verify}}(x509\_t::element\_type\ *cert,\ \mbox{\hyperlink{crypto_8h_a9cf8f8956296bebc0933bbc8baa0ca01}{p\_named\_cert\_t}}\&\ named\_cert\_out);}
+\DoxyCodeLine{00257\ }
+\DoxyCodeLine{00258\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00259\ \ \ \ \ std::vector<std::pair<p\_named\_cert\_t,\ x509\_store\_t>>\ \_certs;\ \ }
+\DoxyCodeLine{00260\ \ \ \ \ \mbox{\hyperlink{crypto_8h_ac0db8f446a4fb4fb6024601581930f9e}{x509\_store\_ctx\_t}}\ \_cert\_ctx;\ \ }
+\DoxyCodeLine{00261\ \ \ \};}
+\DoxyCodeLine{00262\ }
+\DoxyCodeLine{00266\ \ \ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacecrypto_1_1cipher}{cipher}}\ \{}
+\DoxyCodeLine{00267\ \ \ \ \ \textcolor{keyword}{constexpr}\ std::size\_t\ \mbox{\hyperlink{namespacecrypto_1_1cipher_abbf07891ff1073d1d56598d882903ce9}{tag\_size}}\ =\ 16;\ \ }
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00274\ \ \ \ \ \textcolor{keyword}{constexpr}\ std::size\_t\ \mbox{\hyperlink{namespacecrypto_1_1cipher_a83362cb085a6f14ef117cca84e07e8be}{round\_to\_pkcs7\_padded}}(std::size\_t\ size)\ \{}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ((size\ +\ 15)\ /\ 16)\ *\ 16;}
+\DoxyCodeLine{00276\ \ \ \ \ \}}
+\DoxyCodeLine{00277\ }
+\DoxyCodeLine{00281\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t}{cipher\_t}}\ \{}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \mbox{\hyperlink{crypto_8h_a95350377f46087f06a43f30b694ccd10}{cipher\_ctx\_t}}\ \mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t_a01a92a451c715d914368cc34b1d48078}{decrypt\_ctx}};\ \ }
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \mbox{\hyperlink{crypto_8h_a95350377f46087f06a43f30b694ccd10}{cipher\_ctx\_t}}\ \mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t_af789258d9f707f23e1c0e364c448dbec}{encrypt\_ctx}};\ \ }
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{aes\_t}}\ \mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t_addbb52889e36b3bb1b4dd8481f09e09d}{key}};\ \ }
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t_aaf069d5288955df1b8ff9fea9d26084a}{padding}};\ \ }
+\DoxyCodeLine{00287\ \ \ \ \ \};}
+\DoxyCodeLine{00288\ }
+\DoxyCodeLine{00292\ \ \ \ \ \textcolor{keyword}{class\ }ecb\_t:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t}{cipher\_t}}\ \{}
+\DoxyCodeLine{00293\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ ecb\_t()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ ecb\_t(ecb\_t\ \&\&)\ \textcolor{keyword}{noexcept}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ ecb\_t\ \&operator=(ecb\_t\ \&\&)\ \textcolor{keyword}{noexcept}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00297\ }
+\DoxyCodeLine{00303\ \ \ \ \ \ \ ecb\_t(\textcolor{keyword}{const}\ \mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{aes\_t}}\ \&\mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t_addbb52889e36b3bb1b4dd8481f09e09d}{key}},\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t_aaf069d5288955df1b8ff9fea9d26084a}{padding}}\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00304\ }
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classcrypto_1_1cipher_1_1ecb__t_aef27bfef27bdb879099800c949b3f596}{encrypt}}(\textcolor{keyword}{const}\ std::string\_view\ \&plaintext,\ std::vector<std::uint8\_t>\ \&\mbox{\hyperlink{namespacecrypto_1_1cipher}{cipher}});}
+\DoxyCodeLine{00312\ }
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classcrypto_1_1cipher_1_1ecb__t_a1a97b100cd3340d33e3d4d203250fb5c}{decrypt}}(\textcolor{keyword}{const}\ std::string\_view\ \&\mbox{\hyperlink{namespacecrypto_1_1cipher}{cipher}},\ std::vector<std::uint8\_t>\ \&plaintext);}
+\DoxyCodeLine{00320\ \ \ \ \ \};}
+\DoxyCodeLine{00321\ }
+\DoxyCodeLine{00327\ \ \ \ \ \textcolor{keyword}{class\ }gcm\_t:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t}{cipher\_t}}\ \{}
+\DoxyCodeLine{00328\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ gcm\_t()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ gcm\_t(gcm\_t\ \&\&)\ \textcolor{keyword}{noexcept}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ gcm\_t\ \&operator=(gcm\_t\ \&\&)\ \textcolor{keyword}{noexcept}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00332\ }
+\DoxyCodeLine{00333\ \ \ \ \ \ \ gcm\_t(\textcolor{keyword}{const}\ \mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{crypto::aes\_t}}\ \&\mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t_addbb52889e36b3bb1b4dd8481f09e09d}{key}},\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t_aaf069d5288955df1b8ff9fea9d26084a}{padding}}\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00334\ }
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classcrypto_1_1cipher_1_1gcm__t_a595f79509ff80b4db67db826d219d732}{encrypt}}(\textcolor{keyword}{const}\ std::string\_view\ \&plaintext,\ std::uint8\_t\ *tag,\ std::uint8\_t\ *ciphertext,\ \mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{aes\_t}}\ *iv);}
+\DoxyCodeLine{00344\ }
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classcrypto_1_1cipher_1_1gcm__t_a595f79509ff80b4db67db826d219d732}{encrypt}}(\textcolor{keyword}{const}\ std::string\_view\ \&plaintext,\ std::uint8\_t\ *tagged\_cipher,\ \mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{aes\_t}}\ *iv);}
+\DoxyCodeLine{00354\ }
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ decrypt(\textcolor{keyword}{const}\ std::string\_view\ \&\mbox{\hyperlink{namespacecrypto_1_1cipher}{cipher}},\ std::vector<std::uint8\_t>\ \&plaintext,\ \mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{aes\_t}}\ *iv);}
+\DoxyCodeLine{00356\ \ \ \ \ \};}
+\DoxyCodeLine{00357\ }
+\DoxyCodeLine{00361\ \ \ \ \ \textcolor{keyword}{class\ }cbc\_t:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t}{cipher\_t}}\ \{}
+\DoxyCodeLine{00362\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ cbc\_t()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ cbc\_t(cbc\_t\ \&\&)\ \textcolor{keyword}{noexcept}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ cbc\_t\ \&operator=(cbc\_t\ \&\&)\ \textcolor{keyword}{noexcept}\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00366\ }
+\DoxyCodeLine{00372\ \ \ \ \ \ \ cbc\_t(\textcolor{keyword}{const}\ \mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{crypto::aes\_t}}\ \&\mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t_addbb52889e36b3bb1b4dd8481f09e09d}{key}},\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t_aaf069d5288955df1b8ff9fea9d26084a}{padding}}\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00373\ }
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classcrypto_1_1cipher_1_1cbc__t_a0366f44853d4228d82822d25f8297be3}{encrypt}}(\textcolor{keyword}{const}\ std::string\_view\ \&plaintext,\ std::uint8\_t\ *\mbox{\hyperlink{namespacecrypto_1_1cipher}{cipher}},\ \mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{aes\_t}}\ *iv);}
+\DoxyCodeLine{00383\ \ \ \ \ \};}
+\DoxyCodeLine{00384\ \ \ \}\ \ \textcolor{comment}{//\ namespace\ cipher}}
+\DoxyCodeLine{00385\ \}\ \ \textcolor{comment}{//\ namespace\ crypto}}
+
+\end{DoxyCode}

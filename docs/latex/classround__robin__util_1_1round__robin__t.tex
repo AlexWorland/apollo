@@ -1,0 +1,117 @@
+\doxysection{round\+\_\+robin\+\_\+util\+::round\+\_\+robin\+\_\+t\texorpdfstring{$<$}{<} V, It \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classround__robin__util_1_1round__robin__t}{}\label{classround__robin__util_1_1round__robin__t}\index{round\_robin\_util::round\_robin\_t$<$ V, It $>$@{round\_robin\_util::round\_robin\_t$<$ V, It $>$}}
+
+
+Round-\/robin container iterator.  
+
+
+
+
+{\ttfamily \#include $<$round\+\_\+robin.\+h$>$}
+
+Inheritance diagram for round\+\_\+robin\+\_\+util\+::round\+\_\+robin\+\_\+t\texorpdfstring{$<$}{<} V, It \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classround__robin__util_1_1round__robin__t}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classround__robin__util_1_1round__robin__t_a555cfe899f93cd394088efa0d19d83fc}\label{classround__robin__util_1_1round__robin__t_a555cfe899f93cd394088efa0d19d83fc} 
+using {\bfseries iterator} = It
+\item 
+\Hypertarget{classround__robin__util_1_1round__robin__t_a4aa102656e1065e23f78772ed0d153e6}\label{classround__robin__util_1_1round__robin__t_a4aa102656e1065e23f78772ed0d153e6} 
+using {\bfseries pointer} = V \texorpdfstring{$\ast$}{*}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types inherited from \mbox{\hyperlink{classround__robin__util_1_1it__wrap__t}{round\+\_\+robin\+\_\+util\+::it\+\_\+wrap\+\_\+t$<$ V, round\+\_\+robin\+\_\+t$<$ V, It $>$ $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+using {\bfseries iterator\+\_\+category}
+\item 
+using {\bfseries value\+\_\+type}
+\item 
+using {\bfseries difference\+\_\+type}
+\item 
+using {\bfseries pointer}
+\item 
+using {\bfseries const\+\_\+pointer}
+\item 
+using {\bfseries reference}
+\item 
+using {\bfseries const\+\_\+reference}
+\item 
+typedef \mbox{\hyperlink{classround__robin__util_1_1round__robin__t}{round\+\_\+robin\+\_\+t}}$<$ V, It $>$ {\bfseries iterator}
+\item 
+typedef std\+::ptrdiff\+\_\+t {\bfseries diff\+\_\+t}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classround__robin__util_1_1round__robin__t_a58b1d12b49906b077693542a15ba1bd8}\label{classround__robin__util_1_1round__robin__t_a58b1d12b49906b077693542a15ba1bd8} 
+{\bfseries round\+\_\+robin\+\_\+t} (iterator begin, iterator end)
+\item 
+\Hypertarget{classround__robin__util_1_1round__robin__t_ab84aae3358bf9208c717f075687cb097}\label{classround__robin__util_1_1round__robin__t_ab84aae3358bf9208c717f075687cb097} 
+void {\bfseries inc} ()
+\item 
+\Hypertarget{classround__robin__util_1_1round__robin__t_a497c096919a7ae3e39850e1f7b8c3218}\label{classround__robin__util_1_1round__robin__t_a497c096919a7ae3e39850e1f7b8c3218} 
+void {\bfseries dec} ()
+\item 
+\Hypertarget{classround__robin__util_1_1round__robin__t_a01be951c13a14ead88e266a41a1532ea}\label{classround__robin__util_1_1round__robin__t_a01be951c13a14ead88e266a41a1532ea} 
+bool {\bfseries eq} (const round\+\_\+robin\+\_\+t \&other) const
+\item 
+\Hypertarget{classround__robin__util_1_1round__robin__t_a8ca9e241eadc76621ad34265249bb873}\label{classround__robin__util_1_1round__robin__t_a8ca9e241eadc76621ad34265249bb873} 
+pointer {\bfseries get} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classround__robin__util_1_1it__wrap__t}{round\+\_\+robin\+\_\+util\+::it\+\_\+wrap\+\_\+t$<$ V, round\+\_\+robin\+\_\+t$<$ V, It $>$ $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+iterator {\bfseries operator+=} (diff\+\_\+t step)
+\item 
+iterator {\bfseries operator-\/=} (diff\+\_\+t step)
+\item 
+iterator {\bfseries operator+} (diff\+\_\+t step)
+\item 
+iterator {\bfseries operator-\/} (diff\+\_\+t step)
+\item 
+iterator {\bfseries operator++} ()
+\item 
+iterator {\bfseries operator-\/-\/} ()
+\item 
+reference {\bfseries operator\texorpdfstring{$\ast$}{*}} ()
+\item 
+pointer {\bfseries operator-\/$>$} ()
+\item 
+bool {\bfseries operator!=} (const iterator \&other) const
+\item 
+bool {\bfseries operator$<$} (const iterator \&other) const
+\item 
+bool {\bfseries operator$>$=} (const iterator \&other) const
+\item 
+bool {\bfseries operator$<$=} (const iterator \&other) const
+\item 
+bool {\bfseries operator==} (const iterator \&other) const
+\item 
+bool {\bfseries operator$>$} (const iterator \&other) const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class V, class It$>$\newline
+class round\+\_\+robin\+\_\+util\+::round\+\_\+robin\+\_\+t$<$ V, It $>$}
+Round-\/robin container iterator. 
+
+Provides round-\/robin iteration over a container, cycling through elements.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em V} & Value type. \\
+\hline
+{\em It} & Iterator type. \\
+\hline
+\end{DoxyTemplParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{round__robin_8h}{round\+\_\+robin.\+h}}\end{DoxyCompactItemize}

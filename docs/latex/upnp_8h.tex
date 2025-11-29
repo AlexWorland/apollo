@@ -1,0 +1,54 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/upnp.h File Reference}
+\hypertarget{upnp_8h}{}\label{upnp_8h}\index{/Users/alexworland/autoBitrate/apollo/src/upnp.h@{/Users/alexworland/autoBitrate/apollo/src/upnp.h}}
+
+
+Declarations for UPnP port mapping.  
+
+
+{\ttfamily \#include $<$miniupnpc/miniupnpc.\+h$>$}\newline
+{\ttfamily \#include "{}platform/common.\+h"{}}\newline
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespaceupnp}{upnp}}
+\begin{DoxyCompactList}\small\item\em UPnP port mapping. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{namespaceupnp_a727361dab9a5ed175a7ffb1c889f06d1}\label{namespaceupnp_a727361dab9a5ed175a7ffb1c889f06d1} 
+using {\bfseries upnp\+::device\+\_\+t} = util\+::safe\+\_\+ptr$<$UPNPDev, free\+UPNPDevlist$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{namespaceupnp_a09e7f571284eb27de5fd12d68224cb39}\label{namespaceupnp_a09e7f571284eb27de5fd12d68224cb39} 
+{\bfseries upnp\+::\+KITTY\+\_\+\+USING\+\_\+\+MOVE\+\_\+T} (urls\+\_\+t, UPNPUrls,, \{ Free\+UPNPUrls(\&el);\})
+\item 
+int \mbox{\hyperlink{namespaceupnp_abc289edc95d71e1b541726d57951f827}{upnp\+::\+UPNP\+\_\+\+Get\+Valid\+IGDStatus}} (device\+\_\+t \&device, urls\+\_\+t \texorpdfstring{$\ast$}{*}urls, IGDdatas \texorpdfstring{$\ast$}{*}data, std\+::array$<$ char, INET6\+\_\+\+ADDRESS\+\_\+\+STRLEN $>$ \&lan\+\_\+addr)
+\begin{DoxyCompactList}\small\item\em Get the valid IGD status. \end{DoxyCompactList}\item 
+\Hypertarget{namespaceupnp_a6fd49e0fff52011b76742c1f5c202527}\label{namespaceupnp_a6fd49e0fff52011b76742c1f5c202527} 
+std\+::unique\+\_\+ptr$<$ platf\+::deinit\+\_\+t $>$ {\bfseries upnp\+::start} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{namespaceupnp_a2721e2e57b616ba1f3eef06f65285175}\label{namespaceupnp_a2721e2e57b616ba1f3eef06f65285175} 
+constexpr auto {\bfseries upnp\+::\+INET6\+\_\+\+ADDRESS\+\_\+\+STRLEN} = 46
+\item 
+\Hypertarget{namespaceupnp_a9259602e7591738b7342ee6120b801be}\label{namespaceupnp_a9259602e7591738b7342ee6120b801be} 
+constexpr auto {\bfseries upnp\+::\+IPv4} = 0
+\item 
+\Hypertarget{namespaceupnp_aa6d82aee6b3562f06721d927a8c0a14e}\label{namespaceupnp_aa6d82aee6b3562f06721d927a8c0a14e} 
+constexpr auto {\bfseries upnp\+::\+IPv6} = 1
+\item 
+\Hypertarget{namespaceupnp_a50bec01f798bd5f55b9963ffc8b89798}\label{namespaceupnp_a50bec01f798bd5f55b9963ffc8b89798} 
+constexpr auto {\bfseries upnp\+::\+PORT\+\_\+\+MAPPING\+\_\+\+LIFETIME} = 3600s
+\item 
+\Hypertarget{namespaceupnp_a27dc68a41f9011a381139cec83d16358}\label{namespaceupnp_a27dc68a41f9011a381139cec83d16358} 
+constexpr auto {\bfseries upnp\+::\+REFRESH\+\_\+\+INTERVAL} = 120s
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Declarations for UPnP port mapping. 
+

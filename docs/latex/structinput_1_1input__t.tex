@@ -1,0 +1,97 @@
+\doxysection{input\+::input\+\_\+t Struct Reference}
+\hypertarget{structinput_1_1input__t}{}\label{structinput_1_1input__t}\index{input::input\_t@{input::input\_t}}
+
+
+Main input handler structure.  
+
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{structinput_1_1input__t_ad33da02efd279a1f2122badf0e8df30b}{shortkey\+\_\+e}} \{ \mbox{\hyperlink{structinput_1_1input__t_ad33da02efd279a1f2122badf0e8df30ba1436d723005874576639aa2169641e3b}{CTRL}} = 0x1
+, \mbox{\hyperlink{structinput_1_1input__t_ad33da02efd279a1f2122badf0e8df30ba16d76b23da70d413ffa22beaba477dd3}{ALT}} = 0x2
+, \mbox{\hyperlink{structinput_1_1input__t_ad33da02efd279a1f2122badf0e8df30bab46450b4b077d30c7817516c4c53b566}{SHIFT}} = 0x4
+, \mbox{\hyperlink{structinput_1_1input__t_ad33da02efd279a1f2122badf0e8df30ba9e2d2ddd38ae57fc04e9fa5db229447b}{SHORTCUT}} = CTRL \texorpdfstring{$\vert$}{|} ALT \texorpdfstring{$\vert$}{|} SHIFT
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structinput_1_1input__t_a9eb8a56fdf9b5c9e05013a908b9a8c8c}\label{structinput_1_1input__t_a9eb8a56fdf9b5c9e05013a908b9a8c8c} 
+{\bfseries input\+\_\+t} (safe\+::mail\+\_\+raw\+\_\+t\+::event\+\_\+t$<$ \mbox{\hyperlink{structinput_1_1touch__port__t}{input\+::touch\+\_\+port\+\_\+t}} $>$ touch\+\_\+port\+\_\+event, platf\+::feedback\+\_\+queue\+\_\+t feedback\+\_\+queue)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structinput_1_1input__t_a8a775c1f30bfdf700ac7e0b903dd4932}\label{structinput_1_1input__t_a8a775c1f30bfdf700ac7e0b903dd4932} 
+int {\bfseries shortcut\+Flags}
+\item 
+\Hypertarget{structinput_1_1input__t_a3c803f89cbd3b1bdba3a7ab5e1763150}\label{structinput_1_1input__t_a3c803f89cbd3b1bdba3a7ab5e1763150} 
+std\+::vector$<$ \mbox{\hyperlink{structinput_1_1gamepad__t}{gamepad\+\_\+t}} $>$ {\bfseries gamepads}
+\item 
+\Hypertarget{structinput_1_1input__t_aaf230339527b053656578c99a762cd82}\label{structinput_1_1input__t_aaf230339527b053656578c99a762cd82} 
+std\+::unique\+\_\+ptr$<$ platf\+::client\+\_\+input\+\_\+t $>$ {\bfseries client\+\_\+context}
+\item 
+\Hypertarget{structinput_1_1input__t_ae3c65fccff8f01e4eae56fad115a090b}\label{structinput_1_1input__t_ae3c65fccff8f01e4eae56fad115a090b} 
+safe\+::mail\+\_\+raw\+\_\+t\+::event\+\_\+t$<$ \mbox{\hyperlink{structinput_1_1touch__port__t}{input\+::touch\+\_\+port\+\_\+t}} $>$ {\bfseries touch\+\_\+port\+\_\+event}
+\item 
+\Hypertarget{structinput_1_1input__t_ab08c9eb6519986f55f92211a5adf1205}\label{structinput_1_1input__t_ab08c9eb6519986f55f92211a5adf1205} 
+platf\+::feedback\+\_\+queue\+\_\+t {\bfseries feedback\+\_\+queue}
+\item 
+\Hypertarget{structinput_1_1input__t_a75df3d628002b62172ef38d14099b183}\label{structinput_1_1input__t_a75df3d628002b62172ef38d14099b183} 
+std\+::list$<$ std\+::vector$<$ uint8\+\_\+t $>$ $>$ {\bfseries input\+\_\+queue}
+\item 
+\Hypertarget{structinput_1_1input__t_a25a615561d1e7326fd836783fed76719}\label{structinput_1_1input__t_a25a615561d1e7326fd836783fed76719} 
+std\+::mutex {\bfseries input\+\_\+queue\+\_\+lock}
+\item 
+\Hypertarget{structinput_1_1input__t_aa7fc7075c2c0fd4c8c4ed64c07238faf}\label{structinput_1_1input__t_aa7fc7075c2c0fd4c8c4ed64c07238faf} 
+thread\+\_\+pool\+\_\+util\+::\+Thread\+Pool\+::task\+\_\+id\+\_\+t {\bfseries mouse\+\_\+left\+\_\+button\+\_\+timeout}
+\item 
+\Hypertarget{structinput_1_1input__t_a0ba4847d285368be2cd2bc8818fb9709}\label{structinput_1_1input__t_a0ba4847d285368be2cd2bc8818fb9709} 
+\mbox{\hyperlink{structinput_1_1touch__port__t}{input\+::touch\+\_\+port\+\_\+t}} {\bfseries touch\+\_\+port}
+\item 
+\Hypertarget{structinput_1_1input__t_aebcab44e35169c31557d3609e0bd6d05}\label{structinput_1_1input__t_aebcab44e35169c31557d3609e0bd6d05} 
+int32\+\_\+t {\bfseries accumulated\+\_\+vscroll\+\_\+delta}
+\item 
+\Hypertarget{structinput_1_1input__t_aeea3c739c798f680c029abaad80bacb4}\label{structinput_1_1input__t_aeea3c739c798f680c029abaad80bacb4} 
+int32\+\_\+t {\bfseries accumulated\+\_\+hscroll\+\_\+delta}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Main input handler structure. 
+
+Manages all input handling including keyboard, mouse, gamepad, and touch input. Handles shortcut key combinations, gamepad state management, and input routing to the appropriate platform-\/specific handlers. 
+
+\label{doc-enum-members}
+\Hypertarget{structinput_1_1input__t_doc-enum-members}
+\doxysubsection{Member Enumeration Documentation}
+\Hypertarget{structinput_1_1input__t_ad33da02efd279a1f2122badf0e8df30b}\index{input::input\_t@{input::input\_t}!shortkey\_e@{shortkey\_e}}
+\index{shortkey\_e@{shortkey\_e}!input::input\_t@{input::input\_t}}
+\doxysubsubsection{\texorpdfstring{shortkey\_e}{shortkey\_e}}
+{\footnotesize\ttfamily \label{structinput_1_1input__t_ad33da02efd279a1f2122badf0e8df30b} 
+enum \mbox{\hyperlink{structinput_1_1input__t_ad33da02efd279a1f2122badf0e8df30b}{input\+::input\+\_\+t\+::shortkey\+\_\+e}}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CTRL@{CTRL}!input::input\_t@{input::input\_t}}\index{input::input\_t@{input::input\_t}!CTRL@{CTRL}}}\Hypertarget{structinput_1_1input__t_ad33da02efd279a1f2122badf0e8df30ba1436d723005874576639aa2169641e3b}\label{structinput_1_1input__t_ad33da02efd279a1f2122badf0e8df30ba1436d723005874576639aa2169641e3b} 
+CTRL&Control key. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ALT@{ALT}!input::input\_t@{input::input\_t}}\index{input::input\_t@{input::input\_t}!ALT@{ALT}}}\Hypertarget{structinput_1_1input__t_ad33da02efd279a1f2122badf0e8df30ba16d76b23da70d413ffa22beaba477dd3}\label{structinput_1_1input__t_ad33da02efd279a1f2122badf0e8df30ba16d76b23da70d413ffa22beaba477dd3} 
+ALT&Alt key. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SHIFT@{SHIFT}!input::input\_t@{input::input\_t}}\index{input::input\_t@{input::input\_t}!SHIFT@{SHIFT}}}\Hypertarget{structinput_1_1input__t_ad33da02efd279a1f2122badf0e8df30bab46450b4b077d30c7817516c4c53b566}\label{structinput_1_1input__t_ad33da02efd279a1f2122badf0e8df30bab46450b4b077d30c7817516c4c53b566} 
+SHIFT&Shift key. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SHORTCUT@{SHORTCUT}!input::input\_t@{input::input\_t}}\index{input::input\_t@{input::input\_t}!SHORTCUT@{SHORTCUT}}}\Hypertarget{structinput_1_1input__t_ad33da02efd279a1f2122badf0e8df30ba9e2d2ddd38ae57fc04e9fa5db229447b}\label{structinput_1_1input__t_ad33da02efd279a1f2122badf0e8df30ba9e2d2ddd38ae57fc04e9fa5db229447b} 
+SHORTCUT&Shortcut combination. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{input_8cpp}{input.\+cpp}}\end{DoxyCompactItemize}

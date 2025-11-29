@@ -1,0 +1,32 @@
+\doxysection{upnp.\+h}
+\hypertarget{upnp_8h_source}{}\label{upnp_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/upnp.h@{/Users/alexworland/autoBitrate/apollo/src/upnp.h}}
+\mbox{\hyperlink{upnp_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ lib\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <miniupnpc/miniupnpc.h>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ local\ includes}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}platform/common.h"{}}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceupnp}{upnp}}\ \{}
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ INET6\_ADDRESS\_STRLEN\ =\ 46;}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ IPv4\ =\ 0;}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ IPv6\ =\ 1;}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ PORT\_MAPPING\_LIFETIME\ =\ 3600s;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ REFRESH\_INTERVAL\ =\ 120s;}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{using\ }device\_t\ =\ util::safe\_ptr<UPNPDev,\ freeUPNPDevlist>;}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ KITTY\_USING\_MOVE\_T(urls\_t,\ UPNPUrls,\ ,\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ FreeUPNPUrls(\&el);}
+\DoxyCodeLine{00027\ \ \ \});}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00041\ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespaceupnp_abc289edc95d71e1b541726d57951f827}{UPNP\_GetValidIGDStatus}}(device\_t\ \&device,\ urls\_t\ *urls,\ IGDdatas\ *data,\ std::array<char,\ INET6\_ADDRESS\_STRLEN>\ \&lan\_addr);}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ [[nodiscard]]\ std::unique\_ptr<platf::deinit\_t>\ start();}
+\DoxyCodeLine{00044\ \}\ \ \textcolor{comment}{//\ namespace\ upnp}}
+
+\end{DoxyCode}

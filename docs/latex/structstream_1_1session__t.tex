@@ -1,0 +1,183 @@
+\doxysection{stream\+::session\+\_\+t Struct Reference}
+\hypertarget{structstream_1_1session__t}{}\label{structstream_1_1session__t}\index{stream::session\_t@{stream::session\_t}}
+
+
+Streaming session structure.  
+
+
+
+
+{\ttfamily \#include $<$stream.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structstream_1_1session__t_ad3deeb7f5ea9d753c10c05b64793df79}\label{structstream_1_1session__t_ad3deeb7f5ea9d753c10c05b64793df79} 
+\mbox{\hyperlink{structstream_1_1config__t}{config\+\_\+t}} {\bfseries config}
+\item 
+\Hypertarget{structstream_1_1session__t_af2b98aa296610d66812bda22a8de64c6}\label{structstream_1_1session__t_af2b98aa296610d66812bda22a8de64c6} 
+safe\+::mail\+\_\+t {\bfseries mail}
+\item 
+\Hypertarget{structstream_1_1session__t_aae4bda0ab18645db555c1070be299d20}\label{structstream_1_1session__t_aae4bda0ab18645db555c1070be299d20} 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+::input\+\_\+t}} $>$ {\bfseries input}
+\item 
+\Hypertarget{structstream_1_1session__t_adf52aa85e8312303b446653fbdb2fa4b}\label{structstream_1_1session__t_adf52aa85e8312303b446653fbdb2fa4b} 
+std\+::thread {\bfseries audio\+Thread}
+\item 
+\Hypertarget{structstream_1_1session__t_afe361e593d73a5890c272bb88ae2ef39}\label{structstream_1_1session__t_afe361e593d73a5890c272bb88ae2ef39} 
+std\+::thread {\bfseries video\+Thread}
+\item 
+\Hypertarget{structstream_1_1session__t_aed1c3455d55c7cd8354cb6faa5bbd06d}\label{structstream_1_1session__t_aed1c3455d55c7cd8354cb6faa5bbd06d} 
+std\+::chrono\+::steady\+\_\+clock\+::time\+\_\+point {\bfseries ping\+Timeout}
+\item 
+\Hypertarget{structstream_1_1session__t_a997bbd72c6acc1ba26089da3d9fe5cb0}\label{structstream_1_1session__t_a997bbd72c6acc1ba26089da3d9fe5cb0} 
+\mbox{\hyperlink{classsafe_1_1shared__t}{safe\+::shared\+\_\+t}}$<$ \mbox{\hyperlink{structstream_1_1broadcast__ctx__t}{broadcast\+\_\+ctx\+\_\+t}} $>$\+::ptr\+\_\+t {\bfseries broadcast\+\_\+ref}
+\item 
+\Hypertarget{structstream_1_1session__t_a930f38894198e832e88e18a0a7c24a08}\label{structstream_1_1session__t_a930f38894198e832e88e18a0a7c24a08} 
+boost\+::asio\+::ip\+::address {\bfseries local\+Address}
+\item 
+\Hypertarget{structstream_1_1session__t_a022d72a1a563e4f02b866ea7ed2c0a30}\label{structstream_1_1session__t_a022d72a1a563e4f02b866ea7ed2c0a30} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>std::string {\bfseries ping\_payload}\\
+\>\>{\em Ping payload for session identification. }\\
+\>int {\bfseries lowseq}\\
+\>\>{\em Lowest sequence number received. }\\
+\>boost::asio::ip::udp::endpoint {\bfseries peer}\\
+\>\>{\em Video peer endpoint. }\\
+\>std::optional$<$ \mbox{\hyperlink{classcrypto_1_1cipher_1_1gcm__t}{crypto::cipher::gcm\_t}} $>$ {\bfseries cipher}\\
+\>\>{\em GCM cipher for encryption. }\\
+\>std::uint64\_t {\bfseries gcm\_iv\_counter}\\
+\>\>{\em GCM IV counter. }\\
+\>safe::mail\_raw\_t::event\_t$<$ bool $>$ {\bfseries idr\_events}\\
+\>\>{\em IDR frame request events. }\\
+\>safe::mail\_raw\_t::event\_t$<$ std::pair$<$ int64\_t, int64\_t $>$ $>$ {\bfseries invalidate\_ref\_frames\_events}\\
+\>\>{\em Reference frame invalidation events. }\\
+\>std::unique\_ptr$<$ platf::deinit\_t $>$ {\bfseries qos}\\
+\>\>{\em QoS handler. }\\
+\} {\bfseries video}\\
+
+\end{tabbing}\item 
+\Hypertarget{structstream_1_1session__t_a29e68e725221c69a68b8c4a37961ce37}\label{structstream_1_1session__t_a29e68e725221c69a68b8c4a37961ce37} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>\mbox{\hyperlink{classcrypto_1_1cipher_1_1cbc__t}{crypto::cipher::cbc\_t}} {\bfseries cipher}\\
+\>\>{\em CBC cipher for audio encryption. }\\
+\>std::string {\bfseries ping\_payload}\\
+\>\>{\em Ping payload for session identification. }\\
+\>std::uint16\_t {\bfseries sequenceNumber}\\
+\>\>{\em Audio sequence number. }\\
+\>std::uint32\_t {\bfseries avRiKeyId}\\
+\>\>{\em Remote input key ID (big-\/endian first bytes of launch\_session-\/\texorpdfstring{$>$}{>}iv). }\\
+\>std::uint32\_t {\bfseries timestamp}\\
+\>\>{\em Audio timestamp. }\\
+\>boost::asio::ip::udp::endpoint {\bfseries peer}\\
+\>\>{\em Audio peer endpoint. }\\
+\>\mbox{\hyperlink{classutil_1_1buffer__t}{util::buffer\_t}}$<$ char $>$ {\bfseries shards}\\
+\>\>{\em FEC shard buffer. }\\
+\>\mbox{\hyperlink{classutil_1_1buffer__t}{util::buffer\_t}}$<$ uint8\_t \texorpdfstring{$\ast$}{*} $>$ {\bfseries shards\_p}\\
+\>\>{\em FEC shard pointer buffer. }\\
+\>\mbox{\hyperlink{structstream_1_1audio__fec__packet__t}{audio\_fec\_packet\_t}} {\bfseries fec\_packet}\\
+\>\>{\em FEC packet structure. }\\
+\>std::unique\_ptr$<$ platf::deinit\_t $>$ {\bfseries qos}\\
+\>\>{\em QoS handler. }\\
+\} {\bfseries audio}\\
+
+\end{tabbing}\item 
+\Hypertarget{structstream_1_1session__t_a0f0e9c5305b4d4d349849cc592b8f1d6}\label{structstream_1_1session__t_a0f0e9c5305b4d4d349849cc592b8f1d6} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>\mbox{\hyperlink{classcrypto_1_1cipher_1_1gcm__t}{crypto::cipher::gcm\_t}} {\bfseries cipher}\\
+\>\>{\em GCM cipher for control encryption. }\\
+\>\mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{crypto::aes\_t}} {\bfseries legacy\_input\_enc\_iv}\\
+\>\>{\em Legacy input encryption IV (only for clients without full control stream encryption). }\\
+\>\mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{crypto::aes\_t}} {\bfseries incoming\_iv}\\
+\>\>{\em Incoming IV for control stream. }\\
+\>\mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{crypto::aes\_t}} {\bfseries outgoing\_iv}\\
+\>\>{\em Outgoing IV for control stream. }\\
+\>std::uint32\_t {\bfseries connect\_data}\\
+\>\>{\em Connection data (for new clients with ML\_FF\_SESSION\_ID\_V1). }\\
+\>std::string {\bfseries expected\_peer\_address}\\
+\>\>{\em Expected peer address (only for legacy clients without ML\_FF\_SESSION\_ID\_V1). }\\
+\>net::peer\_t {\bfseries peer}\\
+\>\>{\em ENet peer. }\\
+\>std::uint32\_t {\bfseries seq}\\
+\>\>{\em Control sequence number. }\\
+\>platf::feedback\_queue\_t {\bfseries feedback\_queue}\\
+\>\>{\em Gamepad feedback queue. }\\
+\>safe::mail\_raw\_t::event\_t$<$ video::hdr\_info\_t $>$ {\bfseries hdr\_queue}\\
+\>\>{\em HDR information queue. }\\
+\} {\bfseries control}\\
+
+\end{tabbing}\item 
+\Hypertarget{structstream_1_1session__t_a48bdf4e4b03d71a8a4c269c4874757b3}\label{structstream_1_1session__t_a48bdf4e4b03d71a8a4c269c4874757b3} 
+std\+::uint32\+\_\+t {\bfseries launch\+\_\+session\+\_\+id}
+\begin{DoxyCompactList}\small\item\em Associated launch session ID. \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1session__t_a3fc6980a67ad4c4c8d285cc36bd01e43}\label{structstream_1_1session__t_a3fc6980a67ad4c4c8d285cc36bd01e43} 
+std\+::string {\bfseries device\+\_\+name}
+\begin{DoxyCompactList}\small\item\em Client device name. \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1session__t_aac2c0a2bd32a495811a00f79ca77927c}\label{structstream_1_1session__t_aac2c0a2bd32a495811a00f79ca77927c} 
+std\+::string {\bfseries device\+\_\+uuid}
+\begin{DoxyCompactList}\small\item\em Client device UUID. \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1session__t_ac7e48ff94aac127e2c4897e5a045bdf0}\label{structstream_1_1session__t_ac7e48ff94aac127e2c4897e5a045bdf0} 
+\mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{crypto\+::\+PERM}} {\bfseries permission}
+\begin{DoxyCompactList}\small\item\em Client permissions. \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1session__t_af63db61460dbd7c18bb080e98edb95d3}\label{structstream_1_1session__t_af63db61460dbd7c18bb080e98edb95d3} 
+std\+::list$<$ \mbox{\hyperlink{structcrypto_1_1command__entry__t}{crypto\+::command\+\_\+entry\+\_\+t}} $>$ {\bfseries do\+\_\+cmds}
+\begin{DoxyCompactList}\small\item\em Commands to execute on session start. \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1session__t_ab1467498a58baab0db69eabea32d56f4}\label{structstream_1_1session__t_ab1467498a58baab0db69eabea32d56f4} 
+std\+::list$<$ \mbox{\hyperlink{structcrypto_1_1command__entry__t}{crypto\+::command\+\_\+entry\+\_\+t}} $>$ {\bfseries undo\+\_\+cmds}
+\begin{DoxyCompactList}\small\item\em Commands to execute on session end. \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1session__t_afecfac8d2c2c95c8b5bd6a21c3585e4c}\label{structstream_1_1session__t_afecfac8d2c2c95c8b5bd6a21c3585e4c} 
+safe\+::mail\+\_\+raw\+\_\+t\+::event\+\_\+t$<$ bool $>$ {\bfseries shutdown\+\_\+event}
+\begin{DoxyCompactList}\small\item\em Shutdown event. \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1session__t_a976d3665784ded8aa0af8e3a2ac3c58d}\label{structstream_1_1session__t_a976d3665784ded8aa0af8e3a2ac3c58d} 
+safe\+::signal\+\_\+t {\bfseries control\+End}
+\begin{DoxyCompactList}\small\item\em Control stream end signal. \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1session__t_ab91ecb5d69a5ff43ff5eda6d672899a9}\label{structstream_1_1session__t_ab91ecb5d69a5ff43ff5eda6d672899a9} 
+std\+::atomic$<$ \mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188de}{session\+::state\+\_\+e}} $>$ {\bfseries state}
+\begin{DoxyCompactList}\small\item\em Current session state. \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1session__t_af9aa0edcd393b49ef75888a8fa5fa9e8}\label{structstream_1_1session__t_af9aa0edcd393b49ef75888a8fa5fa9e8} 
+bool {\bfseries auto\+\_\+bitrate\+\_\+enabled} = false
+\begin{DoxyCompactList}\small\item\em Enable auto bitrate for this session (set to true ONLY when client checkbox is checked; when false, use existing static bitrate flow). \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1session__t_ad646f662ac20182ca885fdf9be3ee71c}\label{structstream_1_1session__t_ad646f662ac20182ca885fdf9be3ee71c} 
+int {\bfseries auto\+\_\+bitrate\+\_\+min\+\_\+kbps} = 0
+\begin{DoxyCompactList}\small\item\em Client-\/requested minimum bitrate (0 = not set, use server config default). \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1session__t_a55367c36ec630c1283c9aa20608b112d}\label{structstream_1_1session__t_a55367c36ec630c1283c9aa20608b112d} 
+int {\bfseries auto\+\_\+bitrate\+\_\+max\+\_\+kbps} = 0
+\begin{DoxyCompactList}\small\item\em Client-\/requested maximum bitrate (0 = not set, use configured bitrate). \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1session__t_a01e9a4aef9d69a683fa2f62675b65743}\label{structstream_1_1session__t_a01e9a4aef9d69a683fa2f62675b65743} 
+bool {\bfseries auto\+\_\+bitrate\+\_\+v2\+\_\+active} = false
+\begin{DoxyCompactList}\small\item\em True once V2 telemetry is received for this session. \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1session__t_a2a891ce2d8c65868eaeb45a199af5571}\label{structstream_1_1session__t_a2a891ce2d8c65868eaeb45a199af5571} 
+int {\bfseries bitrate\+\_\+stats\+\_\+send\+\_\+counter} = 0
+\begin{DoxyCompactList}\small\item\em Counter for periodic stats sending. \end{DoxyCompactList}\item 
+\Hypertarget{structstream_1_1session__t_ac78bc35f82d9e5a4a1f0fe700570e0ef}\label{structstream_1_1session__t_ac78bc35f82d9e5a4a1f0fe700570e0ef} 
+int {\bfseries last\+\_\+sent\+\_\+connection\+\_\+status} = -\/1
+\begin{DoxyCompactList}\small\item\em Track last sent status to detect changes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Streaming session structure. 
+
+\label{doc-variable-members}
+\Hypertarget{structstream_1_1session__t_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structstream_1_1session__t_aca11a74cb8976a2c3339e0f06b6fe363}\index{stream::session\_t@{stream::session\_t}!peer@{peer}}
+\index{peer@{peer}!stream::session\_t@{stream::session\_t}}
+\doxysubsubsection{\texorpdfstring{peer}{peer}}
+{\footnotesize\ttfamily \label{structstream_1_1session__t_aca11a74cb8976a2c3339e0f06b6fe363} 
+boost\+::asio\+::ip\+::udp\+::endpoint stream\+::session\+\_\+t\+::peer}
+
+
+
+Video peer endpoint. 
+
+Audio peer endpoint. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{stream_8h}{stream.\+h}}\end{DoxyCompactItemize}

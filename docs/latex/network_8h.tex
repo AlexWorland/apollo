@@ -1,0 +1,267 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/network.h File Reference}
+\hypertarget{network_8h}{}\label{network_8h}\index{/Users/alexworland/autoBitrate/apollo/src/network.h@{/Users/alexworland/autoBitrate/apollo/src/network.h}}
+
+
+Declarations for networking related functions.  
+
+
+{\ttfamily \#include $<$tuple$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+{\ttfamily \#include $<$boost/asio.\+hpp$>$}\newline
+{\ttfamily \#include $<$enet/enet.\+h$>$}\newline
+{\ttfamily \#include "{}utility.\+h"{}}\newline
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{network_8h_ae394d2d137198658d5c941bdd301e861}\label{network_8h_ae394d2d137198658d5c941bdd301e861} 
+using {\bfseries net\+::host\+\_\+t} = util\+::safe\+\_\+ptr$<$ENet\+Host, free\+\_\+host$>$
+\item 
+\Hypertarget{network_8h_ab32be88591757d9a0148942bcd879975}\label{network_8h_ab32be88591757d9a0148942bcd879975} 
+using {\bfseries net\+::peer\+\_\+t} = ENet\+Peer \texorpdfstring{$\ast$}{*}
+\item 
+\Hypertarget{network_8h_a467a585926b148f0afffdbb51dcd8bcb}\label{network_8h_a467a585926b148f0afffdbb51dcd8bcb} 
+using {\bfseries net\+::packet\+\_\+t} = util\+::safe\+\_\+ptr$<$ENet\+Packet, enet\+\_\+packet\+\_\+destroy$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{network_8h_af265c335edb963e60ec75f612b9eef13}{net\+::net\+\_\+e}} \+: int \{ \mbox{\hyperlink{network_8h_af265c335edb963e60ec75f612b9eef13a474497f4d17b63685911b74f306160a2}{net\+::\+PC}}
+, \mbox{\hyperlink{network_8h_af265c335edb963e60ec75f612b9eef13af733f5db0a940c4097312653ca0c960c}{net\+::\+LAN}}
+, \mbox{\hyperlink{network_8h_af265c335edb963e60ec75f612b9eef13a4a6b5798854f8e5527c1cc40a54cff0f}{net\+::\+WAN}}
+ \}
+\item 
+enum \mbox{\hyperlink{network_8h_a1ed5da07a6d5b35033bd4de7bca12dab}{net\+::af\+\_\+e}} \+: int \{ \mbox{\hyperlink{network_8h_a1ed5da07a6d5b35033bd4de7bca12daba897b89539a9ed02e81e4aae60b92f8ae}{net\+::\+IPV4}}
+, \mbox{\hyperlink{network_8h_a1ed5da07a6d5b35033bd4de7bca12dababc6c5aa4d1701ee38eb95a5ca15ab657}{net\+::\+BOTH}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{network_8cpp_a8a833b5d9483122ad5d84a2ad0dc1f2a}\label{network_8cpp_a8a833b5d9483122ad5d84a2ad0dc1f2a} 
+void {\bfseries net\+::free\+\_\+host} (ENet\+Host \texorpdfstring{$\ast$}{*}host)
+\item 
+std\+::uint16\+\_\+t \mbox{\hyperlink{network_8cpp_a0a37be704ccaa8d04aaecb8d9434c5d4}{net\+::map\+\_\+port}} (int port)
+\begin{DoxyCompactList}\small\item\em Map a specified port based on the base port. \end{DoxyCompactList}\item 
+\Hypertarget{network_8cpp_a4f0cb7d9443ccf7cdda0b204a63c75b7}\label{network_8cpp_a4f0cb7d9443ccf7cdda0b204a63c75b7} 
+\mbox{\hyperlink{network_8h_af265c335edb963e60ec75f612b9eef13}{net\+\_\+e}} {\bfseries net\+::from\+\_\+enum\+\_\+string} (const std\+::string\+\_\+view \&view)
+\item 
+\Hypertarget{network_8cpp_a66c7861f833ab1114a202f7cf99b7561}\label{network_8cpp_a66c7861f833ab1114a202f7cf99b7561} 
+std\+::string\+\_\+view {\bfseries net\+::to\+\_\+enum\+\_\+string} (\mbox{\hyperlink{network_8h_af265c335edb963e60ec75f612b9eef13}{net\+\_\+e}} net)
+\item 
+\Hypertarget{network_8cpp_a4b1b30f737efcb708e9370449092c48a}\label{network_8cpp_a4b1b30f737efcb708e9370449092c48a} 
+\mbox{\hyperlink{network_8h_af265c335edb963e60ec75f612b9eef13}{net\+\_\+e}} {\bfseries net\+::from\+\_\+address} (const std\+::string\+\_\+view \&view)
+\item 
+\Hypertarget{network_8cpp_aed65644379f1d19ad2ee6fcb3665ec33}\label{network_8cpp_aed65644379f1d19ad2ee6fcb3665ec33} 
+host\+\_\+t {\bfseries net\+::host\+\_\+create} (\mbox{\hyperlink{network_8h_a1ed5da07a6d5b35033bd4de7bca12dab}{af\+\_\+e}} af, ENet\+Address \&addr, std\+::uint16\+\_\+t port)
+\item 
+\mbox{\hyperlink{network_8h_a1ed5da07a6d5b35033bd4de7bca12dab}{af\+\_\+e}} \mbox{\hyperlink{network_8cpp_af32f6bc0014ada0f28397682e23a2595}{net\+::af\+\_\+from\+\_\+enum\+\_\+string}} (const std\+::string\+\_\+view \&view)
+\begin{DoxyCompactList}\small\item\em Get the address family enum value from a string. \end{DoxyCompactList}\item 
+std\+::string\+\_\+view \mbox{\hyperlink{network_8cpp_a6b811d3b976c98982cfa0a4d367315d9}{net\+::af\+\_\+to\+\_\+any\+\_\+address\+\_\+string}} (\mbox{\hyperlink{network_8h_a1ed5da07a6d5b35033bd4de7bca12dab}{af\+\_\+e}} af)
+\begin{DoxyCompactList}\small\item\em Get the wildcard binding address for a given address family. \end{DoxyCompactList}\item 
+boost\+::asio\+::ip\+::address \mbox{\hyperlink{network_8cpp_ae896fcfb32048dbe4d597ce8bbb8e123}{net\+::normalize\+\_\+address}} (boost\+::asio\+::ip\+::address address)
+\begin{DoxyCompactList}\small\item\em Convert an address to a normalized form. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{network_8cpp_aa96a671dd323f3ae53f76eac03426ede}{net\+::addr\+\_\+to\+\_\+normalized\+\_\+string}} (boost\+::asio\+::ip\+::address address)
+\begin{DoxyCompactList}\small\item\em Get the given address in normalized string form. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{network_8cpp_a3887be8caf0ac14270e0c92da3e2d93b}{net\+::addr\+\_\+to\+\_\+url\+\_\+escaped\+\_\+string}} (boost\+::asio\+::ip\+::address address)
+\begin{DoxyCompactList}\small\item\em Get the given address in a normalized form for the host portion of a URL. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{network_8cpp_af8dcf52944b17fb8bd0d5f54780f81c7}{net\+::encryption\+\_\+mode\+\_\+for\+\_\+address}} (boost\+::asio\+::ip\+::address address)
+\begin{DoxyCompactList}\small\item\em Get the encryption mode for the given remote endpoint address. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{network_8cpp_ae0c0ca8185b559bf6f65fa7677f592e9}{net\+::mdns\+\_\+instance\+\_\+name}} (const std\+::string\+\_\+view \&hostname)
+\begin{DoxyCompactList}\small\item\em Returns a string for use as the instance name for m\+DNS. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Declarations for networking related functions. 
+
+
+
+\label{doc-enum-members}
+\Hypertarget{network_8h_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{network_8h_a1ed5da07a6d5b35033bd4de7bca12dab}\index{network.h@{network.h}!af\_e@{af\_e}}
+\index{af\_e@{af\_e}!network.h@{network.h}}
+\doxysubsubsection{\texorpdfstring{af\_e}{af\_e}}
+{\footnotesize\ttfamily \label{network_8h_a1ed5da07a6d5b35033bd4de7bca12dab} 
+enum \mbox{\hyperlink{network_8h_a1ed5da07a6d5b35033bd4de7bca12dab}{net\+::af\+\_\+e}} \+: int}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{IPV4@{IPV4}!network.h@{network.h}}\index{network.h@{network.h}!IPV4@{IPV4}}}\Hypertarget{network_8h_a1ed5da07a6d5b35033bd4de7bca12daba897b89539a9ed02e81e4aae60b92f8ae}\label{network_8h_a1ed5da07a6d5b35033bd4de7bca12daba897b89539a9ed02e81e4aae60b92f8ae} 
+IPV4&IPv4 only. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BOTH@{BOTH}!network.h@{network.h}}\index{network.h@{network.h}!BOTH@{BOTH}}}\Hypertarget{network_8h_a1ed5da07a6d5b35033bd4de7bca12dababc6c5aa4d1701ee38eb95a5ca15ab657}\label{network_8h_a1ed5da07a6d5b35033bd4de7bca12dababc6c5aa4d1701ee38eb95a5ca15ab657} 
+BOTH&IPv4 and IPv6. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{network_8h_af265c335edb963e60ec75f612b9eef13}\index{network.h@{network.h}!net\_e@{net\_e}}
+\index{net\_e@{net\_e}!network.h@{network.h}}
+\doxysubsubsection{\texorpdfstring{net\_e}{net\_e}}
+{\footnotesize\ttfamily \label{network_8h_af265c335edb963e60ec75f612b9eef13} 
+enum \mbox{\hyperlink{network_8h_af265c335edb963e60ec75f612b9eef13}{net\+::net\+\_\+e}} \+: int}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{PC@{PC}!network.h@{network.h}}\index{network.h@{network.h}!PC@{PC}}}\Hypertarget{network_8h_af265c335edb963e60ec75f612b9eef13a474497f4d17b63685911b74f306160a2}\label{network_8h_af265c335edb963e60ec75f612b9eef13a474497f4d17b63685911b74f306160a2} 
+PC&PC. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LAN@{LAN}!network.h@{network.h}}\index{network.h@{network.h}!LAN@{LAN}}}\Hypertarget{network_8h_af265c335edb963e60ec75f612b9eef13af733f5db0a940c4097312653ca0c960c}\label{network_8h_af265c335edb963e60ec75f612b9eef13af733f5db0a940c4097312653ca0c960c} 
+LAN&LAN. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{WAN@{WAN}!network.h@{network.h}}\index{network.h@{network.h}!WAN@{WAN}}}\Hypertarget{network_8h_af265c335edb963e60ec75f612b9eef13a4a6b5798854f8e5527c1cc40a54cff0f}\label{network_8h_af265c335edb963e60ec75f612b9eef13a4a6b5798854f8e5527c1cc40a54cff0f} 
+WAN&WAN. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\label{doc-func-members}
+\Hypertarget{network_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{network_8cpp_aa96a671dd323f3ae53f76eac03426ede}\index{network.h@{network.h}!addr\_to\_normalized\_string@{addr\_to\_normalized\_string}}
+\index{addr\_to\_normalized\_string@{addr\_to\_normalized\_string}!network.h@{network.h}}
+\doxysubsubsection{\texorpdfstring{addr\_to\_normalized\_string()}{addr\_to\_normalized\_string()}}
+{\footnotesize\ttfamily \label{network_8cpp_aa96a671dd323f3ae53f76eac03426ede} 
+std\+::string net\+::addr\+\_\+to\+\_\+normalized\+\_\+string (\begin{DoxyParamCaption}\item[{boost\+::asio\+::ip\+::address}]{address}{}\end{DoxyParamCaption})}
+
+
+
+Get the given address in normalized string form. 
+
+Normalization converts IPv4-\/mapped IPv6 addresses into IPv4 addresses. 
+\begin{DoxyParams}{Parameters}
+{\em address} & The address to normalize. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Normalized address in string form. 
+\end{DoxyReturn}
+\Hypertarget{network_8cpp_a3887be8caf0ac14270e0c92da3e2d93b}\index{network.h@{network.h}!addr\_to\_url\_escaped\_string@{addr\_to\_url\_escaped\_string}}
+\index{addr\_to\_url\_escaped\_string@{addr\_to\_url\_escaped\_string}!network.h@{network.h}}
+\doxysubsubsection{\texorpdfstring{addr\_to\_url\_escaped\_string()}{addr\_to\_url\_escaped\_string()}}
+{\footnotesize\ttfamily \label{network_8cpp_a3887be8caf0ac14270e0c92da3e2d93b} 
+std\+::string net\+::addr\+\_\+to\+\_\+url\+\_\+escaped\+\_\+string (\begin{DoxyParamCaption}\item[{boost\+::asio\+::ip\+::address}]{address}{}\end{DoxyParamCaption})}
+
+
+
+Get the given address in a normalized form for the host portion of a URL. 
+
+Normalization converts IPv4-\/mapped IPv6 addresses into IPv4 addresses. 
+\begin{DoxyParams}{Parameters}
+{\em address} & The address to normalize and escape. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Normalized address in URL-\/escaped string. 
+\end{DoxyReturn}
+\Hypertarget{network_8cpp_af32f6bc0014ada0f28397682e23a2595}\index{network.h@{network.h}!af\_from\_enum\_string@{af\_from\_enum\_string}}
+\index{af\_from\_enum\_string@{af\_from\_enum\_string}!network.h@{network.h}}
+\doxysubsubsection{\texorpdfstring{af\_from\_enum\_string()}{af\_from\_enum\_string()}}
+{\footnotesize\ttfamily \label{network_8cpp_af32f6bc0014ada0f28397682e23a2595} 
+af\+\_\+e net\+::af\+\_\+from\+\_\+enum\+\_\+string (\begin{DoxyParamCaption}\item[{const std\+::string\+\_\+view \&}]{view}{}\end{DoxyParamCaption})}
+
+
+
+Get the address family enum value from a string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em view} & The config option value. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The address family enum value. 
+\end{DoxyReturn}
+\Hypertarget{network_8cpp_a6b811d3b976c98982cfa0a4d367315d9}\index{network.h@{network.h}!af\_to\_any\_address\_string@{af\_to\_any\_address\_string}}
+\index{af\_to\_any\_address\_string@{af\_to\_any\_address\_string}!network.h@{network.h}}
+\doxysubsubsection{\texorpdfstring{af\_to\_any\_address\_string()}{af\_to\_any\_address\_string()}}
+{\footnotesize\ttfamily \label{network_8cpp_a6b811d3b976c98982cfa0a4d367315d9} 
+std\+::string\+\_\+view net\+::af\+\_\+to\+\_\+any\+\_\+address\+\_\+string (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{network_8h_a1ed5da07a6d5b35033bd4de7bca12dab}{af\+\_\+e}}}]{af}{}\end{DoxyParamCaption})}
+
+
+
+Get the wildcard binding address for a given address family. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em af} & Address family. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Normalized address. 
+\end{DoxyReturn}
+\Hypertarget{network_8cpp_af8dcf52944b17fb8bd0d5f54780f81c7}\index{network.h@{network.h}!encryption\_mode\_for\_address@{encryption\_mode\_for\_address}}
+\index{encryption\_mode\_for\_address@{encryption\_mode\_for\_address}!network.h@{network.h}}
+\doxysubsubsection{\texorpdfstring{encryption\_mode\_for\_address()}{encryption\_mode\_for\_address()}}
+{\footnotesize\ttfamily \label{network_8cpp_af8dcf52944b17fb8bd0d5f54780f81c7} 
+int net\+::encryption\+\_\+mode\+\_\+for\+\_\+address (\begin{DoxyParamCaption}\item[{boost\+::asio\+::ip\+::address}]{address}{}\end{DoxyParamCaption})}
+
+
+
+Get the encryption mode for the given remote endpoint address. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em address} & The address used to look up the desired encryption mode. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The WAN or LAN encryption mode, based on the provided address. 
+\end{DoxyReturn}
+\Hypertarget{network_8cpp_a0a37be704ccaa8d04aaecb8d9434c5d4}\index{network.h@{network.h}!map\_port@{map\_port}}
+\index{map\_port@{map\_port}!network.h@{network.h}}
+\doxysubsubsection{\texorpdfstring{map\_port()}{map\_port()}}
+{\footnotesize\ttfamily \label{network_8cpp_a0a37be704ccaa8d04aaecb8d9434c5d4} 
+std\+::uint16\+\_\+t net\+::map\+\_\+port (\begin{DoxyParamCaption}\item[{int}]{port}{}\end{DoxyParamCaption})}
+
+
+
+Map a specified port based on the base port. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em port} & The port to map as a difference from the base port. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The mapped port number. @examples std\+::uint16\+\_\+t mapped\+\_\+port = net\+::map\+\_\+port(1); @examples\+\_\+end 
+\end{DoxyReturn}
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000005}{Todo}}]Ensure port is not already in use by another application. \end{DoxyRefDesc}
+\Hypertarget{network_8cpp_ae0c0ca8185b559bf6f65fa7677f592e9}\index{network.h@{network.h}!mdns\_instance\_name@{mdns\_instance\_name}}
+\index{mdns\_instance\_name@{mdns\_instance\_name}!network.h@{network.h}}
+\doxysubsubsection{\texorpdfstring{mdns\_instance\_name()}{mdns\_instance\_name()}}
+{\footnotesize\ttfamily \label{network_8cpp_ae0c0ca8185b559bf6f65fa7677f592e9} 
+std\+::string net\+::mdns\+\_\+instance\+\_\+name (\begin{DoxyParamCaption}\item[{const std\+::string\+\_\+view \&}]{hostname}{}\end{DoxyParamCaption})}
+
+
+
+Returns a string for use as the instance name for m\+DNS. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em hostname} & The hostname to use for instance name generation. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Hostname-\/based instance name or "{}\+Sunshine"{} if hostname is invalid. 
+\end{DoxyReturn}
+\Hypertarget{network_8cpp_ae896fcfb32048dbe4d597ce8bbb8e123}\index{network.h@{network.h}!normalize\_address@{normalize\_address}}
+\index{normalize\_address@{normalize\_address}!network.h@{network.h}}
+\doxysubsubsection{\texorpdfstring{normalize\_address()}{normalize\_address()}}
+{\footnotesize\ttfamily \label{network_8cpp_ae896fcfb32048dbe4d597ce8bbb8e123} 
+boost\+::asio\+::ip\+::address net\+::normalize\+\_\+address (\begin{DoxyParamCaption}\item[{boost\+::asio\+::ip\+::address}]{address}{}\end{DoxyParamCaption})}
+
+
+
+Convert an address to a normalized form. 
+
+Normalization converts IPv4-\/mapped IPv6 addresses into IPv4 addresses. 
+\begin{DoxyParams}{Parameters}
+{\em address} & The address to normalize. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Normalized address. 
+\end{DoxyReturn}

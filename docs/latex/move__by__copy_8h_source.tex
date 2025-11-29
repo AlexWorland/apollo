@@ -1,0 +1,56 @@
+\doxysection{move\+\_\+by\+\_\+copy.\+h}
+\hypertarget{move__by__copy_8h_source}{}\label{move__by__copy_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/move\_by\_copy.h@{/Users/alexworland/autoBitrate/apollo/src/move\_by\_copy.h}}
+\mbox{\hyperlink{move__by__copy_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ standard\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacemove__by__copy__util}{move\_by\_copy\_util}}\ \{}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{class\ }MoveByCopy\ \{}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{typedef}\ T\ move\_type;}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00024\ \ \ \ \ move\_type\ \_to\_move;}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{explicit}\ MoveByCopy(move\_type\ \&\&to\_move):}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \_to\_move(std::move(to\_move))\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ MoveByCopy(MoveByCopy\ \&\&other)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ MoveByCopy(\textcolor{keyword}{const}\ MoveByCopy\ \&other)\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ *\textcolor{keyword}{this}\ =\ other;}
+\DoxyCodeLine{00035\ \ \ \ \ \}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ MoveByCopy\ \&operator=(MoveByCopy\ \&\&other)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ MoveByCopy\ \&operator=(\textcolor{keyword}{const}\ MoveByCopy\ \&other)\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ this-\/>\_to\_move\ =\ std::move(\textcolor{keyword}{const\_cast<}MoveByCopy\ \&\textcolor{keyword}{>}(other).\_to\_move);}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00043\ \ \ \ \ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{operator}\ move\_type()\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::move(\_to\_move);}
+\DoxyCodeLine{00047\ \ \ \ \ \}}
+\DoxyCodeLine{00048\ \ \ \};}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00051\ \ \ \mbox{\hyperlink{classmove__by__copy__util_1_1_move_by_copy}{MoveByCopy<T>}}\ cmove(T\ \&movable)\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classmove__by__copy__util_1_1_move_by_copy}{MoveByCopy<T>}}(std::move(movable));}
+\DoxyCodeLine{00053\ \ \ \}}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \textcolor{comment}{//\ Do\ NOT\ use\ this\ unless\ you\ are\ absolutely\ certain\ the\ object\ to\ be\ moved\ is\ no\ longer\ used\ by\ the\ caller}}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00057\ \ \ MoveByCopy<T>\ const\_cmove(\textcolor{keyword}{const}\ T\ \&movable)\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordflow}{return}\ MoveByCopy<T>(std::move(\textcolor{keyword}{const\_cast<}T\ \&\textcolor{keyword}{>}(movable)));}
+\DoxyCodeLine{00059\ \ \ \}}
+\DoxyCodeLine{00060\ \}\ \ \textcolor{comment}{//\ namespace\ move\_by\_copy\_util}}
+
+\end{DoxyCode}

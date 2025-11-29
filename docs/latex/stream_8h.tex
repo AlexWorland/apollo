@@ -1,0 +1,140 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/stream.h File Reference}
+\hypertarget{stream_8h}{}\label{stream_8h}\index{/Users/alexworland/autoBitrate/apollo/src/stream.h@{/Users/alexworland/autoBitrate/apollo/src/stream.h}}
+
+
+Declarations for the streaming protocols.  
+
+
+{\ttfamily \#include $<$atomic$>$}\newline
+{\ttfamily \#include $<$chrono$>$}\newline
+{\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include $<$list$>$}\newline
+{\ttfamily \#include $<$map$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$optional$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$thread$>$}\newline
+{\ttfamily \#include $<$tuple$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+{\ttfamily \#include $<$variant$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$boost/asio.\+hpp$>$}\newline
+{\ttfamily \#include $<$moonlight-\/common-\/c/src/\+Limelight-\/internal.\+h$>$}\newline
+{\ttfamily \#include "{}audio.\+h"{}}\newline
+{\ttfamily \#include "{}crypto.\+h"{}}\newline
+{\ttfamily \#include "{}input.\+h"{}}\newline
+{\ttfamily \#include "{}network.\+h"{}}\newline
+{\ttfamily \#include "{}platform/common.\+h"{}}\newline
+{\ttfamily \#include "{}sync.\+h"{}}\newline
+{\ttfamily \#include "{}thread\+\_\+safe.\+h"{}}\newline
+{\ttfamily \#include "{}utility.\+h"{}}\newline
+{\ttfamily \#include "{}video.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classstream_1_1control__server__t}{stream\+::control\+\_\+server\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Control server for managing streaming sessions. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstream_1_1broadcast__ctx__t}{stream\+::broadcast\+\_\+ctx\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Broadcast context for managing streaming threads and sockets. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstream_1_1config__t}{stream\+::config\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Streaming configuration structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstream_1_1audio__fec__packet__t}{stream\+::audio\+\_\+fec\+\_\+packet\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Audio FEC packet structure (packed for network transmission). \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstream_1_1session__t}{stream\+::session\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Streaming session structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacestream_1_1session}{stream\+::session}}
+\begin{DoxyCompactList}\small\item\em Session management functions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{stream_8h_aeb916fe2b6a6f7924ee9d51fdeeb7a3e}\label{stream_8h_aeb916fe2b6a6f7924ee9d51fdeeb7a3e} 
+using {\bfseries stream\+::av\+\_\+session\+\_\+id\+\_\+t} = std\+::variant$<$asio\+::ip\+::address, std\+::string$>$
+\begin{DoxyCompactList}\small\item\em Session identifier\+: IP address or SS-\/\+Ping-\/\+Payload from RTSP handshake. \end{DoxyCompactList}\item 
+\Hypertarget{stream_8h_ad76d227821b568b5ef9086b8b6173aaf}\label{stream_8h_ad76d227821b568b5ef9086b8b6173aaf} 
+using {\bfseries stream\+::message\+\_\+queue\+\_\+t} = std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{classsafe_1_1queue__t}{safe\+::queue\+\_\+t}}$<$std\+::pair$<$udp\+::endpoint, std\+::string$>$$>$$>$
+\begin{DoxyCompactList}\small\item\em Message queue type. \end{DoxyCompactList}\item 
+\Hypertarget{stream_8h_a6c43be23082f69bc7d8b9920e279e4fc}\label{stream_8h_a6c43be23082f69bc7d8b9920e279e4fc} 
+using {\bfseries stream\+::message\+\_\+queue\+\_\+queue\+\_\+t} = std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{classsafe_1_1queue__t}{safe\+::queue\+\_\+t}}$<$std\+::tuple$<$\mbox{\hyperlink{stream_8h_a1427e256cc01c127e100b0a903cacc5f}{socket\+\_\+e}}, \mbox{\hyperlink{stream_8h_aeb916fe2b6a6f7924ee9d51fdeeb7a3e}{av\+\_\+session\+\_\+id\+\_\+t}}, \mbox{\hyperlink{stream_8h_ad76d227821b568b5ef9086b8b6173aaf}{message\+\_\+queue\+\_\+t}}$>$$>$$>$
+\begin{DoxyCompactList}\small\item\em Queue of message queues. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{stream_8h_a1427e256cc01c127e100b0a903cacc5f}{stream\+::socket\+\_\+e}} \+: int \{ \mbox{\hyperlink{stream_8h_a1427e256cc01c127e100b0a903cacc5fa421b47ffd946ca083b65cd668c6b17e6}{video}}
+, \mbox{\hyperlink{stream_8h_a1427e256cc01c127e100b0a903cacc5faa5ca0b5894324f8bb54bb9fffad29d1e}{audio}}
+ \}
+\begin{DoxyCompactList}\small\item\em Socket type enumeration. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188de}{stream\+::session\+::state\+\_\+e}} \+: int \{ \mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188dea09d4d696b4e935115b9313e3c412509a}{stream\+::session\+::\+STOPPED}}
+, \mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188deaf6cdb3c6710b50ec65ee07f740847e10}{stream\+::session\+::\+STOPPING}}
+, \mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188dea034312d8adc8099c1c6f53aaff745e26}{stream\+::session\+::\+STARTING}}
+, \mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188dea43491564ebcfd38568918efbd6e840fd}{stream\+::session\+::\+RUNNING}}
+ \}
+\begin{DoxyCompactList}\small\item\em Session state enumeration. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} $>$ \mbox{\hyperlink{namespacestream_1_1session_a3a968bef60291eac635060c406580646}{stream\+::session\+::alloc}} (\mbox{\hyperlink{structstream_1_1config__t}{config\+\_\+t}} \&config, \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+t}} \&launch\+\_\+session)
+\begin{DoxyCompactList}\small\item\em Allocate a new streaming session. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{namespacestream_1_1session_a6e6dba8ca4221d0c94d0a4dc0a14c01f}{stream\+::session\+::uuid}} (const \mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}})
+\begin{DoxyCompactList}\small\item\em Get the UUID of a session. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacestream_1_1session_a47437a61c2e2db084f5d802595540d1f}{stream\+::session\+::uuid\+\_\+match}} (const \mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}}, const std\+::string\+\_\+view \&\mbox{\hyperlink{namespacestream_1_1session_a6e6dba8ca4221d0c94d0a4dc0a14c01f}{uuid}})
+\begin{DoxyCompactList}\small\item\em Check if session UUID matches. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacestream_1_1session_ab76bf145c19c75d056a26522e591b919}{stream\+::session\+::update\+\_\+device\+\_\+info}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}}, const std\+::string \&name, const \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{crypto\+::\+PERM}} \&new\+Perm)
+\begin{DoxyCompactList}\small\item\em Update device information for a session. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{namespacestream_1_1session_a57687f4eec57d53f2839dffb564e1f42}{stream\+::session\+::start}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}}, const std\+::string \&addr\+\_\+string)
+\begin{DoxyCompactList}\small\item\em Start a streaming session. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacestream_1_1session_a6d3e111379cfb5b644a8cc9652b6523a}{stream\+::session\+::stop}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}})
+\begin{DoxyCompactList}\small\item\em Stop a streaming session. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacestream_1_1session_af9e804bb3827272a5afc7669a6100a75}{stream\+::session\+::graceful\+\_\+stop}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}})
+\begin{DoxyCompactList}\small\item\em Gracefully stop a streaming session. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacestream_1_1session_ad6441df13e4c115de4047ea8f3074ec2}{stream\+::session\+::join}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}})
+\begin{DoxyCompactList}\small\item\em Join session threads (wait for completion). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188de}{state\+\_\+e}} \mbox{\hyperlink{namespacestream_1_1session_a7aae2685f26ac3d991ae41861530fd07}{stream\+::session\+::state}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}})
+\begin{DoxyCompactList}\small\item\em Get the current state of a session. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacestream_1_1session_a9d466943738a6a0365da4f54c990ba5e}{stream\+::session\+::send}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}}, const std\+::string\+\_\+view \&payload)
+\begin{DoxyCompactList}\small\item\em Send a control message to the session. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{stream_8h_ae08eadf68fef176a866139d46cfaaaa0}\label{stream_8h_ae08eadf68fef176a866139d46cfaaaa0} 
+constexpr auto {\bfseries stream\+::\+VIDEO\+\_\+\+STREAM\+\_\+\+PORT} = 9
+\item 
+\Hypertarget{stream_8h_a4d93ab210dd7f1354a5bced027252b48}\label{stream_8h_a4d93ab210dd7f1354a5bced027252b48} 
+constexpr auto {\bfseries stream\+::\+CONTROL\+\_\+\+PORT} = 10
+\item 
+\Hypertarget{stream_8h_ae77d8e618e7a6f3685832dc221667bf4}\label{stream_8h_ae77d8e618e7a6f3685832dc221667bf4} 
+constexpr auto {\bfseries stream\+::\+AUDIO\+\_\+\+STREAM\+\_\+\+PORT} = 11
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Declarations for the streaming protocols. 
+
+
+
+\label{doc-enum-members}
+\Hypertarget{stream_8h_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{stream_8h_a1427e256cc01c127e100b0a903cacc5f}\index{stream.h@{stream.h}!socket\_e@{socket\_e}}
+\index{socket\_e@{socket\_e}!stream.h@{stream.h}}
+\doxysubsubsection{\texorpdfstring{socket\_e}{socket\_e}}
+{\footnotesize\ttfamily \label{stream_8h_a1427e256cc01c127e100b0a903cacc5f} 
+enum class \mbox{\hyperlink{stream_8h_a1427e256cc01c127e100b0a903cacc5f}{stream\+::socket\+\_\+e}} \+: int\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Socket type enumeration. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{video@{video}!stream.h@{stream.h}}\index{stream.h@{stream.h}!video@{video}}}\Hypertarget{stream_8h_a1427e256cc01c127e100b0a903cacc5fa421b47ffd946ca083b65cd668c6b17e6}\label{stream_8h_a1427e256cc01c127e100b0a903cacc5fa421b47ffd946ca083b65cd668c6b17e6} 
+video&Video socket. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{audio@{audio}!stream.h@{stream.h}}\index{stream.h@{stream.h}!audio@{audio}}}\Hypertarget{stream_8h_a1427e256cc01c127e100b0a903cacc5faa5ca0b5894324f8bb54bb9fffad29d1e}\label{stream_8h_a1427e256cc01c127e100b0a903cacc5faa5ca0b5894324f8bb54bb9fffad29d1e} 
+audio&Audio socket. \\
+\hline
+
+\end{DoxyEnumFields}

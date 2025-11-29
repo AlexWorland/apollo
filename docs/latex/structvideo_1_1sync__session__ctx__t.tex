@@ -1,0 +1,47 @@
+\doxysection{video\+::sync\+\_\+session\+\_\+ctx\+\_\+t Struct Reference}
+\hypertarget{structvideo_1_1sync__session__ctx__t}{}\label{structvideo_1_1sync__session__ctx__t}\index{video::sync\_session\_ctx\_t@{video::sync\_session\_ctx\_t}}
+
+
+Synchronous encoding session context.  
+
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structvideo_1_1sync__session__ctx__t_afbf19b25ca0e2066c0206692cc901526}\label{structvideo_1_1sync__session__ctx__t_afbf19b25ca0e2066c0206692cc901526} 
+safe\+::signal\+\_\+t \texorpdfstring{$\ast$}{*} {\bfseries join\+\_\+event}
+\item 
+\Hypertarget{structvideo_1_1sync__session__ctx__t_a55948c614c06255c8db93b3ff1e545f5}\label{structvideo_1_1sync__session__ctx__t_a55948c614c06255c8db93b3ff1e545f5} 
+safe\+::mail\+\_\+raw\+\_\+t\+::event\+\_\+t$<$ bool $>$ {\bfseries shutdown\+\_\+event}
+\item 
+\Hypertarget{structvideo_1_1sync__session__ctx__t_a0e53304592c5f270d1c6fcc65316627c}\label{structvideo_1_1sync__session__ctx__t_a0e53304592c5f270d1c6fcc65316627c} 
+safe\+::mail\+\_\+raw\+\_\+t\+::queue\+\_\+t$<$ packet\+\_\+t $>$ {\bfseries packets}
+\item 
+\Hypertarget{structvideo_1_1sync__session__ctx__t_afe871a8ad5c7f1119444ba9d55b9fa0d}\label{structvideo_1_1sync__session__ctx__t_afe871a8ad5c7f1119444ba9d55b9fa0d} 
+safe\+::mail\+\_\+raw\+\_\+t\+::event\+\_\+t$<$ bool $>$ {\bfseries idr\+\_\+events}
+\item 
+\Hypertarget{structvideo_1_1sync__session__ctx__t_a6f8459c16af6bd9ebe0ab50a20186179}\label{structvideo_1_1sync__session__ctx__t_a6f8459c16af6bd9ebe0ab50a20186179} 
+safe\+::mail\+\_\+raw\+\_\+t\+::event\+\_\+t$<$ hdr\+\_\+info\+\_\+t $>$ {\bfseries hdr\+\_\+events}
+\item 
+\Hypertarget{structvideo_1_1sync__session__ctx__t_a15e4d2d8559156b9b2f3b6492623a7c4}\label{structvideo_1_1sync__session__ctx__t_a15e4d2d8559156b9b2f3b6492623a7c4} 
+safe\+::mail\+\_\+raw\+\_\+t\+::event\+\_\+t$<$ \mbox{\hyperlink{structinput_1_1touch__port__t}{input\+::touch\+\_\+port\+\_\+t}} $>$ {\bfseries touch\+\_\+port\+\_\+events}
+\item 
+\Hypertarget{structvideo_1_1sync__session__ctx__t_a87404c8f3c03655f9c6892539d61bbd6}\label{structvideo_1_1sync__session__ctx__t_a87404c8f3c03655f9c6892539d61bbd6} 
+config\+\_\+t {\bfseries config}
+\item 
+\Hypertarget{structvideo_1_1sync__session__ctx__t_a94baef03c17826aff44c5a40cd871fd7}\label{structvideo_1_1sync__session__ctx__t_a94baef03c17826aff44c5a40cd871fd7} 
+int {\bfseries frame\+\_\+nr}
+\item 
+\Hypertarget{structvideo_1_1sync__session__ctx__t_a6a6a6e532196781606e909bb0bdecb07}\label{structvideo_1_1sync__session__ctx__t_a6a6a6e532196781606e909bb0bdecb07} 
+void \texorpdfstring{$\ast$}{*} {\bfseries channel\+\_\+data}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Synchronous encoding session context. 
+
+Contains thread-\/safe communication channels and configuration for synchronous video encoding operations. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{video_8cpp}{video.\+cpp}}\end{DoxyCompactItemize}

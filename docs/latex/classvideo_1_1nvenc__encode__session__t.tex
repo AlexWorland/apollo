@@ -1,0 +1,47 @@
+\doxysection{video\+::nvenc\+\_\+encode\+\_\+session\+\_\+t Class Reference}
+\hypertarget{classvideo_1_1nvenc__encode__session__t}{}\label{classvideo_1_1nvenc__encode__session__t}\index{video::nvenc\_encode\_session\_t@{video::nvenc\_encode\_session\_t}}
+
+
+Video encoding session using NVIDIA NVENC.  
+
+
+Inheritance diagram for video\+::nvenc\+\_\+encode\+\_\+session\+\_\+t\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classvideo_1_1nvenc__encode__session__t}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classvideo_1_1nvenc__encode__session__t_a985ae7ef55ce19b964ce352bb0de11a4}\label{classvideo_1_1nvenc__encode__session__t_a985ae7ef55ce19b964ce352bb0de11a4} 
+{\bfseries nvenc\+\_\+encode\+\_\+session\+\_\+t} (std\+::unique\+\_\+ptr$<$ platf\+::nvenc\+\_\+encode\+\_\+device\+\_\+t $>$ encode\+\_\+device)
+\item 
+\Hypertarget{classvideo_1_1nvenc__encode__session__t_ad1ac8b09055043d84f34d31de0daad49}\label{classvideo_1_1nvenc__encode__session__t_ad1ac8b09055043d84f34d31de0daad49} 
+int {\bfseries convert} (platf\+::img\+\_\+t \&img) override
+\item 
+\Hypertarget{classvideo_1_1nvenc__encode__session__t_a2bb1bfea480f097337a4e3c96c9874a9}\label{classvideo_1_1nvenc__encode__session__t_a2bb1bfea480f097337a4e3c96c9874a9} 
+void {\bfseries request\+\_\+idr\+\_\+frame} () override
+\item 
+\Hypertarget{classvideo_1_1nvenc__encode__session__t_a17cfe64bd5c85deb82fc306b66091969}\label{classvideo_1_1nvenc__encode__session__t_a17cfe64bd5c85deb82fc306b66091969} 
+void {\bfseries request\+\_\+normal\+\_\+frame} () override
+\item 
+\Hypertarget{classvideo_1_1nvenc__encode__session__t_a5e1325697f9731fa3a07c0772ac58027}\label{classvideo_1_1nvenc__encode__session__t_a5e1325697f9731fa3a07c0772ac58027} 
+void {\bfseries invalidate\+\_\+ref\+\_\+frames} (int64\+\_\+t first\+\_\+frame, int64\+\_\+t last\+\_\+frame) override
+\item 
+\Hypertarget{classvideo_1_1nvenc__encode__session__t_a2cb88b1f0820ea02acc5f73a6d258db4}\label{classvideo_1_1nvenc__encode__session__t_a2cb88b1f0820ea02acc5f73a6d258db4} 
+nvenc\+::nvenc\+\_\+encoded\+\_\+frame {\bfseries encode\+\_\+frame} (uint64\+\_\+t frame\+\_\+index)
+\item 
+\Hypertarget{classvideo_1_1nvenc__encode__session__t_ac7de62f7985418c069590c4fcec9a89b}\label{classvideo_1_1nvenc__encode__session__t_ac7de62f7985418c069590c4fcec9a89b} 
+bool {\bfseries reconfigure\+\_\+bitrate} (int new\+\_\+bitrate\+\_\+kbps) override
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Video encoding session using NVIDIA NVENC. 
+
+Implements encode\+\_\+session\+\_\+t using NVIDIA\textquotesingle{}s hardware video encoder for accelerated H.\+264, HEVC, and AV1 encoding. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{video_8cpp}{video.\+cpp}}\end{DoxyCompactItemize}

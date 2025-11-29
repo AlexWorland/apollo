@@ -1,0 +1,94 @@
+\doxysection{upnp Namespace Reference}
+\hypertarget{namespaceupnp}{}\label{namespaceupnp}\index{upnp@{upnp}}
+
+
+UPnP port mapping.  
+
+
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structupnp_1_1mapping__t}{mapping\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em UPnP port mapping structure. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classupnp_1_1deinit__t}{deinit\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em RAII deinitialization helper for UPnP. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{namespaceupnp_a727361dab9a5ed175a7ffb1c889f06d1}\label{namespaceupnp_a727361dab9a5ed175a7ffb1c889f06d1} 
+using {\bfseries device\+\_\+t} = util\+::safe\+\_\+ptr$<$UPNPDev, free\+UPNPDevlist$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{namespaceupnp_abc289edc95d71e1b541726d57951f827}{UPNP\+\_\+\+Get\+Valid\+IGDStatus}} (device\+\_\+t \&device, urls\+\_\+t \texorpdfstring{$\ast$}{*}urls, IGDdatas \texorpdfstring{$\ast$}{*}data, std\+::array$<$ char, INET6\+\_\+\+ADDRESS\+\_\+\+STRLEN $>$ \&lan\+\_\+addr)
+\begin{DoxyCompactList}\small\item\em Get the valid IGD status. \end{DoxyCompactList}\item 
+\Hypertarget{namespaceupnp_a6fd49e0fff52011b76742c1f5c202527}\label{namespaceupnp_a6fd49e0fff52011b76742c1f5c202527} 
+std\+::unique\+\_\+ptr$<$ platf\+::deinit\+\_\+t $>$ {\bfseries start} ()
+\item 
+\Hypertarget{namespaceupnp_a09e7f571284eb27de5fd12d68224cb39}\label{namespaceupnp_a09e7f571284eb27de5fd12d68224cb39} 
+{\bfseries KITTY\+\_\+\+USING\+\_\+\+MOVE\+\_\+T} (urls\+\_\+t, UPNPUrls,, \{ Free\+UPNPUrls(\&el);\})
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{namespaceupnp_a2721e2e57b616ba1f3eef06f65285175}\label{namespaceupnp_a2721e2e57b616ba1f3eef06f65285175} 
+constexpr auto {\bfseries INET6\+\_\+\+ADDRESS\+\_\+\+STRLEN} = 46
+\item 
+\Hypertarget{namespaceupnp_a9259602e7591738b7342ee6120b801be}\label{namespaceupnp_a9259602e7591738b7342ee6120b801be} 
+constexpr auto {\bfseries IPv4} = 0
+\item 
+\Hypertarget{namespaceupnp_aa6d82aee6b3562f06721d927a8c0a14e}\label{namespaceupnp_aa6d82aee6b3562f06721d927a8c0a14e} 
+constexpr auto {\bfseries IPv6} = 1
+\item 
+\Hypertarget{namespaceupnp_a50bec01f798bd5f55b9963ffc8b89798}\label{namespaceupnp_a50bec01f798bd5f55b9963ffc8b89798} 
+constexpr auto {\bfseries PORT\+\_\+\+MAPPING\+\_\+\+LIFETIME} = 3600s
+\item 
+\Hypertarget{namespaceupnp_a27dc68a41f9011a381139cec83d16358}\label{namespaceupnp_a27dc68a41f9011a381139cec83d16358} 
+constexpr auto {\bfseries REFRESH\+\_\+\+INTERVAL} = 120s
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+UPnP port mapping. 
+
+\label{doc-func-members}
+\Hypertarget{namespaceupnp_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{namespaceupnp_abc289edc95d71e1b541726d57951f827}\index{upnp@{upnp}!UPNP\_GetValidIGDStatus@{UPNP\_GetValidIGDStatus}}
+\index{UPNP\_GetValidIGDStatus@{UPNP\_GetValidIGDStatus}!upnp@{upnp}}
+\doxysubsubsection{\texorpdfstring{UPNP\_GetValidIGDStatus()}{UPNP\_GetValidIGDStatus()}}
+{\footnotesize\ttfamily \label{namespaceupnp_abc289edc95d71e1b541726d57951f827} 
+int upnp\+::\+UPNP\+\_\+\+Get\+Valid\+IGDStatus (\begin{DoxyParamCaption}\item[{device\+\_\+t \&}]{device}{, }\item[{urls\+\_\+t \texorpdfstring{$\ast$}{*}}]{urls}{, }\item[{IGDdatas \texorpdfstring{$\ast$}{*}}]{data}{, }\item[{std\+::array$<$ char, INET6\+\_\+\+ADDRESS\+\_\+\+STRLEN $>$ \&}]{lan\+\_\+addr}{}\end{DoxyParamCaption})}
+
+
+
+Get the valid IGD status. 
+
+This function is a wrapper around UPNP\+\_\+\+Get\+Valid\+IGD() that returns the status code. There is a pre-\/processor check to determine which version of the function to call based on the version of the Mini\+UPn\+Pc library.
+
+
+\begin{DoxyParams}{Parameters}
+{\em device} & The device. \\
+\hline
+{\em urls} & The URLs. \\
+\hline
+{\em data} & The IGD data. \\
+\hline
+{\em lan\+\_\+addr} & The LAN address. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The UPnP Status. 
+\end{DoxyReturn}
+
+\begin{DoxyRetVals}{Return values}
+{\em 0} & No IGD found. \\
+\hline
+{\em 1} & A valid connected IGD has been found. \\
+\hline
+{\em 2} & A valid IGD has been found but it reported as not connected. \\
+\hline
+{\em 3} & An UPnP device has been found but was not recognized as an IGD. \\
+\hline
+\end{DoxyRetVals}

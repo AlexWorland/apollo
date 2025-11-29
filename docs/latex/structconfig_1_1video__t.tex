@@ -1,0 +1,205 @@
+\doxysection{config\+::video\+\_\+t Struct Reference}
+\hypertarget{structconfig_1_1video__t}{}\label{structconfig_1_1video__t}\index{config::video\_t@{config::video\_t}}
+
+
+Video encoding and display configuration structure.  
+
+
+
+
+{\ttfamily \#include $<$config.\+h$>$}
+
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t}{dd\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Display device configuration structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structconfig_1_1video__t_a4de38aac340a04dd9e2f91d3fe941663}\label{structconfig_1_1video__t_a4de38aac340a04dd9e2f91d3fe941663} 
+bool {\bfseries headless\+\_\+mode}
+\item 
+\Hypertarget{structconfig_1_1video__t_a2e67b1e5f2292fea0aac917c31c93426}\label{structconfig_1_1video__t_a2e67b1e5f2292fea0aac917c31c93426} 
+bool {\bfseries limit\+\_\+framerate}
+\item 
+\Hypertarget{structconfig_1_1video__t_adb596132ddc21c6f5887bd6ef84a37ac}\label{structconfig_1_1video__t_adb596132ddc21c6f5887bd6ef84a37ac} 
+bool {\bfseries double\+\_\+refreshrate}
+\item 
+\Hypertarget{structconfig_1_1video__t_a3fd404aba31d1c28fb90683ab0b236dc}\label{structconfig_1_1video__t_a3fd404aba31d1c28fb90683ab0b236dc} 
+int {\bfseries qp}
+\item 
+\Hypertarget{structconfig_1_1video__t_accd480a5e9482df97bead3d1a6f120ef}\label{structconfig_1_1video__t_accd480a5e9482df97bead3d1a6f120ef} 
+int {\bfseries hevc\+\_\+mode}
+\item 
+\Hypertarget{structconfig_1_1video__t_aa21b1700d4bf0534f69b81de8feadf27}\label{structconfig_1_1video__t_aa21b1700d4bf0534f69b81de8feadf27} 
+int {\bfseries av1\+\_\+mode}
+\item 
+\Hypertarget{structconfig_1_1video__t_a49c960ab704712e5c658000ebf5e8075}\label{structconfig_1_1video__t_a49c960ab704712e5c658000ebf5e8075} 
+int {\bfseries min\+\_\+threads}
+\item 
+\Hypertarget{structconfig_1_1video__t_a9f4ec34e180028fab58db0bd86b3221e}\label{structconfig_1_1video__t_a9f4ec34e180028fab58db0bd86b3221e} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>std::string {\bfseries sw\_preset}\\
+\>std::string {\bfseries sw\_tune}\\
+\>std::optional$<$ int $>$ {\bfseries svtav1\_preset}\\
+\} {\bfseries sw}\\
+
+\end{tabbing}\item 
+\Hypertarget{structconfig_1_1video__t_ac6bfdf5692d9cb8b9a1e2678b6ef8b43}\label{structconfig_1_1video__t_ac6bfdf5692d9cb8b9a1e2678b6ef8b43} 
+nvenc\+::nvenc\+\_\+config {\bfseries nv}
+\item 
+\Hypertarget{structconfig_1_1video__t_a36d612c27751f94f24afc1adb95386be}\label{structconfig_1_1video__t_a36d612c27751f94f24afc1adb95386be} 
+bool {\bfseries nv\+\_\+realtime\+\_\+hags}
+\item 
+\Hypertarget{structconfig_1_1video__t_af0ab3344120b2a2da938ecf63c24dae3}\label{structconfig_1_1video__t_af0ab3344120b2a2da938ecf63c24dae3} 
+bool {\bfseries nv\+\_\+opengl\+\_\+vulkan\+\_\+on\+\_\+dxgi}
+\item 
+\Hypertarget{structconfig_1_1video__t_a7de612b4da0481e9aba052e12f7be481}\label{structconfig_1_1video__t_a7de612b4da0481e9aba052e12f7be481} 
+bool {\bfseries nv\+\_\+sunshine\+\_\+high\+\_\+power\+\_\+mode}
+\item 
+\Hypertarget{structconfig_1_1video__t_aa81ab20fc4fef3a11468db7cb132171b}\label{structconfig_1_1video__t_aa81ab20fc4fef3a11468db7cb132171b} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>int {\bfseries preset}\\
+\>int {\bfseries multipass}\\
+\>int {\bfseries h264\_coder}\\
+\>int {\bfseries aq}\\
+\>int {\bfseries vbv\_percentage\_increase}\\
+\} {\bfseries nv\_legacy}\\
+
+\end{tabbing}\item 
+\Hypertarget{structconfig_1_1video__t_a9bcd260bf89fffe58562fcea62d169f5}\label{structconfig_1_1video__t_a9bcd260bf89fffe58562fcea62d169f5} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>std::optional$<$ int $>$ {\bfseries qsv\_preset}\\
+\>std::optional$<$ int $>$ {\bfseries qsv\_cavlc}\\
+\>bool {\bfseries qsv\_slow\_hevc}\\
+\} {\bfseries qsv}\\
+
+\end{tabbing}\item 
+\Hypertarget{structconfig_1_1video__t_aa83acd6ee9a8a35b7aeeecfe60bdf2a2}\label{structconfig_1_1video__t_aa83acd6ee9a8a35b7aeeecfe60bdf2a2} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>std::optional$<$ int $>$ {\bfseries amd\_usage\_h264}\\
+\>std::optional$<$ int $>$ {\bfseries amd\_usage\_hevc}\\
+\>std::optional$<$ int $>$ {\bfseries amd\_usage\_av1}\\
+\>std::optional$<$ int $>$ {\bfseries amd\_rc\_h264}\\
+\>std::optional$<$ int $>$ {\bfseries amd\_rc\_hevc}\\
+\>std::optional$<$ int $>$ {\bfseries amd\_rc\_av1}\\
+\>std::optional$<$ int $>$ {\bfseries amd\_enforce\_hrd}\\
+\>std::optional$<$ int $>$ {\bfseries amd\_quality\_h264}\\
+\>std::optional$<$ int $>$ {\bfseries amd\_quality\_hevc}\\
+\>std::optional$<$ int $>$ {\bfseries amd\_quality\_av1}\\
+\>std::optional$<$ int $>$ {\bfseries amd\_preanalysis}\\
+\>std::optional$<$ int $>$ {\bfseries amd\_vbaq}\\
+\>int {\bfseries amd\_coder}\\
+\} {\bfseries amd}\\
+
+\end{tabbing}\item 
+\Hypertarget{structconfig_1_1video__t_a0c04d296e646ac16c91d7d707192e087}\label{structconfig_1_1video__t_a0c04d296e646ac16c91d7d707192e087} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>int {\bfseries vt\_allow\_sw}\\
+\>int {\bfseries vt\_require\_sw}\\
+\>int {\bfseries vt\_realtime}\\
+\>int {\bfseries vt\_coder}\\
+\} {\bfseries vt}\\
+
+\end{tabbing}\item 
+\Hypertarget{structconfig_1_1video__t_acec4f1b90b7ca28fa495d41cce365ae1}\label{structconfig_1_1video__t_acec4f1b90b7ca28fa495d41cce365ae1} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>bool {\bfseries strict\_rc\_buffer}\\
+\} {\bfseries vaapi}\\
+
+\end{tabbing}\item 
+\Hypertarget{structconfig_1_1video__t_a391fae5f988e7ea3f54264c5bcf2d699}\label{structconfig_1_1video__t_a391fae5f988e7ea3f54264c5bcf2d699} 
+std\+::string {\bfseries capture}
+\item 
+\Hypertarget{structconfig_1_1video__t_a0ece099ff663e327225842cfd11379b1}\label{structconfig_1_1video__t_a0ece099ff663e327225842cfd11379b1} 
+std\+::string {\bfseries encoder}
+\item 
+\Hypertarget{structconfig_1_1video__t_a4c03f952cdaf1b44d9bebbb87313a011}\label{structconfig_1_1video__t_a4c03f952cdaf1b44d9bebbb87313a011} 
+std\+::string {\bfseries adapter\+\_\+name}
+\item 
+\Hypertarget{structconfig_1_1video__t_a64f03db00f92972c37d0031cdba2900d}\label{structconfig_1_1video__t_a64f03db00f92972c37d0031cdba2900d} 
+std\+::string {\bfseries output\+\_\+name}
+\item 
+\Hypertarget{structconfig_1_1video__t_a7868c5ca2d0f24affb0b5c8eba94856d}\label{structconfig_1_1video__t_a7868c5ca2d0f24affb0b5c8eba94856d} 
+struct \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t}{config\+::video\+\_\+t\+::dd\+\_\+t}} {\bfseries dd}
+\item 
+\Hypertarget{structconfig_1_1video__t_a419e1d03579a0f4829522dce1a3491fc}\label{structconfig_1_1video__t_a419e1d03579a0f4829522dce1a3491fc} 
+int {\bfseries max\+\_\+bitrate}
+\item 
+\Hypertarget{structconfig_1_1video__t_a7d1b40e73568951af91d1bdcd2aa0ffd}\label{structconfig_1_1video__t_a7d1b40e73568951af91d1bdcd2aa0ffd} 
+double {\bfseries minimum\+\_\+fps\+\_\+target}
+\begin{DoxyCompactList}\small\item\em Lowest framerate that will be used when streaming. Range 0-\/1000, 0 = half of client\textquotesingle{}s requested framerate. \end{DoxyCompactList}\item 
+\Hypertarget{structconfig_1_1video__t_ad7bd6f863e8d80d6810da35ffedef0e8}\label{structconfig_1_1video__t_ad7bd6f863e8d80d6810da35ffedef0e8} 
+int {\bfseries auto\+\_\+bitrate\+\_\+min\+\_\+kbps} = 1
+\item 
+\Hypertarget{structconfig_1_1video__t_a40e56c29187c9a8ee0d887d6d14d559a}\label{structconfig_1_1video__t_a40e56c29187c9a8ee0d887d6d14d559a} 
+int {\bfseries auto\+\_\+bitrate\+\_\+max\+\_\+kbps} = 0
+\item 
+\Hypertarget{structconfig_1_1video__t_adc165f90682001567a0ff035c27f9539}\label{structconfig_1_1video__t_adc165f90682001567a0ff035c27f9539} 
+int {\bfseries auto\+\_\+bitrate\+\_\+adjustment\+\_\+interval\+\_\+ms} = 3000
+\item 
+\Hypertarget{structconfig_1_1video__t_a5ed788ad1e1c650e05706a0fcf43d0ba}\label{structconfig_1_1video__t_a5ed788ad1e1c650e05706a0fcf43d0ba} 
+int {\bfseries auto\+\_\+bitrate\+\_\+min\+\_\+adjustment\+\_\+pct} = 5
+\item 
+\Hypertarget{structconfig_1_1video__t_a9687f313d95819086b55bc9b1b2e9ec4}\label{structconfig_1_1video__t_a9687f313d95819086b55bc9b1b2e9ec4} 
+int {\bfseries auto\+\_\+bitrate\+\_\+loss\+\_\+severe\+\_\+pct} = 10
+\item 
+\Hypertarget{structconfig_1_1video__t_a1c2922cfb984db3c9fa3f087cf65f8ce}\label{structconfig_1_1video__t_a1c2922cfb984db3c9fa3f087cf65f8ce} 
+int {\bfseries auto\+\_\+bitrate\+\_\+loss\+\_\+moderate\+\_\+pct} = 5
+\item 
+\Hypertarget{structconfig_1_1video__t_ac0e2c5b4d433ad207311dd77d6e8c7e0}\label{structconfig_1_1video__t_ac0e2c5b4d433ad207311dd77d6e8c7e0} 
+int {\bfseries auto\+\_\+bitrate\+\_\+loss\+\_\+mild\+\_\+pct} = 1
+\item 
+\Hypertarget{structconfig_1_1video__t_a9bc5d64e462978be0a9453bc456c822f}\label{structconfig_1_1video__t_a9bc5d64e462978be0a9453bc456c822f} 
+int {\bfseries auto\+\_\+bitrate\+\_\+decrease\+\_\+severe\+\_\+pct} = 25
+\item 
+\Hypertarget{structconfig_1_1video__t_ade3b86f1ff12defe423cb8163d2e70ea}\label{structconfig_1_1video__t_ade3b86f1ff12defe423cb8163d2e70ea} 
+int {\bfseries auto\+\_\+bitrate\+\_\+decrease\+\_\+moderate\+\_\+pct} = 12
+\item 
+\Hypertarget{structconfig_1_1video__t_a8533720d910434aabbdb637ecdfe8ded}\label{structconfig_1_1video__t_a8533720d910434aabbdb637ecdfe8ded} 
+int {\bfseries auto\+\_\+bitrate\+\_\+decrease\+\_\+mild\+\_\+pct} = 5
+\item 
+\Hypertarget{structconfig_1_1video__t_a01581d7f301c0ef6f19270366535007b}\label{structconfig_1_1video__t_a01581d7f301c0ef6f19270366535007b} 
+int {\bfseries auto\+\_\+bitrate\+\_\+increase\+\_\+good\+\_\+pct} = 5
+\item 
+\Hypertarget{structconfig_1_1video__t_aa74778936ec2afb5760009902822e5c3}\label{structconfig_1_1video__t_aa74778936ec2afb5760009902822e5c3} 
+int {\bfseries auto\+\_\+bitrate\+\_\+good\+\_\+stability\+\_\+ms} = 5000
+\item 
+\Hypertarget{structconfig_1_1video__t_ae13b2a40ce6b84b45a573656b1036628}\label{structconfig_1_1video__t_ae13b2a40ce6b84b45a573656b1036628} 
+int {\bfseries auto\+\_\+bitrate\+\_\+increase\+\_\+min\+\_\+interval\+\_\+ms} = 3000
+\item 
+\Hypertarget{structconfig_1_1video__t_ac0c477b0b669748a4be91dc7b1ee065d}\label{structconfig_1_1video__t_ac0c477b0b669748a4be91dc7b1ee065d} 
+int {\bfseries auto\+\_\+bitrate\+\_\+poor\+\_\+status\+\_\+cap\+\_\+pct} = 25
+\item 
+\Hypertarget{structconfig_1_1video__t_a8455b819e2f9cbb8e236d5ae863cd2d5}\label{structconfig_1_1video__t_a8455b819e2f9cbb8e236d5ae863cd2d5} 
+std\+::string {\bfseries fallback\+\_\+mode}
+\item 
+\Hypertarget{structconfig_1_1video__t_a4b524a6ed94880c1fd1d50241976595b}\label{structconfig_1_1video__t_a4b524a6ed94880c1fd1d50241976595b} 
+bool {\bfseries isolated\+\_\+virtual\+\_\+display\+\_\+option}
+\item 
+\Hypertarget{structconfig_1_1video__t_a87db146ffe18517097cf497347bdad80}\label{structconfig_1_1video__t_a87db146ffe18517097cf497347bdad80} 
+bool {\bfseries ignore\+\_\+encoder\+\_\+probe\+\_\+failure}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Video encoding and display configuration structure. 
+
+Contains all settings related to video capture, encoding, display device management, and auto bitrate adjustment for streaming. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{config_8h}{config.\+h}}\end{DoxyCompactItemize}

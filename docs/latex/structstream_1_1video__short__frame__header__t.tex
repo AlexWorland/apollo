@@ -1,0 +1,41 @@
+\doxysection{stream\+::video\+\_\+short\+\_\+frame\+\_\+header\+\_\+t Struct Reference}
+\hypertarget{structstream_1_1video__short__frame__header__t}{}\label{structstream_1_1video__short__frame__header__t}\index{stream::video\_short\_frame\_header\_t@{stream::video\_short\_frame\_header\_t}}
+
+
+Short frame header for video packets.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structstream_1_1video__short__frame__header__t_a66081f8d4cbf917d471aec1c93ec5e23}\label{structstream_1_1video__short__frame__header__t_a66081f8d4cbf917d471aec1c93ec5e23} 
+uint8\+\_\+t \texorpdfstring{$\ast$}{*} {\bfseries payload} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structstream_1_1video__short__frame__header__t_a9f824f529b7e3bd11390ddda0e078eb1}\label{structstream_1_1video__short__frame__header__t_a9f824f529b7e3bd11390ddda0e078eb1} 
+std\+::uint8\+\_\+t {\bfseries header\+Type}
+\item 
+\Hypertarget{structstream_1_1video__short__frame__header__t_a2aae9183d6bec49abf2950a79220a376}\label{structstream_1_1video__short__frame__header__t_a2aae9183d6bec49abf2950a79220a376} 
+boost\+::endian\+::little\+\_\+uint16\+\_\+at {\bfseries frame\+\_\+processing\+\_\+latency}
+\item 
+\Hypertarget{structstream_1_1video__short__frame__header__t_a816ca7679b5b4ccc1a8edd859a582d00}\label{structstream_1_1video__short__frame__header__t_a816ca7679b5b4ccc1a8edd859a582d00} 
+std\+::uint8\+\_\+t {\bfseries frame\+Type}
+\item 
+\Hypertarget{structstream_1_1video__short__frame__header__t_a9e82308bdafbc0f3e5861675deb49d35}\label{structstream_1_1video__short__frame__header__t_a9e82308bdafbc0f3e5861675deb49d35} 
+boost\+::endian\+::little\+\_\+uint16\+\_\+at {\bfseries last\+Payload\+Len}
+\item 
+\Hypertarget{structstream_1_1video__short__frame__header__t_acfc7f2865553c3a6741dfefbdf621226}\label{structstream_1_1video__short__frame__header__t_acfc7f2865553c3a6741dfefbdf621226} 
+std\+::uint8\+\_\+t {\bfseries unknown} \mbox{[}2\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Short frame header for video packets. 
+
+Compact header format for video frames with minimal overhead. Used for efficient transmission of video data with frame type and processing latency information. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{stream_8cpp}{stream.\+cpp}}\end{DoxyCompactItemize}

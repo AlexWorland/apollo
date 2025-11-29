@@ -1,0 +1,59 @@
+\doxysection{safe\+::shared\+\_\+t\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}\+::ptr\+\_\+t Struct Reference}
+\hypertarget{structsafe_1_1shared__t_1_1ptr__t}{}\label{structsafe_1_1shared__t_1_1ptr__t}\index{safe::shared\_t$<$ T $>$::ptr\_t@{safe::shared\_t$<$ T $>$::ptr\_t}}
+
+
+Smart pointer to a shared object.  
+
+
+
+
+{\ttfamily \#include $<$thread\+\_\+safe.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structsafe_1_1shared__t_1_1ptr__t_a70cc2ed4430647ad64d3351a01779e06}\label{structsafe_1_1shared__t_1_1ptr__t_a70cc2ed4430647ad64d3351a01779e06} 
+{\bfseries ptr\+\_\+t} (shared\+\_\+t \texorpdfstring{$\ast$}{*}owner)
+\item 
+\Hypertarget{structsafe_1_1shared__t_1_1ptr__t_a974ec5f8bb41dbfc0989c44642aa1660}\label{structsafe_1_1shared__t_1_1ptr__t_a974ec5f8bb41dbfc0989c44642aa1660} 
+{\bfseries ptr\+\_\+t} (ptr\+\_\+t \&\&ptr) noexcept
+\item 
+\Hypertarget{structsafe_1_1shared__t_1_1ptr__t_a70fbe91b93f663298277e0f4eb78178b}\label{structsafe_1_1shared__t_1_1ptr__t_a70fbe91b93f663298277e0f4eb78178b} 
+{\bfseries ptr\+\_\+t} (const ptr\+\_\+t \&ptr) noexcept
+\item 
+\Hypertarget{structsafe_1_1shared__t_1_1ptr__t_aca0b2e61f942f951da4e1c4d327731e1}\label{structsafe_1_1shared__t_1_1ptr__t_aca0b2e61f942f951da4e1c4d327731e1} 
+ptr\+\_\+t \& {\bfseries operator=} (const ptr\+\_\+t \&ptr) noexcept
+\item 
+\Hypertarget{structsafe_1_1shared__t_1_1ptr__t_aeb5b22572ac9468202ae910ec28012dd}\label{structsafe_1_1shared__t_1_1ptr__t_aeb5b22572ac9468202ae910ec28012dd} 
+ptr\+\_\+t \& {\bfseries operator=} (ptr\+\_\+t \&\&ptr) noexcept
+\item 
+\Hypertarget{structsafe_1_1shared__t_1_1ptr__t_a8ae32da35299c4635211159ab4fa8fab}\label{structsafe_1_1shared__t_1_1ptr__t_a8ae32da35299c4635211159ab4fa8fab} 
+{\bfseries operator bool} () const
+\item 
+\Hypertarget{structsafe_1_1shared__t_1_1ptr__t_a91dee1cd0a4baa4c618651d280a5a6cc}\label{structsafe_1_1shared__t_1_1ptr__t_a91dee1cd0a4baa4c618651d280a5a6cc} 
+void {\bfseries release} ()
+\item 
+\Hypertarget{structsafe_1_1shared__t_1_1ptr__t_a9c48abf74f5f630f680f1230088861c6}\label{structsafe_1_1shared__t_1_1ptr__t_a9c48abf74f5f630f680f1230088861c6} 
+element\+\_\+type \texorpdfstring{$\ast$}{*} {\bfseries get} () const
+\item 
+\Hypertarget{structsafe_1_1shared__t_1_1ptr__t_a3d56ac6585338db06e9fba824e16369f}\label{structsafe_1_1shared__t_1_1ptr__t_a3d56ac6585338db06e9fba824e16369f} 
+element\+\_\+type \texorpdfstring{$\ast$}{*} {\bfseries operator-\/$>$} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structsafe_1_1shared__t_1_1ptr__t_ac51cda24e4b8e1a247cb77babf7f8653}\label{structsafe_1_1shared__t_1_1ptr__t_ac51cda24e4b8e1a247cb77babf7f8653} 
+shared\+\_\+t \texorpdfstring{$\ast$}{*} {\bfseries owner}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T$>$\newline
+struct safe\+::shared\+\_\+t$<$ T $>$\+::ptr\+\_\+t}
+Smart pointer to a shared object. 
+
+Manages a reference to a shared object. Automatically releases the reference when destroyed. Copying increments the reference count. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{thread__safe_8h}{thread\+\_\+safe.\+h}}\end{DoxyCompactItemize}

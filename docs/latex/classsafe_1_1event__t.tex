@@ -1,0 +1,66 @@
+\doxysection{safe\+::event\+\_\+t\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classsafe_1_1event__t}{}\label{classsafe_1_1event__t}\index{safe::event\_t$<$ T $>$@{safe::event\_t$<$ T $>$}}
+
+
+Thread-\/safe event/signal class.  
+
+
+
+
+{\ttfamily \#include $<$thread\+\_\+safe.\+h$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classsafe_1_1event__t_a0e5356be19f16f566c9073fdd57b8b52}\label{classsafe_1_1event__t_a0e5356be19f16f566c9073fdd57b8b52} 
+using {\bfseries status\+\_\+t} = util\+::optional\+\_\+t$<$T$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classsafe_1_1event__t_ad4c0f62d3a07783c73b04c8a2aae35ba}\label{classsafe_1_1event__t_ad4c0f62d3a07783c73b04c8a2aae35ba} 
+{\footnotesize template$<$class... Args$>$ }\\void {\bfseries raise} (Args \&\&...\mbox{\hyperlink{namespaceargs}{args}})
+\item 
+\Hypertarget{classsafe_1_1event__t_a020ba650b53e37cb4be881b27ec017dd}\label{classsafe_1_1event__t_a020ba650b53e37cb4be881b27ec017dd} 
+status\+\_\+t {\bfseries pop} ()
+\item 
+\Hypertarget{classsafe_1_1event__t_ae8288efeb99b89835b88c60a005df05f}\label{classsafe_1_1event__t_ae8288efeb99b89835b88c60a005df05f} 
+{\footnotesize template$<$class Rep, class Period$>$ }\\status\+\_\+t {\bfseries pop} (std\+::chrono\+::duration$<$ Rep, Period $>$ delay)
+\item 
+\Hypertarget{classsafe_1_1event__t_a57134f93056bd0cb04324660193c3b05}\label{classsafe_1_1event__t_a57134f93056bd0cb04324660193c3b05} 
+status\+\_\+t {\bfseries view} ()
+\item 
+\Hypertarget{classsafe_1_1event__t_a29da9abaed93745a0bd483ca70013fab}\label{classsafe_1_1event__t_a29da9abaed93745a0bd483ca70013fab} 
+{\footnotesize template$<$class Rep, class Period$>$ }\\status\+\_\+t {\bfseries view} (std\+::chrono\+::duration$<$ Rep, Period $>$ delay)
+\item 
+\Hypertarget{classsafe_1_1event__t_a7eec4f4c57257ee91b6d646ee6be3afa}\label{classsafe_1_1event__t_a7eec4f4c57257ee91b6d646ee6be3afa} 
+bool {\bfseries peek} ()
+\item 
+\Hypertarget{classsafe_1_1event__t_a9674f8a8c2cfdbafbb4c16ab79a19128}\label{classsafe_1_1event__t_a9674f8a8c2cfdbafbb4c16ab79a19128} 
+void {\bfseries stop} ()
+\item 
+\Hypertarget{classsafe_1_1event__t_a7bebb89b023610b1d8cd0a264f605951}\label{classsafe_1_1event__t_a7bebb89b023610b1d8cd0a264f605951} 
+void {\bfseries reset} ()
+\item 
+\Hypertarget{classsafe_1_1event__t_a4a54fd977c2dbb82880cf8a7660dff8b}\label{classsafe_1_1event__t_a4a54fd977c2dbb82880cf8a7660dff8b} 
+bool {\bfseries running} () const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T$>$\newline
+class safe\+::event\+\_\+t$<$ T $>$}
+Thread-\/safe event/signal class. 
+
+Provides a thread-\/safe mechanism for signaling events between threads. Supports waiting for events, timeout-\/based waiting, and can be stopped/reset. Thread-\/safe\+: all operations are protected by internal mutex.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The type of value to signal with the event. \\
+\hline
+\end{DoxyTemplParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{thread__safe_8h}{thread\+\_\+safe.\+h}}\end{DoxyCompactItemize}

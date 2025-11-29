@@ -1,0 +1,75 @@
+\doxysection{auto\+\_\+bitrate.\+h}
+\hypertarget{auto__bitrate_8h_source}{}\label{auto__bitrate_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/auto\_bitrate.h@{/Users/alexworland/autoBitrate/apollo/src/auto\_bitrate.h}}
+\mbox{\hyperlink{auto__bitrate_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ standard\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <chrono>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }config\ \{}
+\DoxyCodeLine{00012\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structconfig_1_1auto__bitrate__settings__t}{auto\_bitrate\_settings\_t}};}
+\DoxyCodeLine{00013\ \}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }stream\ \{}
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structstream_1_1session__t}{session\_t}};}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classstream_1_1auto__bitrate__controller__t_a96cda901b721630f4509175ff0cc54ff}{auto\_bitrate\_controller\_t}}\ \{}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00024\ \ \ \ \ \mbox{\hyperlink{classstream_1_1auto__bitrate__controller__t_a96cda901b721630f4509175ff0cc54ff}{auto\_bitrate\_controller\_t}}();}
+\DoxyCodeLine{00025\ \ \ \ \ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classstream_1_1auto__bitrate__controller__t_a81bb4bf67c81106875daa8b22efa74ee}{process\_loss\_stats}}(\mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\ *\mbox{\hyperlink{namespacestream_1_1session}{session}},\ }
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint64\_t\ lastGoodFrame,}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::chrono::milliseconds\ time\_interval);}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classstream_1_1auto__bitrate__controller__t_a61717a6330db9c0bc3d043e61bf25db3}{process\_loss\_stats\_direct}}(\mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\ *\mbox{\hyperlink{namespacestream_1_1session}{session}},}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ loss\_percentage\_loss\_pct,}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint64\_t\ lastGoodFrame,}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::chrono::milliseconds\ time\_interval);}
+\DoxyCodeLine{00046\ \ \ \ \ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classstream_1_1auto__bitrate__controller__t_a22cb74be60d5e97cd61b452ede9b5960}{process\_connection\_status}}(\mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\ *\mbox{\hyperlink{namespacestream_1_1session}{session}},}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ status);}
+\DoxyCodeLine{00054\ \ \ \ \ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classstream_1_1auto__bitrate__controller__t_aa240a0c06d1abe0fdfb77aac22e3e440}{should\_adjust\_bitrate}}(\mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\ *\mbox{\hyperlink{namespacestream_1_1session}{session}})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00061\ \ \ \ \ }
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classstream_1_1auto__bitrate__controller__t_ac39126a90aac2405d952cc7d94e65a8c}{calculate\_new\_bitrate}}(\mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\ *\mbox{\hyperlink{namespacestream_1_1session}{session}})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00068\ \ \ \ \ }
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classstream_1_1auto__bitrate__controller__t_a78f4a3b15f5791a7fcba43809b18fac6}{confirm\_bitrate\_change}}(\mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\ *\mbox{\hyperlink{namespacestream_1_1session}{session}},\ \textcolor{keywordtype}{int}\ new\_bitrate\_kbps,\ \textcolor{keywordtype}{bool}\ success);}
+\DoxyCodeLine{00077\ \ \ \ \ }
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classstream_1_1auto__bitrate__controller__t_a4c0e5695b25aafba2f604e8ff1fcc738}{reset}}(\mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\ *\mbox{\hyperlink{namespacestream_1_1session}{session}});}
+\DoxyCodeLine{00083\ \ \ \ \ }
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classstream_1_1auto__bitrate__controller__t_aba998cb0ed9236e87199c9251f309417}{get\_stats}}(\mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\ *\mbox{\hyperlink{namespacestream_1_1session}{session}},}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ \&current\_bitrate\_kbps,}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint64\_t\ \&last\_adjustment\_time\_ms,}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint32\_t\ \&adjustment\_count,}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ \&loss\_percentage)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00098\ \ \ \ \ }
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keyword}{struct\ }session\_state\_t\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ uint64\_t\ last\_reported\_good\_frame\ =\ 0;}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ std::chrono::steady\_clock::time\_point\ last\_loss\_stats\_time;}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ std::chrono::steady\_clock::time\_point\ last\_adjustment\_time;}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ std::chrono::steady\_clock::time\_point\ last\_successful\_adjustment\_time;}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ std::chrono::steady\_clock::time\_point\ session\_start\_time;}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ loss\_percentage\ =\ 0.0;}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ connection\_status\ =\ 0;\ \ \textcolor{comment}{//\ 0\ =\ OKAY,\ 1\ =\ POOR}}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ current\_bitrate\_kbps\ =\ 0;}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ uint32\_t\ adjustment\_count\ =\ 0;}
+\DoxyCodeLine{00110\ \ \ \ \ \};}
+\DoxyCodeLine{00111\ \ \ \ \ }
+\DoxyCodeLine{00112\ \ \ \ \ std::unordered\_map<session\_t*,\ session\_state\_t>\ session\_states;}
+\DoxyCodeLine{00113\ \ \ \ \ }
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{comment}{//\ Helper\ methods}}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordtype}{double}\ compute\_loss\_percentage(\mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\ *\mbox{\hyperlink{namespacestream_1_1session}{session}},\ }
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint64\_t\ lastGoodFrame,}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::chrono::milliseconds\ time\_interval)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordtype}{double}\ get\_adjustment\_factor(\textcolor{keyword}{const}\ session\_state\_t\ \&state,\ }
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::chrono::steady\_clock::time\_point\ now,}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structconfig_1_1auto__bitrate__settings__t}{config::auto\_bitrate\_settings\_t}}\ \&settings)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordtype}{int}\ clamp\_bitrate(\textcolor{keywordtype}{int}\ bitrate,\ \textcolor{keywordtype}{int}\ min\_bitrate,\ \textcolor{keywordtype}{int}\ max\_bitrate)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00122\ \ \ \ \ session\_state\_t\ \&get\_or\_create\_state(\mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\ *\mbox{\hyperlink{namespacestream_1_1session}{session}});}
+\DoxyCodeLine{00123\ \ \ \};}
+\DoxyCodeLine{00124\ \}}
+
+\end{DoxyCode}

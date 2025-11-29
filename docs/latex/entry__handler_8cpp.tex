@@ -1,0 +1,83 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/entry\+\_\+handler.cpp File Reference}
+\hypertarget{entry__handler_8cpp}{}\label{entry__handler_8cpp}\index{/Users/alexworland/autoBitrate/apollo/src/entry\_handler.cpp@{/Users/alexworland/autoBitrate/apollo/src/entry\_handler.cpp}}
+
+
+Definitions for entry handling functions.  
+
+
+{\ttfamily \#include $<$csignal$>$}\newline
+{\ttfamily \#include $<$format$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$thread$>$}\newline
+{\ttfamily \#include "{}config.\+h"{}}\newline
+{\ttfamily \#include "{}confighttp.\+h"{}}\newline
+{\ttfamily \#include "{}entry\+\_\+handler.\+h"{}}\newline
+{\ttfamily \#include "{}globals.\+h"{}}\newline
+{\ttfamily \#include "{}httpcommon.\+h"{}}\newline
+{\ttfamily \#include "{}logging.\+h"{}}\newline
+{\ttfamily \#include "{}network.\+h"{}}\newline
+{\ttfamily \#include "{}platform/common.\+h"{}}\newline
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespaceargs}{args}}
+\begin{DoxyCompactList}\small\item\em Functions for handling command line arguments. \end{DoxyCompactList}\item 
+namespace \mbox{\hyperlink{namespacelifetime}{lifetime}}
+\begin{DoxyCompactList}\small\item\em Functions for handling the lifetime of Sunshine. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{entry__handler_8cpp_a1e0dd3b8a29e3ccd57c471500c76e234}{launch\+\_\+ui}} (const std\+::optional$<$ std\+::string $>$ \&path)
+\begin{DoxyCompactList}\small\item\em Launch the Web UI. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{namespaceargs_a12f74871184d794069843ca2f73a33e9}{args\+::creds}} (const char \texorpdfstring{$\ast$}{*}name, int argc, char \texorpdfstring{$\ast$}{*}argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Reset the user credentials. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{namespaceargs_afee3c375307ccb9b232d063f806f6ebb}{args\+::help}} (const char \texorpdfstring{$\ast$}{*}name)
+\begin{DoxyCompactList}\small\item\em Print help to stdout, then exit. \end{DoxyCompactList}\item 
+\Hypertarget{namespaceargs_a473eb95d65f3fc47ce193c8cfcc631da}\label{namespaceargs_a473eb95d65f3fc47ce193c8cfcc631da} 
+int {\bfseries args\+::version} ()
+\begin{DoxyCompactList}\small\item\em Print the version to stdout, then exit. @examples \doxylink{namespaceargs_a473eb95d65f3fc47ce193c8cfcc631da}{version()}; @examples\+\_\+end. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacelifetime_a8b0bdeb152a33f192bd40d76f780b6fb}{lifetime\+::exit\+\_\+sunshine}} (int exit\+\_\+code, bool async)
+\begin{DoxyCompactList}\small\item\em Terminates Sunshine gracefully with the provided exit code. \end{DoxyCompactList}\item 
+\Hypertarget{namespacelifetime_a27ba172c553f3a39672faab8178d8b60}\label{namespacelifetime_a27ba172c553f3a39672faab8178d8b60} 
+void {\bfseries lifetime\+::debug\+\_\+trap} ()
+\begin{DoxyCompactList}\small\item\em Breaks into the debugger or terminates Sunshine if no debugger is attached. \end{DoxyCompactList}\item 
+\Hypertarget{namespacelifetime_afba0e62507253a24ffd9da31b523899c}\label{namespacelifetime_afba0e62507253a24ffd9da31b523899c} 
+char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*} {\bfseries lifetime\+::get\+\_\+argv} ()
+\begin{DoxyCompactList}\small\item\em Get the argv array passed to \doxylink{main_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main()}. \end{DoxyCompactList}\item 
+\Hypertarget{entry__handler_8cpp_a4f63b41eac6c27a64a19bcf19480a17f}\label{entry__handler_8cpp_a4f63b41eac6c27a64a19bcf19480a17f} 
+void {\bfseries log\+\_\+publisher\+\_\+data} ()
+\begin{DoxyCompactList}\small\item\em Log the publisher metadata provided from CMake. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{namespacelifetime_ae1b05ccd8eed2df7b4d5b01b7e498fc0}\label{namespacelifetime_ae1b05ccd8eed2df7b4d5b01b7e498fc0} 
+char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*} {\bfseries lifetime\+::argv}
+\item 
+\Hypertarget{namespacelifetime_a1c6e5feeb3d5730b9cbb4f4eb0a8795c}\label{namespacelifetime_a1c6e5feeb3d5730b9cbb4f4eb0a8795c} 
+std\+::atomic\+\_\+int {\bfseries lifetime\+::desired\+\_\+exit\+\_\+code}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Definitions for entry handling functions. 
+
+
+
+\label{doc-func-members}
+\Hypertarget{entry__handler_8cpp_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{entry__handler_8cpp_a1e0dd3b8a29e3ccd57c471500c76e234}\index{entry\_handler.cpp@{entry\_handler.cpp}!launch\_ui@{launch\_ui}}
+\index{launch\_ui@{launch\_ui}!entry\_handler.cpp@{entry\_handler.cpp}}
+\doxysubsubsection{\texorpdfstring{launch\_ui()}{launch\_ui()}}
+{\footnotesize\ttfamily \label{entry__handler_8cpp_a1e0dd3b8a29e3ccd57c471500c76e234} 
+void launch\+\_\+ui (\begin{DoxyParamCaption}\item[{const std\+::optional$<$ std\+::string $>$ \&}]{path}{ = {\ttfamily std\+:\+:nullopt}}\end{DoxyParamCaption})}
+
+
+
+Launch the Web UI. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & Optional path to append to the base URL. @examples \doxylink{entry__handler_8h_a237dbd01d8b0588ed0cfa5ce9d4e0b1d}{launch\+\_\+ui()}; launch\+\_\+ui("{}/pin"{}); @examples\+\_\+end \\
+\hline
+\end{DoxyParams}

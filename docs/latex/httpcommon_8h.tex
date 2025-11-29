@@ -1,0 +1,171 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/httpcommon.h File Reference}
+\hypertarget{httpcommon_8h}{}\label{httpcommon_8h}\index{/Users/alexworland/autoBitrate/apollo/src/httpcommon.h@{/Users/alexworland/autoBitrate/apollo/src/httpcommon.h}}
+
+
+Declarations for common HTTP.  
+
+
+{\ttfamily \#include $<$curl/curl.\+h$>$}\newline
+{\ttfamily \#include "{}network.\+h"{}}\newline
+{\ttfamily \#include "{}thread\+\_\+safe.\+h"{}}\newline
+{\ttfamily \#include "{}uuid.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{httpcommon_8cpp_aa61e6ae8cfe73f4cec10fd6f0a956ba8}{http\+::init}} ()
+\begin{DoxyCompactList}\small\item\em Initialize the HTTP subsystem. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{httpcommon_8cpp_a5549fc1f082c9d21a910228ffe144047}{http\+::create\+\_\+creds}} (const std\+::string \&pkey, const std\+::string \&cert)
+\begin{DoxyCompactList}\small\item\em Create credentials from private key and certificate. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{httpcommon_8cpp_aac33b12b7563df384b470c49fc7433ca}{http\+::save\+\_\+user\+\_\+creds}} (const std\+::string \&file, const std\+::string \&username, const std\+::string \&password, bool run\+\_\+our\+\_\+mouth=false)
+\begin{DoxyCompactList}\small\item\em Save user credentials to file. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{httpcommon_8cpp_a771bd8615e485560bc89b3fd0d08b1dd}{http\+::reload\+\_\+user\+\_\+creds}} (const std\+::string \&file)
+\begin{DoxyCompactList}\small\item\em Reload user credentials from file. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{httpcommon_8cpp_a110384dd82351644c83a1283091d7d7d}{http\+::download\+\_\+file}} (const std\+::string \&url, const std\+::string \&file, long ssl\+\_\+version=CURL\+\_\+\+SSLVERSION\+\_\+\+TLSv1\+\_\+2)
+\begin{DoxyCompactList}\small\item\em Download a file from a URL. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{httpcommon_8cpp_a6e66f07d8c89637cf295cec849bb73f2}{http\+::url\+\_\+escape}} (const std\+::string \&url)
+\begin{DoxyCompactList}\small\item\em URL-\/escape a string. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{httpcommon_8cpp_a6febf425259b50e439a71aca25d611dc}{http\+::url\+\_\+get\+\_\+host}} (const std\+::string \&url)
+\begin{DoxyCompactList}\small\item\em Extract the host from a URL. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Declarations for common HTTP. 
+
+
+
+\label{doc-func-members}
+\Hypertarget{httpcommon_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{httpcommon_8cpp_a5549fc1f082c9d21a910228ffe144047}\index{httpcommon.h@{httpcommon.h}!create\_creds@{create\_creds}}
+\index{create\_creds@{create\_creds}!httpcommon.h@{httpcommon.h}}
+\doxysubsubsection{\texorpdfstring{create\_creds()}{create\_creds()}}
+{\footnotesize\ttfamily \label{httpcommon_8cpp_a5549fc1f082c9d21a910228ffe144047} 
+int http\+::create\+\_\+creds (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{pkey}{, }\item[{const std\+::string \&}]{cert}{}\end{DoxyParamCaption})}
+
+
+
+Create credentials from private key and certificate. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pkey} & The private key in PEM format. \\
+\hline
+{\em cert} & The certificate in PEM format. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, non-\/zero on error. 
+\end{DoxyReturn}
+\Hypertarget{httpcommon_8cpp_a110384dd82351644c83a1283091d7d7d}\index{httpcommon.h@{httpcommon.h}!download\_file@{download\_file}}
+\index{download\_file@{download\_file}!httpcommon.h@{httpcommon.h}}
+\doxysubsubsection{\texorpdfstring{download\_file()}{download\_file()}}
+{\footnotesize\ttfamily \label{httpcommon_8cpp_a110384dd82351644c83a1283091d7d7d} 
+bool http\+::download\+\_\+file (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{url}{, }\item[{const std\+::string \&}]{file}{, }\item[{long}]{ssl\+\_\+version}{ = {\ttfamily CURL\+\_\+SSLVERSION\+\_\+TLSv1\+\_\+2}}\end{DoxyParamCaption})}
+
+
+
+Download a file from a URL. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em url} & The URL to download from. \\
+\hline
+{\em file} & The local file path to save to. \\
+\hline
+{\em ssl\+\_\+version} & The SSL/\+TLS version to use (default\+: TLSv1.\+2). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} on success, {\ttfamily false} on error. 
+\end{DoxyReturn}
+\Hypertarget{httpcommon_8cpp_aa61e6ae8cfe73f4cec10fd6f0a956ba8}\index{httpcommon.h@{httpcommon.h}!init@{init}}
+\index{init@{init}!httpcommon.h@{httpcommon.h}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily \label{httpcommon_8cpp_aa61e6ae8cfe73f4cec10fd6f0a956ba8} 
+int http\+::init (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Initialize the HTTP subsystem. 
+
+\begin{DoxyReturn}{Returns}
+0 on success, non-\/zero on error. 
+\end{DoxyReturn}
+\Hypertarget{httpcommon_8cpp_a771bd8615e485560bc89b3fd0d08b1dd}\index{httpcommon.h@{httpcommon.h}!reload\_user\_creds@{reload\_user\_creds}}
+\index{reload\_user\_creds@{reload\_user\_creds}!httpcommon.h@{httpcommon.h}}
+\doxysubsubsection{\texorpdfstring{reload\_user\_creds()}{reload\_user\_creds()}}
+{\footnotesize\ttfamily \label{httpcommon_8cpp_a771bd8615e485560bc89b3fd0d08b1dd} 
+int http\+::reload\+\_\+user\+\_\+creds (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{file}{}\end{DoxyParamCaption})}
+
+
+
+Reload user credentials from file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file} & The file path to load credentials from. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, non-\/zero on error. 
+\end{DoxyReturn}
+\Hypertarget{httpcommon_8cpp_aac33b12b7563df384b470c49fc7433ca}\index{httpcommon.h@{httpcommon.h}!save\_user\_creds@{save\_user\_creds}}
+\index{save\_user\_creds@{save\_user\_creds}!httpcommon.h@{httpcommon.h}}
+\doxysubsubsection{\texorpdfstring{save\_user\_creds()}{save\_user\_creds()}}
+{\footnotesize\ttfamily \label{httpcommon_8cpp_aac33b12b7563df384b470c49fc7433ca} 
+int http\+::save\+\_\+user\+\_\+creds (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{file}{, }\item[{const std\+::string \&}]{username}{, }\item[{const std\+::string \&}]{password}{, }\item[{bool}]{run\+\_\+our\+\_\+mouth}{ = {\ttfamily false}}\end{DoxyParamCaption})}
+
+
+
+Save user credentials to file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file} & The file path to save credentials to. \\
+\hline
+{\em username} & The username. \\
+\hline
+{\em password} & The password. \\
+\hline
+{\em run\+\_\+our\+\_\+mouth} & Whether to print credentials to stdout (default\+: false). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, non-\/zero on error. 
+\end{DoxyReturn}
+\Hypertarget{httpcommon_8cpp_a6e66f07d8c89637cf295cec849bb73f2}\index{httpcommon.h@{httpcommon.h}!url\_escape@{url\_escape}}
+\index{url\_escape@{url\_escape}!httpcommon.h@{httpcommon.h}}
+\doxysubsubsection{\texorpdfstring{url\_escape()}{url\_escape()}}
+{\footnotesize\ttfamily \label{httpcommon_8cpp_a6e66f07d8c89637cf295cec849bb73f2} 
+std\+::string http\+::url\+\_\+escape (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{url}{}\end{DoxyParamCaption})}
+
+
+
+URL-\/escape a string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em url} & The string to escape. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+URL-\/escaped string. 
+\end{DoxyReturn}
+\Hypertarget{httpcommon_8cpp_a6febf425259b50e439a71aca25d611dc}\index{httpcommon.h@{httpcommon.h}!url\_get\_host@{url\_get\_host}}
+\index{url\_get\_host@{url\_get\_host}!httpcommon.h@{httpcommon.h}}
+\doxysubsubsection{\texorpdfstring{url\_get\_host()}{url\_get\_host()}}
+{\footnotesize\ttfamily \label{httpcommon_8cpp_a6febf425259b50e439a71aca25d611dc} 
+std\+::string http\+::url\+\_\+get\+\_\+host (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{url}{}\end{DoxyParamCaption})}
+
+
+
+Extract the host from a URL. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em url} & The URL string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The host portion of the URL. 
+\end{DoxyReturn}

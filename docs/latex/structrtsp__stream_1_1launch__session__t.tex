@@ -1,0 +1,106 @@
+\doxysection{rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+t Struct Reference}
+\hypertarget{structrtsp__stream_1_1launch__session__t}{}\label{structrtsp__stream_1_1launch__session__t}\index{rtsp\_stream::launch\_session\_t@{rtsp\_stream::launch\_session\_t}}
+
+
+Launch session structure containing client connection parameters.  
+
+
+
+
+{\ttfamily \#include $<$rtsp.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_aad51ede246174ea9ec20160f983a403e}\label{structrtsp__stream_1_1launch__session__t_aad51ede246174ea9ec20160f983a403e} 
+uint32\+\_\+t {\bfseries id}
+\begin{DoxyCompactList}\small\item\em Session identifier. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_a249e653ee14307f0eb8a8532088f5d99}\label{structrtsp__stream_1_1launch__session__t_a249e653ee14307f0eb8a8532088f5d99} 
+\mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{crypto\+::aes\+\_\+t}} {\bfseries gcm\+\_\+key}
+\begin{DoxyCompactList}\small\item\em GCM encryption key. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_acbde55eff577410256a57b838798d168}\label{structrtsp__stream_1_1launch__session__t_acbde55eff577410256a57b838798d168} 
+\mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{crypto\+::aes\+\_\+t}} {\bfseries iv}
+\begin{DoxyCompactList}\small\item\em Initialization vector. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_a1bb226e0877d9782b6b8210ccef48d33}\label{structrtsp__stream_1_1launch__session__t_a1bb226e0877d9782b6b8210ccef48d33} 
+std\+::string {\bfseries av\+\_\+ping\+\_\+payload}
+\begin{DoxyCompactList}\small\item\em AV ping payload for session identification. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_a88a98f4d2e306040b6db940bec4d9fc7}\label{structrtsp__stream_1_1launch__session__t_a88a98f4d2e306040b6db940bec4d9fc7} 
+uint32\+\_\+t {\bfseries control\+\_\+connect\+\_\+data}
+\begin{DoxyCompactList}\small\item\em Control connection data. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_aa5303532f533036162cff0918c063f8b}\label{structrtsp__stream_1_1launch__session__t_aa5303532f533036162cff0918c063f8b} 
+std\+::string {\bfseries device\+\_\+name}
+\begin{DoxyCompactList}\small\item\em Client device name. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_a4e601abe1678bb69136fb9ec7cb4d7e4}\label{structrtsp__stream_1_1launch__session__t_a4e601abe1678bb69136fb9ec7cb4d7e4} 
+std\+::string {\bfseries unique\+\_\+id}
+\begin{DoxyCompactList}\small\item\em Client unique identifier. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_aa1a2f2368e102db68eb29a016a5be196}\label{structrtsp__stream_1_1launch__session__t_aa1a2f2368e102db68eb29a016a5be196} 
+\mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{crypto\+::\+PERM}} {\bfseries perm}
+\begin{DoxyCompactList}\small\item\em Client permissions. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_a0cb71d8c417567546b68c7eaede1b96e}\label{structrtsp__stream_1_1launch__session__t_a0cb71d8c417567546b68c7eaede1b96e} 
+bool {\bfseries input\+\_\+only}
+\begin{DoxyCompactList}\small\item\em Whether this is an input-\/only session. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_a19fd0dd553ccd432b57da061d0d2cb31}\label{structrtsp__stream_1_1launch__session__t_a19fd0dd553ccd432b57da061d0d2cb31} 
+bool {\bfseries host\+\_\+audio}
+\begin{DoxyCompactList}\small\item\em Whether to enable host audio capture. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_aac01f7356bd399d406ba6c33b7e39c1d}\label{structrtsp__stream_1_1launch__session__t_aac01f7356bd399d406ba6c33b7e39c1d} 
+bool {\bfseries auto\+\_\+bitrate\+\_\+enabled} = false
+\begin{DoxyCompactList}\small\item\em Client-\/side auto bitrate checkbox state. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_abaa53efbf991592563d67a99dd8e835a}\label{structrtsp__stream_1_1launch__session__t_abaa53efbf991592563d67a99dd8e835a} 
+int {\bfseries auto\+\_\+bitrate\+\_\+min\+\_\+kbps} = 0
+\begin{DoxyCompactList}\small\item\em Client-\/requested minimum bitrate (0 = not set). \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_a564dac351f77ab49724eb26b0462aaf2}\label{structrtsp__stream_1_1launch__session__t_a564dac351f77ab49724eb26b0462aaf2} 
+int {\bfseries auto\+\_\+bitrate\+\_\+max\+\_\+kbps} = 0
+\begin{DoxyCompactList}\small\item\em Client-\/requested maximum bitrate (0 = not set). \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_a93c15b5b9672cee3d420053274794c31}\label{structrtsp__stream_1_1launch__session__t_a93c15b5b9672cee3d420053274794c31} 
+int {\bfseries width}
+\begin{DoxyCompactList}\small\item\em Video width in pixels. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_a72b99b0018afc6e26621588d564c71b0}\label{structrtsp__stream_1_1launch__session__t_a72b99b0018afc6e26621588d564c71b0} 
+int {\bfseries height}
+\begin{DoxyCompactList}\small\item\em Video height in pixels. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_a5afc012d1322cabcbf79561467490181}\label{structrtsp__stream_1_1launch__session__t_a5afc012d1322cabcbf79561467490181} 
+int {\bfseries fps}
+\begin{DoxyCompactList}\small\item\em Frames per second. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_a1e7bceed3da4b1749beea9775a2d51b7}\label{structrtsp__stream_1_1launch__session__t_a1e7bceed3da4b1749beea9775a2d51b7} 
+int {\bfseries gcmap}
+\begin{DoxyCompactList}\small\item\em Game controller mapping. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_a994c7465d844e8b3186197b11628df38}\label{structrtsp__stream_1_1launch__session__t_a994c7465d844e8b3186197b11628df38} 
+int {\bfseries surround\+\_\+info}
+\begin{DoxyCompactList}\small\item\em Surround sound information. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_a87355e09fd6150fb9c6706dbc86e21c7}\label{structrtsp__stream_1_1launch__session__t_a87355e09fd6150fb9c6706dbc86e21c7} 
+std\+::string {\bfseries surround\+\_\+params}
+\begin{DoxyCompactList}\small\item\em Surround sound parameters. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_a476be00873a40ac5c0ede7735f2bde76}\label{structrtsp__stream_1_1launch__session__t_a476be00873a40ac5c0ede7735f2bde76} 
+bool {\bfseries enable\+\_\+hdr}
+\begin{DoxyCompactList}\small\item\em Whether to enable HDR. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_ac4cd9aa24306953b7aaa9a7795a2b02c}\label{structrtsp__stream_1_1launch__session__t_ac4cd9aa24306953b7aaa9a7795a2b02c} 
+bool {\bfseries enable\+\_\+sops}
+\begin{DoxyCompactList}\small\item\em Whether to enable SOPS (Secure Operations). \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_a5f5f376bf5714957eaebcdd828811a02}\label{structrtsp__stream_1_1launch__session__t_a5f5f376bf5714957eaebcdd828811a02} 
+bool {\bfseries virtual\+\_\+display}
+\begin{DoxyCompactList}\small\item\em Whether to use virtual display. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_a504908f255adfaa60488e7e210372b80}\label{structrtsp__stream_1_1launch__session__t_a504908f255adfaa60488e7e210372b80} 
+uint32\+\_\+t {\bfseries scale\+\_\+factor}
+\begin{DoxyCompactList}\small\item\em Display scale factor. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_a6629e0a8240f5e321cf604f3be29cbd7}\label{structrtsp__stream_1_1launch__session__t_a6629e0a8240f5e321cf604f3be29cbd7} 
+std\+::optional$<$ \mbox{\hyperlink{classcrypto_1_1cipher_1_1gcm__t}{crypto\+::cipher\+::gcm\+\_\+t}} $>$ {\bfseries rtsp\+\_\+cipher}
+\begin{DoxyCompactList}\small\item\em RTSP encryption cipher. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_a8acb66f1e447ad0b09b8805bfa20145f}\label{structrtsp__stream_1_1launch__session__t_a8acb66f1e447ad0b09b8805bfa20145f} 
+std\+::string {\bfseries rtsp\+\_\+url\+\_\+scheme}
+\begin{DoxyCompactList}\small\item\em RTSP URL scheme (rtsp\+:// or rtsps\+://). \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_a748bd786b8bb92086e343688d187902c}\label{structrtsp__stream_1_1launch__session__t_a748bd786b8bb92086e343688d187902c} 
+uint32\+\_\+t {\bfseries rtsp\+\_\+iv\+\_\+counter}
+\begin{DoxyCompactList}\small\item\em RTSP IV counter for encryption. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_a3c21ec708bc0e148b47d24e8b691730d}\label{structrtsp__stream_1_1launch__session__t_a3c21ec708bc0e148b47d24e8b691730d} 
+std\+::list$<$ \mbox{\hyperlink{structcrypto_1_1command__entry__t}{crypto\+::command\+\_\+entry\+\_\+t}} $>$ {\bfseries client\+\_\+do\+\_\+cmds}
+\begin{DoxyCompactList}\small\item\em Commands to execute on client connect. \end{DoxyCompactList}\item 
+\Hypertarget{structrtsp__stream_1_1launch__session__t_afbd02842efe0734b8542b6bbfe09f30f}\label{structrtsp__stream_1_1launch__session__t_afbd02842efe0734b8542b6bbfe09f30f} 
+std\+::list$<$ \mbox{\hyperlink{structcrypto_1_1command__entry__t}{crypto\+::command\+\_\+entry\+\_\+t}} $>$ {\bfseries client\+\_\+undo\+\_\+cmds}
+\begin{DoxyCompactList}\small\item\em Commands to execute on client disconnect. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Launch session structure containing client connection parameters. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{rtsp_8h}{rtsp.\+h}}\end{DoxyCompactItemize}

@@ -1,0 +1,59 @@
+\doxysection{util\+::Either\texorpdfstring{$<$}{<} X, Y \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classutil_1_1_either}{}\label{classutil_1_1_either}\index{util::Either$<$ X, Y $>$@{util::Either$<$ X, Y $>$}}
+
+
+\doxylink{classutil_1_1_either}{Either} type for representing one of two possible values.  
+
+
+
+
+{\ttfamily \#include $<$utility.\+h$>$}
+
+Inheritance diagram for util\+::Either\texorpdfstring{$<$}{<} X, Y \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classutil_1_1_either}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classutil_1_1_either_a44a2ff889d9f77b40eda4786b568de8e}\label{classutil_1_1_either_a44a2ff889d9f77b40eda4786b568de8e} 
+constexpr bool {\bfseries has\+\_\+left} () const
+\item 
+\Hypertarget{classutil_1_1_either_a2afcd2f465a74fe20c2b200921a441dd}\label{classutil_1_1_either_a2afcd2f465a74fe20c2b200921a441dd} 
+constexpr bool {\bfseries has\+\_\+right} () const
+\item 
+\Hypertarget{classutil_1_1_either_a0cbf72be01a1d9a134594740e992986e}\label{classutil_1_1_either_a0cbf72be01a1d9a134594740e992986e} 
+X \& {\bfseries left} ()
+\item 
+\Hypertarget{classutil_1_1_either_aef701ed9b1f9af9eaf59aa815125d96f}\label{classutil_1_1_either_aef701ed9b1f9af9eaf59aa815125d96f} 
+Y \& {\bfseries right} ()
+\item 
+\Hypertarget{classutil_1_1_either_a94a84d52c3e79417c379bb400958271d}\label{classutil_1_1_either_a94a84d52c3e79417c379bb400958271d} 
+const X \& {\bfseries left} () const
+\item 
+\Hypertarget{classutil_1_1_either_a9f82ec5d211f65d77a057f32c2d4c3d8}\label{classutil_1_1_either_a9f82ec5d211f65d77a057f32c2d4c3d8} 
+const Y \& {\bfseries right} () const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class X, class Y$>$\newline
+class util\+::\+Either$<$ X, Y $>$}
+\doxylink{classutil_1_1_either}{Either} type for representing one of two possible values. 
+
+Similar to Haskell\textquotesingle{}s \doxylink{classutil_1_1_either}{Either} type, holds either an X or Y value. Provides convenient accessors for left (X) and right (Y) values.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em X} & Left value type. \\
+\hline
+{\em Y} & Right value type. \\
+\hline
+\end{DoxyTemplParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{utility_8h}{utility.\+h}}\end{DoxyCompactItemize}

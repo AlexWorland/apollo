@@ -1,0 +1,136 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/rswrapper.c File Reference}
+\hypertarget{rswrapper_8c}{}\label{rswrapper_8c}\index{/Users/alexworland/autoBitrate/apollo/src/rswrapper.c@{/Users/alexworland/autoBitrate/apollo/src/rswrapper.c}}
+
+
+Wrappers for nanors vectorization with different ISA options.  
+
+
+{\ttfamily \#include "{}../third-\/party/nanors/deps/obl/autoshim.\+h"{}}\newline
+{\ttfamily \#include "{}../third-\/party/nanors/rs.\+c"{}}\newline
+{\ttfamily \#include "{}rswrapper.\+h"{}}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{rswrapper_8c_a8de3ed741dadc9c979a4ff17c0a9116e}\label{rswrapper_8c_a8de3ed741dadc9c979a4ff17c0a9116e} 
+\#define {\bfseries NDEBUG}
+\item 
+\#define \mbox{\hyperlink{rswrapper_8c_a51483bc1f79e5b8728919b033a58d14a}{DECORATE\+\_\+\+FUNC\+\_\+I}}(a,  b)
+\item 
+\#define \mbox{\hyperlink{rswrapper_8c_a0aa41a17e4a22d611836794f031f59f6}{DECORATE\+\_\+\+FUNC}}(a,  b)
+\item 
+\#define \mbox{\hyperlink{rswrapper_8c_a349a52fa4bbaa694e75198cd1a394fb6}{reed\+\_\+solomon\+\_\+init}}(void)
+\begin{DoxyCompactList}\small\item\em This initializes the RS function pointers to the best vectorized version available. \end{DoxyCompactList}\item 
+\Hypertarget{rswrapper_8c_a18caaf113f1217ad6f0b94198a831620}\label{rswrapper_8c_a18caaf113f1217ad6f0b94198a831620} 
+\#define {\bfseries reed\+\_\+solomon\+\_\+new}~DECORATE\+\_\+\+FUNC(reed\+\_\+solomon\+\_\+new, ISA\+\_\+\+SUFFIX)
+\item 
+\Hypertarget{rswrapper_8c_a82951d89236452089a2926c2aa0382a5}\label{rswrapper_8c_a82951d89236452089a2926c2aa0382a5} 
+\#define {\bfseries reed\+\_\+solomon\+\_\+new\+\_\+static}~DECORATE\+\_\+\+FUNC(reed\+\_\+solomon\+\_\+new\+\_\+static, ISA\+\_\+\+SUFFIX)
+\item 
+\Hypertarget{rswrapper_8c_aa74a8e1727562e28688e401e9555ff5b}\label{rswrapper_8c_aa74a8e1727562e28688e401e9555ff5b} 
+\#define {\bfseries reed\+\_\+solomon\+\_\+release}~DECORATE\+\_\+\+FUNC(reed\+\_\+solomon\+\_\+release, ISA\+\_\+\+SUFFIX)
+\item 
+\Hypertarget{rswrapper_8c_a65d680b2175a0b0d670072c33886813b}\label{rswrapper_8c_a65d680b2175a0b0d670072c33886813b} 
+\#define {\bfseries reed\+\_\+solomon\+\_\+decode}~DECORATE\+\_\+\+FUNC(reed\+\_\+solomon\+\_\+decode, ISA\+\_\+\+SUFFIX)
+\item 
+\Hypertarget{rswrapper_8c_a79410e11f5d32410eb0d7d458e6352d7}\label{rswrapper_8c_a79410e11f5d32410eb0d7d458e6352d7} 
+\#define {\bfseries reed\+\_\+solomon\+\_\+encode}~DECORATE\+\_\+\+FUNC(reed\+\_\+solomon\+\_\+encode, ISA\+\_\+\+SUFFIX)
+\item 
+\Hypertarget{rswrapper_8c_ad2b50671713570f85c5da7794745be95}\label{rswrapper_8c_ad2b50671713570f85c5da7794745be95} 
+\#define {\bfseries obl\+\_\+axpy\+\_\+ref}~DECORATE\+\_\+\+FUNC(obl\+\_\+axpy\+\_\+ref, ISA\+\_\+\+SUFFIX)
+\item 
+\Hypertarget{rswrapper_8c_add58f8509e21fe98d002c8dd2b95541d}\label{rswrapper_8c_add58f8509e21fe98d002c8dd2b95541d} 
+\#define {\bfseries obl\+\_\+scal\+\_\+ref}~DECORATE\+\_\+\+FUNC(obl\+\_\+scal\+\_\+ref, ISA\+\_\+\+SUFFIX)
+\item 
+\Hypertarget{rswrapper_8c_a2e64bbdbd935a24598b962a0ecd8a790}\label{rswrapper_8c_a2e64bbdbd935a24598b962a0ecd8a790} 
+\#define {\bfseries obl\+\_\+axpyb32\+\_\+ref}~DECORATE\+\_\+\+FUNC(obl\+\_\+axpyb32\+\_\+ref, ISA\+\_\+\+SUFFIX)
+\item 
+\Hypertarget{rswrapper_8c_a6e408ebd1ec523f7829f13c30ed9aec4}\label{rswrapper_8c_a6e408ebd1ec523f7829f13c30ed9aec4} 
+\#define {\bfseries obl\+\_\+axpy}~DECORATE\+\_\+\+FUNC(obl\+\_\+axpy, ISA\+\_\+\+SUFFIX)
+\item 
+\Hypertarget{rswrapper_8c_a266dbd434e003fbc3f8c9701120b51ec}\label{rswrapper_8c_a266dbd434e003fbc3f8c9701120b51ec} 
+\#define {\bfseries obl\+\_\+scal}~DECORATE\+\_\+\+FUNC(obl\+\_\+scal, ISA\+\_\+\+SUFFIX)
+\item 
+\Hypertarget{rswrapper_8c_a417d220d31bf9c2e2d360291dee1befd}\label{rswrapper_8c_a417d220d31bf9c2e2d360291dee1befd} 
+\#define {\bfseries obl\+\_\+swap}~DECORATE\+\_\+\+FUNC(obl\+\_\+swap, ISA\+\_\+\+SUFFIX)
+\item 
+\Hypertarget{rswrapper_8c_a4c7db1bba577db8b302913d67da9fa7c}\label{rswrapper_8c_a4c7db1bba577db8b302913d67da9fa7c} 
+\#define {\bfseries obl\+\_\+axpyb32}~DECORATE\+\_\+\+FUNC(obl\+\_\+axpyb32, ISA\+\_\+\+SUFFIX)
+\item 
+\Hypertarget{rswrapper_8c_aef63cc2277543bc3a84bbb5d91c56558}\label{rswrapper_8c_aef63cc2277543bc3a84bbb5d91c56558} 
+\#define {\bfseries axpy}~DECORATE\+\_\+\+FUNC(axpy, ISA\+\_\+\+SUFFIX)
+\item 
+\Hypertarget{rswrapper_8c_a0fafc98cb94de7a31a9a6f8a8a03408d}\label{rswrapper_8c_a0fafc98cb94de7a31a9a6f8a8a03408d} 
+\#define {\bfseries scal}~DECORATE\+\_\+\+FUNC(scal, ISA\+\_\+\+SUFFIX)
+\item 
+\Hypertarget{rswrapper_8c_a3f6f793700948b5cd2b1c392b37cbe93}\label{rswrapper_8c_a3f6f793700948b5cd2b1c392b37cbe93} 
+\#define {\bfseries gemm}~DECORATE\+\_\+\+FUNC(gemm, ISA\+\_\+\+SUFFIX)
+\item 
+\Hypertarget{rswrapper_8c_a7fd4dd835895e3e0623170c0adbfe945}\label{rswrapper_8c_a7fd4dd835895e3e0623170c0adbfe945} 
+\#define {\bfseries invert\+\_\+mat}~DECORATE\+\_\+\+FUNC(invert\+\_\+mat, ISA\+\_\+\+SUFFIX)
+\item 
+\Hypertarget{rswrapper_8c_ad428cc485fd1257dc8be673c15d5a9a7}\label{rswrapper_8c_ad428cc485fd1257dc8be673c15d5a9a7} 
+\#define {\bfseries ISA\+\_\+\+SUFFIX}~\+\_\+def
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{rswrapper_8c_a13514f2f013a6ed0fd45bf0dd00ef62c}\label{rswrapper_8c_a13514f2f013a6ed0fd45bf0dd00ef62c} 
+reed\+\_\+solomon\+\_\+new\+\_\+t {\bfseries reed\+\_\+solomon\+\_\+new\+\_\+fn}
+\item 
+\Hypertarget{rswrapper_8c_a08ba7b90381f72c07859ed1119213ca4}\label{rswrapper_8c_a08ba7b90381f72c07859ed1119213ca4} 
+reed\+\_\+solomon\+\_\+release\+\_\+t {\bfseries reed\+\_\+solomon\+\_\+release\+\_\+fn}
+\item 
+\Hypertarget{rswrapper_8c_a3dd757a259281a6bde8a747cd16c8218}\label{rswrapper_8c_a3dd757a259281a6bde8a747cd16c8218} 
+reed\+\_\+solomon\+\_\+encode\+\_\+t {\bfseries reed\+\_\+solomon\+\_\+encode\+\_\+fn}
+\item 
+\Hypertarget{rswrapper_8c_ac3d1a47cf33fa4666840638548939dfb}\label{rswrapper_8c_ac3d1a47cf33fa4666840638548939dfb} 
+reed\+\_\+solomon\+\_\+decode\+\_\+t {\bfseries reed\+\_\+solomon\+\_\+decode\+\_\+fn}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Wrappers for nanors vectorization with different ISA options. 
+
+
+
+\label{doc-define-members}
+\Hypertarget{rswrapper_8c_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{rswrapper_8c_a0aa41a17e4a22d611836794f031f59f6}\index{rswrapper.c@{rswrapper.c}!DECORATE\_FUNC@{DECORATE\_FUNC}}
+\index{DECORATE\_FUNC@{DECORATE\_FUNC}!rswrapper.c@{rswrapper.c}}
+\doxysubsubsection{\texorpdfstring{DECORATE\_FUNC}{DECORATE\_FUNC}}
+{\footnotesize\ttfamily \label{rswrapper_8c_a0aa41a17e4a22d611836794f031f59f6} 
+\#define DECORATE\+\_\+\+FUNC(\begin{DoxyParamCaption}\item[{}]{a}{, }\item[{}]{b}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{DECORATE\_FUNC\_I(a,\ b)}
+
+\end{DoxyCode}
+\Hypertarget{rswrapper_8c_a51483bc1f79e5b8728919b033a58d14a}\index{rswrapper.c@{rswrapper.c}!DECORATE\_FUNC\_I@{DECORATE\_FUNC\_I}}
+\index{DECORATE\_FUNC\_I@{DECORATE\_FUNC\_I}!rswrapper.c@{rswrapper.c}}
+\doxysubsubsection{\texorpdfstring{DECORATE\_FUNC\_I}{DECORATE\_FUNC\_I}}
+{\footnotesize\ttfamily \label{rswrapper_8c_a51483bc1f79e5b8728919b033a58d14a} 
+\#define DECORATE\+\_\+\+FUNC\+\_\+I(\begin{DoxyParamCaption}\item[{}]{a}{, }\item[{}]{b}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{a\#\#b}
+
+\end{DoxyCode}
+\Hypertarget{rswrapper_8c_a349a52fa4bbaa694e75198cd1a394fb6}\index{rswrapper.c@{rswrapper.c}!reed\_solomon\_init@{reed\_solomon\_init}}
+\index{reed\_solomon\_init@{reed\_solomon\_init}!rswrapper.c@{rswrapper.c}}
+\doxysubsubsection{\texorpdfstring{reed\_solomon\_init}{reed\_solomon\_init}}
+{\footnotesize\ttfamily \label{rswrapper_8c_a349a52fa4bbaa694e75198cd1a394fb6} 
+void reed\+\_\+solomon\+\_\+init(\begin{DoxyParamCaption}\item[{}]{void}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{DECORATE\_FUNC(\mbox{\hyperlink{rswrapper_8c_a349a52fa4bbaa694e75198cd1a394fb6}{reed\_solomon\_init}},\ ISA\_SUFFIX)}
+
+\end{DoxyCode}
+
+
+This initializes the RS function pointers to the best vectorized version available. 
+
+The streaming code will directly invoke these function pointers during encoding. 

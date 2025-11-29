@@ -1,0 +1,269 @@
+\doxysection{stream\+::session Namespace Reference}
+\hypertarget{namespacestream_1_1session}{}\label{namespacestream_1_1session}\index{stream::session@{stream::session}}
+
+
+Session management functions.  
+
+
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188de}{state\+\_\+e}} \+: int \{ \mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188dea09d4d696b4e935115b9313e3c412509a}{STOPPED}}
+, \mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188deaf6cdb3c6710b50ec65ee07f740847e10}{STOPPING}}
+, \mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188dea034312d8adc8099c1c6f53aaff745e26}{STARTING}}
+, \mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188dea43491564ebcfd38568918efbd6e840fd}{RUNNING}}
+ \}
+\begin{DoxyCompactList}\small\item\em Session state enumeration. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188de}{state\+\_\+e}} \mbox{\hyperlink{namespacestream_1_1session_a7aae2685f26ac3d991ae41861530fd07}{state}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}})
+\begin{DoxyCompactList}\small\item\em Get the current state of a session. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacestream_1_1session_a9d466943738a6a0365da4f54c990ba5e}{send}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}}, const std\+::string\+\_\+view \&payload)
+\begin{DoxyCompactList}\small\item\em Send a control message to the session. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{namespacestream_1_1session_a6e6dba8ca4221d0c94d0a4dc0a14c01f}{uuid}} (const \mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}})
+\begin{DoxyCompactList}\small\item\em Get the UUID of a session. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacestream_1_1session_a47437a61c2e2db084f5d802595540d1f}{uuid\+\_\+match}} (const \mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}}, const std\+::string\+\_\+view \&\mbox{\hyperlink{namespacestream_1_1session_a6e6dba8ca4221d0c94d0a4dc0a14c01f}{uuid}})
+\begin{DoxyCompactList}\small\item\em Check if session UUID matches. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacestream_1_1session_ab76bf145c19c75d056a26522e591b919}{update\+\_\+device\+\_\+info}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}}, const std\+::string \&name, const \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{crypto\+::\+PERM}} \&new\+Perm)
+\begin{DoxyCompactList}\small\item\em Update device information for a session. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacestream_1_1session_a6d3e111379cfb5b644a8cc9652b6523a}{stop}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}})
+\begin{DoxyCompactList}\small\item\em Stop a streaming session. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacestream_1_1session_af9e804bb3827272a5afc7669a6100a75}{graceful\+\_\+stop}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}})
+\begin{DoxyCompactList}\small\item\em Gracefully stop a streaming session. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacestream_1_1session_ad6441df13e4c115de4047ea8f3074ec2}{join}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}})
+\begin{DoxyCompactList}\small\item\em Join session threads (wait for completion). \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{namespacestream_1_1session_a57687f4eec57d53f2839dffb564e1f42}{start}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}}, const std\+::string \&addr\+\_\+string)
+\begin{DoxyCompactList}\small\item\em Start a streaming session. \end{DoxyCompactList}\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} $>$ \mbox{\hyperlink{namespacestream_1_1session_a3a968bef60291eac635060c406580646}{alloc}} (\mbox{\hyperlink{structstream_1_1config__t}{config\+\_\+t}} \&config, \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+t}} \&launch\+\_\+session)
+\begin{DoxyCompactList}\small\item\em Allocate a new streaming session. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{namespacestream_1_1session_a65ee00760ab0559a8b71a470e42159ae}\label{namespacestream_1_1session_a65ee00760ab0559a8b71a470e42159ae} 
+std\+::atomic\+\_\+uint {\bfseries running\+\_\+sessions}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Session management functions. 
+
+\label{doc-enum-members}
+\Hypertarget{namespacestream_1_1session_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188de}\index{stream::session@{stream::session}!state\_e@{state\_e}}
+\index{state\_e@{state\_e}!stream::session@{stream::session}}
+\doxysubsubsection{\texorpdfstring{state\_e}{state\_e}}
+{\footnotesize\ttfamily \label{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188de} 
+enum class \mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188de}{stream\+::session\+::state\+\_\+e}} \+: int\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Session state enumeration. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{STOPPED@{STOPPED}!stream::session@{stream::session}}\index{stream::session@{stream::session}!STOPPED@{STOPPED}}}\Hypertarget{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188dea09d4d696b4e935115b9313e3c412509a}\label{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188dea09d4d696b4e935115b9313e3c412509a} 
+STOPPED&The session is stopped. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{STOPPING@{STOPPING}!stream::session@{stream::session}}\index{stream::session@{stream::session}!STOPPING@{STOPPING}}}\Hypertarget{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188deaf6cdb3c6710b50ec65ee07f740847e10}\label{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188deaf6cdb3c6710b50ec65ee07f740847e10} 
+STOPPING&The session is stopping. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{STARTING@{STARTING}!stream::session@{stream::session}}\index{stream::session@{stream::session}!STARTING@{STARTING}}}\Hypertarget{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188dea034312d8adc8099c1c6f53aaff745e26}\label{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188dea034312d8adc8099c1c6f53aaff745e26} 
+STARTING&The session is starting. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{RUNNING@{RUNNING}!stream::session@{stream::session}}\index{stream::session@{stream::session}!RUNNING@{RUNNING}}}\Hypertarget{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188dea43491564ebcfd38568918efbd6e840fd}\label{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188dea43491564ebcfd38568918efbd6e840fd} 
+RUNNING&The session is running. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\label{doc-func-members}
+\Hypertarget{namespacestream_1_1session_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{namespacestream_1_1session_a3a968bef60291eac635060c406580646}\index{stream::session@{stream::session}!alloc@{alloc}}
+\index{alloc@{alloc}!stream::session@{stream::session}}
+\doxysubsubsection{\texorpdfstring{alloc()}{alloc()}}
+{\footnotesize\ttfamily \label{namespacestream_1_1session_a3a968bef60291eac635060c406580646} 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} $>$ stream\+::session\+::alloc (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstream_1_1config__t}{config\+\_\+t}} \&}]{config}{, }\item[{\mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+t}} \&}]{launch\+\_\+session}{}\end{DoxyParamCaption})}
+
+
+
+Allocate a new streaming session. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em config} & The streaming configuration. \\
+\hline
+{\em launch\+\_\+session} & The launch session parameters. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Shared pointer to the new session. 
+\end{DoxyReturn}
+\Hypertarget{namespacestream_1_1session_af9e804bb3827272a5afc7669a6100a75}\index{stream::session@{stream::session}!graceful\_stop@{graceful\_stop}}
+\index{graceful\_stop@{graceful\_stop}!stream::session@{stream::session}}
+\doxysubsubsection{\texorpdfstring{graceful\_stop()}{graceful\_stop()}}
+{\footnotesize\ttfamily \label{namespacestream_1_1session_af9e804bb3827272a5afc7669a6100a75} 
+void stream\+::session\+::graceful\+\_\+stop (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&}]{session}{}\end{DoxyParamCaption})}
+
+
+
+Gracefully stop a streaming session. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The session to stop. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{namespacestream_1_1session_ad6441df13e4c115de4047ea8f3074ec2}\index{stream::session@{stream::session}!join@{join}}
+\index{join@{join}!stream::session@{stream::session}}
+\doxysubsubsection{\texorpdfstring{join()}{join()}}
+{\footnotesize\ttfamily \label{namespacestream_1_1session_ad6441df13e4c115de4047ea8f3074ec2} 
+void stream\+::session\+::join (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&}]{session}{}\end{DoxyParamCaption})}
+
+
+
+Join session threads (wait for completion). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The session. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{namespacestream_1_1session_a9d466943738a6a0365da4f54c990ba5e}\index{stream::session@{stream::session}!send@{send}}
+\index{send@{send}!stream::session@{stream::session}}
+\doxysubsubsection{\texorpdfstring{send()}{send()}}
+{\footnotesize\ttfamily \label{namespacestream_1_1session_a9d466943738a6a0365da4f54c990ba5e} 
+bool stream\+::session\+::send (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&}]{session}{, }\item[{const std\+::string\+\_\+view \&}]{payload}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Send a control message to the session. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The session. \\
+\hline
+{\em payload} & The message payload. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} on success, {\ttfamily false} on failure. 
+\end{DoxyReturn}
+\Hypertarget{namespacestream_1_1session_a57687f4eec57d53f2839dffb564e1f42}\index{stream::session@{stream::session}!start@{start}}
+\index{start@{start}!stream::session@{stream::session}}
+\doxysubsubsection{\texorpdfstring{start()}{start()}}
+{\footnotesize\ttfamily \label{namespacestream_1_1session_a57687f4eec57d53f2839dffb564e1f42} 
+int stream\+::session\+::start (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&}]{session}{, }\item[{const std\+::string \&}]{addr\+\_\+string}{}\end{DoxyParamCaption})}
+
+
+
+Start a streaming session. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The session to start. \\
+\hline
+{\em addr\+\_\+string} & The address string to connect to. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, non-\/zero on error. 
+\end{DoxyReturn}
+\Hypertarget{namespacestream_1_1session_a7aae2685f26ac3d991ae41861530fd07}\index{stream::session@{stream::session}!state@{state}}
+\index{state@{state}!stream::session@{stream::session}}
+\doxysubsubsection{\texorpdfstring{state()}{state()}}
+{\footnotesize\ttfamily \label{namespacestream_1_1session_a7aae2685f26ac3d991ae41861530fd07} 
+\mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188de}{state\+\_\+e}} stream\+::session\+::state (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&}]{session}{}\end{DoxyParamCaption})}
+
+
+
+Get the current state of a session. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The session. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Current session state. 
+\end{DoxyReturn}
+\Hypertarget{namespacestream_1_1session_a6d3e111379cfb5b644a8cc9652b6523a}\index{stream::session@{stream::session}!stop@{stop}}
+\index{stop@{stop}!stream::session@{stream::session}}
+\doxysubsubsection{\texorpdfstring{stop()}{stop()}}
+{\footnotesize\ttfamily \label{namespacestream_1_1session_a6d3e111379cfb5b644a8cc9652b6523a} 
+void stream\+::session\+::stop (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&}]{session}{}\end{DoxyParamCaption})}
+
+
+
+Stop a streaming session. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The session to stop. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{namespacestream_1_1session_ab76bf145c19c75d056a26522e591b919}\index{stream::session@{stream::session}!update\_device\_info@{update\_device\_info}}
+\index{update\_device\_info@{update\_device\_info}!stream::session@{stream::session}}
+\doxysubsubsection{\texorpdfstring{update\_device\_info()}{update\_device\_info()}}
+{\footnotesize\ttfamily \label{namespacestream_1_1session_ab76bf145c19c75d056a26522e591b919} 
+bool stream\+::session\+::update\+\_\+device\+\_\+info (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&}]{session}{, }\item[{const std\+::string \&}]{name}{, }\item[{const \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{crypto\+::\+PERM}} \&}]{new\+Perm}{}\end{DoxyParamCaption})}
+
+
+
+Update device information for a session. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The session. \\
+\hline
+{\em name} & The new device name. \\
+\hline
+{\em new\+Perm} & The new permissions. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} on success, {\ttfamily false} on failure. 
+\end{DoxyReturn}
+\Hypertarget{namespacestream_1_1session_a6e6dba8ca4221d0c94d0a4dc0a14c01f}\index{stream::session@{stream::session}!uuid@{uuid}}
+\index{uuid@{uuid}!stream::session@{stream::session}}
+\doxysubsubsection{\texorpdfstring{uuid()}{uuid()}}
+{\footnotesize\ttfamily \label{namespacestream_1_1session_a6e6dba8ca4221d0c94d0a4dc0a14c01f} 
+std\+::string stream\+::session\+::uuid (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&}]{session}{}\end{DoxyParamCaption})}
+
+
+
+Get the UUID of a session. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The session. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Session UUID string. 
+\end{DoxyReturn}
+\Hypertarget{namespacestream_1_1session_a47437a61c2e2db084f5d802595540d1f}\index{stream::session@{stream::session}!uuid\_match@{uuid\_match}}
+\index{uuid\_match@{uuid\_match}!stream::session@{stream::session}}
+\doxysubsubsection{\texorpdfstring{uuid\_match()}{uuid\_match()}}
+{\footnotesize\ttfamily \label{namespacestream_1_1session_a47437a61c2e2db084f5d802595540d1f} 
+bool stream\+::session\+::uuid\+\_\+match (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&}]{session}{, }\item[{const std\+::string\+\_\+view \&}]{uuid}{}\end{DoxyParamCaption})}
+
+
+
+Check if session UUID matches. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The session. \\
+\hline
+{\em uuid} & The UUID to match. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if UUIDs match, {\ttfamily false} otherwise. 
+\end{DoxyReturn}

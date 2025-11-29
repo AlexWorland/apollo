@@ -1,0 +1,34 @@
+\doxysection{audio\+::audio\+\_\+ctx\+\_\+t Struct Reference}
+\hypertarget{structaudio_1_1audio__ctx__t}{}\label{structaudio_1_1audio__ctx__t}\index{audio::audio\_ctx\_t@{audio::audio\_ctx\_t}}
+
+
+Audio context structure.  
+
+
+
+
+{\ttfamily \#include $<$audio.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structaudio_1_1audio__ctx__t_ad55484b8d0ea41bec8eaf0e2c46d418a}\label{structaudio_1_1audio__ctx__t_ad55484b8d0ea41bec8eaf0e2c46d418a} 
+std\+::unique\+\_\+ptr$<$ std\+::atomic\+\_\+bool $>$ {\bfseries sink\+\_\+flag}
+\begin{DoxyCompactList}\small\item\em Flag to change sink for first stream only. \end{DoxyCompactList}\item 
+\Hypertarget{structaudio_1_1audio__ctx__t_a25e5d121185e97d4203dd2fbe032f75c}\label{structaudio_1_1audio__ctx__t_a25e5d121185e97d4203dd2fbe032f75c} 
+std\+::unique\+\_\+ptr$<$ platf\+::audio\+\_\+control\+\_\+t $>$ {\bfseries control}
+\begin{DoxyCompactList}\small\item\em Platform audio control. \end{DoxyCompactList}\item 
+\Hypertarget{structaudio_1_1audio__ctx__t_a5e4f5bd8180f94a8b40720d3dfe64b1f}\label{structaudio_1_1audio__ctx__t_a5e4f5bd8180f94a8b40720d3dfe64b1f} 
+bool {\bfseries restore\+\_\+sink}
+\begin{DoxyCompactList}\small\item\em Whether to restore original sink. \end{DoxyCompactList}\item 
+\Hypertarget{structaudio_1_1audio__ctx__t_ac22c3cc27a55966d969a9ca0dc78768c}\label{structaudio_1_1audio__ctx__t_ac22c3cc27a55966d969a9ca0dc78768c} 
+platf\+::sink\+\_\+t {\bfseries sink}
+\begin{DoxyCompactList}\small\item\em Audio sink. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Audio context structure. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{audio_8h}{audio.\+h}}\end{DoxyCompactItemize}

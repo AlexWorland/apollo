@@ -1,0 +1,63 @@
+\doxysection{uuid\+\_\+util\+::uuid\+\_\+t Union Reference}
+\hypertarget{unionuuid__util_1_1uuid__t}{}\label{unionuuid__util_1_1uuid__t}\index{uuid\_util::uuid\_t@{uuid\_util::uuid\_t}}
+
+
+UUID structure.  
+
+
+
+
+{\ttfamily \#include $<$uuid.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{unionuuid__util_1_1uuid__t_a06b6bdee48f34609ad60a5a16d6f2a7f}\label{unionuuid__util_1_1uuid__t_a06b6bdee48f34609ad60a5a16d6f2a7f} 
+std\+::string {\bfseries string} () const
+\item 
+\Hypertarget{unionuuid__util_1_1uuid__t_ad8c5692d021c134a17b5be9d3d2857d1}\label{unionuuid__util_1_1uuid__t_ad8c5692d021c134a17b5be9d3d2857d1} 
+constexpr bool {\bfseries operator==} (const \mbox{\hyperlink{unionuuid__util_1_1uuid__t}{uuid\+\_\+t}} \&other) const
+\item 
+\Hypertarget{unionuuid__util_1_1uuid__t_a0dad61518bd83d1d96a806ab75e00679}\label{unionuuid__util_1_1uuid__t_a0dad61518bd83d1d96a806ab75e00679} 
+constexpr bool {\bfseries operator$<$} (const \mbox{\hyperlink{unionuuid__util_1_1uuid__t}{uuid\+\_\+t}} \&other) const
+\item 
+\Hypertarget{unionuuid__util_1_1uuid__t_a792774b6900f38ca8c54f0665820ddc5}\label{unionuuid__util_1_1uuid__t_a792774b6900f38ca8c54f0665820ddc5} 
+constexpr bool {\bfseries operator$>$} (const \mbox{\hyperlink{unionuuid__util_1_1uuid__t}{uuid\+\_\+t}} \&other) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{unionuuid__util_1_1uuid__t_ac436cb04e7de36447f43f3539aaf9616}\label{unionuuid__util_1_1uuid__t_ac436cb04e7de36447f43f3539aaf9616} 
+static \mbox{\hyperlink{unionuuid__util_1_1uuid__t}{uuid\+\_\+t}} {\bfseries generate} (std\+::default\+\_\+random\+\_\+engine \&engine)
+\item 
+\Hypertarget{unionuuid__util_1_1uuid__t_a316cfd7f6eaa54cec2a6d35c62320276}\label{unionuuid__util_1_1uuid__t_a316cfd7f6eaa54cec2a6d35c62320276} 
+static \mbox{\hyperlink{unionuuid__util_1_1uuid__t}{uuid\+\_\+t}} {\bfseries generate} ()
+\item 
+\Hypertarget{unionuuid__util_1_1uuid__t_a5508cacc49fc2486d99a35db6c77b135}\label{unionuuid__util_1_1uuid__t_a5508cacc49fc2486d99a35db6c77b135} 
+static \mbox{\hyperlink{unionuuid__util_1_1uuid__t}{uuid\+\_\+t}} {\bfseries parse} (std\+::string \&uuid\+\_\+str)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{unionuuid__util_1_1uuid__t_ab0acd13e9cb1ea92d0ddbba7fc8b04b5}\label{unionuuid__util_1_1uuid__t_ab0acd13e9cb1ea92d0ddbba7fc8b04b5} 
+std\+::uint8\+\_\+t {\bfseries b8} \mbox{[}16\mbox{]}
+\item 
+\Hypertarget{unionuuid__util_1_1uuid__t_a0e80cfb74c5bfb2e800989c4b9a276ab}\label{unionuuid__util_1_1uuid__t_a0e80cfb74c5bfb2e800989c4b9a276ab} 
+std\+::uint16\+\_\+t {\bfseries b16} \mbox{[}8\mbox{]}
+\item 
+\Hypertarget{unionuuid__util_1_1uuid__t_ad53daac9d50abcca293c929a2a9675f8}\label{unionuuid__util_1_1uuid__t_ad53daac9d50abcca293c929a2a9675f8} 
+std\+::uint32\+\_\+t {\bfseries b32} \mbox{[}4\mbox{]}
+\item 
+\Hypertarget{unionuuid__util_1_1uuid__t_a95455f15fd232e9d52a78b56a5697acf}\label{unionuuid__util_1_1uuid__t_a95455f15fd232e9d52a78b56a5697acf} 
+std\+::uint64\+\_\+t {\bfseries b64} \mbox{[}2\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+UUID structure. 
+
+Represents a 128-\/bit UUID with multiple access methods (bytes, words, dwords, qwords). Supports generation, parsing, and string conversion. 
+
+The documentation for this union was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{uuid_8h}{uuid.\+h}}\end{DoxyCompactItemize}

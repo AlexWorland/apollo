@@ -1,0 +1,30 @@
+\doxysection{rswrapper.\+h}
+\hypertarget{rswrapper_8h_source}{}\label{rswrapper_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/rswrapper.h@{/Users/alexworland/autoBitrate/apollo/src/rswrapper.h}}
+\mbox{\hyperlink{rswrapper_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ standard\ includes}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\_reed\_solomon\ reed\_solomon;}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{typedef}\ reed\_solomon\ *(*reed\_solomon\_new\_t)(\textcolor{keywordtype}{int}\ data\_shards,\ \textcolor{keywordtype}{int}\ parity\_shards);}
+\DoxyCodeLine{00014\ \textcolor{keyword}{typedef}\ void\ (*reed\_solomon\_release\_t)(reed\_solomon\ *rs);}
+\DoxyCodeLine{00015\ \textcolor{keyword}{typedef}\ int\ (*reed\_solomon\_encode\_t)(reed\_solomon\ *rs,\ uint8\_t\ **shards,\ \textcolor{keywordtype}{int}\ nr\_shards,\ \textcolor{keywordtype}{int}\ bs);}
+\DoxyCodeLine{00016\ \textcolor{keyword}{typedef}\ int\ (*reed\_solomon\_decode\_t)(reed\_solomon\ *rs,\ uint8\_t\ **shards,\ uint8\_t\ *marks,\ \textcolor{keywordtype}{int}\ nr\_shards,\ \textcolor{keywordtype}{int}\ bs);}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{extern}\ reed\_solomon\_new\_t\ reed\_solomon\_new\_fn;}
+\DoxyCodeLine{00019\ \textcolor{keyword}{extern}\ reed\_solomon\_release\_t\ reed\_solomon\_release\_fn;}
+\DoxyCodeLine{00020\ \textcolor{keyword}{extern}\ reed\_solomon\_encode\_t\ reed\_solomon\_encode\_fn;}
+\DoxyCodeLine{00021\ \textcolor{keyword}{extern}\ reed\_solomon\_decode\_t\ reed\_solomon\_decode\_fn;}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#define\ reed\_solomon\_new\ reed\_solomon\_new\_fn}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#define\ reed\_solomon\_release\ reed\_solomon\_release\_fn}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ reed\_solomon\_encode\ reed\_solomon\_encode\_fn}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#define\ reed\_solomon\_decode\ reed\_solomon\_decode\_fn}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00032\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{rswrapper_8h_a349a52fa4bbaa694e75198cd1a394fb6}{reed\_solomon\_init}}(\textcolor{keywordtype}{void});}
+
+\end{DoxyCode}

@@ -1,0 +1,100 @@
+\doxysection{video\+::packet\+\_\+raw\+\_\+avcodec Struct Reference}
+\hypertarget{structvideo_1_1packet__raw__avcodec}{}\label{structvideo_1_1packet__raw__avcodec}\index{video::packet\_raw\_avcodec@{video::packet\_raw\_avcodec}}
+
+
+Video packet implementation using libavcodec.  
+
+
+
+
+{\ttfamily \#include $<$video.\+h$>$}
+
+Inheritance diagram for video\+::packet\+\_\+raw\+\_\+avcodec\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structvideo_1_1packet__raw__avcodec}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{structvideo_1_1packet__raw__avcodec_aebad5b7ef07f1df619dc8c795fec4b1a}{is\+\_\+idr}} () override
+\item 
+int64\+\_\+t \mbox{\hyperlink{structvideo_1_1packet__raw__avcodec_afdd981b7ba1076be1976d66ae04d33d7}{frame\+\_\+index}} () override
+\item 
+uint8\+\_\+t \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structvideo_1_1packet__raw__avcodec_a3882acb15cb3caec39bad544d5c1f247}{data}} () override
+\item 
+size\+\_\+t \mbox{\hyperlink{structvideo_1_1packet__raw__avcodec_a509194a7a6f4ba2f041b2d4e7a9bbafe}{data\+\_\+size}} () override
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structvideo_1_1packet__raw__avcodec_ac0a14f40c6bda89e698490a505f34adf}\label{structvideo_1_1packet__raw__avcodec_ac0a14f40c6bda89e698490a505f34adf} 
+AVPacket \texorpdfstring{$\ast$}{*} {\bfseries av\+\_\+packet}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{structvideo_1_1packet__raw__t}{video\+::packet\+\_\+raw\+\_\+t}}}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ \mbox{\hyperlink{structvideo_1_1packet__raw__t_1_1replace__t}{replace\+\_\+t}} $>$ \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structvideo_1_1packet__raw__t_a7d5da4bc03f285b8da6e5a3c6a2a1450}{replacements}} = nullptr
+\begin{DoxyCompactList}\small\item\em Replacement operations for packet data. \end{DoxyCompactList}\item 
+void \texorpdfstring{$\ast$}{*} {\bfseries channel\+\_\+data} = nullptr
+\item 
+bool {\bfseries after\+\_\+ref\+\_\+frame\+\_\+invalidation} = false
+\item 
+std\+::optional$<$ std\+::chrono\+::steady\+\_\+clock\+::time\+\_\+point $>$ {\bfseries frame\+\_\+timestamp}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Video packet implementation using libavcodec. 
+
+Wraps AVPacket from FFmpeg/libavcodec for video packet handling. 
+
+\label{doc-func-members}
+\Hypertarget{structvideo_1_1packet__raw__avcodec_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structvideo_1_1packet__raw__avcodec_a3882acb15cb3caec39bad544d5c1f247}\index{video::packet\_raw\_avcodec@{video::packet\_raw\_avcodec}!data@{data}}
+\index{data@{data}!video::packet\_raw\_avcodec@{video::packet\_raw\_avcodec}}
+\doxysubsubsection{\texorpdfstring{data()}{data()}}
+{\footnotesize\ttfamily \label{structvideo_1_1packet__raw__avcodec_a3882acb15cb3caec39bad544d5c1f247} 
+uint8\+\_\+t \texorpdfstring{$\ast$}{*} video\+::packet\+\_\+raw\+\_\+avcodec\+::data (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{structvideo_1_1packet__raw__t}{video\+::packet\+\_\+raw\+\_\+t}}.
+
+\Hypertarget{structvideo_1_1packet__raw__avcodec_a509194a7a6f4ba2f041b2d4e7a9bbafe}\index{video::packet\_raw\_avcodec@{video::packet\_raw\_avcodec}!data\_size@{data\_size}}
+\index{data\_size@{data\_size}!video::packet\_raw\_avcodec@{video::packet\_raw\_avcodec}}
+\doxysubsubsection{\texorpdfstring{data\_size()}{data\_size()}}
+{\footnotesize\ttfamily \label{structvideo_1_1packet__raw__avcodec_a509194a7a6f4ba2f041b2d4e7a9bbafe} 
+size\+\_\+t video\+::packet\+\_\+raw\+\_\+avcodec\+::data\+\_\+size (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{structvideo_1_1packet__raw__t}{video\+::packet\+\_\+raw\+\_\+t}}.
+
+\Hypertarget{structvideo_1_1packet__raw__avcodec_afdd981b7ba1076be1976d66ae04d33d7}\index{video::packet\_raw\_avcodec@{video::packet\_raw\_avcodec}!frame\_index@{frame\_index}}
+\index{frame\_index@{frame\_index}!video::packet\_raw\_avcodec@{video::packet\_raw\_avcodec}}
+\doxysubsubsection{\texorpdfstring{frame\_index()}{frame\_index()}}
+{\footnotesize\ttfamily \label{structvideo_1_1packet__raw__avcodec_afdd981b7ba1076be1976d66ae04d33d7} 
+int64\+\_\+t video\+::packet\+\_\+raw\+\_\+avcodec\+::frame\+\_\+index (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{structvideo_1_1packet__raw__t}{video\+::packet\+\_\+raw\+\_\+t}}.
+
+\Hypertarget{structvideo_1_1packet__raw__avcodec_aebad5b7ef07f1df619dc8c795fec4b1a}\index{video::packet\_raw\_avcodec@{video::packet\_raw\_avcodec}!is\_idr@{is\_idr}}
+\index{is\_idr@{is\_idr}!video::packet\_raw\_avcodec@{video::packet\_raw\_avcodec}}
+\doxysubsubsection{\texorpdfstring{is\_idr()}{is\_idr()}}
+{\footnotesize\ttfamily \label{structvideo_1_1packet__raw__avcodec_aebad5b7ef07f1df619dc8c795fec4b1a} 
+bool video\+::packet\+\_\+raw\+\_\+avcodec\+::is\+\_\+idr (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{structvideo_1_1packet__raw__t}{video\+::packet\+\_\+raw\+\_\+t}}.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{video_8h}{video.\+h}}\end{DoxyCompactItemize}

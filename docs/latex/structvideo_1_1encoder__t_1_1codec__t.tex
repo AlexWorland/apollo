@@ -1,0 +1,94 @@
+\doxysection{video\+::encoder\+\_\+t\+::codec\+\_\+t Struct Reference}
+\hypertarget{structvideo_1_1encoder__t_1_1codec__t}{}\label{structvideo_1_1encoder__t_1_1codec__t}\index{video::encoder\_t::codec\_t@{video::encoder\_t::codec\_t}}
+
+
+Codec configuration structure.  
+
+
+
+
+{\ttfamily \#include $<$video.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{structvideo_1_1encoder__t_1_1codec__t_a9aed0fd4e57914815962203d911e06d2}{operator\mbox{[}$\,$\mbox{]}}} (\mbox{\hyperlink{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028f}{flag\+\_\+e}} flag) const
+\begin{DoxyCompactList}\small\item\em Check if a capability flag is set (const). \end{DoxyCompactList}\item 
+std\+::bitset$<$ \mbox{\hyperlink{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028faca38e2782440d2ec4d6b094502e53167}{MAX\+\_\+\+FLAGS}} $>$\+::reference \mbox{\hyperlink{structvideo_1_1encoder__t_1_1codec__t_a6b2fc40b10f4cb170017de008151f9bb}{operator\mbox{[}$\,$\mbox{]}}} (\mbox{\hyperlink{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028f}{flag\+\_\+e}} flag)
+\begin{DoxyCompactList}\small\item\em Get reference to a capability flag. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structvideo_1_1encoder__t_1_1codec__t_a427b45a4de88199803651c262690cfb4}\label{structvideo_1_1encoder__t_1_1codec__t_a427b45a4de88199803651c262690cfb4} 
+std\+::vector$<$ \mbox{\hyperlink{structvideo_1_1encoder__t_1_1option__t}{option\+\_\+t}} $>$ {\bfseries common\+\_\+options}
+\begin{DoxyCompactList}\small\item\em Common encoder options. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1encoder__t_1_1codec__t_a176145b8b6e5ae93185928ba9fe3ceda}\label{structvideo_1_1encoder__t_1_1codec__t_a176145b8b6e5ae93185928ba9fe3ceda} 
+std\+::vector$<$ \mbox{\hyperlink{structvideo_1_1encoder__t_1_1option__t}{option\+\_\+t}} $>$ {\bfseries sdr\+\_\+options}
+\begin{DoxyCompactList}\small\item\em SDR-\/specific options. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1encoder__t_1_1codec__t_a99d5b86a423eda81ae96a121b617bf75}\label{structvideo_1_1encoder__t_1_1codec__t_a99d5b86a423eda81ae96a121b617bf75} 
+std\+::vector$<$ \mbox{\hyperlink{structvideo_1_1encoder__t_1_1option__t}{option\+\_\+t}} $>$ {\bfseries hdr\+\_\+options}
+\begin{DoxyCompactList}\small\item\em HDR-\/specific options. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1encoder__t_1_1codec__t_a2d5f06dc98708f450aa0493997299041}\label{structvideo_1_1encoder__t_1_1codec__t_a2d5f06dc98708f450aa0493997299041} 
+std\+::vector$<$ \mbox{\hyperlink{structvideo_1_1encoder__t_1_1option__t}{option\+\_\+t}} $>$ {\bfseries sdr444\+\_\+options}
+\begin{DoxyCompactList}\small\item\em SDR 4\+:4\+:4-\/specific options. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1encoder__t_1_1codec__t_ac8b380d97014c2571e59a09700260e45}\label{structvideo_1_1encoder__t_1_1codec__t_ac8b380d97014c2571e59a09700260e45} 
+std\+::vector$<$ \mbox{\hyperlink{structvideo_1_1encoder__t_1_1option__t}{option\+\_\+t}} $>$ {\bfseries hdr444\+\_\+options}
+\begin{DoxyCompactList}\small\item\em HDR 4\+:4\+:4-\/specific options. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1encoder__t_1_1codec__t_abb5ac4f84d302bb536bdc95fc84aa311}\label{structvideo_1_1encoder__t_1_1codec__t_abb5ac4f84d302bb536bdc95fc84aa311} 
+std\+::vector$<$ \mbox{\hyperlink{structvideo_1_1encoder__t_1_1option__t}{option\+\_\+t}} $>$ {\bfseries fallback\+\_\+options}
+\begin{DoxyCompactList}\small\item\em Fallback options. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1encoder__t_1_1codec__t_a1d531c4668e0776f4a806459b2592799}\label{structvideo_1_1encoder__t_1_1codec__t_a1d531c4668e0776f4a806459b2592799} 
+std\+::string {\bfseries name}
+\begin{DoxyCompactList}\small\item\em Codec name. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1encoder__t_1_1codec__t_a0c3b3371ff122d5ef38df2c15c8faa35}\label{structvideo_1_1encoder__t_1_1codec__t_a0c3b3371ff122d5ef38df2c15c8faa35} 
+std\+::bitset$<$ \mbox{\hyperlink{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028faca38e2782440d2ec4d6b094502e53167}{MAX\+\_\+\+FLAGS}} $>$ {\bfseries capabilities}
+\begin{DoxyCompactList}\small\item\em Codec capability flags. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Codec configuration structure. 
+
+\label{doc-func-members}
+\Hypertarget{structvideo_1_1encoder__t_1_1codec__t_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structvideo_1_1encoder__t_1_1codec__t_a6b2fc40b10f4cb170017de008151f9bb}\index{video::encoder\_t::codec\_t@{video::encoder\_t::codec\_t}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!video::encoder\_t::codec\_t@{video::encoder\_t::codec\_t}}
+\doxysubsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{structvideo_1_1encoder__t_1_1codec__t_a6b2fc40b10f4cb170017de008151f9bb} 
+std\+::bitset$<$ \mbox{\hyperlink{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028faca38e2782440d2ec4d6b094502e53167}{MAX\+\_\+\+FLAGS}} $>$\+::reference video\+::encoder\+\_\+t\+::codec\+\_\+t\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028f}{flag\+\_\+e}}}]{flag}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get reference to a capability flag. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em flag} & The flag to access. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Reference to the flag bit. 
+\end{DoxyReturn}
+\Hypertarget{structvideo_1_1encoder__t_1_1codec__t_a9aed0fd4e57914815962203d911e06d2}\index{video::encoder\_t::codec\_t@{video::encoder\_t::codec\_t}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!video::encoder\_t::codec\_t@{video::encoder\_t::codec\_t}}
+\doxysubsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{structvideo_1_1encoder__t_1_1codec__t_a9aed0fd4e57914815962203d911e06d2} 
+bool video\+::encoder\+\_\+t\+::codec\+\_\+t\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structvideo_1_1encoder__t_aba3b88f6150e12474bc396675c2e028f}{flag\+\_\+e}}}]{flag}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Check if a capability flag is set (const). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em flag} & The flag to check. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if flag is set, {\ttfamily false} otherwise. 
+\end{DoxyReturn}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{video_8h}{video.\+h}}\end{DoxyCompactItemize}

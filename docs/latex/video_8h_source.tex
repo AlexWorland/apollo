@@ -1,0 +1,357 @@
+\doxysection{video.\+h}
+\hypertarget{video_8h_source}{}\label{video_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/video.h@{/Users/alexworland/autoBitrate/apollo/src/video.h}}
+\mbox{\hyperlink{video_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ local\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{input_8h}{input.h}}"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}platform/common.h"{}}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{thread__safe_8h}{thread\_safe.h}}"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{video__colorspace_8h}{video\_colorspace.h}}"{}}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <libavcodec/avcodec.h>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <libswscale/swscale.h>}}
+\DoxyCodeLine{00016\ \}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{struct\ }AVPacket;}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{namespace\ }video\ \{}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{struct\ }config\_t\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{int}\ width;\ \ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{int}\ height;\ \ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{int}\ framerate;\ \ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{int}\ bitrate;\ \ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{int}\ slicesPerFrame;\ \ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{int}\ numRefFrames;\ \ }
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{int}\ encoderCscMode;\ \ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{int}\ videoFormat;\ \ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{int}\ dynamicRange;\ \ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{int}\ chromaSamplingType;\ \ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{int}\ enableIntraRefresh;\ \ }
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{int}\ encodingFramerate;\ \ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{bool}\ input\_only;\ \ }
+\DoxyCodeLine{00041\ \ \ \};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00048\ \ \ platf::mem\_type\_e\ map\_base\_dev\_type(AVHWDeviceType\ type);}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00055\ \ \ platf::pix\_fmt\_e\ map\_pix\_fmt(AVPixelFormat\ fmt);}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00061\ \ \ \textcolor{keywordtype}{void}\ free\_ctx(AVCodecContext\ *ctx);}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordtype}{void}\ free\_frame(AVFrame\ *frame);}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordtype}{void}\ free\_buffer(AVBufferRef\ *ref);}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{using\ }avcodec\_ctx\_t\ =\ util::safe\_ptr<AVCodecContext,\ free\_ctx>;\ \ }
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{using\ }avcodec\_frame\_t\ =\ util::safe\_ptr<AVFrame,\ free\_frame>;\ \ }
+\DoxyCodeLine{00077\ \ \ \textcolor{keyword}{using\ }avcodec\_buffer\_t\ =\ util::safe\_ptr<AVBufferRef,\ free\_buffer>;\ \ }
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{using\ }sws\_t\ =\ util::safe\_ptr<SwsContext,\ sws\_freeContext>;\ \ }
+\DoxyCodeLine{00079\ \ \ \textcolor{keyword}{using\ }img\_event\_t\ =\ std::shared\_ptr<safe::event\_t<std::shared\_ptr<platf::img\_t>>>;\ \ }
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{struct\ }encoder\_platform\_formats\_t\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~encoder\_platform\_formats\_t()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00086\ \ \ \ \ platf::mem\_type\_e\ dev\_type;\ \ }
+\DoxyCodeLine{00087\ \ \ \ \ platf::pix\_fmt\_e\ pix\_fmt\_8bit;\ \ }
+\DoxyCodeLine{00088\ \ \ \ \ platf::pix\_fmt\_e\ pix\_fmt\_10bit;\ \ }
+\DoxyCodeLine{00089\ \ \ \ \ platf::pix\_fmt\_e\ pix\_fmt\_yuv444\_8bit;\ \ }
+\DoxyCodeLine{00090\ \ \ \ \ platf::pix\_fmt\_e\ pix\_fmt\_yuv444\_10bit;\ \ }
+\DoxyCodeLine{00091\ \ \ \};}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{struct\ }encoder\_platform\_formats\_avcodec:\ encoder\_platform\_formats\_t\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keyword}{using\ }init\_buffer\_function\_t\ =\ std::function<util::Either<avcodec\_buffer\_t,\ int>(platf::avcodec\_encode\_device\_t\ *)>;\ \ }
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00110\ \ \ \ \ encoder\_platform\_formats\_avcodec(}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \textcolor{keyword}{const}\ AVHWDeviceType\ \&avcodec\_base\_dev\_type,}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \textcolor{keyword}{const}\ AVHWDeviceType\ \&avcodec\_derived\_dev\_type,}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \textcolor{keyword}{const}\ AVPixelFormat\ \&avcodec\_dev\_pix\_fmt,}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \textcolor{keyword}{const}\ AVPixelFormat\ \&avcodec\_pix\_fmt\_8bit,}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \textcolor{keyword}{const}\ AVPixelFormat\ \&avcodec\_pix\_fmt\_10bit,}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \textcolor{keyword}{const}\ AVPixelFormat\ \&avcodec\_pix\_fmt\_yuv444\_8bit,}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \textcolor{keyword}{const}\ AVPixelFormat\ \&avcodec\_pix\_fmt\_yuv444\_10bit,}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \textcolor{keyword}{const}\ init\_buffer\_function\_t\ \&init\_avcodec\_hardware\_input\_buffer\_function}
+\DoxyCodeLine{00119\ \ \ \ \ ):}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ avcodec\_base\_dev\_type\ \{avcodec\_base\_dev\_type\},}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ avcodec\_derived\_dev\_type\ \{avcodec\_derived\_dev\_type\},}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ avcodec\_dev\_pix\_fmt\ \{avcodec\_dev\_pix\_fmt\},}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ avcodec\_pix\_fmt\_8bit\ \{avcodec\_pix\_fmt\_8bit\},}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ avcodec\_pix\_fmt\_10bit\ \{avcodec\_pix\_fmt\_10bit\},}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ avcodec\_pix\_fmt\_yuv444\_8bit\ \{avcodec\_pix\_fmt\_yuv444\_8bit\},}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ avcodec\_pix\_fmt\_yuv444\_10bit\ \{avcodec\_pix\_fmt\_yuv444\_10bit\},}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ init\_avcodec\_hardware\_input\_buffer\ \{init\_avcodec\_hardware\_input\_buffer\_function\}\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ dev\_type\ =\ map\_base\_dev\_type(avcodec\_base\_dev\_type);}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ pix\_fmt\_8bit\ =\ map\_pix\_fmt(avcodec\_pix\_fmt\_8bit);}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ pix\_fmt\_10bit\ =\ map\_pix\_fmt(avcodec\_pix\_fmt\_10bit);}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ pix\_fmt\_yuv444\_8bit\ =\ map\_pix\_fmt(avcodec\_pix\_fmt\_yuv444\_8bit);}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ pix\_fmt\_yuv444\_10bit\ =\ map\_pix\_fmt(avcodec\_pix\_fmt\_yuv444\_10bit);}
+\DoxyCodeLine{00133\ \ \ \ \ \}}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \ \ \ \ AVHWDeviceType\ avcodec\_base\_dev\_type;\ \ }
+\DoxyCodeLine{00136\ \ \ \ \ AVHWDeviceType\ avcodec\_derived\_dev\_type;\ \ }
+\DoxyCodeLine{00137\ \ \ \ \ AVPixelFormat\ avcodec\_dev\_pix\_fmt;\ \ }
+\DoxyCodeLine{00138\ \ \ \ \ AVPixelFormat\ avcodec\_pix\_fmt\_8bit;\ \ }
+\DoxyCodeLine{00139\ \ \ \ \ AVPixelFormat\ avcodec\_pix\_fmt\_10bit;\ \ }
+\DoxyCodeLine{00140\ \ \ \ \ AVPixelFormat\ avcodec\_pix\_fmt\_yuv444\_8bit;\ \ }
+\DoxyCodeLine{00141\ \ \ \ \ AVPixelFormat\ avcodec\_pix\_fmt\_yuv444\_10bit;\ \ }
+\DoxyCodeLine{00142\ \ \ \ \ init\_buffer\_function\_t\ init\_avcodec\_hardware\_input\_buffer;\ \ }
+\DoxyCodeLine{00143\ \ \ \};}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{struct\ }encoder\_platform\_formats\_nvenc:\ encoder\_platform\_formats\_t\ \{}
+\DoxyCodeLine{00157\ \ \ \ \ encoder\_platform\_formats\_nvenc(}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \textcolor{keyword}{const}\ platf::mem\_type\_e\ \&dev\_type,}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \textcolor{keyword}{const}\ platf::pix\_fmt\_e\ \&pix\_fmt\_8bit,}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \textcolor{keyword}{const}\ platf::pix\_fmt\_e\ \&pix\_fmt\_10bit,}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \textcolor{keyword}{const}\ platf::pix\_fmt\_e\ \&pix\_fmt\_yuv444\_8bit,}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \textcolor{keyword}{const}\ platf::pix\_fmt\_e\ \&pix\_fmt\_yuv444\_10bit}
+\DoxyCodeLine{00163\ \ \ \ \ )\ \{}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ encoder\_platform\_formats\_t::dev\_type\ =\ dev\_type;}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ encoder\_platform\_formats\_t::pix\_fmt\_8bit\ =\ pix\_fmt\_8bit;}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ encoder\_platform\_formats\_t::pix\_fmt\_10bit\ =\ pix\_fmt\_10bit;}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ encoder\_platform\_formats\_t::pix\_fmt\_yuv444\_8bit\ =\ pix\_fmt\_yuv444\_8bit;}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ encoder\_platform\_formats\_t::pix\_fmt\_yuv444\_10bit\ =\ pix\_fmt\_yuv444\_10bit;}
+\DoxyCodeLine{00169\ \ \ \ \ \}}
+\DoxyCodeLine{00170\ \ \ \};}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00175\ \ \ \textcolor{keyword}{struct\ }encoder\_t\ \{}
+\DoxyCodeLine{00176\ \ \ \ \ std::string\_view\ name;\ \ }
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{config_8h_a716fd741caaeaeeeb7fa773447e12904}{flag\_e}}\ \{}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ PASSED,\ \ }
+\DoxyCodeLine{00183\ \ \ \ \ \ \ REF\_FRAMES\_RESTRICT,\ \ }
+\DoxyCodeLine{00184\ \ \ \ \ \ \ DYNAMIC\_RANGE,\ \ }
+\DoxyCodeLine{00185\ \ \ \ \ \ \ YUV444,\ \ }
+\DoxyCodeLine{00186\ \ \ \ \ \ \ VUI\_PARAMETERS,\ \ }
+\DoxyCodeLine{00187\ \ \ \ \ \ \ MAX\_FLAGS\ \ }
+\DoxyCodeLine{00188\ \ \ \ \ \};}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keyword}{static}\ std::string\_view\ from\_flag(flag\_e\ flag)\ \{}
+\DoxyCodeLine{00196\ \textcolor{preprocessor}{\#define\ \_CONVERT(x)\ \(\backslash\)}}
+\DoxyCodeLine{00197\ \textcolor{preprocessor}{\ \ case\ flag\_e::x:\ \(\backslash\)}}
+\DoxyCodeLine{00198\ \textcolor{preprocessor}{\ \ \ \ return\ std::string\_view(\#x)}}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (flag)\ \{}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \_CONVERT(PASSED);}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \_CONVERT(REF\_FRAMES\_RESTRICT);}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \_CONVERT(DYNAMIC\_RANGE);}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \_CONVERT(YUV444);}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \_CONVERT(VUI\_PARAMETERS);}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \_CONVERT(MAX\_FLAGS);}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00207\ \textcolor{preprocessor}{\#undef\ \_CONVERT}}
+\DoxyCodeLine{00208\ }
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{\textcolor{stringliteral}{"{}unknown"{}}\};}
+\DoxyCodeLine{00210\ \ \ \ \ \}}
+\DoxyCodeLine{00211\ }
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{keyword}{struct\ }option\_t\ \{}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ KITTY\_DEFAULT\_CONSTR\_MOVE(option\_t)}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ option\_t(\textcolor{keyword}{const}\ option\_t\ \&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00218\ }
+\DoxyCodeLine{00219\ \ \ \ \ \ \ std::string\ name;\ \ }
+\DoxyCodeLine{00220\ \ \ \ \ \ \ std::variant<int,\ int\ *,\ std::optional<int>\ *,\ std::function<int()>,\ std::string,\ std::string\ *,\ std::function<\textcolor{keyword}{const}\ std::string(\textcolor{keyword}{const}\ config\_t\ \&)>>\ value;\ \ }
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00227\ \ \ \ \ \ \ option\_t(std::string\ \&\&name,\ \textcolor{keyword}{decltype}(value)\ \&\&value):}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \ \ name\ \{std::move(name)\},}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \ \ value\ \{std::move(value)\}\ \{}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00231\ \ \ \ \ \};}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keyword}{const}\ std::unique\_ptr<const\ encoder\_platform\_formats\_t>\ platform\_formats;\ \ }
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keyword}{struct\ }codec\_t\ \{}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ std::vector<option\_t>\ common\_options;\ \ }
+\DoxyCodeLine{00240\ \ \ \ \ \ \ std::vector<option\_t>\ sdr\_options;\ \ }
+\DoxyCodeLine{00241\ \ \ \ \ \ \ std::vector<option\_t>\ hdr\_options;\ \ }
+\DoxyCodeLine{00242\ \ \ \ \ \ \ std::vector<option\_t>\ sdr444\_options;\ \ }
+\DoxyCodeLine{00243\ \ \ \ \ \ \ std::vector<option\_t>\ hdr444\_options;\ \ }
+\DoxyCodeLine{00244\ \ \ \ \ \ \ std::vector<option\_t>\ fallback\_options;\ \ }
+\DoxyCodeLine{00245\ \ \ \ \ \ \ std::string\ name;\ \ }
+\DoxyCodeLine{00246\ \ \ \ \ \ \ std::bitset<MAX\_FLAGS>\ capabilities;\ \ }
+\DoxyCodeLine{00247\ }
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ operator[](flag\_e\ flag)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ capabilities[(std::size\_t)\ flag];}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00262\ \ \ \ \ \ \ std::bitset<MAX\_FLAGS>::reference\ operator[](flag\_e\ flag)\ \{}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ capabilities[(std::size\_t)\ flag];}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00265\ \ \ \ \ \}\ av1;\ \ }
+\DoxyCodeLine{00266\ \ \ \ \ codec\_t\ hevc;\ \ }
+\DoxyCodeLine{00267\ \ \ \ \ codec\_t\ h264;\ \ }
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00269\ \ \ \ \ \textcolor{keyword}{const}\ codec\_t\ \&codec\_from\_config(\textcolor{keyword}{const}\ config\_t\ \&config)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (config.videoFormat)\ \{}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \ \ BOOST\_LOG(error)\ <<\ \textcolor{stringliteral}{"{}Unknown\ video\ format\ "{}}\ <<\ config.videoFormat\ <<\ \textcolor{stringliteral}{"{},\ falling\ back\ to\ H.264"{}};}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ fallthrough}}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 0:}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ h264;}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 1:}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ hevc;}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 2:}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ av1;}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00281\ \ \ \ \ \}}
+\DoxyCodeLine{00282\ }
+\DoxyCodeLine{00283\ \ \ \ \ uint32\_t\ flags;}
+\DoxyCodeLine{00284\ \ \ \};}
+\DoxyCodeLine{00285\ }
+\DoxyCodeLine{00292\ \ \ \textcolor{keyword}{struct\ }encode\_session\_t\ \{}
+\DoxyCodeLine{00293\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~encode\_session\_t()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00294\ }
+\DoxyCodeLine{00295\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{int}\ convert(platf::img\_t\ \&img)\ =\ 0;}
+\DoxyCodeLine{00296\ }
+\DoxyCodeLine{00297\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ request\_idr\_frame()\ =\ 0;}
+\DoxyCodeLine{00298\ }
+\DoxyCodeLine{00299\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ request\_normal\_frame()\ =\ 0;}
+\DoxyCodeLine{00300\ }
+\DoxyCodeLine{00301\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ invalidate\_ref\_frames(int64\_t\ first\_frame,\ int64\_t\ last\_frame)\ =\ 0;}
+\DoxyCodeLine{00302\ }
+\DoxyCodeLine{00303\ \ \ \ \ \textcolor{comment}{//\ Reconfigure\ bitrate\ during\ active\ session}}
+\DoxyCodeLine{00304\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ reconfigure\_bitrate(\textcolor{keywordtype}{int}\ new\_bitrate\_kbps)\ \{}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \textcolor{comment}{//\ Default\ implementation:\ not\ supported}}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00307\ \ \ \ \ \}}
+\DoxyCodeLine{00308\ \ \ \};}
+\DoxyCodeLine{00309\ }
+\DoxyCodeLine{00310\ \ \ \textcolor{comment}{//\ encoders}}
+\DoxyCodeLine{00311\ \ \ \textcolor{keyword}{extern}\ encoder\_t\ software;}
+\DoxyCodeLine{00312\ }
+\DoxyCodeLine{00313\ \textcolor{preprocessor}{\#if\ !defined(\_\_APPLE\_\_)}}
+\DoxyCodeLine{00314\ \ \ \textcolor{keyword}{extern}\ encoder\_t\ nvenc;\ \ \textcolor{comment}{//\ available\ for\ windows\ and\ linux}}
+\DoxyCodeLine{00315\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ \textcolor{preprocessor}{\#ifdef\ \_WIN32}}
+\DoxyCodeLine{00318\ \ \ \textcolor{keyword}{extern}\ encoder\_t\ amdvce;}
+\DoxyCodeLine{00319\ \ \ \textcolor{keyword}{extern}\ encoder\_t\ quicksync;}
+\DoxyCodeLine{00320\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00321\ }
+\DoxyCodeLine{00322\ \textcolor{preprocessor}{\#ifdef\ \_\_linux\_\_}}
+\DoxyCodeLine{00323\ \ \ \textcolor{keyword}{extern}\ encoder\_t\ vaapi;}
+\DoxyCodeLine{00324\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00325\ }
+\DoxyCodeLine{00326\ \textcolor{preprocessor}{\#ifdef\ \_\_APPLE\_\_}}
+\DoxyCodeLine{00327\ \ \ \textcolor{keyword}{extern}\ encoder\_t\ videotoolbox;}
+\DoxyCodeLine{00328\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00329\ }
+\DoxyCodeLine{00336\ \ \ \textcolor{keyword}{struct\ }packet\_raw\_t\ \{}
+\DoxyCodeLine{00337\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~packet\_raw\_t()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00338\ }
+\DoxyCodeLine{00339\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ is\_idr()\ =\ 0;}
+\DoxyCodeLine{00340\ }
+\DoxyCodeLine{00341\ \ \ \ \ \textcolor{keyword}{virtual}\ int64\_t\ frame\_index()\ =\ 0;}
+\DoxyCodeLine{00342\ }
+\DoxyCodeLine{00343\ \ \ \ \ \textcolor{keyword}{virtual}\ uint8\_t\ *data()\ =\ 0;}
+\DoxyCodeLine{00344\ }
+\DoxyCodeLine{00345\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{size\_t}\ data\_size()\ =\ 0;}
+\DoxyCodeLine{00346\ }
+\DoxyCodeLine{00354\ \ \ \ \ \textcolor{keyword}{struct\ }replace\_t\ \{}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ std::string\_view\ old;}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ std::string\_view\ \_new;}
+\DoxyCodeLine{00357\ }
+\DoxyCodeLine{00358\ \ \ \ \ \ \ KITTY\_DEFAULT\_CONSTR\_MOVE(replace\_t)}
+\DoxyCodeLine{00359\ }
+\DoxyCodeLine{00360\ \ \ \ \ \ \ replace\_t(std::string\_view\ old,\ std::string\_view\ \_new)\ \textcolor{keyword}{noexcept}:}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ \ \ old\ \{std::move(old)\},}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \ \ \_new\ \{std::move(\_new)\}\ \{}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00364\ \ \ \ \ \};}
+\DoxyCodeLine{00365\ }
+\DoxyCodeLine{00373\ \ \ \ \ \textcolor{keyword}{struct\ }replace\_t\ \{}
+\DoxyCodeLine{00374\ \ \ \ \ \textcolor{keywordtype}{void}\ *channel\_data\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00375\ \ \ \ \ \textcolor{keywordtype}{bool}\ after\_ref\_frame\_invalidation\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00376\ \ \ \ \ std::optional<std::chrono::steady\_clock::time\_point>\ frame\_timestamp;}
+\DoxyCodeLine{00377\ \ \ \};}
+\DoxyCodeLine{00378\ }
+\DoxyCodeLine{00384\ \ \ \textcolor{keyword}{struct\ }packet\_raw\_avcodec:\ packet\_raw\_t\ \{}
+\DoxyCodeLine{00385\ \ \ \ \ packet\_raw\_avcodec()\ \{}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ av\_packet\ =\ av\_packet\_alloc();}
+\DoxyCodeLine{00387\ \ \ \ \ \}}
+\DoxyCodeLine{00388\ }
+\DoxyCodeLine{00389\ \ \ \ \ \string~packet\_raw\_avcodec()\ \{}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ av\_packet\_free(\&this-\/>av\_packet);}
+\DoxyCodeLine{00391\ \ \ \ \ \}}
+\DoxyCodeLine{00392\ }
+\DoxyCodeLine{00393\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_idr()\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ av\_packet-\/>flags\ \&\ AV\_PKT\_FLAG\_KEY;}
+\DoxyCodeLine{00395\ \ \ \ \ \}}
+\DoxyCodeLine{00396\ }
+\DoxyCodeLine{00397\ \ \ \ \ int64\_t\ frame\_index()\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ av\_packet-\/>pts;}
+\DoxyCodeLine{00399\ \ \ \ \ \}}
+\DoxyCodeLine{00400\ }
+\DoxyCodeLine{00401\ \ \ \ \ uint8\_t\ *data()\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ av\_packet-\/>data;}
+\DoxyCodeLine{00403\ \ \ \ \ \}}
+\DoxyCodeLine{00404\ }
+\DoxyCodeLine{00405\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ data\_size()\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ av\_packet-\/>size;}
+\DoxyCodeLine{00407\ \ \ \ \ \}}
+\DoxyCodeLine{00408\ }
+\DoxyCodeLine{00409\ \ \ \ \ AVPacket\ *av\_packet;}
+\DoxyCodeLine{00410\ \ \ \};}
+\DoxyCodeLine{00411\ }
+\DoxyCodeLine{00418\ \ \ \textcolor{keyword}{struct\ }packet\_raw\_generic:\ packet\_raw\_t\ \{}
+\DoxyCodeLine{00419\ \ \ \ \ packet\_raw\_generic(std::vector<uint8\_t>\ \&\&frame\_data,\ int64\_t\ frame\_index,\ \textcolor{keywordtype}{bool}\ idr):}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ \ \ frame\_data\ \{std::move(frame\_data)\},}
+\DoxyCodeLine{00421\ \ \ \ \ \ \ \ \ index\ \{frame\_index\},}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ \ \ idr\ \{idr\}\ \{}
+\DoxyCodeLine{00423\ \ \ \ \ \}}
+\DoxyCodeLine{00424\ }
+\DoxyCodeLine{00425\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_idr()\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{00426\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ idr;}
+\DoxyCodeLine{00427\ \ \ \ \ \}}
+\DoxyCodeLine{00428\ }
+\DoxyCodeLine{00429\ \ \ \ \ int64\_t\ frame\_index()\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{00430\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ index;}
+\DoxyCodeLine{00431\ \ \ \ \ \}}
+\DoxyCodeLine{00432\ }
+\DoxyCodeLine{00433\ \ \ \ \ uint8\_t\ *data()\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ frame\_data.data();}
+\DoxyCodeLine{00435\ \ \ \ \ \}}
+\DoxyCodeLine{00436\ }
+\DoxyCodeLine{00437\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ data\_size()\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ frame\_data.size();}
+\DoxyCodeLine{00439\ \ \ \ \ \}}
+\DoxyCodeLine{00440\ }
+\DoxyCodeLine{00441\ \ \ \ \ std::vector<uint8\_t>\ frame\_data;}
+\DoxyCodeLine{00442\ \ \ \ \ int64\_t\ index;}
+\DoxyCodeLine{00443\ \ \ \ \ \textcolor{keywordtype}{bool}\ idr;}
+\DoxyCodeLine{00444\ \ \ \};}
+\DoxyCodeLine{00445\ }
+\DoxyCodeLine{00446\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{audio_8h_abe0a730704a0bf6b80dcc8f75d704ffd}{packet\_t}}\ =\ std::unique\_ptr<packet\_raw\_t>;}
+\DoxyCodeLine{00447\ }
+\DoxyCodeLine{00453\ \ \ \textcolor{keyword}{struct\ }hdr\_info\_raw\_t\ \{}
+\DoxyCodeLine{00454\ \ \ \ \ \textcolor{keyword}{explicit}\ hdr\_info\_raw\_t(\textcolor{keywordtype}{bool}\ enabled):}
+\DoxyCodeLine{00455\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{config_8cpp_a9aca908eacf04026666ed10bd3147781a6d9edcff01b50aab8dd96b60d7b8522c}{enabled}}\ \{\mbox{\hyperlink{config_8cpp_a9aca908eacf04026666ed10bd3147781a6d9edcff01b50aab8dd96b60d7b8522c}{enabled}}\},}
+\DoxyCodeLine{00456\ \ \ \ \ \ \ \ \ metadata\ \{\}\ \{\};}
+\DoxyCodeLine{00457\ \ \ \ \ \textcolor{keyword}{explicit}\ hdr\_info\_raw\_t(\textcolor{keywordtype}{bool}\ enabled,\ \textcolor{keyword}{const}\ SS\_HDR\_METADATA\ \&metadata):}
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{config_8cpp_a9aca908eacf04026666ed10bd3147781a6d9edcff01b50aab8dd96b60d7b8522c}{enabled}}\ \{\mbox{\hyperlink{config_8cpp_a9aca908eacf04026666ed10bd3147781a6d9edcff01b50aab8dd96b60d7b8522c}{enabled}}\},}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \ \ metadata\ \{metadata\}\ \{\};}
+\DoxyCodeLine{00460\ }
+\DoxyCodeLine{00461\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{config_8cpp_a9aca908eacf04026666ed10bd3147781a6d9edcff01b50aab8dd96b60d7b8522c}{enabled}};}
+\DoxyCodeLine{00462\ \ \ \ \ SS\_HDR\_METADATA\ metadata;}
+\DoxyCodeLine{00463\ \ \ \};}
+\DoxyCodeLine{00464\ }
+\DoxyCodeLine{00465\ \ \ \textcolor{keyword}{using\ }hdr\_info\_t\ =\ std::unique\_ptr<hdr\_info\_raw\_t>;}
+\DoxyCodeLine{00466\ }
+\DoxyCodeLine{00467\ \ \ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{int}\ active\_hevc\_mode;}
+\DoxyCodeLine{00468\ \ \ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{int}\ active\_av1\_mode;}
+\DoxyCodeLine{00469\ \ \ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{bool}\ last\_encoder\_probe\_supported\_ref\_frames\_invalidation;}
+\DoxyCodeLine{00470\ \ \ \textcolor{keyword}{extern}\ std::array<bool,\ 3>\ last\_encoder\_probe\_supported\_yuv444\_for\_codec;\ \ \textcolor{comment}{//\ 0\ -\/\ H.264,\ 1\ -\/\ HEVC,\ 2\ -\/\ AV1}}
+\DoxyCodeLine{00471\ }
+\DoxyCodeLine{00472\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{audio_8cpp_a50f4f1627a2b1c7ae2021dd0dbf21b03}{capture}}(}
+\DoxyCodeLine{00473\ \ \ \ \ safe::mail\_t\ mail,}
+\DoxyCodeLine{00474\ \ \ \ \ config\_t\ config,}
+\DoxyCodeLine{00475\ \ \ \ \ \textcolor{keywordtype}{void}\ *channel\_data}
+\DoxyCodeLine{00476\ \ \ );}
+\DoxyCodeLine{00477\ }
+\DoxyCodeLine{00478\ \ \ \textcolor{keywordtype}{bool}\ validate\_encoder(encoder\_t\ \&encoder,\ \textcolor{keywordtype}{bool}\ expect\_failure);}
+\DoxyCodeLine{00479\ }
+\DoxyCodeLine{00484\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{video_8cpp_a101bc90e3ddc3a7938011182682d664b}{allow\_encoder\_probing}}();}
+\DoxyCodeLine{00485\ }
+\DoxyCodeLine{00494\ \ \ \textcolor{keywordtype}{int}\ probe\_encoders();}
+\DoxyCodeLine{00495\ \}\ \ \textcolor{comment}{//\ namespace\ video}}
+
+\end{DoxyCode}

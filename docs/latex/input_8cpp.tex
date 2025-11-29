@@ -1,0 +1,979 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/input.cpp File Reference}
+\hypertarget{input_8cpp}{}\label{input_8cpp}\index{/Users/alexworland/autoBitrate/apollo/src/input.cpp@{/Users/alexworland/autoBitrate/apollo/src/input.cpp}}
+
+
+Definitions for gamepad, keyboard, and mouse input handling.  
+
+
+{\ttfamily \#include $<$cstdint$>$}\newline
+{\ttfamily \#include $<$moonlight-\/common-\/c/src/\+Input.\+h$>$}\newline
+{\ttfamily \#include $<$moonlight-\/common-\/c/src/\+Limelight.\+h$>$}\newline
+{\ttfamily \#include $<$bitset$>$}\newline
+{\ttfamily \#include $<$chrono$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$list$>$}\newline
+{\ttfamily \#include $<$thread$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+{\ttfamily \#include $<$boost/endian/buffers.\+hpp$>$}\newline
+{\ttfamily \#include "{}config.\+h"{}}\newline
+{\ttfamily \#include "{}globals.\+h"{}}\newline
+{\ttfamily \#include "{}input.\+h"{}}\newline
+{\ttfamily \#include "{}logging.\+h"{}}\newline
+{\ttfamily \#include "{}platform/common.\+h"{}}\newline
+{\ttfamily \#include "{}thread\+\_\+pool.\+h"{}}\newline
+{\ttfamily \#include "{}utility.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structinput_1_1gamepad__t}{input\+::gamepad\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Gamepad state structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structinput_1_1input__t}{input\+::input\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Main input handler structure. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classinput_1_1deinit__t}{input\+::deinit\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em RAII deinitialization helper for input system. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{input_8cpp_a2a0e477b7ffd2a6e6cb81454a3238140}\label{input_8cpp_a2a0e477b7ffd2a6e6cb81454a3238140} 
+\#define {\bfseries WHEEL\+\_\+\+DELTA}~120
+\item 
+\Hypertarget{input_8cpp_ac43e65516dad519097c6ddc48daf6145}\label{input_8cpp_ac43e65516dad519097c6ddc48daf6145} 
+\#define {\bfseries DISABLE\+\_\+\+LEFT\+\_\+\+BUTTON\+\_\+\+DELAY}~((thread\+\_\+pool\+\_\+util\+::\+Thread\+Pool\+::task\+\_\+id\+\_\+t) 0x01)
+\item 
+\Hypertarget{input_8cpp_a9982b64ec21f8243d0556576dc45c845}\label{input_8cpp_a9982b64ec21f8243d0556576dc45c845} 
+\#define {\bfseries ENABLE\+\_\+\+LEFT\+\_\+\+BUTTON\+\_\+\+DELAY}~nullptr
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{input_8cpp_a1a121afc97f203c2eb87cc550bd5378c}\label{input_8cpp_a1a121afc97f203c2eb87cc550bd5378c} 
+typedef uint32\+\_\+t {\bfseries input\+::key\+\_\+press\+\_\+id\+\_\+t}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{input_8cpp_abb88f2ec1e52eb1411618fe2dba71c42}{input\+::button\+\_\+state\+\_\+e}} \{ \mbox{\hyperlink{input_8cpp_abb88f2ec1e52eb1411618fe2dba71c42ab50339a10e1de285ac99d4c3990b8693}{NONE}}
+, \mbox{\hyperlink{input_8cpp_abb88f2ec1e52eb1411618fe2dba71c42ac4e0e4e3118472beeb2ae75827450f1f}{DOWN}}
+, \mbox{\hyperlink{input_8cpp_abb88f2ec1e52eb1411618fe2dba71c42afbaedde498cdead4f2780217646e9ba1}{UP}}
+ \}
+\item 
+enum class \mbox{\hyperlink{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53}{input\+::batch\+\_\+result\+\_\+e}} \{ \mbox{\hyperlink{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53ad2f6520849a4f012d0af6bbd2854b0c7}{batched}}
+, \mbox{\hyperlink{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53a39df9acb132bb045629bed6d0de9dbd4}{not\+\_\+batchable}}
+, \mbox{\hyperlink{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53a015d04616194bb2e0e2ab5092acd3d9a}{terminate\+\_\+batch}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{input_8cpp_a06a5bf31823f7fbdc3acd682702ef5b5}\label{input_8cpp_a06a5bf31823f7fbdc3acd682702ef5b5} 
+{\footnotesize template$<$std\+::size\+\_\+t N$>$ }\\int {\bfseries input\+::alloc\+\_\+id} (std\+::bitset$<$ N $>$ \&gamepad\+\_\+mask)
+\item 
+\Hypertarget{input_8cpp_adacabf0deec4d1bb847f5b7bcc11e81c}\label{input_8cpp_adacabf0deec4d1bb847f5b7bcc11e81c} 
+{\footnotesize template$<$std\+::size\+\_\+t N$>$ }\\void {\bfseries input\+::free\+\_\+id} (std\+::bitset$<$ N $>$ \&gamepad\+\_\+mask, int id)
+\item 
+\Hypertarget{input_8cpp_aad80a26571b21325a53c0e189e4579cb}\label{input_8cpp_aad80a26571b21325a53c0e189e4579cb} 
+key\+\_\+press\+\_\+id\+\_\+t {\bfseries input\+::make\+\_\+kpid} (uint16\+\_\+t vk, uint8\+\_\+t flags)
+\item 
+\Hypertarget{input_8cpp_ae9de5aed5d71f1780f24b62b954e3713}\label{input_8cpp_ae9de5aed5d71f1780f24b62b954e3713} 
+uint16\+\_\+t {\bfseries input\+::vk\+\_\+from\+\_\+kpid} (key\+\_\+press\+\_\+id\+\_\+t kpid)
+\item 
+\Hypertarget{input_8cpp_a35be521014e71dcbf95e2945b97ee50b}\label{input_8cpp_a35be521014e71dcbf95e2945b97ee50b} 
+uint8\+\_\+t {\bfseries input\+::flags\+\_\+from\+\_\+kpid} (key\+\_\+press\+\_\+id\+\_\+t kpid)
+\item 
+float \mbox{\hyperlink{input_8cpp_a8174e152222055a94ecfa71d7591ac60}{input\+::from\+\_\+netfloat}} (netfloat f)
+\begin{DoxyCompactList}\small\item\em Convert a little-\/endian netfloat to a native endianness float. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{input_8cpp_a266549c8fbaf0546cef80151a9c66e64}{input\+::from\+\_\+clamped\+\_\+netfloat}} (netfloat f, float min, float max)
+\begin{DoxyCompactList}\small\item\em Convert a little-\/endian netfloat to a native endianness float and clamps it. \end{DoxyCompactList}\item 
+\Hypertarget{input_8cpp_a1a6a002cfabd721cda2e9081c48485d2}\label{input_8cpp_a1a6a002cfabd721cda2e9081c48485d2} 
+void {\bfseries input\+::free\+\_\+gamepad} (platf\+::input\+\_\+t \&platf\+\_\+input, int id)
+\item 
+int \mbox{\hyperlink{input_8cpp_acfc2bcc29812506c9fcaa7643c0e7fc8}{input\+::apply\+\_\+shortcut}} (short key\+Code)
+\begin{DoxyCompactList}\small\item\em Apply shortcut based on VKEY. \end{DoxyCompactList}\item 
+\Hypertarget{input_8cpp_abbcbb9b888b95a704eaa3c6a9c5d01c4}\label{input_8cpp_abbcbb9b888b95a704eaa3c6a9c5d01c4} 
+void {\bfseries input\+::print} (PNV\+\_\+\+REL\+\_\+\+MOUSE\+\_\+\+MOVE\+\_\+\+PACKET packet)
+\item 
+\Hypertarget{input_8cpp_aafa4d8eb6254a030728fd089a2688cbd}\label{input_8cpp_aafa4d8eb6254a030728fd089a2688cbd} 
+void {\bfseries input\+::print} (PNV\+\_\+\+ABS\+\_\+\+MOUSE\+\_\+\+MOVE\+\_\+\+PACKET packet)
+\item 
+\Hypertarget{input_8cpp_ae3f59a7de1fa456403488274cb21c4ef}\label{input_8cpp_ae3f59a7de1fa456403488274cb21c4ef} 
+void {\bfseries input\+::print} (PNV\+\_\+\+MOUSE\+\_\+\+BUTTON\+\_\+\+PACKET packet)
+\item 
+\Hypertarget{input_8cpp_a44fd25b3bf4069c839450016752a66aa}\label{input_8cpp_a44fd25b3bf4069c839450016752a66aa} 
+void {\bfseries input\+::print} (PNV\+\_\+\+SCROLL\+\_\+\+PACKET packet)
+\item 
+\Hypertarget{input_8cpp_ac8d84a683a6680bb62a0e25ae9fa6d02}\label{input_8cpp_ac8d84a683a6680bb62a0e25ae9fa6d02} 
+void {\bfseries input\+::print} (PSS\+\_\+\+HSCROLL\+\_\+\+PACKET packet)
+\item 
+\Hypertarget{input_8cpp_a92a77afbf47f3f87d04f24aa92ae55e2}\label{input_8cpp_a92a77afbf47f3f87d04f24aa92ae55e2} 
+void {\bfseries input\+::print} (PNV\+\_\+\+KEYBOARD\+\_\+\+PACKET packet)
+\item 
+\Hypertarget{input_8cpp_ab70bf8b5c1b6084187381d9fb0c01639}\label{input_8cpp_ab70bf8b5c1b6084187381d9fb0c01639} 
+void {\bfseries input\+::print} (PNV\+\_\+\+UNICODE\+\_\+\+PACKET packet)
+\item 
+\Hypertarget{input_8cpp_a16e5da71c989344cffb445e8fb5067e8}\label{input_8cpp_a16e5da71c989344cffb445e8fb5067e8} 
+void {\bfseries input\+::print} (PNV\+\_\+\+MULTI\+\_\+\+CONTROLLER\+\_\+\+PACKET packet)
+\item 
+void \mbox{\hyperlink{input_8cpp_a95167f128d7a7d0670f2f41b92b27945}{input\+::print}} (PSS\+\_\+\+TOUCH\+\_\+\+PACKET packet)
+\begin{DoxyCompactList}\small\item\em Prints a touch packet. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{input_8cpp_a14a514864eab370e04ab5e7070b21c68}{input\+::print}} (PSS\+\_\+\+PEN\+\_\+\+PACKET packet)
+\begin{DoxyCompactList}\small\item\em Prints a pen packet. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{input_8cpp_a4a855a49e2f3382fea25521f01c353db}{input\+::print}} (PSS\+\_\+\+CONTROLLER\+\_\+\+ARRIVAL\+\_\+\+PACKET packet)
+\begin{DoxyCompactList}\small\item\em Prints a controller arrival packet. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{input_8cpp_aa928670a9f878023ba9b8954aed56d0f}{input\+::print}} (PSS\+\_\+\+CONTROLLER\+\_\+\+TOUCH\+\_\+\+PACKET packet)
+\begin{DoxyCompactList}\small\item\em Prints a controller touch packet. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{input_8cpp_ab60fda9d401cb6d2b2b5dc7677fcb85d}{input\+::print}} (PSS\+\_\+\+CONTROLLER\+\_\+\+MOTION\+\_\+\+PACKET packet)
+\begin{DoxyCompactList}\small\item\em Prints a controller motion packet. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{input_8cpp_a549f1c84eb2f7c6d456cdf301ddad6d8}{input\+::print}} (PSS\+\_\+\+CONTROLLER\+\_\+\+BATTERY\+\_\+\+PACKET packet)
+\begin{DoxyCompactList}\small\item\em Prints a controller battery packet. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{input_8cpp_ad2616fa2882f902e40ed9d251783cdef}{input\+::print}} (void \texorpdfstring{$\ast$}{*}input)
+\begin{DoxyCompactList}\small\item\em Forward declaration of input structure. \end{DoxyCompactList}\item 
+\Hypertarget{input_8cpp_a2a401d8818841568106ec27d9398366c}\label{input_8cpp_a2a401d8818841568106ec27d9398366c} 
+void {\bfseries input\+::passthrough} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&input, PNV\+\_\+\+REL\+\_\+\+MOUSE\+\_\+\+MOVE\+\_\+\+PACKET packet)
+\item 
+std\+::optional$<$ std\+::pair$<$ float, float $>$ $>$ \mbox{\hyperlink{input_8cpp_a1f04a179250e28dd05b1d081ef036bbd}{input\+::client\+\_\+to\+\_\+touchport}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&input, const std\+::pair$<$ float, float $>$ \&val, const std\+::pair$<$ float, float $>$ \&size)
+\begin{DoxyCompactList}\small\item\em Converts client coordinates on the specified surface into screen coordinates. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{input_8cpp_a1d21aa2a3fe500a8ce406e1fbd31413e}{input\+::multiply\+\_\+polar\+\_\+by\+\_\+cartesian\+\_\+scalar}} (float r, float angle, const std\+::pair$<$ float, float $>$ \&scalar)
+\begin{DoxyCompactList}\small\item\em Multiply a polar coordinate pair by a cartesian scaling factor. \end{DoxyCompactList}\item 
+std\+::pair$<$ float, float $>$ \mbox{\hyperlink{input_8cpp_aad1a158f9b68a3e9fe1bda77d5163d21}{input\+::scale\+\_\+client\+\_\+contact\+\_\+area}} (const std\+::pair$<$ float, float $>$ \&val, uint16\+\_\+t rotation, const std\+::pair$<$ float, float $>$ \&scalar)
+\begin{DoxyCompactList}\small\item\em Scale the ellipse axes according to the provided size. \end{DoxyCompactList}\item 
+\Hypertarget{input_8cpp_aa007fe159e19bf4f7a57a4c934023ccd}\label{input_8cpp_aa007fe159e19bf4f7a57a4c934023ccd} 
+void {\bfseries input\+::passthrough} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&input, PNV\+\_\+\+ABS\+\_\+\+MOUSE\+\_\+\+MOVE\+\_\+\+PACKET packet)
+\item 
+void \mbox{\hyperlink{input_8cpp_ae72cdf307da7ea38aa58a614fe648b68}{input\+::passthrough}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&input, PNV\+\_\+\+MOUSE\+\_\+\+BUTTON\+\_\+\+PACKET packet)
+\item 
+\Hypertarget{input_8cpp_ad80cbbb7c95f76c8ce2c39b735516dd2}\label{input_8cpp_ad80cbbb7c95f76c8ce2c39b735516dd2} 
+short {\bfseries input\+::map\+\_\+keycode} (short keycode)
+\item 
+\Hypertarget{input_8cpp_aa2516be3a463094ee4c55b0aae2de2f1}\label{input_8cpp_aa2516be3a463094ee4c55b0aae2de2f1} 
+void {\bfseries input\+::update\+\_\+shortcut\+Flags} (int \texorpdfstring{$\ast$}{*}flags, short key\+Code, bool release)
+\begin{DoxyCompactList}\small\item\em Update flags for keyboard shortcut combo\textquotesingle{}s. \end{DoxyCompactList}\item 
+\Hypertarget{input_8cpp_a463e3f5ba834b4346931a39fc8bd4d8d}\label{input_8cpp_a463e3f5ba834b4346931a39fc8bd4d8d} 
+bool {\bfseries input\+::is\+\_\+modifier} (uint16\+\_\+t key\+Code)
+\item 
+\Hypertarget{input_8cpp_ad7730672c4f5a3643e2985a19fd2256a}\label{input_8cpp_ad7730672c4f5a3643e2985a19fd2256a} 
+void {\bfseries input\+::send\+\_\+key\+\_\+and\+\_\+modifiers} (uint16\+\_\+t key\+\_\+code, bool release, uint8\+\_\+t flags, uint8\+\_\+t synthetic\+\_\+modifiers)
+\item 
+\Hypertarget{input_8cpp_a6f8db7bba76db6506f833c5965effd84}\label{input_8cpp_a6f8db7bba76db6506f833c5965effd84} 
+void {\bfseries input\+::repeat\+\_\+key} (uint16\+\_\+t key\+\_\+code, uint8\+\_\+t flags, uint8\+\_\+t synthetic\+\_\+modifiers)
+\item 
+\Hypertarget{input_8cpp_a12ea38551a1392c377bbc09f43ddba47}\label{input_8cpp_a12ea38551a1392c377bbc09f43ddba47} 
+void {\bfseries input\+::passthrough} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&input, PNV\+\_\+\+KEYBOARD\+\_\+\+PACKET packet)
+\item 
+void \mbox{\hyperlink{input_8cpp_ad82f91d9e83cbcc56a969fb85bcba4a2}{input\+::passthrough}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&input, PNV\+\_\+\+SCROLL\+\_\+\+PACKET packet)
+\begin{DoxyCompactList}\small\item\em Called to pass a vertical scroll message the platform backend. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{input_8cpp_a9eddd12a22e534559925fc36ce4cd51d}{input\+::passthrough}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&input, PSS\+\_\+\+HSCROLL\+\_\+\+PACKET packet)
+\begin{DoxyCompactList}\small\item\em Called to pass a horizontal scroll message the platform backend. \end{DoxyCompactList}\item 
+\Hypertarget{input_8cpp_a0ffa0805a27d52d5b0a85d49dd2e5500}\label{input_8cpp_a0ffa0805a27d52d5b0a85d49dd2e5500} 
+void {\bfseries input\+::passthrough} (PNV\+\_\+\+UNICODE\+\_\+\+PACKET packet)
+\item 
+void \mbox{\hyperlink{input_8cpp_ab61807a1ffe676844425114c222e4aeb}{input\+::passthrough}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&input, PSS\+\_\+\+CONTROLLER\+\_\+\+ARRIVAL\+\_\+\+PACKET packet)
+\begin{DoxyCompactList}\small\item\em Called to pass a controller arrival message to the platform backend. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{input_8cpp_a6358d683b9a530f878aea6cb7f870f98}{input\+::passthrough}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&input, PSS\+\_\+\+TOUCH\+\_\+\+PACKET packet)
+\begin{DoxyCompactList}\small\item\em Called to pass a touch message to the platform backend. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{input_8cpp_ae007439539023488e95c0fd5be290cff}{input\+::passthrough}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&input, PSS\+\_\+\+PEN\+\_\+\+PACKET packet)
+\begin{DoxyCompactList}\small\item\em Called to pass a pen message to the platform backend. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{input_8cpp_a8ff72c99ac8ba047baea7850391e3959}{input\+::passthrough}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&input, PSS\+\_\+\+CONTROLLER\+\_\+\+TOUCH\+\_\+\+PACKET packet)
+\begin{DoxyCompactList}\small\item\em Called to pass a controller touch message to the platform backend. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{input_8cpp_af3b2f0bb464c376f7634397f695811cd}{input\+::passthrough}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&input, PSS\+\_\+\+CONTROLLER\+\_\+\+MOTION\+\_\+\+PACKET packet)
+\begin{DoxyCompactList}\small\item\em Called to pass a controller motion message to the platform backend. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{input_8cpp_a6e928c0127c986c41cfc5ef5401efe56}{input\+::passthrough}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&input, PSS\+\_\+\+CONTROLLER\+\_\+\+BATTERY\+\_\+\+PACKET packet)
+\begin{DoxyCompactList}\small\item\em Called to pass a controller battery message to the platform backend. \end{DoxyCompactList}\item 
+\Hypertarget{input_8cpp_a97565ee3f611361a72e299847b93636b}\label{input_8cpp_a97565ee3f611361a72e299847b93636b} 
+void {\bfseries input\+::passthrough} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&input, PNV\+\_\+\+MULTI\+\_\+\+CONTROLLER\+\_\+\+PACKET packet)
+\item 
+\mbox{\hyperlink{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53}{batch\+\_\+result\+\_\+e}} \mbox{\hyperlink{input_8cpp_ab9528d585904167e1c4ab291af46d5ee}{input\+::batch}} (PNV\+\_\+\+REL\+\_\+\+MOUSE\+\_\+\+MOVE\+\_\+\+PACKET dest, PNV\+\_\+\+REL\+\_\+\+MOUSE\+\_\+\+MOVE\+\_\+\+PACKET src)
+\begin{DoxyCompactList}\small\item\em Batch two relative mouse messages. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53}{batch\+\_\+result\+\_\+e}} \mbox{\hyperlink{input_8cpp_af95d8d56f1fe634e87df5896538af322}{input\+::batch}} (PNV\+\_\+\+ABS\+\_\+\+MOUSE\+\_\+\+MOVE\+\_\+\+PACKET dest, PNV\+\_\+\+ABS\+\_\+\+MOUSE\+\_\+\+MOVE\+\_\+\+PACKET src)
+\begin{DoxyCompactList}\small\item\em Batch two absolute mouse messages. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53}{batch\+\_\+result\+\_\+e}} \mbox{\hyperlink{input_8cpp_af826a1070be3edf54a2ef5a4de707517}{input\+::batch}} (PNV\+\_\+\+SCROLL\+\_\+\+PACKET dest, PNV\+\_\+\+SCROLL\+\_\+\+PACKET src)
+\begin{DoxyCompactList}\small\item\em Batch two vertical scroll messages. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53}{batch\+\_\+result\+\_\+e}} \mbox{\hyperlink{input_8cpp_a87724a1f73b79a5aca30ea4a9a0e804a}{input\+::batch}} (PSS\+\_\+\+HSCROLL\+\_\+\+PACKET dest, PSS\+\_\+\+HSCROLL\+\_\+\+PACKET src)
+\begin{DoxyCompactList}\small\item\em Batch two horizontal scroll messages. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53}{batch\+\_\+result\+\_\+e}} \mbox{\hyperlink{input_8cpp_a29701503edc3533014721b4b866e274d}{input\+::batch}} (PNV\+\_\+\+MULTI\+\_\+\+CONTROLLER\+\_\+\+PACKET dest, PNV\+\_\+\+MULTI\+\_\+\+CONTROLLER\+\_\+\+PACKET src)
+\begin{DoxyCompactList}\small\item\em Batch two controller state messages. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53}{batch\+\_\+result\+\_\+e}} \mbox{\hyperlink{input_8cpp_a6543f32910395353a9c2b6e13d14d535}{input\+::batch}} (PSS\+\_\+\+TOUCH\+\_\+\+PACKET dest, PSS\+\_\+\+TOUCH\+\_\+\+PACKET src)
+\begin{DoxyCompactList}\small\item\em Batch two touch messages. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53}{batch\+\_\+result\+\_\+e}} \mbox{\hyperlink{input_8cpp_a0a7ea04eb710f4cd7416f8279a533227}{input\+::batch}} (PSS\+\_\+\+PEN\+\_\+\+PACKET dest, PSS\+\_\+\+PEN\+\_\+\+PACKET src)
+\begin{DoxyCompactList}\small\item\em Batch two pen messages. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53}{batch\+\_\+result\+\_\+e}} \mbox{\hyperlink{input_8cpp_a006df2de8f6938c65b63c623bdbe0393}{input\+::batch}} (PSS\+\_\+\+CONTROLLER\+\_\+\+TOUCH\+\_\+\+PACKET dest, PSS\+\_\+\+CONTROLLER\+\_\+\+TOUCH\+\_\+\+PACKET src)
+\begin{DoxyCompactList}\small\item\em Batch two controller touch messages. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53}{batch\+\_\+result\+\_\+e}} \mbox{\hyperlink{input_8cpp_a877f8805dd390193ffbdf43ad08094ff}{input\+::batch}} (PSS\+\_\+\+CONTROLLER\+\_\+\+MOTION\+\_\+\+PACKET dest, PSS\+\_\+\+CONTROLLER\+\_\+\+MOTION\+\_\+\+PACKET src)
+\begin{DoxyCompactList}\small\item\em Batch two controller motion messages. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53}{batch\+\_\+result\+\_\+e}} \mbox{\hyperlink{input_8cpp_a6287d3c8835014d7c30494f7ca45d866}{input\+::batch}} (PNV\+\_\+\+INPUT\+\_\+\+HEADER dest, PNV\+\_\+\+INPUT\+\_\+\+HEADER src)
+\begin{DoxyCompactList}\small\item\em Batch two input messages. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{input_8cpp_aca5debddd043eebbcee092fc2baf9e06}{input\+::passthrough\+\_\+next\+\_\+message}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ input)
+\begin{DoxyCompactList}\small\item\em Called on a thread pool thread to process an input message. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{input_8cpp_a264a5ef9c071d88224a5ac048500f013}{input\+::passthrough}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&input, std\+::vector$<$ std\+::uint8\+\_\+t $>$ \&\&input\+\_\+data, const \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{crypto\+::\+PERM}} \&permission)
+\begin{DoxyCompactList}\small\item\em Called on the control stream thread to queue an input message. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{input_8cpp_a4270b6d9a8dc15d78d5ec88c28a472b3}{input\+::reset}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&input)
+\begin{DoxyCompactList}\small\item\em Reset input device state. \end{DoxyCompactList}\item 
+std\+::unique\+\_\+ptr$<$ platf\+::deinit\+\_\+t $>$ \mbox{\hyperlink{input_8cpp_a43605f236cc9880b306a530c9040875c}{input\+::init}} ()
+\begin{DoxyCompactList}\small\item\em Initialize the input subsystem. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{input_8cpp_a1b841c2efb01fdcfb17cc452dd394bdb}{input\+::probe\+\_\+gamepads}} ()
+\begin{DoxyCompactList}\small\item\em Probe for available gamepad devices. \end{DoxyCompactList}\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \mbox{\hyperlink{input_8cpp_aafc5dea242b2ee32550394aab76b7cca}{input\+::alloc}} (safe\+::mail\+\_\+t \mbox{\hyperlink{namespacemail}{mail}})
+\begin{DoxyCompactList}\small\item\em Allocate a new input device. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{input_8cpp_a07f4b92244e28be14e2a74a4129fd6d4}\label{input_8cpp_a07f4b92244e28be14e2a74a4129fd6d4} 
+constexpr auto {\bfseries input\+::\+MAX\+\_\+\+GAMEPADS} = std\+::min((std\+::size\+\_\+t) platf\+::\+MAX\+\_\+\+GAMEPADS, sizeof(std\+::int16\+\_\+t) \texorpdfstring{$\ast$}{*} 8)
+\item 
+\Hypertarget{input_8cpp_ab191ad094b03435652ea63c5b70b5fcd}\label{input_8cpp_ab191ad094b03435652ea63c5b70b5fcd} 
+constexpr auto {\bfseries input\+::\+VKEY\+\_\+\+SHIFT} = 0x10
+\item 
+\Hypertarget{input_8cpp_ab76c61f63edbdbe564e19751ee89a96c}\label{input_8cpp_ab76c61f63edbdbe564e19751ee89a96c} 
+constexpr auto {\bfseries input\+::\+VKEY\+\_\+\+LSHIFT} = 0x\+A0
+\item 
+\Hypertarget{input_8cpp_aa6ea23f0ed481da2fbf290b3d4307eca}\label{input_8cpp_aa6ea23f0ed481da2fbf290b3d4307eca} 
+constexpr auto {\bfseries input\+::\+VKEY\+\_\+\+RSHIFT} = 0x\+A1
+\item 
+\Hypertarget{input_8cpp_aefef9265fb153170d3f9231a566c6af2}\label{input_8cpp_aefef9265fb153170d3f9231a566c6af2} 
+constexpr auto {\bfseries input\+::\+VKEY\+\_\+\+CONTROL} = 0x11
+\item 
+\Hypertarget{input_8cpp_a198087b668e9fd65fc51cc38a129021f}\label{input_8cpp_a198087b668e9fd65fc51cc38a129021f} 
+constexpr auto {\bfseries input\+::\+VKEY\+\_\+\+LCONTROL} = 0x\+A2
+\item 
+\Hypertarget{input_8cpp_aec22fe0251204bde31b8244dfca06030}\label{input_8cpp_aec22fe0251204bde31b8244dfca06030} 
+constexpr auto {\bfseries input\+::\+VKEY\+\_\+\+RCONTROL} = 0x\+A3
+\item 
+\Hypertarget{input_8cpp_a57065d6c292df976bbad2500d52e7957}\label{input_8cpp_a57065d6c292df976bbad2500d52e7957} 
+constexpr auto {\bfseries input\+::\+VKEY\+\_\+\+MENU} = 0x12
+\item 
+\Hypertarget{input_8cpp_af16f26c00432827181124120cbdf6f34}\label{input_8cpp_af16f26c00432827181124120cbdf6f34} 
+constexpr auto {\bfseries input\+::\+VKEY\+\_\+\+LMENU} = 0x\+A4
+\item 
+\Hypertarget{input_8cpp_a4bc756aa669ea0d3bdc2b48039666917}\label{input_8cpp_a4bc756aa669ea0d3bdc2b48039666917} 
+constexpr auto {\bfseries input\+::\+VKEY\+\_\+\+RMENU} = 0x\+A5
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Definitions for gamepad, keyboard, and mouse input handling. 
+
+
+
+\label{doc-enum-members}
+\Hypertarget{input_8cpp_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53}\index{input.cpp@{input.cpp}!batch\_result\_e@{batch\_result\_e}}
+\index{batch\_result\_e@{batch\_result\_e}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{batch\_result\_e}{batch\_result\_e}}
+{\footnotesize\ttfamily \label{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53} 
+enum class \mbox{\hyperlink{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53}{input\+::batch\+\_\+result\+\_\+e}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{batched@{batched}!input.cpp@{input.cpp}}\index{input.cpp@{input.cpp}!batched@{batched}}}\Hypertarget{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53ad2f6520849a4f012d0af6bbd2854b0c7}\label{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53ad2f6520849a4f012d0af6bbd2854b0c7} 
+batched&This entry was batched with the source entry. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{not\_batchable@{not\_batchable}!input.cpp@{input.cpp}}\index{input.cpp@{input.cpp}!not\_batchable@{not\_batchable}}}\Hypertarget{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53a39df9acb132bb045629bed6d0de9dbd4}\label{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53a39df9acb132bb045629bed6d0de9dbd4} 
+not\+\_\+batchable&Not eligible to batch but continue attempts to batch. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{terminate\_batch@{terminate\_batch}!input.cpp@{input.cpp}}\index{input.cpp@{input.cpp}!terminate\_batch@{terminate\_batch}}}\Hypertarget{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53a015d04616194bb2e0e2ab5092acd3d9a}\label{input_8cpp_acba8febd1e0c287e7f94b4058fc87e53a015d04616194bb2e0e2ab5092acd3d9a} 
+terminate\+\_\+batch&Stop trying to batch with this entry. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{input_8cpp_abb88f2ec1e52eb1411618fe2dba71c42}\index{input.cpp@{input.cpp}!button\_state\_e@{button\_state\_e}}
+\index{button\_state\_e@{button\_state\_e}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{button\_state\_e}{button\_state\_e}}
+{\footnotesize\ttfamily \label{input_8cpp_abb88f2ec1e52eb1411618fe2dba71c42} 
+enum class \mbox{\hyperlink{input_8cpp_abb88f2ec1e52eb1411618fe2dba71c42}{input\+::button\+\_\+state\+\_\+e}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NONE@{NONE}!input.cpp@{input.cpp}}\index{input.cpp@{input.cpp}!NONE@{NONE}}}\Hypertarget{input_8cpp_abb88f2ec1e52eb1411618fe2dba71c42ab50339a10e1de285ac99d4c3990b8693}\label{input_8cpp_abb88f2ec1e52eb1411618fe2dba71c42ab50339a10e1de285ac99d4c3990b8693} 
+NONE&No button state. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{DOWN@{DOWN}!input.cpp@{input.cpp}}\index{input.cpp@{input.cpp}!DOWN@{DOWN}}}\Hypertarget{input_8cpp_abb88f2ec1e52eb1411618fe2dba71c42ac4e0e4e3118472beeb2ae75827450f1f}\label{input_8cpp_abb88f2ec1e52eb1411618fe2dba71c42ac4e0e4e3118472beeb2ae75827450f1f} 
+DOWN&Button is down. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UP@{UP}!input.cpp@{input.cpp}}\index{input.cpp@{input.cpp}!UP@{UP}}}\Hypertarget{input_8cpp_abb88f2ec1e52eb1411618fe2dba71c42afbaedde498cdead4f2780217646e9ba1}\label{input_8cpp_abb88f2ec1e52eb1411618fe2dba71c42afbaedde498cdead4f2780217646e9ba1} 
+UP&Button is up. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\label{doc-func-members}
+\Hypertarget{input_8cpp_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{input_8cpp_aafc5dea242b2ee32550394aab76b7cca}\index{input.cpp@{input.cpp}!alloc@{alloc}}
+\index{alloc@{alloc}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{alloc()}{alloc()}}
+{\footnotesize\ttfamily \label{input_8cpp_aafc5dea242b2ee32550394aab76b7cca} 
+std\+::shared\+\_\+ptr$<$ input\+\_\+t $>$ input\+::alloc (\begin{DoxyParamCaption}\item[{safe\+::mail\+\_\+t}]{mail}{}\end{DoxyParamCaption})}
+
+
+
+Allocate a new input device. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mail} & Mailbox for communication. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Shared pointer to input device. 
+\end{DoxyReturn}
+\Hypertarget{input_8cpp_acfc2bcc29812506c9fcaa7643c0e7fc8}\index{input.cpp@{input.cpp}!apply\_shortcut@{apply\_shortcut}}
+\index{apply\_shortcut@{apply\_shortcut}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{apply\_shortcut()}{apply\_shortcut()}}
+{\footnotesize\ttfamily \label{input_8cpp_acfc2bcc29812506c9fcaa7643c0e7fc8} 
+int input\+::apply\+\_\+shortcut (\begin{DoxyParamCaption}\item[{short}]{key\+Code}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Apply shortcut based on VKEY. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key\+Code} & The VKEY code \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if no shortcut applied, \texorpdfstring{$>$}{>} 0 if shortcut applied. 
+\end{DoxyReturn}
+\Hypertarget{input_8cpp_af95d8d56f1fe634e87df5896538af322}\index{input.cpp@{input.cpp}!batch@{batch}}
+\index{batch@{batch}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{batch()}{batch()}\hspace{0.1cm}{\footnotesize\ttfamily [1/10]}}
+{\footnotesize\ttfamily \label{input_8cpp_af95d8d56f1fe634e87df5896538af322} 
+batch\+\_\+result\+\_\+e input\+::batch (\begin{DoxyParamCaption}\item[{PNV\+\_\+\+ABS\+\_\+\+MOUSE\+\_\+\+MOVE\+\_\+\+PACKET}]{dest}{, }\item[{PNV\+\_\+\+ABS\+\_\+\+MOUSE\+\_\+\+MOVE\+\_\+\+PACKET}]{src}{}\end{DoxyParamCaption})}
+
+
+
+Batch two absolute mouse messages. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dest} & The original packet to batch into. \\
+\hline
+{\em src} & A later packet to attempt to batch. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The status of the batching operation. 
+\end{DoxyReturn}
+\Hypertarget{input_8cpp_a6287d3c8835014d7c30494f7ca45d866}\index{input.cpp@{input.cpp}!batch@{batch}}
+\index{batch@{batch}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{batch()}{batch()}\hspace{0.1cm}{\footnotesize\ttfamily [2/10]}}
+{\footnotesize\ttfamily \label{input_8cpp_a6287d3c8835014d7c30494f7ca45d866} 
+batch\+\_\+result\+\_\+e input\+::batch (\begin{DoxyParamCaption}\item[{PNV\+\_\+\+INPUT\+\_\+\+HEADER}]{dest}{, }\item[{PNV\+\_\+\+INPUT\+\_\+\+HEADER}]{src}{}\end{DoxyParamCaption})}
+
+
+
+Batch two input messages. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dest} & The original packet to batch into. \\
+\hline
+{\em src} & A later packet to attempt to batch. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The status of the batching operation. 
+\end{DoxyReturn}
+\Hypertarget{input_8cpp_a29701503edc3533014721b4b866e274d}\index{input.cpp@{input.cpp}!batch@{batch}}
+\index{batch@{batch}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{batch()}{batch()}\hspace{0.1cm}{\footnotesize\ttfamily [3/10]}}
+{\footnotesize\ttfamily \label{input_8cpp_a29701503edc3533014721b4b866e274d} 
+batch\+\_\+result\+\_\+e input\+::batch (\begin{DoxyParamCaption}\item[{PNV\+\_\+\+MULTI\+\_\+\+CONTROLLER\+\_\+\+PACKET}]{dest}{, }\item[{PNV\+\_\+\+MULTI\+\_\+\+CONTROLLER\+\_\+\+PACKET}]{src}{}\end{DoxyParamCaption})}
+
+
+
+Batch two controller state messages. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dest} & The original packet to batch into. \\
+\hline
+{\em src} & A later packet to attempt to batch. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The status of the batching operation. 
+\end{DoxyReturn}
+\Hypertarget{input_8cpp_ab9528d585904167e1c4ab291af46d5ee}\index{input.cpp@{input.cpp}!batch@{batch}}
+\index{batch@{batch}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{batch()}{batch()}\hspace{0.1cm}{\footnotesize\ttfamily [4/10]}}
+{\footnotesize\ttfamily \label{input_8cpp_ab9528d585904167e1c4ab291af46d5ee} 
+batch\+\_\+result\+\_\+e input\+::batch (\begin{DoxyParamCaption}\item[{PNV\+\_\+\+REL\+\_\+\+MOUSE\+\_\+\+MOVE\+\_\+\+PACKET}]{dest}{, }\item[{PNV\+\_\+\+REL\+\_\+\+MOUSE\+\_\+\+MOVE\+\_\+\+PACKET}]{src}{}\end{DoxyParamCaption})}
+
+
+
+Batch two relative mouse messages. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dest} & The original packet to batch into. \\
+\hline
+{\em src} & A later packet to attempt to batch. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The status of the batching operation. 
+\end{DoxyReturn}
+\Hypertarget{input_8cpp_af826a1070be3edf54a2ef5a4de707517}\index{input.cpp@{input.cpp}!batch@{batch}}
+\index{batch@{batch}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{batch()}{batch()}\hspace{0.1cm}{\footnotesize\ttfamily [5/10]}}
+{\footnotesize\ttfamily \label{input_8cpp_af826a1070be3edf54a2ef5a4de707517} 
+batch\+\_\+result\+\_\+e input\+::batch (\begin{DoxyParamCaption}\item[{PNV\+\_\+\+SCROLL\+\_\+\+PACKET}]{dest}{, }\item[{PNV\+\_\+\+SCROLL\+\_\+\+PACKET}]{src}{}\end{DoxyParamCaption})}
+
+
+
+Batch two vertical scroll messages. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dest} & The original packet to batch into. \\
+\hline
+{\em src} & A later packet to attempt to batch. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The status of the batching operation. 
+\end{DoxyReturn}
+\Hypertarget{input_8cpp_a877f8805dd390193ffbdf43ad08094ff}\index{input.cpp@{input.cpp}!batch@{batch}}
+\index{batch@{batch}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{batch()}{batch()}\hspace{0.1cm}{\footnotesize\ttfamily [6/10]}}
+{\footnotesize\ttfamily \label{input_8cpp_a877f8805dd390193ffbdf43ad08094ff} 
+batch\+\_\+result\+\_\+e input\+::batch (\begin{DoxyParamCaption}\item[{PSS\+\_\+\+CONTROLLER\+\_\+\+MOTION\+\_\+\+PACKET}]{dest}{, }\item[{PSS\+\_\+\+CONTROLLER\+\_\+\+MOTION\+\_\+\+PACKET}]{src}{}\end{DoxyParamCaption})}
+
+
+
+Batch two controller motion messages. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dest} & The original packet to batch into. \\
+\hline
+{\em src} & A later packet to attempt to batch. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The status of the batching operation. 
+\end{DoxyReturn}
+\Hypertarget{input_8cpp_a006df2de8f6938c65b63c623bdbe0393}\index{input.cpp@{input.cpp}!batch@{batch}}
+\index{batch@{batch}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{batch()}{batch()}\hspace{0.1cm}{\footnotesize\ttfamily [7/10]}}
+{\footnotesize\ttfamily \label{input_8cpp_a006df2de8f6938c65b63c623bdbe0393} 
+batch\+\_\+result\+\_\+e input\+::batch (\begin{DoxyParamCaption}\item[{PSS\+\_\+\+CONTROLLER\+\_\+\+TOUCH\+\_\+\+PACKET}]{dest}{, }\item[{PSS\+\_\+\+CONTROLLER\+\_\+\+TOUCH\+\_\+\+PACKET}]{src}{}\end{DoxyParamCaption})}
+
+
+
+Batch two controller touch messages. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dest} & The original packet to batch into. \\
+\hline
+{\em src} & A later packet to attempt to batch. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The status of the batching operation. 
+\end{DoxyReturn}
+\Hypertarget{input_8cpp_a87724a1f73b79a5aca30ea4a9a0e804a}\index{input.cpp@{input.cpp}!batch@{batch}}
+\index{batch@{batch}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{batch()}{batch()}\hspace{0.1cm}{\footnotesize\ttfamily [8/10]}}
+{\footnotesize\ttfamily \label{input_8cpp_a87724a1f73b79a5aca30ea4a9a0e804a} 
+batch\+\_\+result\+\_\+e input\+::batch (\begin{DoxyParamCaption}\item[{PSS\+\_\+\+HSCROLL\+\_\+\+PACKET}]{dest}{, }\item[{PSS\+\_\+\+HSCROLL\+\_\+\+PACKET}]{src}{}\end{DoxyParamCaption})}
+
+
+
+Batch two horizontal scroll messages. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dest} & The original packet to batch into. \\
+\hline
+{\em src} & A later packet to attempt to batch. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The status of the batching operation. 
+\end{DoxyReturn}
+\Hypertarget{input_8cpp_a0a7ea04eb710f4cd7416f8279a533227}\index{input.cpp@{input.cpp}!batch@{batch}}
+\index{batch@{batch}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{batch()}{batch()}\hspace{0.1cm}{\footnotesize\ttfamily [9/10]}}
+{\footnotesize\ttfamily \label{input_8cpp_a0a7ea04eb710f4cd7416f8279a533227} 
+batch\+\_\+result\+\_\+e input\+::batch (\begin{DoxyParamCaption}\item[{PSS\+\_\+\+PEN\+\_\+\+PACKET}]{dest}{, }\item[{PSS\+\_\+\+PEN\+\_\+\+PACKET}]{src}{}\end{DoxyParamCaption})}
+
+
+
+Batch two pen messages. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dest} & The original packet to batch into. \\
+\hline
+{\em src} & A later packet to attempt to batch. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The status of the batching operation. 
+\end{DoxyReturn}
+\Hypertarget{input_8cpp_a6543f32910395353a9c2b6e13d14d535}\index{input.cpp@{input.cpp}!batch@{batch}}
+\index{batch@{batch}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{batch()}{batch()}\hspace{0.1cm}{\footnotesize\ttfamily [10/10]}}
+{\footnotesize\ttfamily \label{input_8cpp_a6543f32910395353a9c2b6e13d14d535} 
+batch\+\_\+result\+\_\+e input\+::batch (\begin{DoxyParamCaption}\item[{PSS\+\_\+\+TOUCH\+\_\+\+PACKET}]{dest}{, }\item[{PSS\+\_\+\+TOUCH\+\_\+\+PACKET}]{src}{}\end{DoxyParamCaption})}
+
+
+
+Batch two touch messages. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dest} & The original packet to batch into. \\
+\hline
+{\em src} & A later packet to attempt to batch. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The status of the batching operation. 
+\end{DoxyReturn}
+\Hypertarget{input_8cpp_a1f04a179250e28dd05b1d081ef036bbd}\index{input.cpp@{input.cpp}!client\_to\_touchport@{client\_to\_touchport}}
+\index{client\_to\_touchport@{client\_to\_touchport}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{client\_to\_touchport()}{client\_to\_touchport()}}
+{\footnotesize\ttfamily \label{input_8cpp_a1f04a179250e28dd05b1d081ef036bbd} 
+std\+::optional$<$ std\+::pair$<$ float, float $>$ $>$ input\+::client\+\_\+to\+\_\+touchport (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&}]{input}{, }\item[{const std\+::pair$<$ float, float $>$ \&}]{val}{, }\item[{const std\+::pair$<$ float, float $>$ \&}]{size}{}\end{DoxyParamCaption})}
+
+
+
+Converts client coordinates on the specified surface into screen coordinates. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & The input context. \\
+\hline
+{\em val} & The cartesian coordinate pair to convert. \\
+\hline
+{\em size} & The size of the client\textquotesingle{}s surface containing the value. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The host-\/relative coordinate pair if a touchport is available. 
+\end{DoxyReturn}
+\Hypertarget{input_8cpp_a266549c8fbaf0546cef80151a9c66e64}\index{input.cpp@{input.cpp}!from\_clamped\_netfloat@{from\_clamped\_netfloat}}
+\index{from\_clamped\_netfloat@{from\_clamped\_netfloat}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{from\_clamped\_netfloat()}{from\_clamped\_netfloat()}}
+{\footnotesize\ttfamily \label{input_8cpp_a266549c8fbaf0546cef80151a9c66e64} 
+float input\+::from\+\_\+clamped\+\_\+netfloat (\begin{DoxyParamCaption}\item[{netfloat}]{f}{, }\item[{float}]{min}{, }\item[{float}]{max}{}\end{DoxyParamCaption})}
+
+
+
+Convert a little-\/endian netfloat to a native endianness float and clamps it. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em f} & Netfloat value. \\
+\hline
+{\em min} & The minimium value for clamping. \\
+\hline
+{\em max} & The maximum value for clamping. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Clamped native endianess float value. 
+\end{DoxyReturn}
+\Hypertarget{input_8cpp_a8174e152222055a94ecfa71d7591ac60}\index{input.cpp@{input.cpp}!from\_netfloat@{from\_netfloat}}
+\index{from\_netfloat@{from\_netfloat}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{from\_netfloat()}{from\_netfloat()}}
+{\footnotesize\ttfamily \label{input_8cpp_a8174e152222055a94ecfa71d7591ac60} 
+float input\+::from\+\_\+netfloat (\begin{DoxyParamCaption}\item[{netfloat}]{f}{}\end{DoxyParamCaption})}
+
+
+
+Convert a little-\/endian netfloat to a native endianness float. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em f} & Netfloat value. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The native endianness float value. 
+\end{DoxyReturn}
+\Hypertarget{input_8cpp_a43605f236cc9880b306a530c9040875c}\index{input.cpp@{input.cpp}!init@{init}}
+\index{init@{init}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily \label{input_8cpp_a43605f236cc9880b306a530c9040875c} 
+std\+::unique\+\_\+ptr$<$ platf\+::deinit\+\_\+t $>$ input\+::init (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Initialize the input subsystem. 
+
+\begin{DoxyReturn}{Returns}
+Unique pointer to deinitialization object. 
+\end{DoxyReturn}
+\Hypertarget{input_8cpp_a1d21aa2a3fe500a8ce406e1fbd31413e}\index{input.cpp@{input.cpp}!multiply\_polar\_by\_cartesian\_scalar@{multiply\_polar\_by\_cartesian\_scalar}}
+\index{multiply\_polar\_by\_cartesian\_scalar@{multiply\_polar\_by\_cartesian\_scalar}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{multiply\_polar\_by\_cartesian\_scalar()}{multiply\_polar\_by\_cartesian\_scalar()}}
+{\footnotesize\ttfamily \label{input_8cpp_a1d21aa2a3fe500a8ce406e1fbd31413e} 
+float input\+::multiply\+\_\+polar\+\_\+by\+\_\+cartesian\+\_\+scalar (\begin{DoxyParamCaption}\item[{float}]{r}{, }\item[{float}]{angle}{, }\item[{const std\+::pair$<$ float, float $>$ \&}]{scalar}{}\end{DoxyParamCaption})}
+
+
+
+Multiply a polar coordinate pair by a cartesian scaling factor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & The radial coordinate. \\
+\hline
+{\em angle} & The angular coordinate (radians). \\
+\hline
+{\em scalar} & The scalar cartesian coordinate pair. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The scaled radial coordinate. 
+\end{DoxyReturn}
+\Hypertarget{input_8cpp_ae72cdf307da7ea38aa58a614fe648b68}\index{input.cpp@{input.cpp}!passthrough@{passthrough}}
+\index{passthrough@{passthrough}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{passthrough()}{passthrough()}\hspace{0.1cm}{\footnotesize\ttfamily [1/10]}}
+{\footnotesize\ttfamily \label{input_8cpp_ae72cdf307da7ea38aa58a614fe648b68} 
+void input\+::passthrough (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&}]{input}{, }\item[{PNV\+\_\+\+MOUSE\+\_\+\+BUTTON\+\_\+\+PACKET}]{packet}{}\end{DoxyParamCaption})}
+
+When Moonlight sends mouse input through absolute coordinates, it\textquotesingle{}s possible that BUTTON\+\_\+\+RIGHT is pressed down immediately after releasing BUTTON\+\_\+\+LEFT. As a result, Sunshine will left-\/click on hyperlinks in the browser before right-\/clicking
+
+This can be solved by delaying BUTTON\+\_\+\+LEFT, however, any delay on input is undesirable during gaming As a compromise, Sunshine will only put delays on BUTTON\+\_\+\+LEFT when absolute mouse coordinates have been sent.
+
+Try to make sure BUTTON\+\_\+\+RIGHT gets called before BUTTON\+\_\+\+LEFT is released.
+
+input-\/\texorpdfstring{$>$}{>}mouse\+\_\+left\+\_\+button\+\_\+timeout can only be nullptr when the last mouse coordinates were absolute\Hypertarget{input_8cpp_ad82f91d9e83cbcc56a969fb85bcba4a2}\index{input.cpp@{input.cpp}!passthrough@{passthrough}}
+\index{passthrough@{passthrough}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{passthrough()}{passthrough()}\hspace{0.1cm}{\footnotesize\ttfamily [2/10]}}
+{\footnotesize\ttfamily \label{input_8cpp_ad82f91d9e83cbcc56a969fb85bcba4a2} 
+void input\+::passthrough (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&}]{input}{, }\item[{PNV\+\_\+\+SCROLL\+\_\+\+PACKET}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+Called to pass a vertical scroll message the platform backend. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & The input context pointer. \\
+\hline
+{\em packet} & The scroll packet. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{input_8cpp_ab61807a1ffe676844425114c222e4aeb}\index{input.cpp@{input.cpp}!passthrough@{passthrough}}
+\index{passthrough@{passthrough}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{passthrough()}{passthrough()}\hspace{0.1cm}{\footnotesize\ttfamily [3/10]}}
+{\footnotesize\ttfamily \label{input_8cpp_ab61807a1ffe676844425114c222e4aeb} 
+void input\+::passthrough (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&}]{input}{, }\item[{PSS\+\_\+\+CONTROLLER\+\_\+\+ARRIVAL\+\_\+\+PACKET}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+Called to pass a controller arrival message to the platform backend. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & The input context pointer. \\
+\hline
+{\em packet} & The controller arrival packet. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{input_8cpp_a6e928c0127c986c41cfc5ef5401efe56}\index{input.cpp@{input.cpp}!passthrough@{passthrough}}
+\index{passthrough@{passthrough}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{passthrough()}{passthrough()}\hspace{0.1cm}{\footnotesize\ttfamily [4/10]}}
+{\footnotesize\ttfamily \label{input_8cpp_a6e928c0127c986c41cfc5ef5401efe56} 
+void input\+::passthrough (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&}]{input}{, }\item[{PSS\+\_\+\+CONTROLLER\+\_\+\+BATTERY\+\_\+\+PACKET}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+Called to pass a controller battery message to the platform backend. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & The input context pointer. \\
+\hline
+{\em packet} & The controller battery packet. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{input_8cpp_af3b2f0bb464c376f7634397f695811cd}\index{input.cpp@{input.cpp}!passthrough@{passthrough}}
+\index{passthrough@{passthrough}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{passthrough()}{passthrough()}\hspace{0.1cm}{\footnotesize\ttfamily [5/10]}}
+{\footnotesize\ttfamily \label{input_8cpp_af3b2f0bb464c376f7634397f695811cd} 
+void input\+::passthrough (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&}]{input}{, }\item[{PSS\+\_\+\+CONTROLLER\+\_\+\+MOTION\+\_\+\+PACKET}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+Called to pass a controller motion message to the platform backend. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & The input context pointer. \\
+\hline
+{\em packet} & The controller motion packet. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{input_8cpp_a8ff72c99ac8ba047baea7850391e3959}\index{input.cpp@{input.cpp}!passthrough@{passthrough}}
+\index{passthrough@{passthrough}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{passthrough()}{passthrough()}\hspace{0.1cm}{\footnotesize\ttfamily [6/10]}}
+{\footnotesize\ttfamily \label{input_8cpp_a8ff72c99ac8ba047baea7850391e3959} 
+void input\+::passthrough (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&}]{input}{, }\item[{PSS\+\_\+\+CONTROLLER\+\_\+\+TOUCH\+\_\+\+PACKET}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+Called to pass a controller touch message to the platform backend. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & The input context pointer. \\
+\hline
+{\em packet} & The controller touch packet. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{input_8cpp_a9eddd12a22e534559925fc36ce4cd51d}\index{input.cpp@{input.cpp}!passthrough@{passthrough}}
+\index{passthrough@{passthrough}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{passthrough()}{passthrough()}\hspace{0.1cm}{\footnotesize\ttfamily [7/10]}}
+{\footnotesize\ttfamily \label{input_8cpp_a9eddd12a22e534559925fc36ce4cd51d} 
+void input\+::passthrough (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&}]{input}{, }\item[{PSS\+\_\+\+HSCROLL\+\_\+\+PACKET}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+Called to pass a horizontal scroll message the platform backend. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & The input context pointer. \\
+\hline
+{\em packet} & The scroll packet. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{input_8cpp_ae007439539023488e95c0fd5be290cff}\index{input.cpp@{input.cpp}!passthrough@{passthrough}}
+\index{passthrough@{passthrough}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{passthrough()}{passthrough()}\hspace{0.1cm}{\footnotesize\ttfamily [8/10]}}
+{\footnotesize\ttfamily \label{input_8cpp_ae007439539023488e95c0fd5be290cff} 
+void input\+::passthrough (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&}]{input}{, }\item[{PSS\+\_\+\+PEN\+\_\+\+PACKET}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+Called to pass a pen message to the platform backend. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & The input context pointer. \\
+\hline
+{\em packet} & The pen packet. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{input_8cpp_a6358d683b9a530f878aea6cb7f870f98}\index{input.cpp@{input.cpp}!passthrough@{passthrough}}
+\index{passthrough@{passthrough}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{passthrough()}{passthrough()}\hspace{0.1cm}{\footnotesize\ttfamily [9/10]}}
+{\footnotesize\ttfamily \label{input_8cpp_a6358d683b9a530f878aea6cb7f870f98} 
+void input\+::passthrough (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&}]{input}{, }\item[{PSS\+\_\+\+TOUCH\+\_\+\+PACKET}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+Called to pass a touch message to the platform backend. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & The input context pointer. \\
+\hline
+{\em packet} & The touch packet. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{input_8cpp_a264a5ef9c071d88224a5ac048500f013}\index{input.cpp@{input.cpp}!passthrough@{passthrough}}
+\index{passthrough@{passthrough}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{passthrough()}{passthrough()}\hspace{0.1cm}{\footnotesize\ttfamily [10/10]}}
+{\footnotesize\ttfamily \label{input_8cpp_a264a5ef9c071d88224a5ac048500f013} 
+void input\+::passthrough (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&}]{input}{, }\item[{std\+::vector$<$ std\+::uint8\+\_\+t $>$ \&\&}]{input\+\_\+data}{, }\item[{const \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{crypto\+::\+PERM}} \&}]{permission}{}\end{DoxyParamCaption})}
+
+
+
+Called on the control stream thread to queue an input message. 
+
+Pass through input data to the system.
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & The input context pointer. \\
+\hline
+{\em input\+\_\+data} & The input message.\\
+\hline
+{\em input} & Shared pointer to input device. \\
+\hline
+{\em input\+\_\+data} & The input data to process. \\
+\hline
+{\em permission} & The permissions for this input operation. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{input_8cpp_aca5debddd043eebbcee092fc2baf9e06}\index{input.cpp@{input.cpp}!passthrough\_next\_message@{passthrough\_next\_message}}
+\index{passthrough\_next\_message@{passthrough\_next\_message}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{passthrough\_next\_message()}{passthrough\_next\_message()}}
+{\footnotesize\ttfamily \label{input_8cpp_aca5debddd043eebbcee092fc2baf9e06} 
+void input\+::passthrough\+\_\+next\+\_\+message (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$}]{input}{}\end{DoxyParamCaption})}
+
+
+
+Called on a thread pool thread to process an input message. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & The input context pointer. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{input_8cpp_a4a855a49e2f3382fea25521f01c353db}\index{input.cpp@{input.cpp}!print@{print}}
+\index{print@{print}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}\hspace{0.1cm}{\footnotesize\ttfamily [1/7]}}
+{\footnotesize\ttfamily \label{input_8cpp_a4a855a49e2f3382fea25521f01c353db} 
+void input\+::print (\begin{DoxyParamCaption}\item[{PSS\+\_\+\+CONTROLLER\+\_\+\+ARRIVAL\+\_\+\+PACKET}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+Prints a controller arrival packet. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em packet} & The controller arrival packet. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{input_8cpp_a549f1c84eb2f7c6d456cdf301ddad6d8}\index{input.cpp@{input.cpp}!print@{print}}
+\index{print@{print}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}\hspace{0.1cm}{\footnotesize\ttfamily [2/7]}}
+{\footnotesize\ttfamily \label{input_8cpp_a549f1c84eb2f7c6d456cdf301ddad6d8} 
+void input\+::print (\begin{DoxyParamCaption}\item[{PSS\+\_\+\+CONTROLLER\+\_\+\+BATTERY\+\_\+\+PACKET}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+Prints a controller battery packet. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em packet} & The controller battery packet. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{input_8cpp_ab60fda9d401cb6d2b2b5dc7677fcb85d}\index{input.cpp@{input.cpp}!print@{print}}
+\index{print@{print}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}\hspace{0.1cm}{\footnotesize\ttfamily [3/7]}}
+{\footnotesize\ttfamily \label{input_8cpp_ab60fda9d401cb6d2b2b5dc7677fcb85d} 
+void input\+::print (\begin{DoxyParamCaption}\item[{PSS\+\_\+\+CONTROLLER\+\_\+\+MOTION\+\_\+\+PACKET}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+Prints a controller motion packet. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em packet} & The controller motion packet. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{input_8cpp_aa928670a9f878023ba9b8954aed56d0f}\index{input.cpp@{input.cpp}!print@{print}}
+\index{print@{print}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}\hspace{0.1cm}{\footnotesize\ttfamily [4/7]}}
+{\footnotesize\ttfamily \label{input_8cpp_aa928670a9f878023ba9b8954aed56d0f} 
+void input\+::print (\begin{DoxyParamCaption}\item[{PSS\+\_\+\+CONTROLLER\+\_\+\+TOUCH\+\_\+\+PACKET}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+Prints a controller touch packet. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em packet} & The controller touch packet. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{input_8cpp_a14a514864eab370e04ab5e7070b21c68}\index{input.cpp@{input.cpp}!print@{print}}
+\index{print@{print}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}\hspace{0.1cm}{\footnotesize\ttfamily [5/7]}}
+{\footnotesize\ttfamily \label{input_8cpp_a14a514864eab370e04ab5e7070b21c68} 
+void input\+::print (\begin{DoxyParamCaption}\item[{PSS\+\_\+\+PEN\+\_\+\+PACKET}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+Prints a pen packet. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em packet} & The pen packet. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{input_8cpp_a95167f128d7a7d0670f2f41b92b27945}\index{input.cpp@{input.cpp}!print@{print}}
+\index{print@{print}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}\hspace{0.1cm}{\footnotesize\ttfamily [6/7]}}
+{\footnotesize\ttfamily \label{input_8cpp_a95167f128d7a7d0670f2f41b92b27945} 
+void input\+::print (\begin{DoxyParamCaption}\item[{PSS\+\_\+\+TOUCH\+\_\+\+PACKET}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+Prints a touch packet. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em packet} & The touch packet. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{input_8cpp_ad2616fa2882f902e40ed9d251783cdef}\index{input.cpp@{input.cpp}!print@{print}}
+\index{print@{print}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}\hspace{0.1cm}{\footnotesize\ttfamily [7/7]}}
+{\footnotesize\ttfamily \label{input_8cpp_ad2616fa2882f902e40ed9d251783cdef} 
+void input\+::print (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{input}{}\end{DoxyParamCaption})}
+
+
+
+Forward declaration of input structure. 
+
+Print input device information. 
+\begin{DoxyParams}{Parameters}
+{\em input} & Pointer to input device structure. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{input_8cpp_a1b841c2efb01fdcfb17cc452dd394bdb}\index{input.cpp@{input.cpp}!probe\_gamepads@{probe\_gamepads}}
+\index{probe\_gamepads@{probe\_gamepads}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{probe\_gamepads()}{probe\_gamepads()}}
+{\footnotesize\ttfamily \label{input_8cpp_a1b841c2efb01fdcfb17cc452dd394bdb} 
+bool input\+::probe\+\_\+gamepads (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Probe for available gamepad devices. 
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if gamepads were found, {\ttfamily false} otherwise. 
+\end{DoxyReturn}
+\Hypertarget{input_8cpp_a4270b6d9a8dc15d78d5ec88c28a472b3}\index{input.cpp@{input.cpp}!reset@{reset}}
+\index{reset@{reset}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily \label{input_8cpp_a4270b6d9a8dc15d78d5ec88c28a472b3} 
+void input\+::reset (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&}]{input}{}\end{DoxyParamCaption})}
+
+
+
+Reset input device state. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & Shared pointer to input device. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{input_8cpp_aad1a158f9b68a3e9fe1bda77d5163d21}\index{input.cpp@{input.cpp}!scale\_client\_contact\_area@{scale\_client\_contact\_area}}
+\index{scale\_client\_contact\_area@{scale\_client\_contact\_area}!input.cpp@{input.cpp}}
+\doxysubsubsection{\texorpdfstring{scale\_client\_contact\_area()}{scale\_client\_contact\_area()}}
+{\footnotesize\ttfamily \label{input_8cpp_aad1a158f9b68a3e9fe1bda77d5163d21} 
+std\+::pair$<$ float, float $>$ input\+::scale\+\_\+client\+\_\+contact\+\_\+area (\begin{DoxyParamCaption}\item[{const std\+::pair$<$ float, float $>$ \&}]{val}{, }\item[{uint16\+\_\+t}]{rotation}{, }\item[{const std\+::pair$<$ float, float $>$ \&}]{scalar}{}\end{DoxyParamCaption})}
+
+
+
+Scale the ellipse axes according to the provided size. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em val} & The major and minor axis pair. \\
+\hline
+{\em rotation} & The rotation value from the touch/pen event. \\
+\hline
+{\em scalar} & The scalar cartesian coordinate pair. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The major and minor axis pair. 
+\end{DoxyReturn}

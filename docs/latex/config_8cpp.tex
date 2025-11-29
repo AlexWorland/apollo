@@ -1,0 +1,2017 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/config.cpp File Reference}
+\hypertarget{config_8cpp}{}\label{config_8cpp}\index{/Users/alexworland/autoBitrate/apollo/src/config.cpp@{/Users/alexworland/autoBitrate/apollo/src/config.cpp}}
+
+
+Definitions for the configuration of Sunshine.  
+
+
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$filesystem$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$mutex$>$}\newline
+{\ttfamily \#include $<$shared\+\_\+mutex$>$}\newline
+{\ttfamily \#include $<$thread$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+{\ttfamily \#include $<$boost/asio.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/filesystem.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/property\+\_\+tree/json\+\_\+parser.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/property\+\_\+tree/ptree.\+hpp$>$}\newline
+{\ttfamily \#include "{}config.\+h"{}}\newline
+{\ttfamily \#include "{}entry\+\_\+handler.\+h"{}}\newline
+{\ttfamily \#include "{}file\+\_\+handler.\+h"{}}\newline
+{\ttfamily \#include "{}logging.\+h"{}}\newline
+{\ttfamily \#include "{}nvhttp.\+h"{}}\newline
+{\ttfamily \#include "{}platform/common.\+h"{}}\newline
+{\ttfamily \#include "{}rtsp.\+h"{}}\newline
+{\ttfamily \#include "{}video.\+h"{}}\newline
+{\ttfamily \#include "{}utility.\+h"{}}\newline
+{\ttfamily \#include $<$ffnvcodec/nv\+Encode\+API.\+h$>$}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{config_8cpp_a6442dec9eb93777bda54eb101adaad19}\label{config_8cpp_a6442dec9eb93777bda54eb101adaad19} 
+\#define {\bfseries CA\+\_\+\+DIR}~"{}credentials"{}
+\begin{DoxyCompactList}\small\item\em Directory name for certificate authority files. \end{DoxyCompactList}\item 
+\Hypertarget{config_8cpp_a81d3c9653b7472a3ca0a8a6ecf1ac88c}\label{config_8cpp_a81d3c9653b7472a3ca0a8a6ecf1ac88c} 
+\#define {\bfseries PRIVATE\+\_\+\+KEY\+\_\+\+FILE}~\mbox{\hyperlink{config_8cpp_a6442dec9eb93777bda54eb101adaad19}{CA\+\_\+\+DIR}} "{}/cakey.\+pem"{}
+\begin{DoxyCompactList}\small\item\em Path to the private key file. \end{DoxyCompactList}\item 
+\Hypertarget{config_8cpp_a29d01cc024d1968c5574d06f717e05ae}\label{config_8cpp_a29d01cc024d1968c5574d06f717e05ae} 
+\#define {\bfseries CERTIFICATE\+\_\+\+FILE}~\mbox{\hyperlink{config_8cpp_a6442dec9eb93777bda54eb101adaad19}{CA\+\_\+\+DIR}} "{}/cacert.\+pem"{}
+\begin{DoxyCompactList}\small\item\em Path to the certificate file. \end{DoxyCompactList}\item 
+\Hypertarget{config_8cpp_a55e7d2207052606a31c8d12f7cd807e3}\label{config_8cpp_a55e7d2207052606a31c8d12f7cd807e3} 
+\#define {\bfseries APPS\+\_\+\+JSON\+\_\+\+PATH}~platf\+::appdata().string() + "{}/apps.\+json"{}
+\begin{DoxyCompactList}\small\item\em Path to the applications configuration JSON file. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+QUALITY\+\_\+\+PRESET\+\_\+\+SPEED}~100
+\begin{DoxyCompactList}\small\item\em AV1 encoder speed preset value. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+QUALITY\+\_\+\+PRESET\+\_\+\+QUALITY}~30
+\begin{DoxyCompactList}\small\item\em AV1 encoder quality preset value. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+QUALITY\+\_\+\+PRESET\+\_\+\+BALANCED}~70
+\begin{DoxyCompactList}\small\item\em AV1 encoder balanced preset value. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+QUALITY\+\_\+\+PRESET\+\_\+\+SPEED}~10
+\begin{DoxyCompactList}\small\item\em HEVC encoder speed preset value. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+QUALITY\+\_\+\+PRESET\+\_\+\+QUALITY}~0
+\begin{DoxyCompactList}\small\item\em HEVC encoder quality preset value. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+QUALITY\+\_\+\+PRESET\+\_\+\+BALANCED}~5
+\begin{DoxyCompactList}\small\item\em HEVC encoder balanced preset value. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+QUALITY\+\_\+\+PRESET\+\_\+\+SPEED}~1
+\begin{DoxyCompactList}\small\item\em H.\+264 encoder speed preset value. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+QUALITY\+\_\+\+PRESET\+\_\+\+QUALITY}~2
+\begin{DoxyCompactList}\small\item\em H.\+264 encoder quality preset value. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+QUALITY\+\_\+\+PRESET\+\_\+\+BALANCED}~0
+\begin{DoxyCompactList}\small\item\em H.\+264 encoder balanced preset value. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+CONSTANT\+\_\+\+QP}~0
+\begin{DoxyCompactList}\small\item\em AV1 encoder constant QP rate control method. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+CBR}~3
+\begin{DoxyCompactList}\small\item\em AV1 encoder constant bitrate method. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+PEAK\+\_\+\+CONSTRAINED\+\_\+\+VBR}~2
+\begin{DoxyCompactList}\small\item\em AV1 encoder peak-\/constrained VBR method. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+LATENCY\+\_\+\+CONSTRAINED\+\_\+\+VBR}~1
+\begin{DoxyCompactList}\small\item\em AV1 encoder latency-\/constrained VBR method. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+CONSTANT\+\_\+\+QP}~0
+\begin{DoxyCompactList}\small\item\em HEVC encoder constant QP rate control method. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+CBR}~3
+\begin{DoxyCompactList}\small\item\em HEVC encoder constant bitrate method. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+PEAK\+\_\+\+CONSTRAINED\+\_\+\+VBR}~2
+\begin{DoxyCompactList}\small\item\em HEVC encoder peak-\/constrained VBR method. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+LATENCY\+\_\+\+CONSTRAINED\+\_\+\+VBR}~1
+\begin{DoxyCompactList}\small\item\em HEVC encoder latency-\/constrained VBR method. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+CONSTANT\+\_\+\+QP}~0
+\begin{DoxyCompactList}\small\item\em H.\+264 encoder constant QP rate control method. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+CBR}~1
+\begin{DoxyCompactList}\small\item\em H.\+264 encoder constant bitrate method. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+PEAK\+\_\+\+CONSTRAINED\+\_\+\+VBR}~2
+\begin{DoxyCompactList}\small\item\em H.\+264 encoder peak-\/constrained VBR method. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+LATENCY\+\_\+\+CONSTRAINED\+\_\+\+VBR}~3
+\begin{DoxyCompactList}\small\item\em H.\+264 encoder latency-\/constrained VBR method. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+USAGE\+\_\+\+TRANSCODING}~0
+\begin{DoxyCompactList}\small\item\em AV1 encoder transcoding usage mode. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+USAGE\+\_\+\+LOW\+\_\+\+LATENCY}~1
+\begin{DoxyCompactList}\small\item\em AV1 encoder low latency usage mode. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+USAGE\+\_\+\+ULTRA\+\_\+\+LOW\+\_\+\+LATENCY}~2
+\begin{DoxyCompactList}\small\item\em AV1 encoder ultra low latency usage mode. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+USAGE\+\_\+\+WEBCAM}~3
+\begin{DoxyCompactList}\small\item\em AV1 encoder webcam usage mode. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+USAGE\+\_\+\+LOW\+\_\+\+LATENCY\+\_\+\+HIGH\+\_\+\+QUALITY}~5
+\begin{DoxyCompactList}\small\item\em AV1 encoder low latency high quality usage mode. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+USAGE\+\_\+\+TRANSCODING}~0
+\begin{DoxyCompactList}\small\item\em HEVC encoder transcoding usage mode. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+USAGE\+\_\+\+ULTRA\+\_\+\+LOW\+\_\+\+LATENCY}~1
+\begin{DoxyCompactList}\small\item\em HEVC encoder ultra low latency usage mode. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+USAGE\+\_\+\+LOW\+\_\+\+LATENCY}~2
+\begin{DoxyCompactList}\small\item\em HEVC encoder low latency usage mode. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+USAGE\+\_\+\+WEBCAM}~3
+\begin{DoxyCompactList}\small\item\em HEVC encoder webcam usage mode. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+USAGE\+\_\+\+LOW\+\_\+\+LATENCY\+\_\+\+HIGH\+\_\+\+QUALITY}~5
+\begin{DoxyCompactList}\small\item\em HEVC encoder low latency high quality usage mode. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+USAGE\+\_\+\+TRANSCODING}~0
+\begin{DoxyCompactList}\small\item\em H.\+264 encoder transcoding usage mode. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+USAGE\+\_\+\+ULTRA\+\_\+\+LOW\+\_\+\+LATENCY}~1
+\begin{DoxyCompactList}\small\item\em H.\+264 encoder ultra low latency usage mode. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+USAGE\+\_\+\+LOW\+\_\+\+LATENCY}~2
+\begin{DoxyCompactList}\small\item\em H.\+264 encoder low latency usage mode. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+USAGE\+\_\+\+WEBCAM}~3
+\begin{DoxyCompactList}\small\item\em H.\+264 encoder webcam usage mode. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+USAGE\+\_\+\+LOW\+\_\+\+LATENCY\+\_\+\+HIGH\+\_\+\+QUALITY}~5
+\begin{DoxyCompactList}\small\item\em H.\+264 encoder low latency high quality usage mode. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+UNDEFINED}~0
+\begin{DoxyCompactList}\small\item\em Undefined coder value. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+CABAC}~1
+\begin{DoxyCompactList}\small\item\em CABAC (Context-\/\+Adaptive Binary Arithmetic Coding) coder. \end{DoxyCompactList}\item 
+\#define {\bfseries AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+CALV}~2
+\begin{DoxyCompactList}\small\item\em CAVLC (Context-\/\+Adaptive Variable-\/\+Length Coding) coder. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{config_8cpp_a7fdee3cc258c4c6add64e8da6a2db8eb}{\+\_\+\+CONVERT\+\_\+}}(x)
+\item 
+\#define \mbox{\hyperlink{config_8cpp_adc65d242bc300201b5f8ef6a84b1fd46}{\+\_\+\+CONVERT\+\_\+}}(x)
+\item 
+\#define \mbox{\hyperlink{config_8cpp_a03d7a1fb335f4b0a1671f204f8cf022a}{\+\_\+\+CONVERT\+\_\+}}(x)
+\item 
+\#define \mbox{\hyperlink{config_8cpp_ad56aa959bb949de05f0bde29c571c364}{\+\_\+\+CONVERT\+\_\+}}(x)
+\item 
+\#define \mbox{\hyperlink{config_8cpp_a3264e1f86dc21e841133755340e38b93}{\+\_\+\+CONVERT\+\_\+}}(x,  y)
+\item 
+\#define \mbox{\hyperlink{config_8cpp_aa1f38c825d3b08e5fa4565b81a054970}{\+\_\+\+CONVERT\+\_\+}}(x)
+\item 
+\#define \mbox{\hyperlink{config_8cpp_a26273aefd720f9031374440fc254d27a}{\+\_\+\+CONVERT\+\_\+2\+\_\+\+ARG\+\_\+}}(str,  val)
+\item 
+\#define \mbox{\hyperlink{config_8cpp_a2c5e05e87fa25c347eba6352e68f8342}{\+\_\+\+CONVERT\+\_\+}}(x)
+\item 
+\#define \mbox{\hyperlink{config_8cpp_a28377fd2258f4dedaa6b8bfe7aeae266}{\+\_\+\+CONVERT\+\_\+2\+\_\+\+ARG\+\_\+}}(str,  val)
+\item 
+\#define \mbox{\hyperlink{config_8cpp_a3ccff8d5be6d3a57ba58e740e351b790}{\+\_\+\+CONVERT\+\_\+}}(x)
+\item 
+\#define \mbox{\hyperlink{config_8cpp_afe1e26ad09889f14aafdf82d48bba499}{\+\_\+\+CONVERT\+\_\+2\+\_\+\+ARG\+\_\+}}(str,  val)
+\item 
+\#define \mbox{\hyperlink{config_8cpp_a2af1edabc2eeef86879db0b959d529e1}{\+\_\+\+CONVERT\+\_\+}}(x)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{config_8cpp_a0db910a14d9d4ece35ef7652b0897052}{config\+::amd\+::quality\+\_\+av1\+\_\+e}} \+: int \{ \mbox{\hyperlink{config_8cpp_a0db910a14d9d4ece35ef7652b0897052ace4ef3ec98443ed10da505114b58f153}{speed}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+QUALITY\+\_\+\+PRESET\+\_\+\+SPEED
+, \mbox{\hyperlink{config_8cpp_a0db910a14d9d4ece35ef7652b0897052ad66636b253cb346dbb6240e30def3618}{quality}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+QUALITY\+\_\+\+PRESET\+\_\+\+QUALITY
+, \mbox{\hyperlink{config_8cpp_a0db910a14d9d4ece35ef7652b0897052ab336df698d12ac8e54570ba6ea2679f0}{balanced}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+QUALITY\+\_\+\+PRESET\+\_\+\+BALANCED
+ \}
+\begin{DoxyCompactList}\small\item\em AV1 encoder quality preset enumeration. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{config_8cpp_a1afde3cafda8849c3200b6fd2b88e72a}{config\+::amd\+::quality\+\_\+hevc\+\_\+e}} \+: int \{ \mbox{\hyperlink{config_8cpp_a1afde3cafda8849c3200b6fd2b88e72aace4ef3ec98443ed10da505114b58f153}{speed}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+QUALITY\+\_\+\+PRESET\+\_\+\+SPEED
+, \mbox{\hyperlink{config_8cpp_a1afde3cafda8849c3200b6fd2b88e72aad66636b253cb346dbb6240e30def3618}{quality}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+QUALITY\+\_\+\+PRESET\+\_\+\+QUALITY
+, \mbox{\hyperlink{config_8cpp_a1afde3cafda8849c3200b6fd2b88e72aab336df698d12ac8e54570ba6ea2679f0}{balanced}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+QUALITY\+\_\+\+PRESET\+\_\+\+BALANCED
+ \}
+\begin{DoxyCompactList}\small\item\em HEVC encoder quality preset enumeration. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{config_8cpp_a23a2fd94cd71f088a9d04284dc6c2211}{config\+::amd\+::quality\+\_\+h264\+\_\+e}} \+: int \{ \mbox{\hyperlink{config_8cpp_a23a2fd94cd71f088a9d04284dc6c2211ace4ef3ec98443ed10da505114b58f153}{speed}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+QUALITY\+\_\+\+PRESET\+\_\+\+SPEED
+, \mbox{\hyperlink{config_8cpp_a23a2fd94cd71f088a9d04284dc6c2211ad66636b253cb346dbb6240e30def3618}{quality}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+QUALITY\+\_\+\+PRESET\+\_\+\+QUALITY
+, \mbox{\hyperlink{config_8cpp_a23a2fd94cd71f088a9d04284dc6c2211ab336df698d12ac8e54570ba6ea2679f0}{balanced}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+QUALITY\+\_\+\+PRESET\+\_\+\+BALANCED
+ \}
+\begin{DoxyCompactList}\small\item\em H.\+264 encoder quality preset enumeration. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{config_8cpp_ab5c20de968c42ee3e01b46a7359346d6}{config\+::amd\+::rc\+\_\+av1\+\_\+e}} \+: int \{ \mbox{\hyperlink{config_8cpp_ab5c20de968c42ee3e01b46a7359346d6aa8186307f5bbc554b722505f23cfc81e}{cbr}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+CBR
+, \mbox{\hyperlink{config_8cpp_ab5c20de968c42ee3e01b46a7359346d6ad6acc9f1ba4b28b91ea9de99a0ee53d7}{cqp}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+CONSTANT\+\_\+\+QP
+, \mbox{\hyperlink{config_8cpp_ab5c20de968c42ee3e01b46a7359346d6a55d4a66b980e6c50a5e839234d2aaa04}{vbr\+\_\+latency}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+LATENCY\+\_\+\+CONSTRAINED\+\_\+\+VBR
+, \mbox{\hyperlink{config_8cpp_ab5c20de968c42ee3e01b46a7359346d6a3fab1a1d2ec09921898d7c3cd4d294e4}{vbr\+\_\+peak}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+PEAK\+\_\+\+CONSTRAINED\+\_\+\+VBR
+ \}
+\begin{DoxyCompactList}\small\item\em AV1 encoder rate control method enumeration. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{config_8cpp_a552bd5af0459ef49cff57b9db84e685c}{config\+::amd\+::rc\+\_\+hevc\+\_\+e}} \+: int \{ \mbox{\hyperlink{config_8cpp_a552bd5af0459ef49cff57b9db84e685caa8186307f5bbc554b722505f23cfc81e}{cbr}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+CBR
+, \mbox{\hyperlink{config_8cpp_a552bd5af0459ef49cff57b9db84e685cad6acc9f1ba4b28b91ea9de99a0ee53d7}{cqp}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+CONSTANT\+\_\+\+QP
+, \mbox{\hyperlink{config_8cpp_a552bd5af0459ef49cff57b9db84e685ca55d4a66b980e6c50a5e839234d2aaa04}{vbr\+\_\+latency}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+LATENCY\+\_\+\+CONSTRAINED\+\_\+\+VBR
+, \mbox{\hyperlink{config_8cpp_a552bd5af0459ef49cff57b9db84e685ca3fab1a1d2ec09921898d7c3cd4d294e4}{vbr\+\_\+peak}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+PEAK\+\_\+\+CONSTRAINED\+\_\+\+VBR
+ \}
+\begin{DoxyCompactList}\small\item\em HEVC encoder rate control method enumeration. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{config_8cpp_a3fb53b8f0ec6c328f84b4b8b9eeaede8}{config\+::amd\+::rc\+\_\+h264\+\_\+e}} \+: int \{ \mbox{\hyperlink{config_8cpp_a3fb53b8f0ec6c328f84b4b8b9eeaede8aa8186307f5bbc554b722505f23cfc81e}{cbr}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+CBR
+, \mbox{\hyperlink{config_8cpp_a3fb53b8f0ec6c328f84b4b8b9eeaede8ad6acc9f1ba4b28b91ea9de99a0ee53d7}{cqp}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+CONSTANT\+\_\+\+QP
+, \mbox{\hyperlink{config_8cpp_a3fb53b8f0ec6c328f84b4b8b9eeaede8a55d4a66b980e6c50a5e839234d2aaa04}{vbr\+\_\+latency}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+LATENCY\+\_\+\+CONSTRAINED\+\_\+\+VBR
+, \mbox{\hyperlink{config_8cpp_a3fb53b8f0ec6c328f84b4b8b9eeaede8a3fab1a1d2ec09921898d7c3cd4d294e4}{vbr\+\_\+peak}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+RATE\+\_\+\+CONTROL\+\_\+\+METHOD\+\_\+\+PEAK\+\_\+\+CONSTRAINED\+\_\+\+VBR
+ \}
+\begin{DoxyCompactList}\small\item\em H.\+264 encoder rate control method enumeration. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{config_8cpp_a6e379d8b40bddfa08ccfa4c24b384343}{config\+::amd\+::usage\+\_\+av1\+\_\+e}} \+: int \{ \newline
+\mbox{\hyperlink{config_8cpp_a6e379d8b40bddfa08ccfa4c24b384343a2e7888a81451f1288996df77ccf7d4bc}{transcoding}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+USAGE\+\_\+\+TRANSCODING
+, \mbox{\hyperlink{config_8cpp_a6e379d8b40bddfa08ccfa4c24b384343a86722fdb4bc3199d48c363a6f922a3c7}{webcam}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+USAGE\+\_\+\+WEBCAM
+, \mbox{\hyperlink{config_8cpp_a6e379d8b40bddfa08ccfa4c24b384343abcefcb39d267b37be5f159d9ffb1e105}{lowlatency\+\_\+high\+\_\+quality}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+USAGE\+\_\+\+LOW\+\_\+\+LATENCY\+\_\+\+HIGH\+\_\+\+QUALITY
+, \mbox{\hyperlink{config_8cpp_a6e379d8b40bddfa08ccfa4c24b384343a9993f34c252aef6541037801d066e9b6}{lowlatency}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+USAGE\+\_\+\+LOW\+\_\+\+LATENCY
+, \newline
+\mbox{\hyperlink{config_8cpp_a6e379d8b40bddfa08ccfa4c24b384343ab8f3dd1f430f86fb4a5e39f9c30ddecf}{ultralowlatency}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+AV1\+\_\+\+USAGE\+\_\+\+ULTRA\+\_\+\+LOW\+\_\+\+LATENCY
+ \}
+\begin{DoxyCompactList}\small\item\em AV1 encoder usage mode enumeration. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{config_8cpp_aa23a83e150acc326cca9b5ea5d73579d}{config\+::amd\+::usage\+\_\+hevc\+\_\+e}} \+: int \{ \newline
+\mbox{\hyperlink{config_8cpp_aa23a83e150acc326cca9b5ea5d73579da2e7888a81451f1288996df77ccf7d4bc}{transcoding}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+USAGE\+\_\+\+TRANSCODING
+, \mbox{\hyperlink{config_8cpp_aa23a83e150acc326cca9b5ea5d73579da86722fdb4bc3199d48c363a6f922a3c7}{webcam}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+USAGE\+\_\+\+WEBCAM
+, \mbox{\hyperlink{config_8cpp_aa23a83e150acc326cca9b5ea5d73579dabcefcb39d267b37be5f159d9ffb1e105}{lowlatency\+\_\+high\+\_\+quality}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+USAGE\+\_\+\+LOW\+\_\+\+LATENCY\+\_\+\+HIGH\+\_\+\+QUALITY
+, \mbox{\hyperlink{config_8cpp_aa23a83e150acc326cca9b5ea5d73579da9993f34c252aef6541037801d066e9b6}{lowlatency}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+USAGE\+\_\+\+LOW\+\_\+\+LATENCY
+, \newline
+\mbox{\hyperlink{config_8cpp_aa23a83e150acc326cca9b5ea5d73579dab8f3dd1f430f86fb4a5e39f9c30ddecf}{ultralowlatency}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+HEVC\+\_\+\+USAGE\+\_\+\+ULTRA\+\_\+\+LOW\+\_\+\+LATENCY
+ \}
+\begin{DoxyCompactList}\small\item\em HEVC encoder usage mode enumeration. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{config_8cpp_a17d192fc2b83b099fdc4731c99a2184a}{config\+::amd\+::usage\+\_\+h264\+\_\+e}} \+: int \{ \newline
+\mbox{\hyperlink{config_8cpp_a17d192fc2b83b099fdc4731c99a2184aa2e7888a81451f1288996df77ccf7d4bc}{transcoding}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+USAGE\+\_\+\+TRANSCODING
+, \mbox{\hyperlink{config_8cpp_a17d192fc2b83b099fdc4731c99a2184aa86722fdb4bc3199d48c363a6f922a3c7}{webcam}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+USAGE\+\_\+\+WEBCAM
+, \mbox{\hyperlink{config_8cpp_a17d192fc2b83b099fdc4731c99a2184aabcefcb39d267b37be5f159d9ffb1e105}{lowlatency\+\_\+high\+\_\+quality}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+USAGE\+\_\+\+LOW\+\_\+\+LATENCY\+\_\+\+HIGH\+\_\+\+QUALITY
+, \mbox{\hyperlink{config_8cpp_a17d192fc2b83b099fdc4731c99a2184aa9993f34c252aef6541037801d066e9b6}{lowlatency}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+USAGE\+\_\+\+LOW\+\_\+\+LATENCY
+, \newline
+\mbox{\hyperlink{config_8cpp_a17d192fc2b83b099fdc4731c99a2184aab8f3dd1f430f86fb4a5e39f9c30ddecf}{ultralowlatency}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+USAGE\+\_\+\+ULTRA\+\_\+\+LOW\+\_\+\+LATENCY
+ \}
+\begin{DoxyCompactList}\small\item\em H.\+264 encoder usage mode enumeration. \end{DoxyCompactList}\item 
+enum \mbox{\hyperlink{config_8cpp_ae63da1908e0e80c5a1d0e091a8ae029d}{config\+::amd\+::coder\+\_\+e}} \+: int \{ \mbox{\hyperlink{config_8cpp_ae63da1908e0e80c5a1d0e091a8ae029da675cc06f523d2b342157077bee56d724}{config\+::amd\+::\+\_\+auto}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+UNDEFINED
+, \mbox{\hyperlink{config_8cpp_ae63da1908e0e80c5a1d0e091a8ae029da9493942b0796de6ce1d927e123ef0854}{config\+::amd\+::cabac}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+CABAC
+, \mbox{\hyperlink{config_8cpp_ae63da1908e0e80c5a1d0e091a8ae029dab877c18b60440649004bcfaf4a3b6883}{config\+::amd\+::cavlc}} = AMF\+\_\+\+VIDEO\+\_\+\+ENCODER\+\_\+\+CALV
+ \}
+\begin{DoxyCompactList}\small\item\em AMD encoder coder enumeration. \end{DoxyCompactList}\item 
+enum \mbox{\hyperlink{config_8cpp_a3dda7a82d7579b225a36058a901075fe}{config\+::qsv\+::preset\+\_\+e}} \+: int \{ \newline
+\mbox{\hyperlink{config_8cpp_a3dda7a82d7579b225a36058a901075fea0ef1baf56fb5561f944ea7f75eb25899}{config\+::qsv\+::veryslow}} = 1
+, \mbox{\hyperlink{config_8cpp_a3dda7a82d7579b225a36058a901075feac17501a99280f345eb43ff5c7885df5d}{config\+::qsv\+::slower}} = 2
+, \mbox{\hyperlink{config_8cpp_a3dda7a82d7579b225a36058a901075fea66ccc526823fc9f31efbab9fabc97a60}{config\+::qsv\+::slow}} = 3
+, \mbox{\hyperlink{config_8cpp_a3dda7a82d7579b225a36058a901075feaf43f51bf5499515dea5b26b17be27d56}{config\+::qsv\+::medium}} = 4
+, \newline
+\mbox{\hyperlink{config_8cpp_a3dda7a82d7579b225a36058a901075fea7c4e4e5d08cbabb1610a054ff39cf2ab}{config\+::qsv\+::fast}} = 5
+, \mbox{\hyperlink{config_8cpp_a3dda7a82d7579b225a36058a901075fea9197772da1a1b123f4bea2b0e0eb03e3}{config\+::qsv\+::faster}} = 6
+, \mbox{\hyperlink{config_8cpp_a3dda7a82d7579b225a36058a901075fea683e0a18e0678d47585c0fa798dcb3b3}{config\+::qsv\+::veryfast}} = 7
+ \}
+\begin{DoxyCompactList}\small\item\em Quick\+Sync video encoder preset enumeration. \end{DoxyCompactList}\item 
+enum \mbox{\hyperlink{config_8cpp_a9aca908eacf04026666ed10bd3147781}{config\+::qsv\+::cavlc\+\_\+e}} \+: int \{ \mbox{\hyperlink{config_8cpp_a9aca908eacf04026666ed10bd3147781a9eb51851c17300f899376e4cc29d764a}{config\+::qsv\+::\+\_\+auto}} = false
+, \mbox{\hyperlink{config_8cpp_a9aca908eacf04026666ed10bd3147781a6d9edcff01b50aab8dd96b60d7b8522c}{config\+::qsv\+::enabled}} = true
+, \mbox{\hyperlink{config_8cpp_a9aca908eacf04026666ed10bd3147781a6477876cfa48c619e6d44921403021a2}{config\+::qsv\+::disabled}} = false
+ \}
+\begin{DoxyCompactList}\small\item\em Quick\+Sync CAVLC (Context-\/\+Adaptive Variable-\/\+Length Coding) enumeration. \end{DoxyCompactList}\item 
+enum \mbox{\hyperlink{config_8cpp_abc53e5f8dc3b20de48ecbe0ac2e431d8}{config\+::vt\+::coder\+\_\+e}} \+: int \{ \mbox{\hyperlink{config_8cpp_abc53e5f8dc3b20de48ecbe0ac2e431d8aa28cf013b8d9bac5ef1407a08c3a6196}{config\+::vt\+::\+\_\+auto}} = 0
+, \mbox{\hyperlink{config_8cpp_abc53e5f8dc3b20de48ecbe0ac2e431d8ab2561179ccf0ab52e91027eaa5bc1770}{config\+::vt\+::cabac}}
+, \mbox{\hyperlink{config_8cpp_abc53e5f8dc3b20de48ecbe0ac2e431d8a958f868b0b7e9be22ef66baafa9036dd}{config\+::vt\+::cavlc}}
+ \}
+\begin{DoxyCompactList}\small\item\em Video\+Toolbox encoder coder enumeration. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+nvenc\+::nvenc\+\_\+two\+\_\+pass \mbox{\hyperlink{config_8cpp_ad499414c6020a045d27497a21b3d0bbb}{config\+::nv\+::twopass\+\_\+from\+\_\+view}} (const \+::std\+::string\+\_\+view \&preset)
+\begin{DoxyCompactList}\small\item\em Convert string view to NVENC two-\/pass mode. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class T$>$ }\\\+::std\+::optional$<$ int $>$ \mbox{\hyperlink{config_8cpp_a6b79295aa02b3eaae0d0f21200a3d7d1}{config\+::amd\+::quality\+\_\+from\+\_\+view}} (const \+::std\+::string\+\_\+view \&quality\+\_\+type, const \+::std\+::optional$<$ int $>$(\&original))
+\begin{DoxyCompactList}\small\item\em Convert string view to quality preset value. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class T$>$ }\\\+::std\+::optional$<$ int $>$ \mbox{\hyperlink{config_8cpp_a98c63d08409595c76fb89386063710d7}{config\+::amd\+::rc\+\_\+from\+\_\+view}} (const \+::std\+::string\+\_\+view \&rc, const \+::std\+::optional$<$ int $>$(\&original))
+\begin{DoxyCompactList}\small\item\em Convert string view to rate control method value. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class T$>$ }\\\+::std\+::optional$<$ int $>$ \mbox{\hyperlink{config_8cpp_ad3187ad1b1b8e7466e1d9716d5c2b217}{config\+::amd\+::usage\+\_\+from\+\_\+view}} (const \+::std\+::string\+\_\+view \&usage, const \+::std\+::optional$<$ int $>$(\&original))
+\begin{DoxyCompactList}\small\item\em Convert string view to usage mode value. \end{DoxyCompactList}\item 
+\Hypertarget{config_8cpp_a9ad2a9f2f61f8bee751caf0f98ece856}\label{config_8cpp_a9ad2a9f2f61f8bee751caf0f98ece856} 
+int {\bfseries config\+::amd\+::coder\+\_\+from\+\_\+view} (const \+::std\+::string\+\_\+view \&coder)
+\item 
+\+::std\+::optional$<$ int $>$ \mbox{\hyperlink{config_8cpp_a260d4d4716bf207ca1b8e321900d57c3}{config\+::qsv\+::preset\+\_\+from\+\_\+view}} (const \+::std\+::string\+\_\+view \&preset)
+\begin{DoxyCompactList}\small\item\em Convert string view to Quick\+Sync preset value. \end{DoxyCompactList}\item 
+\+::std\+::optional$<$ int $>$ \mbox{\hyperlink{config_8cpp_accf5eeb6c2e8d92001ce775d21ba81d4}{config\+::qsv\+::coder\+\_\+from\+\_\+view}} (const \+::std\+::string\+\_\+view \&coder)
+\begin{DoxyCompactList}\small\item\em Convert string view to Quick\+Sync coder value. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{config_8cpp_a88f961b9a813d730587eb15e190e184a}{config\+::vt\+::coder\+\_\+from\+\_\+view}} (const \+::std\+::string\+\_\+view \&coder)
+\begin{DoxyCompactList}\small\item\em Convert string view to Video\+Toolbox coder value. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{config_8cpp_a32f1a09d3580c53b593671248f0b13e8}{config\+::vt\+::allow\+\_\+software\+\_\+from\+\_\+view}} (const \+::std\+::string\+\_\+view \&software)
+\begin{DoxyCompactList}\small\item\em Convert string view to allow software encoding flag. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{config_8cpp_a7c977b36541cf12ee2da6f251922e0ee}{config\+::vt\+::force\+\_\+software\+\_\+from\+\_\+view}} (const \+::std\+::string\+\_\+view \&software)
+\begin{DoxyCompactList}\small\item\em Convert string view to force software encoding flag. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{config_8cpp_a47583a902cfccf087800e92b4faf97d9}{config\+::vt\+::rt\+\_\+from\+\_\+view}} (const \+::std\+::string\+\_\+view \&rt)
+\begin{DoxyCompactList}\small\item\em Convert string view to realtime flag. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{config_8cpp_a213ef40de30200554ac91aabb7ead21e}{config\+::sw\+::svtav1\+\_\+preset\+\_\+from\+\_\+view}} (const \+::std\+::string\+\_\+view \&preset)
+\begin{DoxyCompactList}\small\item\em Convert string view to SVT-\/\+AV1 preset value. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a71167e8deb326e952cc07359386306ec}{video\+\_\+t\+::dd\+\_\+t\+::config\+\_\+option\+\_\+e}} \mbox{\hyperlink{config_8cpp_a75df9445093ef69c43039c2f2ddeca5d}{config\+::dd\+::config\+\_\+option\+\_\+from\+\_\+view}} (const \+::std\+::string\+\_\+view value)
+\begin{DoxyCompactList}\small\item\em Convert string view to display device configuration option. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a947ad18e495a814418634d6a84eb53c4}{video\+\_\+t\+::dd\+\_\+t\+::resolution\+\_\+option\+\_\+e}} \mbox{\hyperlink{config_8cpp_a18c78d404b73f545fe1cbba66c12403e}{config\+::dd\+::resolution\+\_\+option\+\_\+from\+\_\+view}} (const \+::std\+::string\+\_\+view value)
+\begin{DoxyCompactList}\small\item\em Convert string view to resolution option. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a1a9c5b605ab8ad8a58ee728fdaf78c85}{video\+\_\+t\+::dd\+\_\+t\+::refresh\+\_\+rate\+\_\+option\+\_\+e}} \mbox{\hyperlink{config_8cpp_ab9990420070099e591ea6270e64f0bc0}{config\+::dd\+::refresh\+\_\+rate\+\_\+option\+\_\+from\+\_\+view}} (const \+::std\+::string\+\_\+view value)
+\begin{DoxyCompactList}\small\item\em Convert string view to refresh rate option. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_a1dbaacf45623b1add275aafb80426bad}{video\+\_\+t\+::dd\+\_\+t\+::hdr\+\_\+option\+\_\+e}} \mbox{\hyperlink{config_8cpp_a4fc8d3460c6e08efe6b98c13e8b38ae8}{config\+::dd\+::hdr\+\_\+option\+\_\+from\+\_\+view}} (const \+::std\+::string\+\_\+view value)
+\begin{DoxyCompactList}\small\item\em Convert string view to HDR option. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_1_1mode__remapping__t}{video\+\_\+t\+::dd\+\_\+t\+::mode\+\_\+remapping\+\_\+t}} \mbox{\hyperlink{config_8cpp_ac0cdefd5a0de07a3670c91481ee05c39}{config\+::dd\+::mode\+\_\+remapping\+\_\+from\+\_\+view}} (const \+::std\+::string\+\_\+view value)
+\begin{DoxyCompactList}\small\item\em Parse mode remapping configuration from string view. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{config_8cpp_a3cbccfe85e7279218151ab92cf0bc95c}{config\+::endline}} (char ch)
+\begin{DoxyCompactList}\small\item\em Check if character is a newline. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{config_8cpp_a58215d61b82e4ea6930a9541d9bd220b}{config\+::space\+\_\+tab}} (char ch)
+\begin{DoxyCompactList}\small\item\em Check if character is a space or tab. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{config_8cpp_acf68e3220a1b308602ad1dd9bc4f754c}{config\+::whitespace}} (char ch)
+\begin{DoxyCompactList}\small\item\em Check if character is whitespace. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{config_8cpp_a9743d793b3b643b4d9ab73473bead2d6}{config\+::to\+\_\+string}} (const char \texorpdfstring{$\ast$}{*}begin, const char \texorpdfstring{$\ast$}{*}end)
+\begin{DoxyCompactList}\small\item\em Convert character range to string. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class It$>$ }\\It \mbox{\hyperlink{config_8cpp_a10f41137465e2a4df00e9552b66736b0}{config\+::skip\+\_\+list}} (It skipper, It end)
+\begin{DoxyCompactList}\small\item\em Skip over a list (bracketed section) in configuration parsing. \end{DoxyCompactList}\item 
+std\+::pair$<$ \+::std\+::string\+\_\+view\+::const\+\_\+iterator, \+::std\+::optional$<$ std\+::pair$<$ std\+::string, std\+::string $>$ $>$ $>$ \mbox{\hyperlink{config_8cpp_a8649a9419d0c189de5b988350ec6e557}{config\+::parse\+\_\+option}} (\+::std\+::string\+\_\+view\+::const\+\_\+iterator begin, \+::std\+::string\+\_\+view\+::const\+\_\+iterator end)
+\begin{DoxyCompactList}\small\item\em Parse a single configuration option from a line. \end{DoxyCompactList}\item 
+std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \mbox{\hyperlink{config_8cpp_aa12289338652b0f476848476af1282c2}{config\+::parse\+\_\+config}} (const \+::std\+::string\+\_\+view \&file\+\_\+content)
+\begin{DoxyCompactList}\small\item\em Parse configuration file content into key-\/value pairs. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{config_8cpp_abb0678f8792fb2aee5c2c3687ceb6210}{config\+::string\+\_\+f}} (std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&vars, const std\+::string \&name, std\+::string \&\mbox{\hyperlink{config_8cpp_a669e832f2f6b35d525e789e0cc2d2a7f}{input}})
+\begin{DoxyCompactList}\small\item\em Parse string field from configuration variables. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T, typename F$>$ }\\void \mbox{\hyperlink{config_8cpp_a4b6af9d6763a6affe801b4670820c3f1}{config\+::generic\+\_\+f}} (std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&vars, const std\+::string \&name, T \&\mbox{\hyperlink{config_8cpp_a669e832f2f6b35d525e789e0cc2d2a7f}{input}}, F \&\&f)
+\begin{DoxyCompactList}\small\item\em Generic field parser with custom conversion function. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{config_8cpp_a091f2bcbb97e90a2a70099596403f016}{config\+::string\+\_\+restricted\+\_\+f}} (std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&vars, const std\+::string \&name, std\+::string \&\mbox{\hyperlink{config_8cpp_a669e832f2f6b35d525e789e0cc2d2a7f}{input}}, const std\+::vector$<$\+::std\+::string\+\_\+view $>$ \&allowed\+\_\+vals)
+\begin{DoxyCompactList}\small\item\em Parse string field with restricted allowed values. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{config_8cpp_a456e468f485e0802a6b455e11211959b}{config\+::path\+\_\+f}} (std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&vars, const std\+::string \&name, fs\+::path \&\mbox{\hyperlink{config_8cpp_a669e832f2f6b35d525e789e0cc2d2a7f}{input}})
+\begin{DoxyCompactList}\small\item\em Parse filesystem path field from configuration. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{config_8cpp_acfbd9949c59164c8e0fe81da615d162a}{config\+::path\+\_\+f}} (std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&vars, const std\+::string \&name, std\+::string \&\mbox{\hyperlink{config_8cpp_a669e832f2f6b35d525e789e0cc2d2a7f}{input}})
+\begin{DoxyCompactList}\small\item\em Parse path field as string from configuration. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{config_8cpp_abe26dbd9a3b9e8e3f0cc6f4acc0e772b}{config\+::int\+\_\+f}} (std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&vars, const std\+::string \&name, int \&\mbox{\hyperlink{config_8cpp_a669e832f2f6b35d525e789e0cc2d2a7f}{input}})
+\begin{DoxyCompactList}\small\item\em Parse integer field from configuration. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{config_8cpp_a17ac28c149b3344202a23d5ed9be4444}{config\+::int\+\_\+f}} (std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&vars, const std\+::string \&name, \+::std\+::optional$<$ int $>$ \&\mbox{\hyperlink{config_8cpp_a669e832f2f6b35d525e789e0cc2d2a7f}{input}})
+\begin{DoxyCompactList}\small\item\em Parse optional integer field from configuration. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class F$>$ }\\void \mbox{\hyperlink{config_8cpp_ae1e3d4c5b78d546266858977dc43a300}{config\+::int\+\_\+f}} (std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&vars, const std\+::string \&name, int \&\mbox{\hyperlink{config_8cpp_a669e832f2f6b35d525e789e0cc2d2a7f}{input}}, F \&\&f)
+\begin{DoxyCompactList}\small\item\em Parse integer field with custom conversion function. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class F$>$ }\\void \mbox{\hyperlink{config_8cpp_ad84b8b2df04b91d03b7e08231adc7266}{config\+::int\+\_\+f}} (std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&vars, const std\+::string \&name, \+::std\+::optional$<$ int $>$ \&\mbox{\hyperlink{config_8cpp_a669e832f2f6b35d525e789e0cc2d2a7f}{input}}, F \&\&f)
+\begin{DoxyCompactList}\small\item\em Parse optional integer field with custom conversion function. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{config_8cpp_a1ea90278c3de030c6f4fbde448bbf9c9}{config\+::int\+\_\+between\+\_\+f}} (std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&vars, const std\+::string \&name, int \&\mbox{\hyperlink{config_8cpp_a669e832f2f6b35d525e789e0cc2d2a7f}{input}}, const std\+::pair$<$ int, int $>$ \&range)
+\begin{DoxyCompactList}\small\item\em Parse integer field with range validation. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{config_8cpp_a69a7de788a4221ad920cbf4e165e11ee}{config\+::to\+\_\+bool}} (std\+::string \&boolean)
+\begin{DoxyCompactList}\small\item\em Convert string to boolean value. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{config_8cpp_ad1346ee297310c9bda905efc71428c79}{config\+::bool\+\_\+f}} (std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&vars, const std\+::string \&name, bool \&\mbox{\hyperlink{config_8cpp_a669e832f2f6b35d525e789e0cc2d2a7f}{input}})
+\begin{DoxyCompactList}\small\item\em Parse boolean field from configuration. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{config_8cpp_adf18820f22cc28c650445d56d1f91038}{config\+::double\+\_\+f}} (std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&vars, const std\+::string \&name, double \&\mbox{\hyperlink{config_8cpp_a669e832f2f6b35d525e789e0cc2d2a7f}{input}})
+\begin{DoxyCompactList}\small\item\em Parse double field from configuration. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{config_8cpp_addd77774e72d543e113404f358afa1e5}{config\+::double\+\_\+between\+\_\+f}} (std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&vars, const std\+::string \&name, double \&\mbox{\hyperlink{config_8cpp_a669e832f2f6b35d525e789e0cc2d2a7f}{input}}, const std\+::pair$<$ double, double $>$ \&range)
+\begin{DoxyCompactList}\small\item\em Parse double field with range validation. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{config_8cpp_a3ca85869c0a144c4b8c86903855e86b4}{config\+::list\+\_\+string\+\_\+f}} (std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&vars, const std\+::string \&name, std\+::vector$<$ std\+::string $>$ \&\mbox{\hyperlink{config_8cpp_a669e832f2f6b35d525e789e0cc2d2a7f}{input}})
+\begin{DoxyCompactList}\small\item\em Parse list of strings field from configuration. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{config_8cpp_afcf9c829f099ae73c7cea8f5594a481b}{config\+::list\+\_\+prep\+\_\+cmd\+\_\+f}} (std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&vars, const std\+::string \&name, std\+::vector$<$ \mbox{\hyperlink{structconfig_1_1prep__cmd__t}{prep\+\_\+cmd\+\_\+t}} $>$ \&\mbox{\hyperlink{config_8cpp_a669e832f2f6b35d525e789e0cc2d2a7f}{input}})
+\begin{DoxyCompactList}\small\item\em Parse list of pre-\/application commands from configuration. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{config_8cpp_a0b53e1329bf521eede9ead4d17e1b7bf}{config\+::list\+\_\+server\+\_\+cmd\+\_\+f}} (std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&vars, const std\+::string \&name, std\+::vector$<$ \mbox{\hyperlink{structconfig_1_1server__cmd__t}{server\+\_\+cmd\+\_\+t}} $>$ \&\mbox{\hyperlink{config_8cpp_a669e832f2f6b35d525e789e0cc2d2a7f}{input}})
+\begin{DoxyCompactList}\small\item\em Parse list of server commands from configuration. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{config_8cpp_a2554a223214ad3f6a7f2c2280ba48e67}{config\+::list\+\_\+int\+\_\+f}} (std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&vars, const std\+::string \&name, std\+::vector$<$ int $>$ \&\mbox{\hyperlink{config_8cpp_a669e832f2f6b35d525e789e0cc2d2a7f}{input}})
+\begin{DoxyCompactList}\small\item\em Parse list of integers from configuration. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{config_8cpp_a582cef5138bc7988c789b4f82580d1f9}{config\+::map\+\_\+int\+\_\+int\+\_\+f}} (std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&vars, const std\+::string \&name, std\+::unordered\+\_\+map$<$ int, int $>$ \&\mbox{\hyperlink{config_8cpp_a669e832f2f6b35d525e789e0cc2d2a7f}{input}})
+\begin{DoxyCompactList}\small\item\em Parse map of integers from configuration. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{config_8cpp_aba4eef7b0827315c1bd6dfd38b6481f4}{config\+::apply\+\_\+flags}} (const char \texorpdfstring{$\ast$}{*}line)
+\begin{DoxyCompactList}\small\item\em Apply command-\/line flags from a string. \end{DoxyCompactList}\item 
+std\+::vector$<$\+::std\+::string\+\_\+view $>$ \& \mbox{\hyperlink{config_8cpp_a3b77ca77e129cda7291a0e7cb7ae01d6}{config\+::get\+\_\+supported\+\_\+gamepad\+\_\+options}} ()
+\begin{DoxyCompactList}\small\item\em Get list of supported gamepad option names. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{config_8cpp_aec661b541baa6a18df66603eeb8f95d7}{config\+::apply\+\_\+config}} (std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&\&vars)
+\begin{DoxyCompactList}\small\item\em Apply parsed configuration variables to global configuration. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{config_8cpp_aac1b4c84566eef86f3bc79be02a72e8f}{config\+::parse}} (int argc, char \texorpdfstring{$\ast$}{*}argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Parse command-\/line arguments and configuration file. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structconfig_1_1auto__bitrate__settings__t}{auto\+\_\+bitrate\+\_\+settings\+\_\+t}} \mbox{\hyperlink{config_8cpp_a95a52138b6f9e0288ec2e7143762c282}{config\+::get\+\_\+auto\+\_\+bitrate\+\_\+settings}} ()
+\begin{DoxyCompactList}\small\item\em Get current auto bitrate adjustment settings. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{config_8cpp_ab072b2cc5bcce908fe5fa7087f0f4254}\label{config_8cpp_ab072b2cc5bcce908fe5fa7087f0f4254} 
+\mbox{\hyperlink{structconfig_1_1video__t}{video\+\_\+t}} {\bfseries config\+::video}
+\begin{DoxyCompactList}\small\item\em Global video configuration instance. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structconfig_1_1audio__t}{audio\+\_\+t}} \mbox{\hyperlink{config_8cpp_ae5ea265684e81c400ecbe4f3aca58d9f}{config\+::audio}}
+\begin{DoxyCompactList}\small\item\em Global audio configuration instance. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structconfig_1_1stream__t}{stream\+\_\+t}} \mbox{\hyperlink{config_8cpp_a64b54f2ada544c8afedd9c3b9d2446af}{config\+::stream}}
+\begin{DoxyCompactList}\small\item\em Global stream configuration instance. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structconfig_1_1nvhttp__t}{nvhttp\+\_\+t}} \mbox{\hyperlink{config_8cpp_a4d2b7d796d4c4d41d171058ad91e1111}{config\+::nvhttp}}
+\begin{DoxyCompactList}\small\item\em Global NVIDIA HTTP server configuration instance. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structconfig_1_1input__t}{input\+\_\+t}} \mbox{\hyperlink{config_8cpp_a669e832f2f6b35d525e789e0cc2d2a7f}{config\+::input}}
+\begin{DoxyCompactList}\small\item\em Global input configuration instance. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structconfig_1_1sunshine__t}{sunshine\+\_\+t}} \mbox{\hyperlink{config_8cpp_ab1574b9a185050000a067e2484eab328}{config\+::sunshine}}
+\begin{DoxyCompactList}\small\item\em Global Sunshine application configuration instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Definitions for the configuration of Sunshine. 
+
+
+
+\label{doc-define-members}
+\Hypertarget{config_8cpp_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{config_8cpp_a2af1edabc2eeef86879db0b959d529e1}\index{config.cpp@{config.cpp}!\_CONVERT\_@{\_CONVERT\_}}
+\index{\_CONVERT\_@{\_CONVERT\_}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{\_CONVERT\_}{\_CONVERT\_}\hspace{0.1cm}{\footnotesize\ttfamily [1/9]}}
+{\footnotesize\ttfamily \label{config_8cpp_a2af1edabc2eeef86879db0b959d529e1} 
+\#define \+\_\+\+CONVERT\+\_\+(\begin{DoxyParamCaption}\item[{}]{x}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\_CONVERT\_2\_ARG\_(x,\ x)}
+
+\end{DoxyCode}
+\Hypertarget{config_8cpp_a3ccff8d5be6d3a57ba58e740e351b790}\index{config.cpp@{config.cpp}!\_CONVERT\_@{\_CONVERT\_}}
+\index{\_CONVERT\_@{\_CONVERT\_}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{\_CONVERT\_}{\_CONVERT\_}\hspace{0.1cm}{\footnotesize\ttfamily [2/9]}}
+{\footnotesize\ttfamily \label{config_8cpp_a3ccff8d5be6d3a57ba58e740e351b790} 
+\#define \+\_\+\+CONVERT\+\_\+(\begin{DoxyParamCaption}\item[{}]{x}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\_CONVERT\_2\_ARG\_(x,\ x)}
+
+\end{DoxyCode}
+\Hypertarget{config_8cpp_a2c5e05e87fa25c347eba6352e68f8342}\index{config.cpp@{config.cpp}!\_CONVERT\_@{\_CONVERT\_}}
+\index{\_CONVERT\_@{\_CONVERT\_}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{\_CONVERT\_}{\_CONVERT\_}\hspace{0.1cm}{\footnotesize\ttfamily [3/9]}}
+{\footnotesize\ttfamily \label{config_8cpp_a2c5e05e87fa25c347eba6352e68f8342} 
+\#define \+\_\+\+CONVERT\+\_\+(\begin{DoxyParamCaption}\item[{}]{x}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\_CONVERT\_2\_ARG\_(x,\ x)}
+
+\end{DoxyCode}
+\Hypertarget{config_8cpp_aa1f38c825d3b08e5fa4565b81a054970}\index{config.cpp@{config.cpp}!\_CONVERT\_@{\_CONVERT\_}}
+\index{\_CONVERT\_@{\_CONVERT\_}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{\_CONVERT\_}{\_CONVERT\_}\hspace{0.1cm}{\footnotesize\ttfamily [4/9]}}
+{\footnotesize\ttfamily \label{config_8cpp_aa1f38c825d3b08e5fa4565b81a054970} 
+\#define \+\_\+\+CONVERT\+\_\+(\begin{DoxyParamCaption}\item[{}]{x}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{if}\ (value\ ==\ \#x\#\#sv)\ \(\backslash\)}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{return}\ video\_t::dd\_t::config\_option\_e::x}
+
+\end{DoxyCode}
+\Hypertarget{config_8cpp_ad56aa959bb949de05f0bde29c571c364}\index{config.cpp@{config.cpp}!\_CONVERT\_@{\_CONVERT\_}}
+\index{\_CONVERT\_@{\_CONVERT\_}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{\_CONVERT\_}{\_CONVERT\_}\hspace{0.1cm}{\footnotesize\ttfamily [5/9]}}
+{\footnotesize\ttfamily \label{config_8cpp_ad56aa959bb949de05f0bde29c571c364} 
+\#define \+\_\+\+CONVERT\+\_\+(\begin{DoxyParamCaption}\item[{}]{x}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{if}\ (preset\ ==\ \#x\#\#sv)\ \(\backslash\)}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{return}\ x}
+
+\end{DoxyCode}
+\Hypertarget{config_8cpp_a03d7a1fb335f4b0a1671f204f8cf022a}\index{config.cpp@{config.cpp}!\_CONVERT\_@{\_CONVERT\_}}
+\index{\_CONVERT\_@{\_CONVERT\_}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{\_CONVERT\_}{\_CONVERT\_}\hspace{0.1cm}{\footnotesize\ttfamily [6/9]}}
+{\footnotesize\ttfamily \label{config_8cpp_a03d7a1fb335f4b0a1671f204f8cf022a} 
+\#define \+\_\+\+CONVERT\+\_\+(\begin{DoxyParamCaption}\item[{}]{x}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{if}\ (usage\ ==\ \#x\#\#sv)\ \(\backslash\)}
+\DoxyCodeLine{\ \ return\ (\textcolor{keywordtype}{int})\ T::x}
+
+\end{DoxyCode}
+\Hypertarget{config_8cpp_adc65d242bc300201b5f8ef6a84b1fd46}\index{config.cpp@{config.cpp}!\_CONVERT\_@{\_CONVERT\_}}
+\index{\_CONVERT\_@{\_CONVERT\_}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{\_CONVERT\_}{\_CONVERT\_}\hspace{0.1cm}{\footnotesize\ttfamily [7/9]}}
+{\footnotesize\ttfamily \label{config_8cpp_adc65d242bc300201b5f8ef6a84b1fd46} 
+\#define \+\_\+\+CONVERT\+\_\+(\begin{DoxyParamCaption}\item[{}]{x}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{if}\ (rc\ ==\ \#x\#\#sv)\ \(\backslash\)}
+\DoxyCodeLine{\ \ return\ (\textcolor{keywordtype}{int})\ T::x}
+
+\end{DoxyCode}
+\Hypertarget{config_8cpp_a7fdee3cc258c4c6add64e8da6a2db8eb}\index{config.cpp@{config.cpp}!\_CONVERT\_@{\_CONVERT\_}}
+\index{\_CONVERT\_@{\_CONVERT\_}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{\_CONVERT\_}{\_CONVERT\_}\hspace{0.1cm}{\footnotesize\ttfamily [8/9]}}
+{\footnotesize\ttfamily \label{config_8cpp_a7fdee3cc258c4c6add64e8da6a2db8eb} 
+\#define \+\_\+\+CONVERT\+\_\+(\begin{DoxyParamCaption}\item[{}]{x}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{if}\ (quality\_type\ ==\ \#x\#\#sv)\ \(\backslash\)}
+\DoxyCodeLine{\ \ return\ (\textcolor{keywordtype}{int})\ T::x}
+
+\end{DoxyCode}
+\Hypertarget{config_8cpp_a3264e1f86dc21e841133755340e38b93}\index{config.cpp@{config.cpp}!\_CONVERT\_@{\_CONVERT\_}}
+\index{\_CONVERT\_@{\_CONVERT\_}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{\_CONVERT\_}{\_CONVERT\_}\hspace{0.1cm}{\footnotesize\ttfamily [9/9]}}
+{\footnotesize\ttfamily \label{config_8cpp_a3264e1f86dc21e841133755340e38b93} 
+\#define \+\_\+\+CONVERT\+\_\+(\begin{DoxyParamCaption}\item[{}]{x}{, }\item[{}]{y}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{if}\ (preset\ ==\ \#x\#\#sv)\ \(\backslash\)}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{return}\ y}
+
+\end{DoxyCode}
+\Hypertarget{config_8cpp_afe1e26ad09889f14aafdf82d48bba499}\index{config.cpp@{config.cpp}!\_CONVERT\_2\_ARG\_@{\_CONVERT\_2\_ARG\_}}
+\index{\_CONVERT\_2\_ARG\_@{\_CONVERT\_2\_ARG\_}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{\_CONVERT\_2\_ARG\_}{\_CONVERT\_2\_ARG\_}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \label{config_8cpp_afe1e26ad09889f14aafdf82d48bba499} 
+\#define \+\_\+\+CONVERT\+\_\+2\+\_\+\+ARG\+\_\+(\begin{DoxyParamCaption}\item[{}]{str}{, }\item[{}]{val}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{if}\ (value\ ==\ \#str\#\#sv)\ \(\backslash\)}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{return}\ video\_t::dd\_t::hdr\_option\_e::val}
+
+\end{DoxyCode}
+\Hypertarget{config_8cpp_a28377fd2258f4dedaa6b8bfe7aeae266}\index{config.cpp@{config.cpp}!\_CONVERT\_2\_ARG\_@{\_CONVERT\_2\_ARG\_}}
+\index{\_CONVERT\_2\_ARG\_@{\_CONVERT\_2\_ARG\_}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{\_CONVERT\_2\_ARG\_}{\_CONVERT\_2\_ARG\_}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \label{config_8cpp_a28377fd2258f4dedaa6b8bfe7aeae266} 
+\#define \+\_\+\+CONVERT\+\_\+2\+\_\+\+ARG\+\_\+(\begin{DoxyParamCaption}\item[{}]{str}{, }\item[{}]{val}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{if}\ (value\ ==\ \#str\#\#sv)\ \(\backslash\)}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{return}\ video\_t::dd\_t::refresh\_rate\_option\_e::val}
+
+\end{DoxyCode}
+\Hypertarget{config_8cpp_a26273aefd720f9031374440fc254d27a}\index{config.cpp@{config.cpp}!\_CONVERT\_2\_ARG\_@{\_CONVERT\_2\_ARG\_}}
+\index{\_CONVERT\_2\_ARG\_@{\_CONVERT\_2\_ARG\_}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{\_CONVERT\_2\_ARG\_}{\_CONVERT\_2\_ARG\_}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \label{config_8cpp_a26273aefd720f9031374440fc254d27a} 
+\#define \+\_\+\+CONVERT\+\_\+2\+\_\+\+ARG\+\_\+(\begin{DoxyParamCaption}\item[{}]{str}{, }\item[{}]{val}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{if}\ (value\ ==\ \#str\#\#sv)\ \(\backslash\)}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{return}\ video\_t::dd\_t::resolution\_option\_e::val}
+
+\end{DoxyCode}
+
+
+\label{doc-enum-members}
+\Hypertarget{config_8cpp_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{config_8cpp_a9aca908eacf04026666ed10bd3147781}\index{config.cpp@{config.cpp}!cavlc\_e@{cavlc\_e}}
+\index{cavlc\_e@{cavlc\_e}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{cavlc\_e}{cavlc\_e}}
+{\footnotesize\ttfamily \label{config_8cpp_a9aca908eacf04026666ed10bd3147781} 
+enum \mbox{\hyperlink{config_8cpp_a9aca908eacf04026666ed10bd3147781}{config\+::qsv\+::cavlc\+\_\+e}} \+: int}
+
+
+
+Quick\+Sync CAVLC (Context-\/\+Adaptive Variable-\/\+Length Coding) enumeration. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_auto@{\_auto}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!\_auto@{\_auto}}}\Hypertarget{config_8cpp_a9aca908eacf04026666ed10bd3147781a9eb51851c17300f899376e4cc29d764a}\label{config_8cpp_a9aca908eacf04026666ed10bd3147781a9eb51851c17300f899376e4cc29d764a} 
+\+\_\+auto&Auto. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{enabled@{enabled}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!enabled@{enabled}}}\Hypertarget{config_8cpp_a9aca908eacf04026666ed10bd3147781a6d9edcff01b50aab8dd96b60d7b8522c}\label{config_8cpp_a9aca908eacf04026666ed10bd3147781a6d9edcff01b50aab8dd96b60d7b8522c} 
+enabled&Enabled. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{disabled@{disabled}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!disabled@{disabled}}}\Hypertarget{config_8cpp_a9aca908eacf04026666ed10bd3147781a6477876cfa48c619e6d44921403021a2}\label{config_8cpp_a9aca908eacf04026666ed10bd3147781a6477876cfa48c619e6d44921403021a2} 
+disabled&Disabled. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{config_8cpp_ae63da1908e0e80c5a1d0e091a8ae029d}\index{config.cpp@{config.cpp}!coder\_e@{coder\_e}}
+\index{coder\_e@{coder\_e}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{coder\_e}{coder\_e}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{config_8cpp_ae63da1908e0e80c5a1d0e091a8ae029d} 
+enum \mbox{\hyperlink{config_8cpp_ae63da1908e0e80c5a1d0e091a8ae029d}{config\+::amd\+::coder\+\_\+e}} \+: int}
+
+
+
+AMD encoder coder enumeration. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_auto@{\_auto}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!\_auto@{\_auto}}}\Hypertarget{config_8cpp_ae63da1908e0e80c5a1d0e091a8ae029da675cc06f523d2b342157077bee56d724}\label{config_8cpp_ae63da1908e0e80c5a1d0e091a8ae029da675cc06f523d2b342157077bee56d724} 
+\+\_\+auto&Auto. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{cabac@{cabac}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!cabac@{cabac}}}\Hypertarget{config_8cpp_ae63da1908e0e80c5a1d0e091a8ae029da9493942b0796de6ce1d927e123ef0854}\label{config_8cpp_ae63da1908e0e80c5a1d0e091a8ae029da9493942b0796de6ce1d927e123ef0854} 
+cabac&CABAC. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{cavlc@{cavlc}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!cavlc@{cavlc}}}\Hypertarget{config_8cpp_ae63da1908e0e80c5a1d0e091a8ae029dab877c18b60440649004bcfaf4a3b6883}\label{config_8cpp_ae63da1908e0e80c5a1d0e091a8ae029dab877c18b60440649004bcfaf4a3b6883} 
+cavlc&CAVLC. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{config_8cpp_abc53e5f8dc3b20de48ecbe0ac2e431d8}\index{config.cpp@{config.cpp}!coder\_e@{coder\_e}}
+\index{coder\_e@{coder\_e}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{coder\_e}{coder\_e}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{config_8cpp_abc53e5f8dc3b20de48ecbe0ac2e431d8} 
+enum \mbox{\hyperlink{config_8cpp_abc53e5f8dc3b20de48ecbe0ac2e431d8}{config\+::vt\+::coder\+\_\+e}} \+: int}
+
+
+
+Video\+Toolbox encoder coder enumeration. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{\_auto@{\_auto}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!\_auto@{\_auto}}}\Hypertarget{config_8cpp_abc53e5f8dc3b20de48ecbe0ac2e431d8aa28cf013b8d9bac5ef1407a08c3a6196}\label{config_8cpp_abc53e5f8dc3b20de48ecbe0ac2e431d8aa28cf013b8d9bac5ef1407a08c3a6196} 
+\+\_\+auto&Auto. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{cabac@{cabac}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!cabac@{cabac}}}\Hypertarget{config_8cpp_abc53e5f8dc3b20de48ecbe0ac2e431d8ab2561179ccf0ab52e91027eaa5bc1770}\label{config_8cpp_abc53e5f8dc3b20de48ecbe0ac2e431d8ab2561179ccf0ab52e91027eaa5bc1770} 
+cabac&CABAC. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{cavlc@{cavlc}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!cavlc@{cavlc}}}\Hypertarget{config_8cpp_abc53e5f8dc3b20de48ecbe0ac2e431d8a958f868b0b7e9be22ef66baafa9036dd}\label{config_8cpp_abc53e5f8dc3b20de48ecbe0ac2e431d8a958f868b0b7e9be22ef66baafa9036dd} 
+cavlc&CAVLC. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{config_8cpp_a3dda7a82d7579b225a36058a901075fe}\index{config.cpp@{config.cpp}!preset\_e@{preset\_e}}
+\index{preset\_e@{preset\_e}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{preset\_e}{preset\_e}}
+{\footnotesize\ttfamily \label{config_8cpp_a3dda7a82d7579b225a36058a901075fe} 
+enum \mbox{\hyperlink{config_8cpp_a3dda7a82d7579b225a36058a901075fe}{config\+::qsv\+::preset\+\_\+e}} \+: int}
+
+
+
+Quick\+Sync video encoder preset enumeration. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{veryslow@{veryslow}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!veryslow@{veryslow}}}\Hypertarget{config_8cpp_a3dda7a82d7579b225a36058a901075fea0ef1baf56fb5561f944ea7f75eb25899}\label{config_8cpp_a3dda7a82d7579b225a36058a901075fea0ef1baf56fb5561f944ea7f75eb25899} 
+veryslow&veryslow preset \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{slower@{slower}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!slower@{slower}}}\Hypertarget{config_8cpp_a3dda7a82d7579b225a36058a901075feac17501a99280f345eb43ff5c7885df5d}\label{config_8cpp_a3dda7a82d7579b225a36058a901075feac17501a99280f345eb43ff5c7885df5d} 
+slower&slower preset \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{slow@{slow}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!slow@{slow}}}\Hypertarget{config_8cpp_a3dda7a82d7579b225a36058a901075fea66ccc526823fc9f31efbab9fabc97a60}\label{config_8cpp_a3dda7a82d7579b225a36058a901075fea66ccc526823fc9f31efbab9fabc97a60} 
+slow&slow preset \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{medium@{medium}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!medium@{medium}}}\Hypertarget{config_8cpp_a3dda7a82d7579b225a36058a901075feaf43f51bf5499515dea5b26b17be27d56}\label{config_8cpp_a3dda7a82d7579b225a36058a901075feaf43f51bf5499515dea5b26b17be27d56} 
+medium&medium preset \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{fast@{fast}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!fast@{fast}}}\Hypertarget{config_8cpp_a3dda7a82d7579b225a36058a901075fea7c4e4e5d08cbabb1610a054ff39cf2ab}\label{config_8cpp_a3dda7a82d7579b225a36058a901075fea7c4e4e5d08cbabb1610a054ff39cf2ab} 
+fast&fast preset \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{faster@{faster}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!faster@{faster}}}\Hypertarget{config_8cpp_a3dda7a82d7579b225a36058a901075fea9197772da1a1b123f4bea2b0e0eb03e3}\label{config_8cpp_a3dda7a82d7579b225a36058a901075fea9197772da1a1b123f4bea2b0e0eb03e3} 
+faster&faster preset \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{veryfast@{veryfast}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!veryfast@{veryfast}}}\Hypertarget{config_8cpp_a3dda7a82d7579b225a36058a901075fea683e0a18e0678d47585c0fa798dcb3b3}\label{config_8cpp_a3dda7a82d7579b225a36058a901075fea683e0a18e0678d47585c0fa798dcb3b3} 
+veryfast&veryfast preset \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{config_8cpp_a0db910a14d9d4ece35ef7652b0897052}\index{config.cpp@{config.cpp}!quality\_av1\_e@{quality\_av1\_e}}
+\index{quality\_av1\_e@{quality\_av1\_e}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{quality\_av1\_e}{quality\_av1\_e}}
+{\footnotesize\ttfamily \label{config_8cpp_a0db910a14d9d4ece35ef7652b0897052} 
+enum class \mbox{\hyperlink{config_8cpp_a0db910a14d9d4ece35ef7652b0897052}{config\+::amd\+::quality\+\_\+av1\+\_\+e}} \+: int\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+AV1 encoder quality preset enumeration. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{speed@{speed}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!speed@{speed}}}\Hypertarget{config_8cpp_a0db910a14d9d4ece35ef7652b0897052ace4ef3ec98443ed10da505114b58f153}\label{config_8cpp_a0db910a14d9d4ece35ef7652b0897052ace4ef3ec98443ed10da505114b58f153} 
+speed&Speed preset. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{quality@{quality}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!quality@{quality}}}\Hypertarget{config_8cpp_a0db910a14d9d4ece35ef7652b0897052ad66636b253cb346dbb6240e30def3618}\label{config_8cpp_a0db910a14d9d4ece35ef7652b0897052ad66636b253cb346dbb6240e30def3618} 
+quality&Quality preset. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{balanced@{balanced}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!balanced@{balanced}}}\Hypertarget{config_8cpp_a0db910a14d9d4ece35ef7652b0897052ab336df698d12ac8e54570ba6ea2679f0}\label{config_8cpp_a0db910a14d9d4ece35ef7652b0897052ab336df698d12ac8e54570ba6ea2679f0} 
+balanced&Balanced preset. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{config_8cpp_a23a2fd94cd71f088a9d04284dc6c2211}\index{config.cpp@{config.cpp}!quality\_h264\_e@{quality\_h264\_e}}
+\index{quality\_h264\_e@{quality\_h264\_e}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{quality\_h264\_e}{quality\_h264\_e}}
+{\footnotesize\ttfamily \label{config_8cpp_a23a2fd94cd71f088a9d04284dc6c2211} 
+enum class \mbox{\hyperlink{config_8cpp_a23a2fd94cd71f088a9d04284dc6c2211}{config\+::amd\+::quality\+\_\+h264\+\_\+e}} \+: int\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+H.\+264 encoder quality preset enumeration. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{speed@{speed}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!speed@{speed}}}\Hypertarget{config_8cpp_a23a2fd94cd71f088a9d04284dc6c2211ace4ef3ec98443ed10da505114b58f153}\label{config_8cpp_a23a2fd94cd71f088a9d04284dc6c2211ace4ef3ec98443ed10da505114b58f153} 
+speed&Speed preset. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{quality@{quality}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!quality@{quality}}}\Hypertarget{config_8cpp_a23a2fd94cd71f088a9d04284dc6c2211ad66636b253cb346dbb6240e30def3618}\label{config_8cpp_a23a2fd94cd71f088a9d04284dc6c2211ad66636b253cb346dbb6240e30def3618} 
+quality&Quality preset. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{balanced@{balanced}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!balanced@{balanced}}}\Hypertarget{config_8cpp_a23a2fd94cd71f088a9d04284dc6c2211ab336df698d12ac8e54570ba6ea2679f0}\label{config_8cpp_a23a2fd94cd71f088a9d04284dc6c2211ab336df698d12ac8e54570ba6ea2679f0} 
+balanced&Balanced preset. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{config_8cpp_a1afde3cafda8849c3200b6fd2b88e72a}\index{config.cpp@{config.cpp}!quality\_hevc\_e@{quality\_hevc\_e}}
+\index{quality\_hevc\_e@{quality\_hevc\_e}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{quality\_hevc\_e}{quality\_hevc\_e}}
+{\footnotesize\ttfamily \label{config_8cpp_a1afde3cafda8849c3200b6fd2b88e72a} 
+enum class \mbox{\hyperlink{config_8cpp_a1afde3cafda8849c3200b6fd2b88e72a}{config\+::amd\+::quality\+\_\+hevc\+\_\+e}} \+: int\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+HEVC encoder quality preset enumeration. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{speed@{speed}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!speed@{speed}}}\Hypertarget{config_8cpp_a1afde3cafda8849c3200b6fd2b88e72aace4ef3ec98443ed10da505114b58f153}\label{config_8cpp_a1afde3cafda8849c3200b6fd2b88e72aace4ef3ec98443ed10da505114b58f153} 
+speed&Speed preset. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{quality@{quality}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!quality@{quality}}}\Hypertarget{config_8cpp_a1afde3cafda8849c3200b6fd2b88e72aad66636b253cb346dbb6240e30def3618}\label{config_8cpp_a1afde3cafda8849c3200b6fd2b88e72aad66636b253cb346dbb6240e30def3618} 
+quality&Quality preset. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{balanced@{balanced}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!balanced@{balanced}}}\Hypertarget{config_8cpp_a1afde3cafda8849c3200b6fd2b88e72aab336df698d12ac8e54570ba6ea2679f0}\label{config_8cpp_a1afde3cafda8849c3200b6fd2b88e72aab336df698d12ac8e54570ba6ea2679f0} 
+balanced&Balanced preset. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{config_8cpp_ab5c20de968c42ee3e01b46a7359346d6}\index{config.cpp@{config.cpp}!rc\_av1\_e@{rc\_av1\_e}}
+\index{rc\_av1\_e@{rc\_av1\_e}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{rc\_av1\_e}{rc\_av1\_e}}
+{\footnotesize\ttfamily \label{config_8cpp_ab5c20de968c42ee3e01b46a7359346d6} 
+enum class \mbox{\hyperlink{config_8cpp_ab5c20de968c42ee3e01b46a7359346d6}{config\+::amd\+::rc\+\_\+av1\+\_\+e}} \+: int\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+AV1 encoder rate control method enumeration. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{cbr@{cbr}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!cbr@{cbr}}}\Hypertarget{config_8cpp_ab5c20de968c42ee3e01b46a7359346d6aa8186307f5bbc554b722505f23cfc81e}\label{config_8cpp_ab5c20de968c42ee3e01b46a7359346d6aa8186307f5bbc554b722505f23cfc81e} 
+cbr&CBR. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{cqp@{cqp}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!cqp@{cqp}}}\Hypertarget{config_8cpp_ab5c20de968c42ee3e01b46a7359346d6ad6acc9f1ba4b28b91ea9de99a0ee53d7}\label{config_8cpp_ab5c20de968c42ee3e01b46a7359346d6ad6acc9f1ba4b28b91ea9de99a0ee53d7} 
+cqp&CQP. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{vbr\_latency@{vbr\_latency}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!vbr\_latency@{vbr\_latency}}}\Hypertarget{config_8cpp_ab5c20de968c42ee3e01b46a7359346d6a55d4a66b980e6c50a5e839234d2aaa04}\label{config_8cpp_ab5c20de968c42ee3e01b46a7359346d6a55d4a66b980e6c50a5e839234d2aaa04} 
+vbr\+\_\+latency&VBR with latency constraints. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{vbr\_peak@{vbr\_peak}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!vbr\_peak@{vbr\_peak}}}\Hypertarget{config_8cpp_ab5c20de968c42ee3e01b46a7359346d6a3fab1a1d2ec09921898d7c3cd4d294e4}\label{config_8cpp_ab5c20de968c42ee3e01b46a7359346d6a3fab1a1d2ec09921898d7c3cd4d294e4} 
+vbr\+\_\+peak&VBR with peak constraints. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{config_8cpp_a3fb53b8f0ec6c328f84b4b8b9eeaede8}\index{config.cpp@{config.cpp}!rc\_h264\_e@{rc\_h264\_e}}
+\index{rc\_h264\_e@{rc\_h264\_e}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{rc\_h264\_e}{rc\_h264\_e}}
+{\footnotesize\ttfamily \label{config_8cpp_a3fb53b8f0ec6c328f84b4b8b9eeaede8} 
+enum class \mbox{\hyperlink{config_8cpp_a3fb53b8f0ec6c328f84b4b8b9eeaede8}{config\+::amd\+::rc\+\_\+h264\+\_\+e}} \+: int\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+H.\+264 encoder rate control method enumeration. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{cbr@{cbr}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!cbr@{cbr}}}\Hypertarget{config_8cpp_a3fb53b8f0ec6c328f84b4b8b9eeaede8aa8186307f5bbc554b722505f23cfc81e}\label{config_8cpp_a3fb53b8f0ec6c328f84b4b8b9eeaede8aa8186307f5bbc554b722505f23cfc81e} 
+cbr&CBR. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{cqp@{cqp}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!cqp@{cqp}}}\Hypertarget{config_8cpp_a3fb53b8f0ec6c328f84b4b8b9eeaede8ad6acc9f1ba4b28b91ea9de99a0ee53d7}\label{config_8cpp_a3fb53b8f0ec6c328f84b4b8b9eeaede8ad6acc9f1ba4b28b91ea9de99a0ee53d7} 
+cqp&CQP. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{vbr\_latency@{vbr\_latency}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!vbr\_latency@{vbr\_latency}}}\Hypertarget{config_8cpp_a3fb53b8f0ec6c328f84b4b8b9eeaede8a55d4a66b980e6c50a5e839234d2aaa04}\label{config_8cpp_a3fb53b8f0ec6c328f84b4b8b9eeaede8a55d4a66b980e6c50a5e839234d2aaa04} 
+vbr\+\_\+latency&VBR with latency constraints. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{vbr\_peak@{vbr\_peak}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!vbr\_peak@{vbr\_peak}}}\Hypertarget{config_8cpp_a3fb53b8f0ec6c328f84b4b8b9eeaede8a3fab1a1d2ec09921898d7c3cd4d294e4}\label{config_8cpp_a3fb53b8f0ec6c328f84b4b8b9eeaede8a3fab1a1d2ec09921898d7c3cd4d294e4} 
+vbr\+\_\+peak&VBR with peak constraints. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{config_8cpp_a552bd5af0459ef49cff57b9db84e685c}\index{config.cpp@{config.cpp}!rc\_hevc\_e@{rc\_hevc\_e}}
+\index{rc\_hevc\_e@{rc\_hevc\_e}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{rc\_hevc\_e}{rc\_hevc\_e}}
+{\footnotesize\ttfamily \label{config_8cpp_a552bd5af0459ef49cff57b9db84e685c} 
+enum class \mbox{\hyperlink{config_8cpp_a552bd5af0459ef49cff57b9db84e685c}{config\+::amd\+::rc\+\_\+hevc\+\_\+e}} \+: int\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+HEVC encoder rate control method enumeration. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{cbr@{cbr}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!cbr@{cbr}}}\Hypertarget{config_8cpp_a552bd5af0459ef49cff57b9db84e685caa8186307f5bbc554b722505f23cfc81e}\label{config_8cpp_a552bd5af0459ef49cff57b9db84e685caa8186307f5bbc554b722505f23cfc81e} 
+cbr&CBR. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{cqp@{cqp}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!cqp@{cqp}}}\Hypertarget{config_8cpp_a552bd5af0459ef49cff57b9db84e685cad6acc9f1ba4b28b91ea9de99a0ee53d7}\label{config_8cpp_a552bd5af0459ef49cff57b9db84e685cad6acc9f1ba4b28b91ea9de99a0ee53d7} 
+cqp&CQP. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{vbr\_latency@{vbr\_latency}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!vbr\_latency@{vbr\_latency}}}\Hypertarget{config_8cpp_a552bd5af0459ef49cff57b9db84e685ca55d4a66b980e6c50a5e839234d2aaa04}\label{config_8cpp_a552bd5af0459ef49cff57b9db84e685ca55d4a66b980e6c50a5e839234d2aaa04} 
+vbr\+\_\+latency&VBR with latency constraints. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{vbr\_peak@{vbr\_peak}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!vbr\_peak@{vbr\_peak}}}\Hypertarget{config_8cpp_a552bd5af0459ef49cff57b9db84e685ca3fab1a1d2ec09921898d7c3cd4d294e4}\label{config_8cpp_a552bd5af0459ef49cff57b9db84e685ca3fab1a1d2ec09921898d7c3cd4d294e4} 
+vbr\+\_\+peak&VBR with peak constraints. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{config_8cpp_a6e379d8b40bddfa08ccfa4c24b384343}\index{config.cpp@{config.cpp}!usage\_av1\_e@{usage\_av1\_e}}
+\index{usage\_av1\_e@{usage\_av1\_e}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{usage\_av1\_e}{usage\_av1\_e}}
+{\footnotesize\ttfamily \label{config_8cpp_a6e379d8b40bddfa08ccfa4c24b384343} 
+enum class \mbox{\hyperlink{config_8cpp_a6e379d8b40bddfa08ccfa4c24b384343}{config\+::amd\+::usage\+\_\+av1\+\_\+e}} \+: int\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+AV1 encoder usage mode enumeration. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{transcoding@{transcoding}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!transcoding@{transcoding}}}\Hypertarget{config_8cpp_a6e379d8b40bddfa08ccfa4c24b384343a2e7888a81451f1288996df77ccf7d4bc}\label{config_8cpp_a6e379d8b40bddfa08ccfa4c24b384343a2e7888a81451f1288996df77ccf7d4bc} 
+transcoding&Transcoding preset. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{webcam@{webcam}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!webcam@{webcam}}}\Hypertarget{config_8cpp_a6e379d8b40bddfa08ccfa4c24b384343a86722fdb4bc3199d48c363a6f922a3c7}\label{config_8cpp_a6e379d8b40bddfa08ccfa4c24b384343a86722fdb4bc3199d48c363a6f922a3c7} 
+webcam&Webcam preset. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{lowlatency\_high\_quality@{lowlatency\_high\_quality}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!lowlatency\_high\_quality@{lowlatency\_high\_quality}}}\Hypertarget{config_8cpp_a6e379d8b40bddfa08ccfa4c24b384343abcefcb39d267b37be5f159d9ffb1e105}\label{config_8cpp_a6e379d8b40bddfa08ccfa4c24b384343abcefcb39d267b37be5f159d9ffb1e105} 
+lowlatency\+\_\+high\+\_\+quality&Low latency high quality preset. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{lowlatency@{lowlatency}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!lowlatency@{lowlatency}}}\Hypertarget{config_8cpp_a6e379d8b40bddfa08ccfa4c24b384343a9993f34c252aef6541037801d066e9b6}\label{config_8cpp_a6e379d8b40bddfa08ccfa4c24b384343a9993f34c252aef6541037801d066e9b6} 
+lowlatency&Low latency preset. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ultralowlatency@{ultralowlatency}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!ultralowlatency@{ultralowlatency}}}\Hypertarget{config_8cpp_a6e379d8b40bddfa08ccfa4c24b384343ab8f3dd1f430f86fb4a5e39f9c30ddecf}\label{config_8cpp_a6e379d8b40bddfa08ccfa4c24b384343ab8f3dd1f430f86fb4a5e39f9c30ddecf} 
+ultralowlatency&Ultra low latency preset. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{config_8cpp_a17d192fc2b83b099fdc4731c99a2184a}\index{config.cpp@{config.cpp}!usage\_h264\_e@{usage\_h264\_e}}
+\index{usage\_h264\_e@{usage\_h264\_e}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{usage\_h264\_e}{usage\_h264\_e}}
+{\footnotesize\ttfamily \label{config_8cpp_a17d192fc2b83b099fdc4731c99a2184a} 
+enum class \mbox{\hyperlink{config_8cpp_a17d192fc2b83b099fdc4731c99a2184a}{config\+::amd\+::usage\+\_\+h264\+\_\+e}} \+: int\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+H.\+264 encoder usage mode enumeration. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{transcoding@{transcoding}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!transcoding@{transcoding}}}\Hypertarget{config_8cpp_a17d192fc2b83b099fdc4731c99a2184aa2e7888a81451f1288996df77ccf7d4bc}\label{config_8cpp_a17d192fc2b83b099fdc4731c99a2184aa2e7888a81451f1288996df77ccf7d4bc} 
+transcoding&Transcoding preset. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{webcam@{webcam}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!webcam@{webcam}}}\Hypertarget{config_8cpp_a17d192fc2b83b099fdc4731c99a2184aa86722fdb4bc3199d48c363a6f922a3c7}\label{config_8cpp_a17d192fc2b83b099fdc4731c99a2184aa86722fdb4bc3199d48c363a6f922a3c7} 
+webcam&Webcam preset. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{lowlatency\_high\_quality@{lowlatency\_high\_quality}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!lowlatency\_high\_quality@{lowlatency\_high\_quality}}}\Hypertarget{config_8cpp_a17d192fc2b83b099fdc4731c99a2184aabcefcb39d267b37be5f159d9ffb1e105}\label{config_8cpp_a17d192fc2b83b099fdc4731c99a2184aabcefcb39d267b37be5f159d9ffb1e105} 
+lowlatency\+\_\+high\+\_\+quality&Low latency high quality preset. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{lowlatency@{lowlatency}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!lowlatency@{lowlatency}}}\Hypertarget{config_8cpp_a17d192fc2b83b099fdc4731c99a2184aa9993f34c252aef6541037801d066e9b6}\label{config_8cpp_a17d192fc2b83b099fdc4731c99a2184aa9993f34c252aef6541037801d066e9b6} 
+lowlatency&Low latency preset. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ultralowlatency@{ultralowlatency}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!ultralowlatency@{ultralowlatency}}}\Hypertarget{config_8cpp_a17d192fc2b83b099fdc4731c99a2184aab8f3dd1f430f86fb4a5e39f9c30ddecf}\label{config_8cpp_a17d192fc2b83b099fdc4731c99a2184aab8f3dd1f430f86fb4a5e39f9c30ddecf} 
+ultralowlatency&Ultra low latency preset. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{config_8cpp_aa23a83e150acc326cca9b5ea5d73579d}\index{config.cpp@{config.cpp}!usage\_hevc\_e@{usage\_hevc\_e}}
+\index{usage\_hevc\_e@{usage\_hevc\_e}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{usage\_hevc\_e}{usage\_hevc\_e}}
+{\footnotesize\ttfamily \label{config_8cpp_aa23a83e150acc326cca9b5ea5d73579d} 
+enum class \mbox{\hyperlink{config_8cpp_aa23a83e150acc326cca9b5ea5d73579d}{config\+::amd\+::usage\+\_\+hevc\+\_\+e}} \+: int\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+HEVC encoder usage mode enumeration. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{transcoding@{transcoding}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!transcoding@{transcoding}}}\Hypertarget{config_8cpp_aa23a83e150acc326cca9b5ea5d73579da2e7888a81451f1288996df77ccf7d4bc}\label{config_8cpp_aa23a83e150acc326cca9b5ea5d73579da2e7888a81451f1288996df77ccf7d4bc} 
+transcoding&Transcoding preset. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{webcam@{webcam}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!webcam@{webcam}}}\Hypertarget{config_8cpp_aa23a83e150acc326cca9b5ea5d73579da86722fdb4bc3199d48c363a6f922a3c7}\label{config_8cpp_aa23a83e150acc326cca9b5ea5d73579da86722fdb4bc3199d48c363a6f922a3c7} 
+webcam&Webcam preset. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{lowlatency\_high\_quality@{lowlatency\_high\_quality}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!lowlatency\_high\_quality@{lowlatency\_high\_quality}}}\Hypertarget{config_8cpp_aa23a83e150acc326cca9b5ea5d73579dabcefcb39d267b37be5f159d9ffb1e105}\label{config_8cpp_aa23a83e150acc326cca9b5ea5d73579dabcefcb39d267b37be5f159d9ffb1e105} 
+lowlatency\+\_\+high\+\_\+quality&Low latency high quality preset. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{lowlatency@{lowlatency}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!lowlatency@{lowlatency}}}\Hypertarget{config_8cpp_aa23a83e150acc326cca9b5ea5d73579da9993f34c252aef6541037801d066e9b6}\label{config_8cpp_aa23a83e150acc326cca9b5ea5d73579da9993f34c252aef6541037801d066e9b6} 
+lowlatency&Low latency preset. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ultralowlatency@{ultralowlatency}!config.cpp@{config.cpp}}\index{config.cpp@{config.cpp}!ultralowlatency@{ultralowlatency}}}\Hypertarget{config_8cpp_aa23a83e150acc326cca9b5ea5d73579dab8f3dd1f430f86fb4a5e39f9c30ddecf}\label{config_8cpp_aa23a83e150acc326cca9b5ea5d73579dab8f3dd1f430f86fb4a5e39f9c30ddecf} 
+ultralowlatency&Ultra low latency preset. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\label{doc-func-members}
+\Hypertarget{config_8cpp_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{config_8cpp_a32f1a09d3580c53b593671248f0b13e8}\index{config.cpp@{config.cpp}!allow\_software\_from\_view@{allow\_software\_from\_view}}
+\index{allow\_software\_from\_view@{allow\_software\_from\_view}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{allow\_software\_from\_view()}{allow\_software\_from\_view()}}
+{\footnotesize\ttfamily \label{config_8cpp_a32f1a09d3580c53b593671248f0b13e8} 
+int config\+::vt\+::allow\+\_\+software\+\_\+from\+\_\+view (\begin{DoxyParamCaption}\item[{const \+::std\+::string\+\_\+view \&}]{software}{}\end{DoxyParamCaption})}
+
+
+
+Convert string view to allow software encoding flag. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em software} & String representation ("{}allowed"{}, "{}forced"{}, or other). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 if allowed/forced, 0 otherwise. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_aec661b541baa6a18df66603eeb8f95d7}\index{config.cpp@{config.cpp}!apply\_config@{apply\_config}}
+\index{apply\_config@{apply\_config}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{apply\_config()}{apply\_config()}}
+{\footnotesize\ttfamily \label{config_8cpp_aec661b541baa6a18df66603eeb8f95d7} 
+void config\+::apply\+\_\+config (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&\&}]{vars}{}\end{DoxyParamCaption})}
+
+
+
+Apply parsed configuration variables to global configuration. 
+
+Processes all configuration variables and updates the global configuration structures. Logs all modified settings and ensures required files exist.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vars} & Map of configuration option names to values (moved). \\
+\hline
+\end{DoxyParams}
+\Hypertarget{config_8cpp_aba4eef7b0827315c1bd6dfd38b6481f4}\index{config.cpp@{config.cpp}!apply\_flags@{apply\_flags}}
+\index{apply\_flags@{apply\_flags}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{apply\_flags()}{apply\_flags()}}
+{\footnotesize\ttfamily \label{config_8cpp_aba4eef7b0827315c1bd6dfd38b6481f4} 
+int config\+::apply\+\_\+flags (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{line}{}\end{DoxyParamCaption})}
+
+
+
+Apply command-\/line flags from a string. 
+
+Parses a string of flag characters and toggles corresponding configuration flags.
+
+
+\begin{DoxyParams}{Parameters}
+{\em line} & String of flag characters (\textquotesingle{}0\textquotesingle{}, \textquotesingle{}1\textquotesingle{}, \textquotesingle{}2\textquotesingle{}, \textquotesingle{}p\textquotesingle{}). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, -\/1 if unrecognized flag found. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_ad1346ee297310c9bda905efc71428c79}\index{config.cpp@{config.cpp}!bool\_f@{bool\_f}}
+\index{bool\_f@{bool\_f}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{bool\_f()}{bool\_f()}}
+{\footnotesize\ttfamily \label{config_8cpp_ad1346ee297310c9bda905efc71428c79} 
+void config\+::bool\+\_\+f (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&}]{vars}{, }\item[{const std\+::string \&}]{name}{, }\item[{bool \&}]{input}{}\end{DoxyParamCaption})}
+
+
+
+Parse boolean field from configuration. 
+
+Extracts a boolean value from configuration.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vars} & Configuration variables map. \\
+\hline
+{\em name} & Name of the configuration option. \\
+\hline
+{\em input} & Output parameter to store the parsed value. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{config_8cpp_accf5eeb6c2e8d92001ce775d21ba81d4}\index{config.cpp@{config.cpp}!coder\_from\_view@{coder\_from\_view}}
+\index{coder\_from\_view@{coder\_from\_view}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{coder\_from\_view()}{coder\_from\_view()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{config_8cpp_accf5eeb6c2e8d92001ce775d21ba81d4} 
+\+::std\+::optional$<$ int $>$ config\+::qsv\+::coder\+\_\+from\+\_\+view (\begin{DoxyParamCaption}\item[{const \+::std\+::string\+\_\+view \&}]{coder}{}\end{DoxyParamCaption})}
+
+
+
+Convert string view to Quick\+Sync coder value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em coder} & String representation of coder ("{}auto"{}, "{}cabac"{}, "{}cavlc"{}). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Coder value or nullopt if not found. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_a88f961b9a813d730587eb15e190e184a}\index{config.cpp@{config.cpp}!coder\_from\_view@{coder\_from\_view}}
+\index{coder\_from\_view@{coder\_from\_view}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{coder\_from\_view()}{coder\_from\_view()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{config_8cpp_a88f961b9a813d730587eb15e190e184a} 
+int config\+::vt\+::coder\+\_\+from\+\_\+view (\begin{DoxyParamCaption}\item[{const \+::std\+::string\+\_\+view \&}]{coder}{}\end{DoxyParamCaption})}
+
+
+
+Convert string view to Video\+Toolbox coder value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em coder} & String representation of coder ("{}auto"{}, "{}cabac"{}, "{}cavlc"{}). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Coder enum value, or -\/1 if not found. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_a75df9445093ef69c43039c2f2ddeca5d}\index{config.cpp@{config.cpp}!config\_option\_from\_view@{config\_option\_from\_view}}
+\index{config\_option\_from\_view@{config\_option\_from\_view}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{config\_option\_from\_view()}{config\_option\_from\_view()}}
+{\footnotesize\ttfamily \label{config_8cpp_a75df9445093ef69c43039c2f2ddeca5d} 
+video\+\_\+t\+::dd\+\_\+t\+::config\+\_\+option\+\_\+e config\+::dd\+::config\+\_\+option\+\_\+from\+\_\+view (\begin{DoxyParamCaption}\item[{const \+::std\+::string\+\_\+view}]{value}{}\end{DoxyParamCaption})}
+
+
+
+Convert string view to display device configuration option. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & String representation of configuration option. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Configuration option enum value, defaults to disabled if not found. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_addd77774e72d543e113404f358afa1e5}\index{config.cpp@{config.cpp}!double\_between\_f@{double\_between\_f}}
+\index{double\_between\_f@{double\_between\_f}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{double\_between\_f()}{double\_between\_f()}}
+{\footnotesize\ttfamily \label{config_8cpp_addd77774e72d543e113404f358afa1e5} 
+void config\+::double\+\_\+between\+\_\+f (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&}]{vars}{, }\item[{const std\+::string \&}]{name}{, }\item[{double \&}]{input}{, }\item[{const std\+::pair$<$ double, double $>$ \&}]{range}{}\end{DoxyParamCaption})}
+
+
+
+Parse double field with range validation. 
+
+Parses a floating-\/point field and validates it is within the specified range.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vars} & Configuration variables map. \\
+\hline
+{\em name} & Name of the configuration option. \\
+\hline
+{\em input} & Output parameter to store the parsed value (only updated if in range). \\
+\hline
+{\em range} & Pair of (min, max) values for validation. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{config_8cpp_adf18820f22cc28c650445d56d1f91038}\index{config.cpp@{config.cpp}!double\_f@{double\_f}}
+\index{double\_f@{double\_f}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{double\_f()}{double\_f()}}
+{\footnotesize\ttfamily \label{config_8cpp_adf18820f22cc28c650445d56d1f91038} 
+void config\+::double\+\_\+f (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&}]{vars}{, }\item[{const std\+::string \&}]{name}{, }\item[{double \&}]{input}{}\end{DoxyParamCaption})}
+
+
+
+Parse double field from configuration. 
+
+Extracts a floating-\/point value from configuration.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vars} & Configuration variables map. \\
+\hline
+{\em name} & Name of the configuration option. \\
+\hline
+{\em input} & Output parameter to store the parsed value. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{config_8cpp_a3cbccfe85e7279218151ab92cf0bc95c}\index{config.cpp@{config.cpp}!endline@{endline}}
+\index{endline@{endline}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{endline()}{endline()}}
+{\footnotesize\ttfamily \label{config_8cpp_a3cbccfe85e7279218151ab92cf0bc95c} 
+bool config\+::endline (\begin{DoxyParamCaption}\item[{char}]{ch}{}\end{DoxyParamCaption})}
+
+
+
+Check if character is a newline. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ch} & Character to check. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if character is \textquotesingle{}~\newline
+\textquotesingle{} or \textquotesingle{}\textbackslash{}r\textquotesingle{}. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_a7c977b36541cf12ee2da6f251922e0ee}\index{config.cpp@{config.cpp}!force\_software\_from\_view@{force\_software\_from\_view}}
+\index{force\_software\_from\_view@{force\_software\_from\_view}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{force\_software\_from\_view()}{force\_software\_from\_view()}}
+{\footnotesize\ttfamily \label{config_8cpp_a7c977b36541cf12ee2da6f251922e0ee} 
+int config\+::vt\+::force\+\_\+software\+\_\+from\+\_\+view (\begin{DoxyParamCaption}\item[{const \+::std\+::string\+\_\+view \&}]{software}{}\end{DoxyParamCaption})}
+
+
+
+Convert string view to force software encoding flag. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em software} & String representation ("{}forced"{} or other). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 if forced, 0 otherwise. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_a4b6af9d6763a6affe801b4670820c3f1}\index{config.cpp@{config.cpp}!generic\_f@{generic\_f}}
+\index{generic\_f@{generic\_f}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{generic\_f()}{generic\_f()}}
+{\footnotesize\ttfamily \label{config_8cpp_a4b6af9d6763a6affe801b4670820c3f1} 
+template$<$typename T, typename F$>$ \\
+void config\+::generic\+\_\+f (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&}]{vars}{, }\item[{const std\+::string \&}]{name}{, }\item[{T \&}]{input}{, }\item[{F \&\&}]{f}{}\end{DoxyParamCaption})}
+
+
+
+Generic field parser with custom conversion function. 
+
+Parses a field from configuration and applies a conversion function.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Output type. \\
+\hline
+{\em F} & Conversion function type. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em vars} & Configuration variables map. \\
+\hline
+{\em name} & Name of the configuration option. \\
+\hline
+{\em input} & Output parameter to store the parsed value. \\
+\hline
+{\em f} & Conversion function to apply to the string value. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{config_8cpp_a95a52138b6f9e0288ec2e7143762c282}\index{config.cpp@{config.cpp}!get\_auto\_bitrate\_settings@{get\_auto\_bitrate\_settings}}
+\index{get\_auto\_bitrate\_settings@{get\_auto\_bitrate\_settings}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{get\_auto\_bitrate\_settings()}{get\_auto\_bitrate\_settings()}}
+{\footnotesize\ttfamily \label{config_8cpp_a95a52138b6f9e0288ec2e7143762c282} 
+auto\+\_\+bitrate\+\_\+settings\+\_\+t config\+::get\+\_\+auto\+\_\+bitrate\+\_\+settings (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Get current auto bitrate adjustment settings. 
+
+Returns a thread-\/safe copy of the current auto bitrate settings.
+
+\begin{DoxyReturn}{Returns}
+Auto bitrate settings structure with current values. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_a3b77ca77e129cda7291a0e7cb7ae01d6}\index{config.cpp@{config.cpp}!get\_supported\_gamepad\_options@{get\_supported\_gamepad\_options}}
+\index{get\_supported\_gamepad\_options@{get\_supported\_gamepad\_options}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{get\_supported\_gamepad\_options()}{get\_supported\_gamepad\_options()}}
+{\footnotesize\ttfamily \label{config_8cpp_a3b77ca77e129cda7291a0e7cb7ae01d6} 
+std\+::vector$<$\+::std\+::string\+\_\+view $>$ \& config\+::get\+\_\+supported\+\_\+gamepad\+\_\+options (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Get list of supported gamepad option names. 
+
+Returns a static vector of gamepad option names from the platform.
+
+\begin{DoxyReturn}{Returns}
+Reference to static vector of gamepad option name string views. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_a4fc8d3460c6e08efe6b98c13e8b38ae8}\index{config.cpp@{config.cpp}!hdr\_option\_from\_view@{hdr\_option\_from\_view}}
+\index{hdr\_option\_from\_view@{hdr\_option\_from\_view}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{hdr\_option\_from\_view()}{hdr\_option\_from\_view()}}
+{\footnotesize\ttfamily \label{config_8cpp_a4fc8d3460c6e08efe6b98c13e8b38ae8} 
+video\+\_\+t\+::dd\+\_\+t\+::hdr\+\_\+option\+\_\+e config\+::dd\+::hdr\+\_\+option\+\_\+from\+\_\+view (\begin{DoxyParamCaption}\item[{const \+::std\+::string\+\_\+view}]{value}{}\end{DoxyParamCaption})}
+
+
+
+Convert string view to HDR option. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & String representation ("{}disabled"{}, "{}auto"{}/"{}automatic"{}). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+HDR option enum value, defaults to disabled if not found. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_a1ea90278c3de030c6f4fbde448bbf9c9}\index{config.cpp@{config.cpp}!int\_between\_f@{int\_between\_f}}
+\index{int\_between\_f@{int\_between\_f}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{int\_between\_f()}{int\_between\_f()}}
+{\footnotesize\ttfamily \label{config_8cpp_a1ea90278c3de030c6f4fbde448bbf9c9} 
+void config\+::int\+\_\+between\+\_\+f (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&}]{vars}{, }\item[{const std\+::string \&}]{name}{, }\item[{int \&}]{input}{, }\item[{const std\+::pair$<$ int, int $>$ \&}]{range}{}\end{DoxyParamCaption})}
+
+
+
+Parse integer field with range validation. 
+
+Parses an integer field and validates it is within the specified range.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vars} & Configuration variables map. \\
+\hline
+{\em name} & Name of the configuration option. \\
+\hline
+{\em input} & Output parameter to store the parsed value (only updated if in range). \\
+\hline
+{\em range} & Pair of (min, max) values for validation. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{config_8cpp_a17ac28c149b3344202a23d5ed9be4444}\index{config.cpp@{config.cpp}!int\_f@{int\_f}}
+\index{int\_f@{int\_f}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{int\_f()}{int\_f()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{config_8cpp_a17ac28c149b3344202a23d5ed9be4444} 
+void config\+::int\+\_\+f (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&}]{vars}{, }\item[{const std\+::string \&}]{name}{, }\item[{\+::std\+::optional$<$ int $>$ \&}]{input}{}\end{DoxyParamCaption})}
+
+
+
+Parse optional integer field from configuration. 
+
+Extracts an optional integer value from configuration.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vars} & Configuration variables map. \\
+\hline
+{\em name} & Name of the configuration option. \\
+\hline
+{\em input} & Output parameter to store the parsed value (may remain nullopt). \\
+\hline
+\end{DoxyParams}
+\Hypertarget{config_8cpp_ad84b8b2df04b91d03b7e08231adc7266}\index{config.cpp@{config.cpp}!int\_f@{int\_f}}
+\index{int\_f@{int\_f}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{int\_f()}{int\_f()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{config_8cpp_ad84b8b2df04b91d03b7e08231adc7266} 
+template$<$class F$>$ \\
+void config\+::int\+\_\+f (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&}]{vars}{, }\item[{const std\+::string \&}]{name}{, }\item[{\+::std\+::optional$<$ int $>$ \&}]{input}{, }\item[{F \&\&}]{f}{}\end{DoxyParamCaption})}
+
+
+
+Parse optional integer field with custom conversion function. 
+
+Parses an optional integer field and applies a conversion function.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em F} & Conversion function type. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em vars} & Configuration variables map. \\
+\hline
+{\em name} & Name of the configuration option. \\
+\hline
+{\em input} & Output parameter to store the parsed value. \\
+\hline
+{\em f} & Conversion function to apply to the string value. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{config_8cpp_abe26dbd9a3b9e8e3f0cc6f4acc0e772b}\index{config.cpp@{config.cpp}!int\_f@{int\_f}}
+\index{int\_f@{int\_f}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{int\_f()}{int\_f()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{config_8cpp_abe26dbd9a3b9e8e3f0cc6f4acc0e772b} 
+void config\+::int\+\_\+f (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&}]{vars}{, }\item[{const std\+::string \&}]{name}{, }\item[{int \&}]{input}{}\end{DoxyParamCaption})}
+
+
+
+Parse integer field from configuration. 
+
+Extracts an integer value from configuration, supporting decimal and hexadecimal formats.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vars} & Configuration variables map. \\
+\hline
+{\em name} & Name of the configuration option. \\
+\hline
+{\em input} & Output parameter to store the parsed value. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{config_8cpp_ae1e3d4c5b78d546266858977dc43a300}\index{config.cpp@{config.cpp}!int\_f@{int\_f}}
+\index{int\_f@{int\_f}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{int\_f()}{int\_f()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{config_8cpp_ae1e3d4c5b78d546266858977dc43a300} 
+template$<$class F$>$ \\
+void config\+::int\+\_\+f (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&}]{vars}{, }\item[{const std\+::string \&}]{name}{, }\item[{int \&}]{input}{, }\item[{F \&\&}]{f}{}\end{DoxyParamCaption})}
+
+
+
+Parse integer field with custom conversion function. 
+
+Parses an integer field and applies a conversion function.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em F} & Conversion function type. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em vars} & Configuration variables map. \\
+\hline
+{\em name} & Name of the configuration option. \\
+\hline
+{\em input} & Output parameter to store the parsed value. \\
+\hline
+{\em f} & Conversion function to apply to the string value. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{config_8cpp_a2554a223214ad3f6a7f2c2280ba48e67}\index{config.cpp@{config.cpp}!list\_int\_f@{list\_int\_f}}
+\index{list\_int\_f@{list\_int\_f}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{list\_int\_f()}{list\_int\_f()}}
+{\footnotesize\ttfamily \label{config_8cpp_a2554a223214ad3f6a7f2c2280ba48e67} 
+void config\+::list\+\_\+int\+\_\+f (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&}]{vars}{, }\item[{const std\+::string \&}]{name}{, }\item[{std\+::vector$<$ int $>$ \&}]{input}{}\end{DoxyParamCaption})}
+
+
+
+Parse list of integers from configuration. 
+
+Extracts a list of integers from configuration (bracketed format).
+
+
+\begin{DoxyParams}{Parameters}
+{\em vars} & Configuration variables map. \\
+\hline
+{\em name} & Name of the configuration option. \\
+\hline
+{\em input} & Output parameter to store the parsed list (cleared before parsing). \\
+\hline
+\end{DoxyParams}
+\Hypertarget{config_8cpp_afcf9c829f099ae73c7cea8f5594a481b}\index{config.cpp@{config.cpp}!list\_prep\_cmd\_f@{list\_prep\_cmd\_f}}
+\index{list\_prep\_cmd\_f@{list\_prep\_cmd\_f}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{list\_prep\_cmd\_f()}{list\_prep\_cmd\_f()}}
+{\footnotesize\ttfamily \label{config_8cpp_afcf9c829f099ae73c7cea8f5594a481b} 
+void config\+::list\+\_\+prep\+\_\+cmd\+\_\+f (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&}]{vars}{, }\item[{const std\+::string \&}]{name}{, }\item[{std\+::vector$<$ \mbox{\hyperlink{structconfig_1_1prep__cmd__t}{prep\+\_\+cmd\+\_\+t}} $>$ \&}]{input}{}\end{DoxyParamCaption})}
+
+
+
+Parse list of pre-\/application commands from configuration. 
+
+Extracts a JSON-\/formatted list of pre-\/application commands.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vars} & Configuration variables map. \\
+\hline
+{\em name} & Name of the configuration option. \\
+\hline
+{\em input} & Output parameter to store the parsed list. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{config_8cpp_a0b53e1329bf521eede9ead4d17e1b7bf}\index{config.cpp@{config.cpp}!list\_server\_cmd\_f@{list\_server\_cmd\_f}}
+\index{list\_server\_cmd\_f@{list\_server\_cmd\_f}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{list\_server\_cmd\_f()}{list\_server\_cmd\_f()}}
+{\footnotesize\ttfamily \label{config_8cpp_a0b53e1329bf521eede9ead4d17e1b7bf} 
+void config\+::list\+\_\+server\+\_\+cmd\+\_\+f (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&}]{vars}{, }\item[{const std\+::string \&}]{name}{, }\item[{std\+::vector$<$ \mbox{\hyperlink{structconfig_1_1server__cmd__t}{server\+\_\+cmd\+\_\+t}} $>$ \&}]{input}{}\end{DoxyParamCaption})}
+
+
+
+Parse list of server commands from configuration. 
+
+Extracts a JSON-\/formatted list of server commands.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vars} & Configuration variables map. \\
+\hline
+{\em name} & Name of the configuration option. \\
+\hline
+{\em input} & Output parameter to store the parsed list. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{config_8cpp_a3ca85869c0a144c4b8c86903855e86b4}\index{config.cpp@{config.cpp}!list\_string\_f@{list\_string\_f}}
+\index{list\_string\_f@{list\_string\_f}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{list\_string\_f()}{list\_string\_f()}}
+{\footnotesize\ttfamily \label{config_8cpp_a3ca85869c0a144c4b8c86903855e86b4} 
+void config\+::list\+\_\+string\+\_\+f (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&}]{vars}{, }\item[{const std\+::string \&}]{name}{, }\item[{std\+::vector$<$ std\+::string $>$ \&}]{input}{}\end{DoxyParamCaption})}
+
+
+
+Parse list of strings field from configuration. 
+
+Extracts a list of strings from configuration (bracketed format).
+
+
+\begin{DoxyParams}{Parameters}
+{\em vars} & Configuration variables map. \\
+\hline
+{\em name} & Name of the configuration option. \\
+\hline
+{\em input} & Output parameter to store the parsed list. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{config_8cpp_a582cef5138bc7988c789b4f82580d1f9}\index{config.cpp@{config.cpp}!map\_int\_int\_f@{map\_int\_int\_f}}
+\index{map\_int\_int\_f@{map\_int\_int\_f}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{map\_int\_int\_f()}{map\_int\_int\_f()}}
+{\footnotesize\ttfamily \label{config_8cpp_a582cef5138bc7988c789b4f82580d1f9} 
+void config\+::map\+\_\+int\+\_\+int\+\_\+f (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&}]{vars}{, }\item[{const std\+::string \&}]{name}{, }\item[{std\+::unordered\+\_\+map$<$ int, int $>$ \&}]{input}{}\end{DoxyParamCaption})}
+
+
+
+Parse map of integers from configuration. 
+
+Extracts a list of integers and converts them to a map (pairs of key-\/value). The list must have an even number of elements.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vars} & Configuration variables map. \\
+\hline
+{\em name} & Name of the configuration option. \\
+\hline
+{\em input} & Output parameter to store the parsed map. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{config_8cpp_ac0cdefd5a0de07a3670c91481ee05c39}\index{config.cpp@{config.cpp}!mode\_remapping\_from\_view@{mode\_remapping\_from\_view}}
+\index{mode\_remapping\_from\_view@{mode\_remapping\_from\_view}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{mode\_remapping\_from\_view()}{mode\_remapping\_from\_view()}}
+{\footnotesize\ttfamily \label{config_8cpp_ac0cdefd5a0de07a3670c91481ee05c39} 
+video\+\_\+t\+::dd\+\_\+t\+::mode\+\_\+remapping\+\_\+t config\+::dd\+::mode\+\_\+remapping\+\_\+from\+\_\+view (\begin{DoxyParamCaption}\item[{const \+::std\+::string\+\_\+view}]{value}{}\end{DoxyParamCaption})}
+
+
+
+Parse mode remapping configuration from string view. 
+
+Parses a JSON-\/like string representation of mode remapping entries.
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & String representation of mode remapping configuration. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Mode remapping structure with parsed entries. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_aac1b4c84566eef86f3bc79be02a72e8f}\index{config.cpp@{config.cpp}!parse@{parse}}
+\index{parse@{parse}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{parse()}{parse()}}
+{\footnotesize\ttfamily \label{config_8cpp_aac1b4c84566eef86f3bc79be02a72e8f} 
+int config\+::parse (\begin{DoxyParamCaption}\item[{int}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{argv}{\mbox{[}$\,$\mbox{]}}\end{DoxyParamCaption})}
+
+
+
+Parse command-\/line arguments and configuration file. 
+
+Parses command-\/line arguments and configuration file, applying all settings to the global configuration structures.
+
+
+\begin{DoxyParams}{Parameters}
+{\em argc} & Number of command-\/line arguments. \\
+\hline
+{\em argv} & Array of command-\/line argument strings. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, non-\/zero on error. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_aa12289338652b0f476848476af1282c2}\index{config.cpp@{config.cpp}!parse\_config@{parse\_config}}
+\index{parse\_config@{parse\_config}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{parse\_config()}{parse\_config()}}
+{\footnotesize\ttfamily \label{config_8cpp_aa12289338652b0f476848476af1282c2} 
+std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ config\+::parse\+\_\+config (\begin{DoxyParamCaption}\item[{const \+::std\+::string\+\_\+view \&}]{file\+\_\+content}{}\end{DoxyParamCaption})}
+
+
+
+Parse configuration file content into key-\/value pairs. 
+
+Parses a configuration file string into a map of option names to values. Handles comments, whitespace, and list values.
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+\_\+content} & Configuration file content as string view. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Map of configuration option names to values. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_a8649a9419d0c189de5b988350ec6e557}\index{config.cpp@{config.cpp}!parse\_option@{parse\_option}}
+\index{parse\_option@{parse\_option}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{parse\_option()}{parse\_option()}}
+{\footnotesize\ttfamily \label{config_8cpp_a8649a9419d0c189de5b988350ec6e557} 
+std\+::pair$<$ \+::std\+::string\+\_\+view\+::const\+\_\+iterator, \+::std\+::optional$<$ std\+::pair$<$ std\+::string, std\+::string $>$ $>$ $>$ config\+::parse\+\_\+option (\begin{DoxyParamCaption}\item[{\+::std\+::string\+\_\+view\+::const\+\_\+iterator}]{begin}{, }\item[{\+::std\+::string\+\_\+view\+::const\+\_\+iterator}]{end}{}\end{DoxyParamCaption})}
+
+
+
+Parse a single configuration option from a line. 
+
+Parses a "{}name=value"{} configuration option, handling comments and lists.
+
+
+\begin{DoxyParams}{Parameters}
+{\em begin} & Iterator to start of line. \\
+\hline
+{\em end} & Iterator to end of content. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pair of (next line iterator, optional (name, value) pair). 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_a456e468f485e0802a6b455e11211959b}\index{config.cpp@{config.cpp}!path\_f@{path\_f}}
+\index{path\_f@{path\_f}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{path\_f()}{path\_f()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{config_8cpp_a456e468f485e0802a6b455e11211959b} 
+void config\+::path\+\_\+f (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&}]{vars}{, }\item[{const std\+::string \&}]{name}{, }\item[{fs\+::path \&}]{input}{}\end{DoxyParamCaption})}
+
+
+
+Parse filesystem path field from configuration. 
+
+Extracts a path value from configuration and converts it to a filesystem path. Creates parent directories if they don\textquotesingle{}t exist.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vars} & Configuration variables map. \\
+\hline
+{\em name} & Name of the configuration option. \\
+\hline
+{\em input} & Output parameter to store the parsed path. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{config_8cpp_acfbd9949c59164c8e0fe81da615d162a}\index{config.cpp@{config.cpp}!path\_f@{path\_f}}
+\index{path\_f@{path\_f}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{path\_f()}{path\_f()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{config_8cpp_acfbd9949c59164c8e0fe81da615d162a} 
+void config\+::path\+\_\+f (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&}]{vars}{, }\item[{const std\+::string \&}]{name}{, }\item[{std\+::string \&}]{input}{}\end{DoxyParamCaption})}
+
+
+
+Parse path field as string from configuration. 
+
+Extracts a path value from configuration as a string (alternative to fs\+::path).
+
+
+\begin{DoxyParams}{Parameters}
+{\em vars} & Configuration variables map. \\
+\hline
+{\em name} & Name of the configuration option. \\
+\hline
+{\em input} & Output parameter to store the parsed path string. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{config_8cpp_a260d4d4716bf207ca1b8e321900d57c3}\index{config.cpp@{config.cpp}!preset\_from\_view@{preset\_from\_view}}
+\index{preset\_from\_view@{preset\_from\_view}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{preset\_from\_view()}{preset\_from\_view()}}
+{\footnotesize\ttfamily \label{config_8cpp_a260d4d4716bf207ca1b8e321900d57c3} 
+\+::std\+::optional$<$ int $>$ config\+::qsv\+::preset\+\_\+from\+\_\+view (\begin{DoxyParamCaption}\item[{const \+::std\+::string\+\_\+view \&}]{preset}{}\end{DoxyParamCaption})}
+
+
+
+Convert string view to Quick\+Sync preset value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em preset} & String representation of preset. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Preset value or nullopt if not found. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_a6b79295aa02b3eaae0d0f21200a3d7d1}\index{config.cpp@{config.cpp}!quality\_from\_view@{quality\_from\_view}}
+\index{quality\_from\_view@{quality\_from\_view}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{quality\_from\_view()}{quality\_from\_view()}}
+{\footnotesize\ttfamily \label{config_8cpp_a6b79295aa02b3eaae0d0f21200a3d7d1} 
+template$<$class T$>$ \\
+\+::std\+::optional$<$ int $>$ config\+::amd\+::quality\+\_\+from\+\_\+view (\begin{DoxyParamCaption}\item[{const \+::std\+::string\+\_\+view \&}]{quality\+\_\+type}{, }\item[{const \+::std\+::optional$<$ int $>$ \&}]{original}{}\end{DoxyParamCaption})}
+
+
+
+Convert string view to quality preset value. 
+
+Template helper to convert quality preset strings to enum values.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Quality enum type (quality\+\_\+av1\+\_\+e, quality\+\_\+hevc\+\_\+e, or quality\+\_\+h264\+\_\+e). \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em quality\+\_\+type} & String representation of quality preset. \\
+\hline
+{\em original} & Original value to return if conversion fails. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Quality preset value or original if not found. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_a98c63d08409595c76fb89386063710d7}\index{config.cpp@{config.cpp}!rc\_from\_view@{rc\_from\_view}}
+\index{rc\_from\_view@{rc\_from\_view}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{rc\_from\_view()}{rc\_from\_view()}}
+{\footnotesize\ttfamily \label{config_8cpp_a98c63d08409595c76fb89386063710d7} 
+template$<$class T$>$ \\
+\+::std\+::optional$<$ int $>$ config\+::amd\+::rc\+\_\+from\+\_\+view (\begin{DoxyParamCaption}\item[{const \+::std\+::string\+\_\+view \&}]{rc}{, }\item[{const \+::std\+::optional$<$ int $>$ \&}]{original}{}\end{DoxyParamCaption})}
+
+
+
+Convert string view to rate control method value. 
+
+Template helper to convert rate control strings to enum values.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Rate control enum type (rc\+\_\+av1\+\_\+e, rc\+\_\+hevc\+\_\+e, or rc\+\_\+h264\+\_\+e). \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em rc} & String representation of rate control method. \\
+\hline
+{\em original} & Original value to return if conversion fails. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Rate control method value or original if not found. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_ab9990420070099e591ea6270e64f0bc0}\index{config.cpp@{config.cpp}!refresh\_rate\_option\_from\_view@{refresh\_rate\_option\_from\_view}}
+\index{refresh\_rate\_option\_from\_view@{refresh\_rate\_option\_from\_view}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{refresh\_rate\_option\_from\_view()}{refresh\_rate\_option\_from\_view()}}
+{\footnotesize\ttfamily \label{config_8cpp_ab9990420070099e591ea6270e64f0bc0} 
+video\+\_\+t\+::dd\+\_\+t\+::refresh\+\_\+rate\+\_\+option\+\_\+e config\+::dd\+::refresh\+\_\+rate\+\_\+option\+\_\+from\+\_\+view (\begin{DoxyParamCaption}\item[{const \+::std\+::string\+\_\+view}]{value}{}\end{DoxyParamCaption})}
+
+
+
+Convert string view to refresh rate option. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & String representation ("{}disabled"{}, "{}auto"{}/"{}automatic"{}, "{}manual"{}). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Refresh rate option enum value, defaults to disabled if not found. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_a18c78d404b73f545fe1cbba66c12403e}\index{config.cpp@{config.cpp}!resolution\_option\_from\_view@{resolution\_option\_from\_view}}
+\index{resolution\_option\_from\_view@{resolution\_option\_from\_view}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{resolution\_option\_from\_view()}{resolution\_option\_from\_view()}}
+{\footnotesize\ttfamily \label{config_8cpp_a18c78d404b73f545fe1cbba66c12403e} 
+video\+\_\+t\+::dd\+\_\+t\+::resolution\+\_\+option\+\_\+e config\+::dd\+::resolution\+\_\+option\+\_\+from\+\_\+view (\begin{DoxyParamCaption}\item[{const \+::std\+::string\+\_\+view}]{value}{}\end{DoxyParamCaption})}
+
+
+
+Convert string view to resolution option. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & String representation ("{}disabled"{}, "{}auto"{}/"{}automatic"{}, "{}manual"{}). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Resolution option enum value, defaults to disabled if not found. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_a47583a902cfccf087800e92b4faf97d9}\index{config.cpp@{config.cpp}!rt\_from\_view@{rt\_from\_view}}
+\index{rt\_from\_view@{rt\_from\_view}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{rt\_from\_view()}{rt\_from\_view()}}
+{\footnotesize\ttfamily \label{config_8cpp_a47583a902cfccf087800e92b4faf97d9} 
+int config\+::vt\+::rt\+\_\+from\+\_\+view (\begin{DoxyParamCaption}\item[{const \+::std\+::string\+\_\+view \&}]{rt}{}\end{DoxyParamCaption})}
+
+
+
+Convert string view to realtime flag. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rt} & String representation ("{}disabled"{}, "{}off"{}, "{}0"{}, or other). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 if disabled/off/0, 1 otherwise. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_a10f41137465e2a4df00e9552b66736b0}\index{config.cpp@{config.cpp}!skip\_list@{skip\_list}}
+\index{skip\_list@{skip\_list}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{skip\_list()}{skip\_list()}}
+{\footnotesize\ttfamily \label{config_8cpp_a10f41137465e2a4df00e9552b66736b0} 
+template$<$class It$>$ \\
+It config\+::skip\+\_\+list (\begin{DoxyParamCaption}\item[{It}]{skipper}{, }\item[{It}]{end}{}\end{DoxyParamCaption})}
+
+
+
+Skip over a list (bracketed section) in configuration parsing. 
+
+Advances iterator past a bracketed list, handling nested brackets.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em It} & Iterator type. \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em skipper} & Iterator to start skipping from (should point to \textquotesingle{}\mbox{[}\textquotesingle{}). \\
+\hline
+{\em end} & End iterator. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Iterator pointing after the matching \textquotesingle{}\mbox{]}\textquotesingle{}. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_a58215d61b82e4ea6930a9541d9bd220b}\index{config.cpp@{config.cpp}!space\_tab@{space\_tab}}
+\index{space\_tab@{space\_tab}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{space\_tab()}{space\_tab()}}
+{\footnotesize\ttfamily \label{config_8cpp_a58215d61b82e4ea6930a9541d9bd220b} 
+bool config\+::space\+\_\+tab (\begin{DoxyParamCaption}\item[{char}]{ch}{}\end{DoxyParamCaption})}
+
+
+
+Check if character is a space or tab. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ch} & Character to check. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if character is \textquotesingle{} \textquotesingle{} or \textquotesingle{}\textbackslash{}t\textquotesingle{}. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_abb0678f8792fb2aee5c2c3687ceb6210}\index{config.cpp@{config.cpp}!string\_f@{string\_f}}
+\index{string\_f@{string\_f}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{string\_f()}{string\_f()}}
+{\footnotesize\ttfamily \label{config_8cpp_abb0678f8792fb2aee5c2c3687ceb6210} 
+void config\+::string\+\_\+f (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&}]{vars}{, }\item[{const std\+::string \&}]{name}{, }\item[{std\+::string \&}]{input}{}\end{DoxyParamCaption})}
+
+
+
+Parse string field from configuration variables. 
+
+Extracts a string value from the configuration map and removes it.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vars} & Configuration variables map. \\
+\hline
+{\em name} & Name of the configuration option. \\
+\hline
+{\em input} & Output parameter to store the parsed value. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{config_8cpp_a091f2bcbb97e90a2a70099596403f016}\index{config.cpp@{config.cpp}!string\_restricted\_f@{string\_restricted\_f}}
+\index{string\_restricted\_f@{string\_restricted\_f}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{string\_restricted\_f()}{string\_restricted\_f()}}
+{\footnotesize\ttfamily \label{config_8cpp_a091f2bcbb97e90a2a70099596403f016} 
+void config\+::string\+\_\+restricted\+\_\+f (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&}]{vars}{, }\item[{const std\+::string \&}]{name}{, }\item[{std\+::string \&}]{input}{, }\item[{const std\+::vector$<$\+::std\+::string\+\_\+view $>$ \&}]{allowed\+\_\+vals}{}\end{DoxyParamCaption})}
+
+
+
+Parse string field with restricted allowed values. 
+
+Extracts a string value from configuration, validating it against allowed values.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vars} & Configuration variables map. \\
+\hline
+{\em name} & Name of the configuration option. \\
+\hline
+{\em input} & Output parameter to store the parsed value. \\
+\hline
+{\em allowed\+\_\+vals} & Vector of allowed string values. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{config_8cpp_a213ef40de30200554ac91aabb7ead21e}\index{config.cpp@{config.cpp}!svtav1\_preset\_from\_view@{svtav1\_preset\_from\_view}}
+\index{svtav1\_preset\_from\_view@{svtav1\_preset\_from\_view}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{svtav1\_preset\_from\_view()}{svtav1\_preset\_from\_view()}}
+{\footnotesize\ttfamily \label{config_8cpp_a213ef40de30200554ac91aabb7ead21e} 
+int config\+::sw\+::svtav1\+\_\+preset\+\_\+from\+\_\+view (\begin{DoxyParamCaption}\item[{const \+::std\+::string\+\_\+view \&}]{preset}{}\end{DoxyParamCaption})}
+
+
+
+Convert string view to SVT-\/\+AV1 preset value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em preset} & String representation of preset. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Preset value (1-\/12), defaults to 11 (superfast) if not found. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_a69a7de788a4221ad920cbf4e165e11ee}\index{config.cpp@{config.cpp}!to\_bool@{to\_bool}}
+\index{to\_bool@{to\_bool}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{to\_bool()}{to\_bool()}}
+{\footnotesize\ttfamily \label{config_8cpp_a69a7de788a4221ad920cbf4e165e11ee} 
+bool config\+::to\+\_\+bool (\begin{DoxyParamCaption}\item[{std\+::string \&}]{boolean}{}\end{DoxyParamCaption})}
+
+
+
+Convert string to boolean value. 
+
+Converts various string representations to boolean (true, yes, enable, enabled, on, or contains \textquotesingle{}1\textquotesingle{}).
+
+
+\begin{DoxyParams}{Parameters}
+{\em boolean} & String to convert (modified in-\/place to lowercase). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if string represents a true value, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_a9743d793b3b643b4d9ab73473bead2d6}\index{config.cpp@{config.cpp}!to\_string@{to\_string}}
+\index{to\_string@{to\_string}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{to\_string()}{to\_string()}}
+{\footnotesize\ttfamily \label{config_8cpp_a9743d793b3b643b4d9ab73473bead2d6} 
+std\+::string config\+::to\+\_\+string (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{begin}{, }\item[{const char \texorpdfstring{$\ast$}{*}}]{end}{}\end{DoxyParamCaption})}
+
+
+
+Convert character range to string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em begin} & Start of character range. \\
+\hline
+{\em end} & End of character range. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+String containing characters from begin to end. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_ad499414c6020a045d27497a21b3d0bbb}\index{config.cpp@{config.cpp}!twopass\_from\_view@{twopass\_from\_view}}
+\index{twopass\_from\_view@{twopass\_from\_view}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{twopass\_from\_view()}{twopass\_from\_view()}}
+{\footnotesize\ttfamily \label{config_8cpp_ad499414c6020a045d27497a21b3d0bbb} 
+nvenc\+::nvenc\+\_\+two\+\_\+pass config\+::nv\+::twopass\+\_\+from\+\_\+view (\begin{DoxyParamCaption}\item[{const \+::std\+::string\+\_\+view \&}]{preset}{}\end{DoxyParamCaption})}
+
+
+
+Convert string view to NVENC two-\/pass mode. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em preset} & String representation of two-\/pass preset. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+NVENC two-\/pass mode value. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_ad3187ad1b1b8e7466e1d9716d5c2b217}\index{config.cpp@{config.cpp}!usage\_from\_view@{usage\_from\_view}}
+\index{usage\_from\_view@{usage\_from\_view}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{usage\_from\_view()}{usage\_from\_view()}}
+{\footnotesize\ttfamily \label{config_8cpp_ad3187ad1b1b8e7466e1d9716d5c2b217} 
+template$<$class T$>$ \\
+\+::std\+::optional$<$ int $>$ config\+::amd\+::usage\+\_\+from\+\_\+view (\begin{DoxyParamCaption}\item[{const \+::std\+::string\+\_\+view \&}]{usage}{, }\item[{const \+::std\+::optional$<$ int $>$ \&}]{original}{}\end{DoxyParamCaption})}
+
+
+
+Convert string view to usage mode value. 
+
+Template helper to convert usage mode strings to enum values.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Usage enum type (usage\+\_\+av1\+\_\+e, usage\+\_\+hevc\+\_\+e, or usage\+\_\+h264\+\_\+e). \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em usage} & String representation of usage mode. \\
+\hline
+{\em original} & Original value to return if conversion fails. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Usage mode value or original if not found. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_acf68e3220a1b308602ad1dd9bc4f754c}\index{config.cpp@{config.cpp}!whitespace@{whitespace}}
+\index{whitespace@{whitespace}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{whitespace()}{whitespace()}}
+{\footnotesize\ttfamily \label{config_8cpp_acf68e3220a1b308602ad1dd9bc4f754c} 
+bool config\+::whitespace (\begin{DoxyParamCaption}\item[{char}]{ch}{}\end{DoxyParamCaption})}
+
+
+
+Check if character is whitespace. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ch} & Character to check. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if character is space, tab, or newline. 
+\end{DoxyReturn}
+
+
+\label{doc-var-members}
+\Hypertarget{config_8cpp_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{config_8cpp_ae5ea265684e81c400ecbe4f3aca58d9f}\index{config.cpp@{config.cpp}!audio@{audio}}
+\index{audio@{audio}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{audio}{audio}}
+{\footnotesize\ttfamily \label{config_8cpp_ae5ea265684e81c400ecbe4f3aca58d9f} 
+audio\+\_\+t config\+::audio}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ \{\},\ \ }
+\DoxyCodeLine{\ \ \ \ \{\},\ \ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{true},\ \ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{true},\ \ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{true},\ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{true},\ }
+\DoxyCodeLine{\ \ \}}
+
+\end{DoxyCode}
+
+
+Global audio configuration instance. 
+
+\Hypertarget{config_8cpp_a669e832f2f6b35d525e789e0cc2d2a7f}\index{config.cpp@{config.cpp}!input@{input}}
+\index{input@{input}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{input}{input}}
+{\footnotesize\ttfamily \label{config_8cpp_a669e832f2f6b35d525e789e0cc2d2a7f} 
+input\+\_\+t config\+::input}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \{0x10,\ 0xA0\},}
+\DoxyCodeLine{\ \ \ \ \ \ \{0x11,\ 0xA2\},}
+\DoxyCodeLine{\ \ \ \ \ \ \{0x12,\ 0xA4\},}
+\DoxyCodeLine{\ \ \ \ \},}
+\DoxyCodeLine{\ \ \ \ -\/1ms,\ \ }
+\DoxyCodeLine{\ \ \ \ 500ms,\ \ }
+\DoxyCodeLine{\ \ \ \ std::chrono::duration<double>\ \{1\ /\ 24.9\},\ \ }
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \{}
+\DoxyCodeLine{\ \ \ \ \ \ platf::supported\_gamepads(\textcolor{keyword}{nullptr}).front().name.data(),}
+\DoxyCodeLine{\ \ \ \ \ \ platf::supported\_gamepads(\textcolor{keyword}{nullptr}).front().name.size(),}
+\DoxyCodeLine{\ \ \ \ \},\ \ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{true},\ \ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{true},\ \ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{true},\ \ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{true},\ \ }
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{true},\ \ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{true},\ \ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{true},\ \ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{true},\ \ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{true},\ \ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{true},\ \ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{false},\ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{true},\ }
+\DoxyCodeLine{\ \ \}}
+
+\end{DoxyCode}
+
+
+Global input configuration instance. 
+
+\Hypertarget{config_8cpp_a4d2b7d796d4c4d41d171058ad91e1111}\index{config.cpp@{config.cpp}!nvhttp@{nvhttp}}
+\index{nvhttp@{nvhttp}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{nvhttp}{nvhttp}}
+{\footnotesize\ttfamily \label{config_8cpp_a4d2b7d796d4c4d41d171058ad91e1111} 
+nvhttp\+\_\+t config\+::nvhttp}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ \textcolor{stringliteral}{"{}lan"{}},\ \ }
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \mbox{\hyperlink{config_8cpp_a81d3c9653b7472a3ca0a8a6ecf1ac88c}{PRIVATE\_KEY\_FILE}},}
+\DoxyCodeLine{\ \ \ \ \mbox{\hyperlink{config_8cpp_a29d01cc024d1968c5574d06f717e05ae}{CERTIFICATE\_FILE}},}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ platf::get\_host\_name(),\ \ }
+\DoxyCodeLine{\ \ \ \ \textcolor{stringliteral}{"{}sunshine\_state.json"{}}s,\ \ }
+\DoxyCodeLine{\ \ \ \ \{\},\ \ }
+\DoxyCodeLine{\ \ \}}
+
+\end{DoxyCode}
+
+
+Global NVIDIA HTTP server configuration instance. 
+
+\Hypertarget{config_8cpp_a64b54f2ada544c8afedd9c3b9d2446af}\index{config.cpp@{config.cpp}!stream@{stream}}
+\index{stream@{stream}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{stream}{stream}}
+{\footnotesize\ttfamily \label{config_8cpp_a64b54f2ada544c8afedd9c3b9d2446af} 
+stream\+\_\+t config\+::stream}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ 10s,\ \ }
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \mbox{\hyperlink{config_8cpp_a55e7d2207052606a31c8d12f7cd807e3}{APPS\_JSON\_PATH}},}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ 20,\ \ }
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ ENCRYPTION\_MODE\_NEVER,\ \ }
+\DoxyCodeLine{\ \ \ \ ENCRYPTION\_MODE\_OPPORTUNISTIC,\ \ }
+\DoxyCodeLine{\ \ \}}
+
+\end{DoxyCode}
+
+
+Global stream configuration instance. 
+
+\Hypertarget{config_8cpp_ab1574b9a185050000a067e2484eab328}\index{config.cpp@{config.cpp}!sunshine@{sunshine}}
+\index{sunshine@{sunshine}!config.cpp@{config.cpp}}
+\doxysubsubsection{\texorpdfstring{sunshine}{sunshine}}
+{\footnotesize\ttfamily \label{config_8cpp_ab1574b9a185050000a067e2484eab328} 
+sunshine\+\_\+t config\+::sunshine}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{false},\ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{true},\ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{true},\ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{false},\ }
+\DoxyCodeLine{\ \ \ \ \textcolor{stringliteral}{"{}en"{}},\ \ }
+\DoxyCodeLine{\ \ \ \ 2,\ \ }
+\DoxyCodeLine{\ \ \ \ 0,\ \ }
+\DoxyCodeLine{\ \ \ \ \{\},\ \ }
+\DoxyCodeLine{\ \ \ \ \{\},\ \ }
+\DoxyCodeLine{\ \ \ \ \{\},\ \ }
+\DoxyCodeLine{\ \ \ \ \{\},\ \ }
+\DoxyCodeLine{\ \ \ \ platf::appdata().string()\ +\ \textcolor{stringliteral}{"{}/sunshine.conf"{}},\ \ }
+\DoxyCodeLine{\ \ \ \ \{\},\ \ }
+\DoxyCodeLine{\ \ \ \ 47989,\ \ }
+\DoxyCodeLine{\ \ \ \ \textcolor{stringliteral}{"{}ipv4"{}},\ \ }
+\DoxyCodeLine{\ \ \ \ platf::appdata().string()\ +\ \textcolor{stringliteral}{"{}/sunshine.log"{}},\ \ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{false},\ \ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{false},\ \ }
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{true},\ \ }
+\DoxyCodeLine{\ \ \ \ \{\},\ \ }
+\DoxyCodeLine{\ \ \ \ \{\},\ \ }
+\DoxyCodeLine{\ \ \ \ \{\},\ \ }
+\DoxyCodeLine{\ \ \}}
+
+\end{DoxyCode}
+
+
+Global Sunshine application configuration instance. 
+

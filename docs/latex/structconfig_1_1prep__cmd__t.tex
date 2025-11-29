@@ -1,0 +1,79 @@
+\doxysection{config\+::prep\+\_\+cmd\+\_\+t Struct Reference}
+\hypertarget{structconfig_1_1prep__cmd__t}{}\label{structconfig_1_1prep__cmd__t}\index{config::prep\_cmd\_t@{config::prep\_cmd\_t}}
+
+
+Pre/post command structure for application lifecycle management.  
+
+
+
+
+{\ttfamily \#include $<$config.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structconfig_1_1prep__cmd__t_a35796afb2327e56c6866d0057a585752}{prep\+\_\+cmd\+\_\+t}} (std\+::string \&\&\mbox{\hyperlink{structconfig_1_1prep__cmd__t_a9e169f0f6f8c2c05972b06b3573fbdbf}{do\+\_\+cmd}}, std\+::string \&\&\mbox{\hyperlink{structconfig_1_1prep__cmd__t_a63bc2ec526c253cffa539199a0a3df64}{undo\+\_\+cmd}}, bool \&\&\mbox{\hyperlink{structconfig_1_1prep__cmd__t_ae6a4fd3cc210030469a512e079a334a8}{elevated}})
+\begin{DoxyCompactList}\small\item\em Construct prep command with do and undo commands. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structconfig_1_1prep__cmd__t_a185ff21ce7d353878b0863be94742e0e}{prep\+\_\+cmd\+\_\+t}} (std\+::string \&\&\mbox{\hyperlink{structconfig_1_1prep__cmd__t_a9e169f0f6f8c2c05972b06b3573fbdbf}{do\+\_\+cmd}}, bool \&\&\mbox{\hyperlink{structconfig_1_1prep__cmd__t_ae6a4fd3cc210030469a512e079a334a8}{elevated}})
+\begin{DoxyCompactList}\small\item\em Construct prep command with only do command. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structconfig_1_1prep__cmd__t_a9e169f0f6f8c2c05972b06b3573fbdbf}\label{structconfig_1_1prep__cmd__t_a9e169f0f6f8c2c05972b06b3573fbdbf} 
+std\+::string {\bfseries do\+\_\+cmd}
+\begin{DoxyCompactList}\small\item\em Command to execute. \end{DoxyCompactList}\item 
+\Hypertarget{structconfig_1_1prep__cmd__t_a63bc2ec526c253cffa539199a0a3df64}\label{structconfig_1_1prep__cmd__t_a63bc2ec526c253cffa539199a0a3df64} 
+std\+::string {\bfseries undo\+\_\+cmd}
+\begin{DoxyCompactList}\small\item\em Command to undo (optional). \end{DoxyCompactList}\item 
+\Hypertarget{structconfig_1_1prep__cmd__t_ae6a4fd3cc210030469a512e079a334a8}\label{structconfig_1_1prep__cmd__t_ae6a4fd3cc210030469a512e079a334a8} 
+bool {\bfseries elevated}
+\begin{DoxyCompactList}\small\item\em Whether to run with elevated privileges. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Pre/post command structure for application lifecycle management. 
+
+\label{doc-constructors}
+\Hypertarget{structconfig_1_1prep__cmd__t_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{structconfig_1_1prep__cmd__t_a35796afb2327e56c6866d0057a585752}\index{config::prep\_cmd\_t@{config::prep\_cmd\_t}!prep\_cmd\_t@{prep\_cmd\_t}}
+\index{prep\_cmd\_t@{prep\_cmd\_t}!config::prep\_cmd\_t@{config::prep\_cmd\_t}}
+\doxysubsubsection{\texorpdfstring{prep\_cmd\_t()}{prep\_cmd\_t()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{structconfig_1_1prep__cmd__t_a35796afb2327e56c6866d0057a585752} 
+config\+::prep\+\_\+cmd\+\_\+t\+::prep\+\_\+cmd\+\_\+t (\begin{DoxyParamCaption}\item[{std\+::string \&\&}]{do\+\_\+cmd}{, }\item[{std\+::string \&\&}]{undo\+\_\+cmd}{, }\item[{bool \&\&}]{elevated}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct prep command with do and undo commands. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em do\+\_\+cmd} & Command to execute. \\
+\hline
+{\em undo\+\_\+cmd} & Command to undo the do command. \\
+\hline
+{\em elevated} & Whether to run with elevated privileges. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{structconfig_1_1prep__cmd__t_a185ff21ce7d353878b0863be94742e0e}\index{config::prep\_cmd\_t@{config::prep\_cmd\_t}!prep\_cmd\_t@{prep\_cmd\_t}}
+\index{prep\_cmd\_t@{prep\_cmd\_t}!config::prep\_cmd\_t@{config::prep\_cmd\_t}}
+\doxysubsubsection{\texorpdfstring{prep\_cmd\_t()}{prep\_cmd\_t()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{structconfig_1_1prep__cmd__t_a185ff21ce7d353878b0863be94742e0e} 
+config\+::prep\+\_\+cmd\+\_\+t\+::prep\+\_\+cmd\+\_\+t (\begin{DoxyParamCaption}\item[{std\+::string \&\&}]{do\+\_\+cmd}{, }\item[{bool \&\&}]{elevated}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+
+
+Construct prep command with only do command. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em do\+\_\+cmd} & Command to execute. \\
+\hline
+{\em elevated} & Whether to run with elevated privileges. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{config_8h}{config.\+h}}\end{DoxyCompactItemize}

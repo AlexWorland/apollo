@@ -1,0 +1,186 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/config.h File Reference}
+\hypertarget{config_8h}{}\label{config_8h}\index{/Users/alexworland/autoBitrate/apollo/src/config.h@{/Users/alexworland/autoBitrate/apollo/src/config.h}}
+
+
+Declarations for the configuration of Sunshine.  
+
+
+{\ttfamily \#include $<$bitset$>$}\newline
+{\ttfamily \#include $<$chrono$>$}\newline
+{\ttfamily \#include $<$optional$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include "{}nvenc/nvenc\+\_\+config.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structconfig_1_1video__t}{config\+::video\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Video encoding and display configuration structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t}{config\+::video\+\_\+t\+::dd\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Display device configuration structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_1_1workarounds__t}{config\+::video\+\_\+t\+::dd\+\_\+t\+::workarounds\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Display device workarounds configuration. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_1_1mode__remapping__entry__t}{config\+::video\+\_\+t\+::dd\+\_\+t\+::mode\+\_\+remapping\+\_\+entry\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Mode remapping entry structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structconfig_1_1video__t_1_1dd__t_1_1mode__remapping__t}{config\+::video\+\_\+t\+::dd\+\_\+t\+::mode\+\_\+remapping\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Mode remapping configuration structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structconfig_1_1audio__t}{config\+::audio\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Audio configuration structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structconfig_1_1stream__t}{config\+::stream\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Streaming configuration structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structconfig_1_1nvhttp__t}{config\+::nvhttp\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em nvhttp (Game\+Stream HTTP) configuration structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structconfig_1_1input__t}{config\+::input\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Input configuration structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structconfig_1_1prep__cmd__t}{config\+::prep\+\_\+cmd\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Pre/post command structure for application lifecycle management. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structconfig_1_1server__cmd__t}{config\+::server\+\_\+cmd\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Server command structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structconfig_1_1sunshine__t}{config\+::sunshine\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Main Sunshine configuration structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structconfig_1_1sunshine__t_1_1cmd__t}{config\+::sunshine\+\_\+t\+::cmd\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Command structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structconfig_1_1auto__bitrate__settings__t}{config\+::auto\+\_\+bitrate\+\_\+settings\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Auto bitrate adjustment settings structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{config_8h_a716fd741caaeaeeeb7fa773447e12904}{config\+::flag\+::flag\+\_\+e}} \+: std\+::size\+\_\+t \{ \newline
+\mbox{\hyperlink{config_8h_a716fd741caaeaeeeb7fa773447e12904ae4ccf2e23d4cbd0c2de0e12bf41dfee9}{config\+::flag\+::\+PIN\+\_\+\+STDIN}} = 0
+, \mbox{\hyperlink{config_8h_a716fd741caaeaeeeb7fa773447e12904a3c7d83bd911af15ce49063dc2a90db35}{config\+::flag\+::\+FRESH\+\_\+\+STATE}}
+, \mbox{\hyperlink{config_8h_a716fd741caaeaeeeb7fa773447e12904ae7572caaf3bdc31eeb47fc9e32d22695}{config\+::flag\+::\+FORCE\+\_\+\+VIDEO\+\_\+\+HEADER\+\_\+\+REPLACE}}
+, \mbox{\hyperlink{config_8h_a716fd741caaeaeeeb7fa773447e12904a2960fed71a8454ee4a56cfb87a01c6f3}{config\+::flag\+::\+UPNP}}
+, \newline
+\mbox{\hyperlink{config_8h_a716fd741caaeaeeeb7fa773447e12904af4ade852e0be071884a079f2ec0f4dd5}{config\+::flag\+::\+CONST\+\_\+\+PIN}}
+, \mbox{\hyperlink{config_8h_a716fd741caaeaeeeb7fa773447e12904a9278926ceeb75d6206f36c6dd03139a4}{config\+::flag\+::\+FLAG\+\_\+\+SIZE}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{config_8cpp_aac1b4c84566eef86f3bc79be02a72e8f}{config\+::parse}} (int argc, char \texorpdfstring{$\ast$}{*}argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Parse command-\/line arguments and configuration file. \end{DoxyCompactList}\item 
+\Hypertarget{config_8h_a6c9974558e7ee5ce4d74ea9501a0fd15}\label{config_8h_a6c9974558e7ee5ce4d74ea9501a0fd15} 
+std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ {\bfseries config\+::parse\+\_\+config} (const std\+::string\+\_\+view \&file\+\_\+content)
+\item 
+void \mbox{\hyperlink{config_8cpp_aec661b541baa6a18df66603eeb8f95d7}{config\+::apply\+\_\+config}} (std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&\&vars)
+\begin{DoxyCompactList}\small\item\em Apply parsed configuration variables to global configuration. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structconfig_1_1auto__bitrate__settings__t}{auto\+\_\+bitrate\+\_\+settings\+\_\+t}} \mbox{\hyperlink{config_8cpp_a95a52138b6f9e0288ec2e7143762c282}{config\+::get\+\_\+auto\+\_\+bitrate\+\_\+settings}} ()
+\begin{DoxyCompactList}\small\item\em Get current auto bitrate adjustment settings. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{config_8h_a059b42a4fe0a4058ca4af9de2032cf85}\label{config_8h_a059b42a4fe0a4058ca4af9de2032cf85} 
+std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ {\bfseries config\+::modified\+\_\+config\+\_\+settings}
+\item 
+\Hypertarget{config_8h_acdf647fba6ea7d3ac8dbf99b85e7eed5}\label{config_8h_acdf647fba6ea7d3ac8dbf99b85e7eed5} 
+constexpr int {\bfseries config\+::\+ENCRYPTION\+\_\+\+MODE\+\_\+\+NEVER} = 0
+\item 
+\Hypertarget{config_8h_a38a22b0dde84b8931a88949cafd7fb09}\label{config_8h_a38a22b0dde84b8931a88949cafd7fb09} 
+constexpr int {\bfseries config\+::\+ENCRYPTION\+\_\+\+MODE\+\_\+\+OPPORTUNISTIC} = 1
+\item 
+\Hypertarget{config_8h_acbfa279ddb09a6d197e58d9e93d1ba03}\label{config_8h_acbfa279ddb09a6d197e58d9e93d1ba03} 
+constexpr int {\bfseries config\+::\+ENCRYPTION\+\_\+\+MODE\+\_\+\+MANDATORY} = 2
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Declarations for the configuration of Sunshine. 
+
+
+
+\label{doc-enum-members}
+\Hypertarget{config_8h_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{config_8h_a716fd741caaeaeeeb7fa773447e12904}\index{config.h@{config.h}!flag\_e@{flag\_e}}
+\index{flag\_e@{flag\_e}!config.h@{config.h}}
+\doxysubsubsection{\texorpdfstring{flag\_e}{flag\_e}}
+{\footnotesize\ttfamily \label{config_8h_a716fd741caaeaeeeb7fa773447e12904} 
+enum \mbox{\hyperlink{config_8h_a716fd741caaeaeeeb7fa773447e12904}{config\+::flag\+::flag\+\_\+e}} \+: std\+::size\+\_\+t}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{PIN\_STDIN@{PIN\_STDIN}!config.h@{config.h}}\index{config.h@{config.h}!PIN\_STDIN@{PIN\_STDIN}}}\Hypertarget{config_8h_a716fd741caaeaeeeb7fa773447e12904ae4ccf2e23d4cbd0c2de0e12bf41dfee9}\label{config_8h_a716fd741caaeaeeeb7fa773447e12904ae4ccf2e23d4cbd0c2de0e12bf41dfee9} 
+PIN\+\_\+\+STDIN&Read PIN from stdin instead of http. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{FRESH\_STATE@{FRESH\_STATE}!config.h@{config.h}}\index{config.h@{config.h}!FRESH\_STATE@{FRESH\_STATE}}}\Hypertarget{config_8h_a716fd741caaeaeeeb7fa773447e12904a3c7d83bd911af15ce49063dc2a90db35}\label{config_8h_a716fd741caaeaeeeb7fa773447e12904a3c7d83bd911af15ce49063dc2a90db35} 
+FRESH\+\_\+\+STATE&Do not load or save state. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{FORCE\_VIDEO\_HEADER\_REPLACE@{FORCE\_VIDEO\_HEADER\_REPLACE}!config.h@{config.h}}\index{config.h@{config.h}!FORCE\_VIDEO\_HEADER\_REPLACE@{FORCE\_VIDEO\_HEADER\_REPLACE}}}\Hypertarget{config_8h_a716fd741caaeaeeeb7fa773447e12904ae7572caaf3bdc31eeb47fc9e32d22695}\label{config_8h_a716fd741caaeaeeeb7fa773447e12904ae7572caaf3bdc31eeb47fc9e32d22695} 
+FORCE\+\_\+\+VIDEO\+\_\+\+HEADER\+\_\+\+REPLACE&force replacing headers inside video data \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UPNP@{UPNP}!config.h@{config.h}}\index{config.h@{config.h}!UPNP@{UPNP}}}\Hypertarget{config_8h_a716fd741caaeaeeeb7fa773447e12904a2960fed71a8454ee4a56cfb87a01c6f3}\label{config_8h_a716fd741caaeaeeeb7fa773447e12904a2960fed71a8454ee4a56cfb87a01c6f3} 
+UPNP&Try Universal Plug \textquotesingle{}n Play. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CONST\_PIN@{CONST\_PIN}!config.h@{config.h}}\index{config.h@{config.h}!CONST\_PIN@{CONST\_PIN}}}\Hypertarget{config_8h_a716fd741caaeaeeeb7fa773447e12904af4ade852e0be071884a079f2ec0f4dd5}\label{config_8h_a716fd741caaeaeeeb7fa773447e12904af4ade852e0be071884a079f2ec0f4dd5} 
+CONST\+\_\+\+PIN&Use "{}universal"{} pin. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{FLAG\_SIZE@{FLAG\_SIZE}!config.h@{config.h}}\index{config.h@{config.h}!FLAG\_SIZE@{FLAG\_SIZE}}}\Hypertarget{config_8h_a716fd741caaeaeeeb7fa773447e12904a9278926ceeb75d6206f36c6dd03139a4}\label{config_8h_a716fd741caaeaeeeb7fa773447e12904a9278926ceeb75d6206f36c6dd03139a4} 
+FLAG\+\_\+\+SIZE&Number of flags. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\label{doc-func-members}
+\Hypertarget{config_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{config_8cpp_aec661b541baa6a18df66603eeb8f95d7}\index{config.h@{config.h}!apply\_config@{apply\_config}}
+\index{apply\_config@{apply\_config}!config.h@{config.h}}
+\doxysubsubsection{\texorpdfstring{apply\_config()}{apply\_config()}}
+{\footnotesize\ttfamily \label{config_8cpp_aec661b541baa6a18df66603eeb8f95d7} 
+void config\+::apply\+\_\+config (\begin{DoxyParamCaption}\item[{std\+::unordered\+\_\+map$<$ std\+::string, std\+::string $>$ \&\&}]{vars}{}\end{DoxyParamCaption})}
+
+
+
+Apply parsed configuration variables to global configuration. 
+
+Processes all configuration variables and updates the global configuration structures. Logs all modified settings and ensures required files exist.
+
+
+\begin{DoxyParams}{Parameters}
+{\em vars} & Map of configuration option names to values (moved). \\
+\hline
+\end{DoxyParams}
+\Hypertarget{config_8cpp_a95a52138b6f9e0288ec2e7143762c282}\index{config.h@{config.h}!get\_auto\_bitrate\_settings@{get\_auto\_bitrate\_settings}}
+\index{get\_auto\_bitrate\_settings@{get\_auto\_bitrate\_settings}!config.h@{config.h}}
+\doxysubsubsection{\texorpdfstring{get\_auto\_bitrate\_settings()}{get\_auto\_bitrate\_settings()}}
+{\footnotesize\ttfamily \label{config_8cpp_a95a52138b6f9e0288ec2e7143762c282} 
+auto\+\_\+bitrate\+\_\+settings\+\_\+t config\+::get\+\_\+auto\+\_\+bitrate\+\_\+settings (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Get current auto bitrate adjustment settings. 
+
+Returns a thread-\/safe copy of the current auto bitrate settings.
+
+\begin{DoxyReturn}{Returns}
+Auto bitrate settings structure with current values. 
+\end{DoxyReturn}
+\Hypertarget{config_8cpp_aac1b4c84566eef86f3bc79be02a72e8f}\index{config.h@{config.h}!parse@{parse}}
+\index{parse@{parse}!config.h@{config.h}}
+\doxysubsubsection{\texorpdfstring{parse()}{parse()}}
+{\footnotesize\ttfamily \label{config_8cpp_aac1b4c84566eef86f3bc79be02a72e8f} 
+int config\+::parse (\begin{DoxyParamCaption}\item[{int}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{argv}{\mbox{[}$\,$\mbox{]}}\end{DoxyParamCaption})}
+
+
+
+Parse command-\/line arguments and configuration file. 
+
+Parses command-\/line arguments and configuration file, applying all settings to the global configuration structures.
+
+
+\begin{DoxyParams}{Parameters}
+{\em argc} & Number of command-\/line arguments. \\
+\hline
+{\em argv} & Array of command-\/line argument strings. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, non-\/zero on error. 
+\end{DoxyReturn}

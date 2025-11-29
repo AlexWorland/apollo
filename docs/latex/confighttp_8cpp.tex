@@ -1,0 +1,1097 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/confighttp.cpp File Reference}
+\hypertarget{confighttp_8cpp}{}\label{confighttp_8cpp}\index{/Users/alexworland/autoBitrate/apollo/src/confighttp.cpp@{/Users/alexworland/autoBitrate/apollo/src/confighttp.cpp}}
+
+
+Definitions for the Web UI Config HTTPS server.  
+
+
+{\ttfamily \#include $<$filesystem$>$}\newline
+{\ttfamily \#include $<$format$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$set$>$}\newline
+{\ttfamily \#include $<$sstream$>$}\newline
+{\ttfamily \#include $<$thread$>$}\newline
+{\ttfamily \#include $<$numeric$>$}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$boost/algorithm/string.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/asio/ssl/context.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/filesystem.\+hpp$>$}\newline
+{\ttfamily \#include $<$nlohmann/json.\+hpp$>$}\newline
+{\ttfamily \#include $<$Simple-\/\+Web-\/\+Server/crypto.\+hpp$>$}\newline
+{\ttfamily \#include $<$Simple-\/\+Web-\/\+Server/server\+\_\+https.\+hpp$>$}\newline
+{\ttfamily \#include "{}config.\+h"{}}\newline
+{\ttfamily \#include "{}confighttp.\+h"{}}\newline
+{\ttfamily \#include "{}crypto.\+h"{}}\newline
+{\ttfamily \#include "{}display\+\_\+device.\+h"{}}\newline
+{\ttfamily \#include "{}file\+\_\+handler.\+h"{}}\newline
+{\ttfamily \#include "{}globals.\+h"{}}\newline
+{\ttfamily \#include "{}httpcommon.\+h"{}}\newline
+{\ttfamily \#include "{}logging.\+h"{}}\newline
+{\ttfamily \#include "{}network.\+h"{}}\newline
+{\ttfamily \#include "{}nvhttp.\+h"{}}\newline
+{\ttfamily \#include "{}platform/common.\+h"{}}\newline
+{\ttfamily \#include "{}process.\+h"{}}\newline
+{\ttfamily \#include "{}utility.\+h"{}}\newline
+{\ttfamily \#include "{}uuid.\+h"{}}\newline
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{confighttp_8cpp_a97840c898ca0626c8183338b008575c2}\label{confighttp_8cpp_a97840c898ca0626c8183338b008575c2} 
+using {\bfseries confighttp\+::https\+\_\+server\+\_\+t} = Simple\+Web\+::\+Server$<$Simple\+Web\+::\+HTTPS$>$
+\item 
+\Hypertarget{confighttp_8cpp_a9134e4426efda8f4c01cb20c67ad1c13}\label{confighttp_8cpp_a9134e4426efda8f4c01cb20c67ad1c13} 
+using {\bfseries confighttp\+::args\+\_\+t} = Simple\+Web\+::\+Case\+Insensitive\+Multimap
+\item 
+\Hypertarget{confighttp_8cpp_aa424481ad81d2ca9c1bd6bf4b82bfd00}\label{confighttp_8cpp_aa424481ad81d2ca9c1bd6bf4b82bfd00} 
+using {\bfseries confighttp\+::resp\+\_\+https\+\_\+t} = std\+::shared\+\_\+ptr$<$typename Simple\+Web\+::\+Server\+Base$<$Simple\+Web\+::\+HTTPS$>$\+::\+Response$>$
+\item 
+\Hypertarget{confighttp_8cpp_a33cf0af5f9ea9aacd21189734b89b0ef}\label{confighttp_8cpp_a33cf0af5f9ea9aacd21189734b89b0ef} 
+using {\bfseries confighttp\+::req\+\_\+https\+\_\+t} = std\+::shared\+\_\+ptr$<$typename Simple\+Web\+::\+Server\+Base$<$Simple\+Web\+::\+HTTPS$>$\+::\+Request$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{confighttp_8cpp_abed56e8beffd8d07ff836641de4974b8}{confighttp\+::op\+\_\+e}} \{ \mbox{\hyperlink{confighttp_8cpp_abed56e8beffd8d07ff836641de4974b8a9eeb52badb613229884838847294b90d}{ADD}}
+, \mbox{\hyperlink{confighttp_8cpp_abed56e8beffd8d07ff836641de4974b8a78baf367c4626442174307cdf41c6538}{REMOVE}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{confighttp_8cpp_a4e17683dbcb99411fd16eeaec3f9b5c4}{confighttp\+::print\+\_\+req}} (const req\+\_\+https\+\_\+t \&request)
+\begin{DoxyCompactList}\small\item\em Log the request details. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a6cc3769ddd96cdabfc1bf4f013638467}{confighttp\+::send\+\_\+response}} (resp\+\_\+https\+\_\+t response, const nlohmann\+::json \&output\+\_\+tree)
+\begin{DoxyCompactList}\small\item\em Send a response. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_ae764df83e0d4d859280ef81ac3e02385}{confighttp\+::send\+\_\+unauthorized}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Send a 401 Unauthorized response. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_abc92a804a05aa7b97fd739a458eae24e}{confighttp\+::send\+\_\+redirect}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request, const char \texorpdfstring{$\ast$}{*}path)
+\begin{DoxyCompactList}\small\item\em Send a redirect response. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{confighttp_8cpp_a76f54f608fd2bcbc007bab7c752b682d}{confighttp\+::get\+Cookie\+Value}} (const std\+::string \&cookie\+String, const std\+::string \&key)
+\begin{DoxyCompactList}\small\item\em Retrieve the value of a key from a cookie string. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{confighttp_8cpp_a4a8cbf307d1f24211028f6b9e65344ca}{confighttp\+::check\+IPOrigin}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Check if the IP origin is allowed. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{confighttp_8cpp_a3917b5ca545ee6ffc17c50d343698375}{confighttp\+::authenticate}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request, bool needs\+Redirect=false)
+\begin{DoxyCompactList}\small\item\em Authenticate the request. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a7f46812c75105689ade2a5d9be2d85b4}{confighttp\+::not\+\_\+found}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Send a 404 Not Found response. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a94f43296f80a8dbdc0f69998cc50a001}{confighttp\+::bad\+\_\+request}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request, const std\+::string \&error\+\_\+message="{}Bad Request"{})
+\begin{DoxyCompactList}\small\item\em Send a 400 Bad Request response. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{confighttp_8cpp_abb18d47e0c1c1682c0b2f2ae4ae3cf0f}{confighttp\+::validate\+Content\+Type}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request, const std\+::string\+\_\+view \&content\+Type)
+\begin{DoxyCompactList}\small\item\em Validate the request content type and send bad request when mismatch. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a94ea2ed7061ca74aed72436f292a5baf}{confighttp\+::get\+Index\+Page}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Get the index page. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a30f919c1fabd9b8bf2da1eb05947509e}{confighttp\+::get\+Pin\+Page}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Get the PIN page. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_acf0d5c8696b6eafe77498c49d3bca9af}{confighttp\+::get\+Apps\+Page}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Get the apps page. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_aa7950c8f1708c1526736b18188cc2375}{confighttp\+::get\+Clients\+Page}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Get the clients page. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a2c8f191f0d2e9982768acb387098ed43}{confighttp\+::get\+Config\+Page}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Get the configuration page. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_af0e40b03e93c2a51a04ef627e1f30752}{confighttp\+::get\+Password\+Page}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Get the password page. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a160317f3c726ed1f46e527a1f97b361b}{confighttp\+::get\+Login\+Page}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Get the login page. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a1f48783e5bc4e338c638d44cc5f47c4a}{confighttp\+::get\+Welcome\+Page}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Get the welcome page. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_abc91de441b841ff0becf540db1d32f6d}{confighttp\+::get\+Troubleshooting\+Page}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Get the troubleshooting page. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_ab2c06804e7e0892b29fa472ab662728a}{confighttp\+::get\+Favicon\+Image}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Get the favicon image. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a2f2d7a75049a91cda5c3c174e9dcf713}{confighttp\+::get\+Apollo\+Logo\+Image}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Get the Apollo logo image. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{confighttp_8cpp_ac1ce3f16d9cfc08fb414fb36423bfd78}{confighttp\+::is\+Child\+Path}} (fs\+::path const \&base, fs\+::path const \&query)
+\begin{DoxyCompactList}\small\item\em Check if a path is a child of another path. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_ac70f447d3ace53d4b62283fafa149570}{confighttp\+::get\+Node\+Modules}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Get an asset from the node\+\_\+modules directory. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_af1a928b563d57cc0386970d73ecd80f9}{confighttp\+::get\+Apps}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Get the list of available applications. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a8b4896b162862f5fd0fa60f0245d5916}{confighttp\+::save\+App}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Save an application. To save a new application the UUID must be empty. To update an existing application, you must provide the current UUID of the application. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a4bb0dce538a7fff383278072244fd36d}{confighttp\+::close\+App}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Close the currently running application. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a9419b6d2d14c82aa8a117ada1b166d99}{confighttp\+::reorder\+Apps}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Reorder applications. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_ae49f4d2502ad2797efdf780f33dfd977}{confighttp\+::delete\+App}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Delete an application. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_abf7b109cc5725d25efc82044eae9ec40}{confighttp\+::get\+Clients}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Get the list of paired clients. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a26294448335e273b8655da2d58749261}{confighttp\+::update\+Client}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Update client information. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a9fe3af21abfae9d4e9894f81c7ea6fbb}{confighttp\+::unpair}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Unpair a client. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a243550967291d3a81a1eeb774b9600b2}{confighttp\+::unpair\+All}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Unpair all clients. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a1c53ba67b5e03fb1ded99af21a9fe385}{confighttp\+::get\+Config}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Get the configuration settings. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_aa9d4546ed28d86b273bbbef489926871}{confighttp\+::get\+Locale}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Get the locale setting. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a23912e4f105adcd92056dad911a394bb}{confighttp\+::save\+Config}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Save the configuration settings. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_aa73be0c6466891e8161d760c382b5a71}{confighttp\+::upload\+Cover}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Upload a cover image. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a92cfeb50c095168b95d11bd87adbc897}{confighttp\+::get\+Logs}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Get the logs from the log file. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a2a3ac88eac9df25d760810b4bdb81162}{confighttp\+::save\+Password}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Update existing credentials. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a6dff15eea4b8e4f649b04c4059a6f455}{confighttp\+::get\+OTP}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Get a one-\/time password (OTP). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a717463e8c34599c99d04e350d49b2c56}{confighttp\+::save\+Pin}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Send a PIN code to the host. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_ad765afeede14b4623fbbd3dd7646a7d8}{confighttp\+::reset\+Display\+Device\+Persistence}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Reset the display device persistence. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_af83529c6e82508706605946ce70c7c53}{confighttp\+::restart}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Restart Apollo. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_ab23dadf0f8e2489d6c231e80bd979566}{confighttp\+::quit}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Quit Apollo. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a3bc91d1e3f0aee5265b835d0e9209d45}{confighttp\+::launch\+App}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Launch an application. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a0e6ab75ee37acf5b99ff91000adeacc2}{confighttp\+::disconnect}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Disconnect a client. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_a72af6e7f7e24b314d1579399eaed3331}{confighttp\+::login}} (resp\+\_\+https\+\_\+t response, req\+\_\+https\+\_\+t request)
+\begin{DoxyCompactList}\small\item\em Login the user. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{confighttp_8cpp_adb6c9baee595116b5e4bad25feb5d467}{confighttp\+::start}} ()
+\begin{DoxyCompactList}\small\item\em Start the HTTPS server. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{confighttp_8cpp_a316421d9def1caff1dc92613e1022a0c}\label{confighttp_8cpp_a316421d9def1caff1dc92613e1022a0c} 
+std\+::string {\bfseries confighttp\+::session\+Cookie}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Definitions for the Web UI Config HTTPS server. 
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000002}{Todo}}]Authentication, better handling of routes common to nvhttp, cleanup \end{DoxyRefDesc}
+
+
+\label{doc-enum-members}
+\Hypertarget{confighttp_8cpp_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{confighttp_8cpp_abed56e8beffd8d07ff836641de4974b8}\index{confighttp.cpp@{confighttp.cpp}!op\_e@{op\_e}}
+\index{op\_e@{op\_e}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{op\_e}{op\_e}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_abed56e8beffd8d07ff836641de4974b8} 
+enum class \mbox{\hyperlink{confighttp_8cpp_abed56e8beffd8d07ff836641de4974b8}{confighttp\+::op\+\_\+e}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ADD@{ADD}!confighttp.cpp@{confighttp.cpp}}\index{confighttp.cpp@{confighttp.cpp}!ADD@{ADD}}}\Hypertarget{confighttp_8cpp_abed56e8beffd8d07ff836641de4974b8a9eeb52badb613229884838847294b90d}\label{confighttp_8cpp_abed56e8beffd8d07ff836641de4974b8a9eeb52badb613229884838847294b90d} 
+ADD&Add client. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{REMOVE@{REMOVE}!confighttp.cpp@{confighttp.cpp}}\index{confighttp.cpp@{confighttp.cpp}!REMOVE@{REMOVE}}}\Hypertarget{confighttp_8cpp_abed56e8beffd8d07ff836641de4974b8a78baf367c4626442174307cdf41c6538}\label{confighttp_8cpp_abed56e8beffd8d07ff836641de4974b8a78baf367c4626442174307cdf41c6538} 
+REMOVE&Remove client. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\label{doc-func-members}
+\Hypertarget{confighttp_8cpp_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{confighttp_8cpp_a3917b5ca545ee6ffc17c50d343698375}\index{confighttp.cpp@{confighttp.cpp}!authenticate@{authenticate}}
+\index{authenticate@{authenticate}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{authenticate()}{authenticate()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a3917b5ca545ee6ffc17c50d343698375} 
+bool confighttp\+::authenticate (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{, }\item[{bool}]{needs\+Redirect}{ = {\ttfamily false}}\end{DoxyParamCaption})}
+
+
+
+Authenticate the request. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. \\
+\hline
+{\em needs\+Redirect} & Whether to redirect on failure. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if authenticated, false otherwise.
+\end{DoxyReturn}
+This function uses session cookies (if set) and ensures they have not expired. \Hypertarget{confighttp_8cpp_a94f43296f80a8dbdc0f69998cc50a001}\index{confighttp.cpp@{confighttp.cpp}!bad\_request@{bad\_request}}
+\index{bad\_request@{bad\_request}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{bad\_request()}{bad\_request()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a94f43296f80a8dbdc0f69998cc50a001} 
+void confighttp\+::bad\+\_\+request (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{, }\item[{const std\+::string \&}]{error\+\_\+message}{ = {\ttfamily "{}Bad~Request"{}}}\end{DoxyParamCaption})}
+
+
+
+Send a 400 Bad Request response. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. \\
+\hline
+{\em error\+\_\+message} & The error message. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{confighttp_8cpp_a4a8cbf307d1f24211028f6b9e65344ca}\index{confighttp.cpp@{confighttp.cpp}!checkIPOrigin@{checkIPOrigin}}
+\index{checkIPOrigin@{checkIPOrigin}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{checkIPOrigin()}{checkIPOrigin()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a4a8cbf307d1f24211028f6b9e65344ca} 
+bool confighttp\+::check\+IPOrigin (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Check if the IP origin is allowed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if allowed, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{confighttp_8cpp_a4bb0dce538a7fff383278072244fd36d}\index{confighttp.cpp@{confighttp.cpp}!closeApp@{closeApp}}
+\index{closeApp@{closeApp}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{closeApp()}{closeApp()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a4bb0dce538a7fff383278072244fd36d} 
+void confighttp\+::close\+App (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Close the currently running application. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+ \Hypertarget{confighttp_8cpp_ae49f4d2502ad2797efdf780f33dfd977}\index{confighttp.cpp@{confighttp.cpp}!deleteApp@{deleteApp}}
+\index{deleteApp@{deleteApp}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{deleteApp()}{deleteApp()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_ae49f4d2502ad2797efdf780f33dfd977} 
+void confighttp\+::delete\+App (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Delete an application. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+ \Hypertarget{confighttp_8cpp_a0e6ab75ee37acf5b99ff91000adeacc2}\index{confighttp.cpp@{confighttp.cpp}!disconnect@{disconnect}}
+\index{disconnect@{disconnect}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{disconnect()}{disconnect()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a0e6ab75ee37acf5b99ff91000adeacc2} 
+void confighttp\+::disconnect (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Disconnect a client. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{confighttp_8cpp_a2f2d7a75049a91cda5c3c174e9dcf713}\index{confighttp.cpp@{confighttp.cpp}!getApolloLogoImage@{getApolloLogoImage}}
+\index{getApolloLogoImage@{getApolloLogoImage}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{getApolloLogoImage()}{getApolloLogoImage()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a2f2d7a75049a91cda5c3c174e9dcf713} 
+void confighttp\+::get\+Apollo\+Logo\+Image (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Get the Apollo logo image. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000004}{Todo}}]combine function with get\+Favicon\+Image and possibly get\+Node\+Modules 
+
+use mime\+\_\+types map \end{DoxyRefDesc}
+\Hypertarget{confighttp_8cpp_af1a928b563d57cc0386970d73ecd80f9}\index{confighttp.cpp@{confighttp.cpp}!getApps@{getApps}}
+\index{getApps@{getApps}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{getApps()}{getApps()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_af1a928b563d57cc0386970d73ecd80f9} 
+void confighttp\+::get\+Apps (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Get the list of available applications. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+ \Hypertarget{confighttp_8cpp_acf0d5c8696b6eafe77498c49d3bca9af}\index{confighttp.cpp@{confighttp.cpp}!getAppsPage@{getAppsPage}}
+\index{getAppsPage@{getAppsPage}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{getAppsPage()}{getAppsPage()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_acf0d5c8696b6eafe77498c49d3bca9af} 
+void confighttp\+::get\+Apps\+Page (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Get the apps page. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{confighttp_8cpp_abf7b109cc5725d25efc82044eae9ec40}\index{confighttp.cpp@{confighttp.cpp}!getClients@{getClients}}
+\index{getClients@{getClients}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{getClients()}{getClients()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_abf7b109cc5725d25efc82044eae9ec40} 
+void confighttp\+::get\+Clients (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Get the list of paired clients. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+ \Hypertarget{confighttp_8cpp_aa7950c8f1708c1526736b18188cc2375}\index{confighttp.cpp@{confighttp.cpp}!getClientsPage@{getClientsPage}}
+\index{getClientsPage@{getClientsPage}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{getClientsPage()}{getClientsPage()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_aa7950c8f1708c1526736b18188cc2375} 
+void confighttp\+::get\+Clients\+Page (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Get the clients page. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{confighttp_8cpp_a1c53ba67b5e03fb1ded99af21a9fe385}\index{confighttp.cpp@{confighttp.cpp}!getConfig@{getConfig}}
+\index{getConfig@{getConfig}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{getConfig()}{getConfig()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a1c53ba67b5e03fb1ded99af21a9fe385} 
+void confighttp\+::get\+Config (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Get the configuration settings. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{confighttp_8cpp_a2c8f191f0d2e9982768acb387098ed43}\index{confighttp.cpp@{confighttp.cpp}!getConfigPage@{getConfigPage}}
+\index{getConfigPage@{getConfigPage}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{getConfigPage()}{getConfigPage()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a2c8f191f0d2e9982768acb387098ed43} 
+void confighttp\+::get\+Config\+Page (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Get the configuration page. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{confighttp_8cpp_a76f54f608fd2bcbc007bab7c752b682d}\index{confighttp.cpp@{confighttp.cpp}!getCookieValue@{getCookieValue}}
+\index{getCookieValue@{getCookieValue}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{getCookieValue()}{getCookieValue()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a76f54f608fd2bcbc007bab7c752b682d} 
+std\+::string confighttp\+::get\+Cookie\+Value (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{cookie\+String}{, }\item[{const std\+::string \&}]{key}{}\end{DoxyParamCaption})}
+
+
+
+Retrieve the value of a key from a cookie string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cookie\+String} & The cookie header string. \\
+\hline
+{\em key} & The key to search. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The value if found, empty string otherwise. 
+\end{DoxyReturn}
+\Hypertarget{confighttp_8cpp_ab2c06804e7e0892b29fa472ab662728a}\index{confighttp.cpp@{confighttp.cpp}!getFaviconImage@{getFaviconImage}}
+\index{getFaviconImage@{getFaviconImage}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{getFaviconImage()}{getFaviconImage()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_ab2c06804e7e0892b29fa472ab662728a} 
+void confighttp\+::get\+Favicon\+Image (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Get the favicon image. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{confighttp_8cpp_a94ea2ed7061ca74aed72436f292a5baf}\index{confighttp.cpp@{confighttp.cpp}!getIndexPage@{getIndexPage}}
+\index{getIndexPage@{getIndexPage}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{getIndexPage()}{getIndexPage()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a94ea2ed7061ca74aed72436f292a5baf} 
+void confighttp\+::get\+Index\+Page (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Get the index page. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{confighttp_8cpp_aa9d4546ed28d86b273bbbef489926871}\index{confighttp.cpp@{confighttp.cpp}!getLocale@{getLocale}}
+\index{getLocale@{getLocale}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{getLocale()}{getLocale()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_aa9d4546ed28d86b273bbbef489926871} 
+void confighttp\+::get\+Locale (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Get the locale setting. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+ \Hypertarget{confighttp_8cpp_a160317f3c726ed1f46e527a1f97b361b}\index{confighttp.cpp@{confighttp.cpp}!getLoginPage@{getLoginPage}}
+\index{getLoginPage@{getLoginPage}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{getLoginPage()}{getLoginPage()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a160317f3c726ed1f46e527a1f97b361b} 
+void confighttp\+::get\+Login\+Page (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Get the login page. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000003}{Todo}}]Combine this function with get\+Welcome\+Page if appropriate. \end{DoxyRefDesc}
+\Hypertarget{confighttp_8cpp_a92cfeb50c095168b95d11bd87adbc897}\index{confighttp.cpp@{confighttp.cpp}!getLogs@{getLogs}}
+\index{getLogs@{getLogs}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{getLogs()}{getLogs()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a92cfeb50c095168b95d11bd87adbc897} 
+void confighttp\+::get\+Logs (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Get the logs from the log file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+ \Hypertarget{confighttp_8cpp_ac70f447d3ace53d4b62283fafa149570}\index{confighttp.cpp@{confighttp.cpp}!getNodeModules@{getNodeModules}}
+\index{getNodeModules@{getNodeModules}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{getNodeModules()}{getNodeModules()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_ac70f447d3ace53d4b62283fafa149570} 
+void confighttp\+::get\+Node\+Modules (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Get an asset from the node\+\_\+modules directory. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{confighttp_8cpp_a6dff15eea4b8e4f649b04c4059a6f455}\index{confighttp.cpp@{confighttp.cpp}!getOTP@{getOTP}}
+\index{getOTP@{getOTP}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{getOTP()}{getOTP()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a6dff15eea4b8e4f649b04c4059a6f455} 
+void confighttp\+::get\+OTP (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Get a one-\/time password (OTP). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+ \Hypertarget{confighttp_8cpp_af0e40b03e93c2a51a04ef627e1f30752}\index{confighttp.cpp@{confighttp.cpp}!getPasswordPage@{getPasswordPage}}
+\index{getPasswordPage@{getPasswordPage}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{getPasswordPage()}{getPasswordPage()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_af0e40b03e93c2a51a04ef627e1f30752} 
+void confighttp\+::get\+Password\+Page (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Get the password page. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{confighttp_8cpp_a30f919c1fabd9b8bf2da1eb05947509e}\index{confighttp.cpp@{confighttp.cpp}!getPinPage@{getPinPage}}
+\index{getPinPage@{getPinPage}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{getPinPage()}{getPinPage()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a30f919c1fabd9b8bf2da1eb05947509e} 
+void confighttp\+::get\+Pin\+Page (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Get the PIN page. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{confighttp_8cpp_abc91de441b841ff0becf540db1d32f6d}\index{confighttp.cpp@{confighttp.cpp}!getTroubleshootingPage@{getTroubleshootingPage}}
+\index{getTroubleshootingPage@{getTroubleshootingPage}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{getTroubleshootingPage()}{getTroubleshootingPage()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_abc91de441b841ff0becf540db1d32f6d} 
+void confighttp\+::get\+Troubleshooting\+Page (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Get the troubleshooting page. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{confighttp_8cpp_a1f48783e5bc4e338c638d44cc5f47c4a}\index{confighttp.cpp@{confighttp.cpp}!getWelcomePage@{getWelcomePage}}
+\index{getWelcomePage@{getWelcomePage}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{getWelcomePage()}{getWelcomePage()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a1f48783e5bc4e338c638d44cc5f47c4a} 
+void confighttp\+::get\+Welcome\+Page (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Get the welcome page. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{confighttp_8cpp_ac1ce3f16d9cfc08fb414fb36423bfd78}\index{confighttp.cpp@{confighttp.cpp}!isChildPath@{isChildPath}}
+\index{isChildPath@{isChildPath}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{isChildPath()}{isChildPath()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_ac1ce3f16d9cfc08fb414fb36423bfd78} 
+bool confighttp\+::is\+Child\+Path (\begin{DoxyParamCaption}\item[{fs\+::path const \&}]{base}{, }\item[{fs\+::path const \&}]{query}{}\end{DoxyParamCaption})}
+
+
+
+Check if a path is a child of another path. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em base} & The base path. \\
+\hline
+{\em query} & The path to check. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the path is a child of the base path, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{confighttp_8cpp_a3bc91d1e3f0aee5265b835d0e9209d45}\index{confighttp.cpp@{confighttp.cpp}!launchApp@{launchApp}}
+\index{launchApp@{launchApp}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{launchApp()}{launchApp()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a3bc91d1e3f0aee5265b835d0e9209d45} 
+void confighttp\+::launch\+App (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Launch an application. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{confighttp_8cpp_a72af6e7f7e24b314d1579399eaed3331}\index{confighttp.cpp@{confighttp.cpp}!login@{login}}
+\index{login@{login}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{login()}{login()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a72af6e7f7e24b314d1579399eaed3331} 
+void confighttp\+::login (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Login the user. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+The body for the POST request should be JSON serialized in the following format\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ "{}username"{}:\ "{}<username>"{},}
+\DoxyCodeLine{\ \ "{}password"{}:\ "{}<password>"{}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+ \Hypertarget{confighttp_8cpp_a7f46812c75105689ade2a5d9be2d85b4}\index{confighttp.cpp@{confighttp.cpp}!not\_found@{not\_found}}
+\index{not\_found@{not\_found}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{not\_found()}{not\_found()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a7f46812c75105689ade2a5d9be2d85b4} 
+void confighttp\+::not\+\_\+found (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Send a 404 Not Found response. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{confighttp_8cpp_a4e17683dbcb99411fd16eeaec3f9b5c4}\index{confighttp.cpp@{confighttp.cpp}!print\_req@{print\_req}}
+\index{print\_req@{print\_req}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{print\_req()}{print\_req()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a4e17683dbcb99411fd16eeaec3f9b5c4} 
+void confighttp\+::print\+\_\+req (\begin{DoxyParamCaption}\item[{const req\+\_\+https\+\_\+t \&}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Log the request details. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em request} & The HTTP request object. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{confighttp_8cpp_ab23dadf0f8e2489d6c231e80bd979566}\index{confighttp.cpp@{confighttp.cpp}!quit@{quit}}
+\index{quit@{quit}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{quit()}{quit()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_ab23dadf0f8e2489d6c231e80bd979566} 
+void confighttp\+::quit (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Quit Apollo. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+On Windows, if running in a service, a special shutdown code is returned. \Hypertarget{confighttp_8cpp_a9419b6d2d14c82aa8a117ada1b166d99}\index{confighttp.cpp@{confighttp.cpp}!reorderApps@{reorderApps}}
+\index{reorderApps@{reorderApps}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{reorderApps()}{reorderApps()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a9419b6d2d14c82aa8a117ada1b166d99} 
+void confighttp\+::reorder\+Apps (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Reorder applications. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+ \Hypertarget{confighttp_8cpp_ad765afeede14b4623fbbd3dd7646a7d8}\index{confighttp.cpp@{confighttp.cpp}!resetDisplayDevicePersistence@{resetDisplayDevicePersistence}}
+\index{resetDisplayDevicePersistence@{resetDisplayDevicePersistence}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{resetDisplayDevicePersistence()}{resetDisplayDevicePersistence()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_ad765afeede14b4623fbbd3dd7646a7d8} 
+void confighttp\+::reset\+Display\+Device\+Persistence (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Reset the display device persistence. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+ \Hypertarget{confighttp_8cpp_af83529c6e82508706605946ce70c7c53}\index{confighttp.cpp@{confighttp.cpp}!restart@{restart}}
+\index{restart@{restart}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{restart()}{restart()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_af83529c6e82508706605946ce70c7c53} 
+void confighttp\+::restart (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Restart Apollo. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+ \Hypertarget{confighttp_8cpp_a8b4896b162862f5fd0fa60f0245d5916}\index{confighttp.cpp@{confighttp.cpp}!saveApp@{saveApp}}
+\index{saveApp@{saveApp}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{saveApp()}{saveApp()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a8b4896b162862f5fd0fa60f0245d5916} 
+void confighttp\+::save\+App (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Save an application. To save a new application the UUID must be empty. To update an existing application, you must provide the current UUID of the application. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. The body for the post request should be JSON serialized in the following format\+: 
+\begin{DoxyCode}{1}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ "{}name"{}:\ "{}Application\ Name"{},}
+\DoxyCodeLine{\ \ "{}output"{}:\ "{}Log\ Output\ Path"{},}
+\DoxyCodeLine{\ \ "{}cmd"{}:\ "{}Command\ to\ run\ the\ application"{},}
+\DoxyCodeLine{\ \ "{}exclude-\/global-\/prep-\/cmd"{}:\ false,}
+\DoxyCodeLine{\ \ "{}elevated"{}:\ false,}
+\DoxyCodeLine{\ \ "{}auto-\/detach"{}:\ true,}
+\DoxyCodeLine{\ \ "{}wait-\/all"{}:\ true,}
+\DoxyCodeLine{\ \ "{}exit-\/timeout"{}:\ 5,}
+\DoxyCodeLine{\ \ "{}prep-\/cmd"{}:\ [}
+\DoxyCodeLine{\ \ \ \ \{}
+\DoxyCodeLine{\ \ \ \ \ \ "{}do"{}:\ "{}Command\ to\ prepare"{},}
+\DoxyCodeLine{\ \ \ \ \ \ "{}undo"{}:\ "{}Command\ to\ undo\ preparation"{},}
+\DoxyCodeLine{\ \ \ \ \ \ "{}elevated"{}:\ false}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\ \ ],}
+\DoxyCodeLine{\ \ "{}detached"{}:\ [}
+\DoxyCodeLine{\ \ \ \ "{}Detached\ command"{}}
+\DoxyCodeLine{\ \ ],}
+\DoxyCodeLine{\ \ "{}image-\/path"{}:\ "{}Full\ path\ to\ the\ application\ image.\ Must\ be\ a\ png\ file."{},}
+\DoxyCodeLine{\ \ "{}uuid"{}:\ "{}aaaa-\/bbbb"{}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\\
+\hline
+\end{DoxyParams}
+ \Hypertarget{confighttp_8cpp_a23912e4f105adcd92056dad911a394bb}\index{confighttp.cpp@{confighttp.cpp}!saveConfig@{saveConfig}}
+\index{saveConfig@{saveConfig}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{saveConfig()}{saveConfig()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a23912e4f105adcd92056dad911a394bb} 
+void confighttp\+::save\+Config (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Save the configuration settings. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. The body for the post request should be JSON serialized in the following format\+: 
+\begin{DoxyCode}{1}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ "{}key"{}:\ "{}value"{}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\\
+\hline
+\end{DoxyParams}
+\begin{DoxyAttention}{Attention}
+\{It is recommended to ONLY save the config settings that differ from the default behavior.\}
+\end{DoxyAttention}
+ \Hypertarget{confighttp_8cpp_a2a3ac88eac9df25d760810b4bdb81162}\index{confighttp.cpp@{confighttp.cpp}!savePassword@{savePassword}}
+\index{savePassword@{savePassword}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{savePassword()}{savePassword()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a2a3ac88eac9df25d760810b4bdb81162} 
+void confighttp\+::save\+Password (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Update existing credentials. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+The body for the POST request should be JSON serialized in the following format\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ "{}currentUsername"{}:\ "{}Current\ Username"{},}
+\DoxyCodeLine{\ \ "{}currentPassword"{}:\ "{}Current\ Password"{},}
+\DoxyCodeLine{\ \ "{}newUsername"{}:\ "{}New\ Username"{},}
+\DoxyCodeLine{\ \ "{}newPassword"{}:\ "{}New\ Password"{},}
+\DoxyCodeLine{\ \ "{}confirmNewPassword"{}:\ "{}Confirm\ New\ Password"{}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+ \Hypertarget{confighttp_8cpp_a717463e8c34599c99d04e350d49b2c56}\index{confighttp.cpp@{confighttp.cpp}!savePin@{savePin}}
+\index{savePin@{savePin}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{savePin()}{savePin()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a717463e8c34599c99d04e350d49b2c56} 
+void confighttp\+::save\+Pin (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Send a PIN code to the host. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+The body for the POST request should be JSON serialized in the following format\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ "{}pin"{}:\ "{}<pin>"{},}
+\DoxyCodeLine{\ \ "{}name"{}:\ "{}Friendly\ Client\ Name"{}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+ \Hypertarget{confighttp_8cpp_abc92a804a05aa7b97fd739a458eae24e}\index{confighttp.cpp@{confighttp.cpp}!send\_redirect@{send\_redirect}}
+\index{send\_redirect@{send\_redirect}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{send\_redirect()}{send\_redirect()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_abc92a804a05aa7b97fd739a458eae24e} 
+void confighttp\+::send\+\_\+redirect (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{, }\item[{const char \texorpdfstring{$\ast$}{*}}]{path}{}\end{DoxyParamCaption})}
+
+
+
+Send a redirect response. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. \\
+\hline
+{\em path} & The path to redirect to. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{confighttp_8cpp_a6cc3769ddd96cdabfc1bf4f013638467}\index{confighttp.cpp@{confighttp.cpp}!send\_response@{send\_response}}
+\index{send\_response@{send\_response}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{send\_response()}{send\_response()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a6cc3769ddd96cdabfc1bf4f013638467} 
+void confighttp\+::send\+\_\+response (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{const nlohmann\+::json \&}]{output\+\_\+tree}{}\end{DoxyParamCaption})}
+
+
+
+Send a response. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em output\+\_\+tree} & The JSON tree to send. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{confighttp_8cpp_ae764df83e0d4d859280ef81ac3e02385}\index{confighttp.cpp@{confighttp.cpp}!send\_unauthorized@{send\_unauthorized}}
+\index{send\_unauthorized@{send\_unauthorized}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{send\_unauthorized()}{send\_unauthorized()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_ae764df83e0d4d859280ef81ac3e02385} 
+void confighttp\+::send\+\_\+unauthorized (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Send a 401 Unauthorized response. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{confighttp_8cpp_adb6c9baee595116b5e4bad25feb5d467}\index{confighttp.cpp@{confighttp.cpp}!start@{start}}
+\index{start@{start}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{start()}{start()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_adb6c9baee595116b5e4bad25feb5d467} 
+void confighttp\+::start (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Start the HTTPS server. 
+
+Start the configuration HTTP server. @examples \doxylink{confighttp_8cpp_adb6c9baee595116b5e4bad25feb5d467}{confighttp\+::start()}; @examples\+\_\+end. \Hypertarget{confighttp_8cpp_a9fe3af21abfae9d4e9894f81c7ea6fbb}\index{confighttp.cpp@{confighttp.cpp}!unpair@{unpair}}
+\index{unpair@{unpair}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{unpair()}{unpair()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a9fe3af21abfae9d4e9894f81c7ea6fbb} 
+void confighttp\+::unpair (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Unpair a client. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+The body for the POST request should be JSON serialized in the following format\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ "{}uuid"{}:\ "{}<uuid>"{}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+ \Hypertarget{confighttp_8cpp_a243550967291d3a81a1eeb774b9600b2}\index{confighttp.cpp@{confighttp.cpp}!unpairAll@{unpairAll}}
+\index{unpairAll@{unpairAll}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{unpairAll()}{unpairAll()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a243550967291d3a81a1eeb774b9600b2} 
+void confighttp\+::unpair\+All (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Unpair all clients. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+ \Hypertarget{confighttp_8cpp_a26294448335e273b8655da2d58749261}\index{confighttp.cpp@{confighttp.cpp}!updateClient@{updateClient}}
+\index{updateClient@{updateClient}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{updateClient()}{updateClient()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_a26294448335e273b8655da2d58749261} 
+void confighttp\+::update\+Client (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Update client information. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+The body for the POST request should be JSON serialized in the following format\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ "{}uuid"{}:\ "{}<uuid>"{},}
+\DoxyCodeLine{\ \ "{}name"{}:\ "{}<Friendly\ Name>"{},}
+\DoxyCodeLine{\ \ "{}display\_mode"{}:\ "{}1920x1080x59.94"{},}
+\DoxyCodeLine{\ \ "{}do"{}:\ [\ \{\ "{}cmd"{}:\ "{}<command>"{},\ "{}elevated"{}:\ false\ \},\ ...\ ],}
+\DoxyCodeLine{\ \ "{}undo"{}:\ [\ \{\ "{}cmd"{}:\ "{}<command>"{},\ "{}elevated"{}:\ false\ \},\ ...\ ],}
+\DoxyCodeLine{\ \ "{}perm"{}:\ <uint32\_t>}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+ \Hypertarget{confighttp_8cpp_aa73be0c6466891e8161d760c382b5a71}\index{confighttp.cpp@{confighttp.cpp}!uploadCover@{uploadCover}}
+\index{uploadCover@{uploadCover}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{uploadCover()}{uploadCover()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_aa73be0c6466891e8161d760c382b5a71} 
+void confighttp\+::upload\+Cover (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{}\end{DoxyParamCaption})}
+
+
+
+Upload a cover image. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+ \Hypertarget{confighttp_8cpp_abb18d47e0c1c1682c0b2f2ae4ae3cf0f}\index{confighttp.cpp@{confighttp.cpp}!validateContentType@{validateContentType}}
+\index{validateContentType@{validateContentType}!confighttp.cpp@{confighttp.cpp}}
+\doxysubsubsection{\texorpdfstring{validateContentType()}{validateContentType()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_abb18d47e0c1c1682c0b2f2ae4ae3cf0f} 
+bool confighttp\+::validate\+Content\+Type (\begin{DoxyParamCaption}\item[{resp\+\_\+https\+\_\+t}]{response}{, }\item[{req\+\_\+https\+\_\+t}]{request}{, }\item[{const std\+::string\+\_\+view \&}]{content\+Type}{}\end{DoxyParamCaption})}
+
+
+
+Validate the request content type and send bad request when mismatch. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. \\
+\hline
+{\em content\+Type} & The required content type. \\
+\hline
+\end{DoxyParams}

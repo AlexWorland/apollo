@@ -1,0 +1,158 @@
+\doxysection{rtsp\+\_\+stream\+::rtsp\+\_\+server\+\_\+t Class Reference}
+\hypertarget{classrtsp__stream_1_1rtsp__server__t}{}\label{classrtsp__stream_1_1rtsp__server__t}\index{rtsp\_stream::rtsp\_server\_t@{rtsp\_stream::rtsp\_server\_t}}
+
+
+RTSP server implementation.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classrtsp__stream_1_1rtsp__server__t_a233e92827ab9a4b7d5345975c5852470}\label{classrtsp__stream_1_1rtsp__server__t_a233e92827ab9a4b7d5345975c5852470} 
+int {\bfseries bind} (\mbox{\hyperlink{network_8h_a1ed5da07a6d5b35033bd4de7bca12dab}{net\+::af\+\_\+e}} af, std\+::uint16\+\_\+t port, boost\+::system\+::error\+\_\+code \&ec)
+\item 
+\Hypertarget{classrtsp__stream_1_1rtsp__server__t_a9d4d024e72f399b0f0e87e90d2025204}\label{classrtsp__stream_1_1rtsp__server__t_a9d4d024e72f399b0f0e87e90d2025204} 
+void {\bfseries handle\+\_\+msg} (tcp\+::socket \&sock, \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\+\_\+session\+\_\+t}} \&session, msg\+\_\+t \&\&req)
+\item 
+\Hypertarget{classrtsp__stream_1_1rtsp__server__t_a39752a0627468bb85fa1a715fdb6a806}\label{classrtsp__stream_1_1rtsp__server__t_a39752a0627468bb85fa1a715fdb6a806} 
+void {\bfseries handle\+\_\+accept} (const boost\+::system\+::error\+\_\+code \&ec)
+\item 
+\Hypertarget{classrtsp__stream_1_1rtsp__server__t_a825e5ef8bfd63f8db10e42009f86890d}\label{classrtsp__stream_1_1rtsp__server__t_a825e5ef8bfd63f8db10e42009f86890d} 
+void {\bfseries map} (const std\+::string\+\_\+view \&type, cmd\+\_\+func\+\_\+t cb)
+\item 
+void \mbox{\hyperlink{classrtsp__stream_1_1rtsp__server__t_a0d0fc458798862bfaf07b5319838a209}{session\+\_\+raise}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\+\_\+session\+\_\+t}} $>$ launch\+\_\+session)
+\begin{DoxyCompactList}\small\item\em Launch a new streaming session. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrtsp__stream_1_1rtsp__server__t_aab8e218c1637b421cd2a23c536e4b450}{session\+\_\+clear}} (uint32\+\_\+t launch\+\_\+session\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Clear state for the oldest launch session. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classrtsp__stream_1_1rtsp__server__t_a1f9351ef8d17e99cf9f687371d5f15c4}{session\+\_\+count}} ()
+\begin{DoxyCompactList}\small\item\em Get the number of active sessions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrtsp__stream_1_1rtsp__server__t_a550c3db80ec5d6a5402a72719d19ab58}{clear}} (bool all=true)
+\begin{DoxyCompactList}\small\item\em Clear launch sessions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrtsp__stream_1_1rtsp__server__t_a0e8deb113b4cfdeb4c62e0eff317e655}{remove}} (const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structstream_1_1session__t}{stream\+::session\+\_\+t}} $>$ \&session)
+\begin{DoxyCompactList}\small\item\em Removes the provided session from the set of sessions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classrtsp__stream_1_1rtsp__server__t_aeb64c430366f33c67139da1cd204bb80}{insert}} (const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structstream_1_1session__t}{stream\+::session\+\_\+t}} $>$ \&session)
+\begin{DoxyCompactList}\small\item\em Inserts the provided session into the set of sessions. \end{DoxyCompactList}\item 
+\Hypertarget{classrtsp__stream_1_1rtsp__server__t_a8a233d4da54d7e806bc4f997add5b1ff}\label{classrtsp__stream_1_1rtsp__server__t_a8a233d4da54d7e806bc4f997add5b1ff} 
+void {\bfseries iterate} ()
+\begin{DoxyCompactList}\small\item\em Runs an iteration of the RTSP server loop. \end{DoxyCompactList}\item 
+\Hypertarget{classrtsp__stream_1_1rtsp__server__t_abd235198bd695f90839d27a87d4a6a98}\label{classrtsp__stream_1_1rtsp__server__t_abd235198bd695f90839d27a87d4a6a98} 
+void {\bfseries stop} ()
+\begin{DoxyCompactList}\small\item\em Stop the RTSP server. \end{DoxyCompactList}\item 
+\Hypertarget{classrtsp__stream_1_1rtsp__server__t_a3d25c46e04ce3c9aa0d6d772236ca8c6}\label{classrtsp__stream_1_1rtsp__server__t_a3d25c46e04ce3c9aa0d6d772236ca8c6} 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structstream_1_1session__t}{stream\+::session\+\_\+t}} $>$ {\bfseries find\+\_\+session} (const std\+::string\+\_\+view \&uuid)
+\item 
+\Hypertarget{classrtsp__stream_1_1rtsp__server__t_a57205f2c7d7d1d265eb87e2311a17cd5}\label{classrtsp__stream_1_1rtsp__server__t_a57205f2c7d7d1d265eb87e2311a17cd5} 
+std\+::list$<$ std\+::string $>$ {\bfseries get\+\_\+all\+\_\+session\+\_\+uuids} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classrtsp__stream_1_1rtsp__server__t_a69e57aa60dfb2194ea3c630d2ae35e81}\label{classrtsp__stream_1_1rtsp__server__t_a69e57aa60dfb2194ea3c630d2ae35e81} 
+\mbox{\hyperlink{classsafe_1_1event__t}{safe\+::event\+\_\+t}}$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\+\_\+session\+\_\+t}} $>$ $>$ {\bfseries launch\+\_\+event}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+RTSP server implementation. 
+
+Handles RTSP protocol communication including session management, message routing, and connection lifecycle. 
+
+\label{doc-func-members}
+\Hypertarget{classrtsp__stream_1_1rtsp__server__t_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classrtsp__stream_1_1rtsp__server__t_a550c3db80ec5d6a5402a72719d19ab58}\index{rtsp\_stream::rtsp\_server\_t@{rtsp\_stream::rtsp\_server\_t}!clear@{clear}}
+\index{clear@{clear}!rtsp\_stream::rtsp\_server\_t@{rtsp\_stream::rtsp\_server\_t}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily \label{classrtsp__stream_1_1rtsp__server__t_a550c3db80ec5d6a5402a72719d19ab58} 
+void rtsp\+\_\+stream\+::rtsp\+\_\+server\+\_\+t\+::clear (\begin{DoxyParamCaption}\item[{bool}]{all}{ = {\ttfamily true}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Clear launch sessions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em all} & If true, clear all sessions. Otherwise, only clear timed out and stopped sessions. @examples clear(false); @examples\+\_\+end \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classrtsp__stream_1_1rtsp__server__t_aeb64c430366f33c67139da1cd204bb80}\index{rtsp\_stream::rtsp\_server\_t@{rtsp\_stream::rtsp\_server\_t}!insert@{insert}}
+\index{insert@{insert}!rtsp\_stream::rtsp\_server\_t@{rtsp\_stream::rtsp\_server\_t}}
+\doxysubsubsection{\texorpdfstring{insert()}{insert()}}
+{\footnotesize\ttfamily \label{classrtsp__stream_1_1rtsp__server__t_aeb64c430366f33c67139da1cd204bb80} 
+void rtsp\+\_\+stream\+::rtsp\+\_\+server\+\_\+t\+::insert (\begin{DoxyParamCaption}\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structstream_1_1session__t}{stream\+::session\+\_\+t}} $>$ \&}]{session}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Inserts the provided session into the set of sessions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The session to insert. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classrtsp__stream_1_1rtsp__server__t_a0e8deb113b4cfdeb4c62e0eff317e655}\index{rtsp\_stream::rtsp\_server\_t@{rtsp\_stream::rtsp\_server\_t}!remove@{remove}}
+\index{remove@{remove}!rtsp\_stream::rtsp\_server\_t@{rtsp\_stream::rtsp\_server\_t}}
+\doxysubsubsection{\texorpdfstring{remove()}{remove()}}
+{\footnotesize\ttfamily \label{classrtsp__stream_1_1rtsp__server__t_a0e8deb113b4cfdeb4c62e0eff317e655} 
+void rtsp\+\_\+stream\+::rtsp\+\_\+server\+\_\+t\+::remove (\begin{DoxyParamCaption}\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structstream_1_1session__t}{stream\+::session\+\_\+t}} $>$ \&}]{session}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Removes the provided session from the set of sessions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The session to remove. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classrtsp__stream_1_1rtsp__server__t_aab8e218c1637b421cd2a23c536e4b450}\index{rtsp\_stream::rtsp\_server\_t@{rtsp\_stream::rtsp\_server\_t}!session\_clear@{session\_clear}}
+\index{session\_clear@{session\_clear}!rtsp\_stream::rtsp\_server\_t@{rtsp\_stream::rtsp\_server\_t}}
+\doxysubsubsection{\texorpdfstring{session\_clear()}{session\_clear()}}
+{\footnotesize\ttfamily \label{classrtsp__stream_1_1rtsp__server__t_aab8e218c1637b421cd2a23c536e4b450} 
+void rtsp\+\_\+stream\+::rtsp\+\_\+server\+\_\+t\+::session\+\_\+clear (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{launch\+\_\+session\+\_\+id}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Clear state for the oldest launch session. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em launch\+\_\+session\+\_\+id} & The ID of the session to clear. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classrtsp__stream_1_1rtsp__server__t_a1f9351ef8d17e99cf9f687371d5f15c4}\index{rtsp\_stream::rtsp\_server\_t@{rtsp\_stream::rtsp\_server\_t}!session\_count@{session\_count}}
+\index{session\_count@{session\_count}!rtsp\_stream::rtsp\_server\_t@{rtsp\_stream::rtsp\_server\_t}}
+\doxysubsubsection{\texorpdfstring{session\_count()}{session\_count()}}
+{\footnotesize\ttfamily \label{classrtsp__stream_1_1rtsp__server__t_a1f9351ef8d17e99cf9f687371d5f15c4} 
+int rtsp\+\_\+stream\+::rtsp\+\_\+server\+\_\+t\+::session\+\_\+count (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get the number of active sessions. 
+
+\begin{DoxyReturn}{Returns}
+Count of active sessions. 
+\end{DoxyReturn}
+\Hypertarget{classrtsp__stream_1_1rtsp__server__t_a0d0fc458798862bfaf07b5319838a209}\index{rtsp\_stream::rtsp\_server\_t@{rtsp\_stream::rtsp\_server\_t}!session\_raise@{session\_raise}}
+\index{session\_raise@{session\_raise}!rtsp\_stream::rtsp\_server\_t@{rtsp\_stream::rtsp\_server\_t}}
+\doxysubsubsection{\texorpdfstring{session\_raise()}{session\_raise()}}
+{\footnotesize\ttfamily \label{classrtsp__stream_1_1rtsp__server__t_a0d0fc458798862bfaf07b5319838a209} 
+void rtsp\+\_\+stream\+::rtsp\+\_\+server\+\_\+t\+::session\+\_\+raise (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\+\_\+session\+\_\+t}} $>$}]{launch\+\_\+session}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Launch a new streaming session. 
+
+\begin{DoxyNote}{Note}
+If the client does not begin streaming within the ping\+\_\+timeout, the session will be discarded. 
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em launch\+\_\+session} & Streaming session information. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{rtsp_8cpp}{rtsp.\+cpp}}\end{DoxyCompactItemize}

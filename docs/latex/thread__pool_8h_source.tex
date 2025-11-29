@@ -1,0 +1,129 @@
+\doxysection{thread\+\_\+pool.\+h}
+\hypertarget{thread__pool_8h_source}{}\label{thread__pool_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/thread\_pool.h@{/Users/alexworland/autoBitrate/apollo/src/thread\_pool.h}}
+\mbox{\hyperlink{thread__pool_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ standard\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <thread>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ local\ includes}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{task__pool_8h}{task\_pool.h}}"{}}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }thread\_pool\_util\ \{}
+\DoxyCodeLine{00017\ \ \ \textcolor{keyword}{class\ }ThreadPool:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classtask__pool__util_1_1_task_pool}{task\_pool\_util::TaskPool}}\ \{}
+\DoxyCodeLine{00018\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{typedef}\ TaskPool::\_\_task\ \_\_task;}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00022\ \ \ \ \ std::vector<std::thread>\ \_thread;}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \ \ \ \ std::condition\_variable\ \_cv;}
+\DoxyCodeLine{00025\ \ \ \ \ std::mutex\ \_lock;}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{bool}\ \_continue;}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00030\ \ \ \ \ ThreadPool():}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \_continue\ \{\textcolor{keyword}{false}\}\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{explicit}\ ThreadPool(\textcolor{keywordtype}{int}\ threads):}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \_thread(threads),}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \_continue\ \{\textcolor{keyword}{true}\}\ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&t\ :\ \_thread)\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ t\ =\ std::thread(\&ThreadPool::\_main,\ \textcolor{keyword}{this});}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00040\ \ \ \ \ \}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ \string~ThreadPool()\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\_continue)\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \ \ \ \ stop();}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ join();}
+\DoxyCodeLine{00049\ \ \ \ \ \}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class\ }Function,\ \textcolor{keyword}{class}...\ Args>}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keyword}{auto}\ push(Function\ \&\&newTask,\ Args\ \&\&...\mbox{\hyperlink{namespaceargs}{args}})\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ std::lock\_guard\ lg(\_lock);}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ future\ =\ TaskPool::push(std::forward<Function>(newTask),\ std::forward<Args>(\mbox{\hyperlink{namespaceargs}{args}})...);}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \_cv.notify\_one();}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ future;}
+\DoxyCodeLine{00058\ \ \ \ \ \}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{void}\ pushDelayed(std::pair<\_\_time\_point,\ \_\_task>\ \&\&task)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ std::lock\_guard\ lg(\_lock);}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \ \ \ \ TaskPool::pushDelayed(std::move(task));}
+\DoxyCodeLine{00064\ \ \ \ \ \}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class\ }Function,\ \textcolor{keyword}{class\ }X,\ \textcolor{keyword}{class\ }Y,\ \textcolor{keyword}{class}...\ Args>}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keyword}{auto}\ pushDelayed(Function\ \&\&newTask,\ std::chrono::duration<X,\ Y>\ duration,\ Args\ \&\&...\mbox{\hyperlink{namespaceargs}{args}})\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ std::lock\_guard\ lg(\_lock);}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ future\ =\ TaskPool::pushDelayed(std::forward<Function>(newTask),\ duration,\ std::forward<Args>(\mbox{\hyperlink{namespaceargs}{args}})...);}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \textcolor{comment}{//\ Update\ all\ timers\ for\ wait\_until}}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \_cv.notify\_all();}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ future;}
+\DoxyCodeLine{00074\ \ \ \ \ \}}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{void}\ start(\textcolor{keywordtype}{int}\ threads)\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \_continue\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \_thread.resize(threads);}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&t\ :\ \_thread)\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ t\ =\ std::thread(\&ThreadPool::\_main,\ \textcolor{keyword}{this});}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00084\ \ \ \ \ \}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordtype}{void}\ stop()\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ std::lock\_guard\ lg(\_lock);}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \_continue\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \_cv.notify\_all();}
+\DoxyCodeLine{00091\ \ \ \ \ \}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordtype}{void}\ join()\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&t\ :\ \_thread)\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ t.join();}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00097\ \ \ \ \ \}}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordtype}{void}\ \_main()\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\_continue)\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{auto}\ task\ =\ this-\/>pop())\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ (*task)-\/>run();}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ std::unique\_lock\ uniq\_lock(\_lock);}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ready())\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\_continue)\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{auto}\ tp\ =\ next())\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \_cv.wait\_until(uniq\_lock,\ *tp);}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \_cv.wait(uniq\_lock);}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \textcolor{comment}{//\ Execute\ remaining\ tasks}}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{auto}\ task\ =\ this-\/>pop())\ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ (*task)-\/>run();}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \};}
+\DoxyCodeLine{00129\ \}\ \ \textcolor{comment}{//\ namespace\ thread\_pool\_util}}
+
+\end{DoxyCode}

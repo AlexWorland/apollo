@@ -363,6 +363,15 @@ namespace video {
       }
     };
 
+    /**
+     * @brief Optional list of byte sequence replacements to apply to this packet.
+     *
+     * This pointer is typically set by the encoder implementation for IDR frames
+     * when SPS/VPS or other headers need to be rewritten in the encoded bitstream.
+     * It is left as nullptr when no replacements are required.
+     */
+    std::vector<replace_t> *replacements = nullptr;
+
     void *channel_data = nullptr;
     bool after_ref_frame_invalidation = false;
     std::optional<std::chrono::steady_clock::time_point> frame_timestamp;

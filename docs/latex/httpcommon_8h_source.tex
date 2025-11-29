@@ -1,0 +1,43 @@
+\doxysection{httpcommon.\+h}
+\hypertarget{httpcommon_8h_source}{}\label{httpcommon_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/httpcommon.h@{/Users/alexworland/autoBitrate/apollo/src/httpcommon.h}}
+\mbox{\hyperlink{httpcommon_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ lib\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <curl/curl.h>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ local\ includes}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{network_8h}{network.h}}"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{thread__safe_8h}{thread\_safe.h}}"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{uuid_8h}{uuid.h}}"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }http\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00021\ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{httpcommon_8cpp_aa61e6ae8cfe73f4cec10fd6f0a956ba8}{init}}();}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{httpcommon_8cpp_a5549fc1f082c9d21a910228ffe144047}{create\_creds}}(\textcolor{keyword}{const}\ std::string\ \&pkey,\ \textcolor{keyword}{const}\ std::string\ \&cert);}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{httpcommon_8cpp_aac33b12b7563df384b470c49fc7433ca}{save\_user\_creds}}(}
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \&file,}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \&username,}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \&password,}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{bool}\ run\_our\_mouth\ =\ \textcolor{keyword}{false}}
+\DoxyCodeLine{00044\ \ \ );}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{httpcommon_8cpp_a771bd8615e485560bc89b3fd0d08b1dd}{reload\_user\_creds}}(\textcolor{keyword}{const}\ std::string\ \&file);}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{httpcommon_8cpp_a110384dd82351644c83a1283091d7d7d}{download\_file}}(\textcolor{keyword}{const}\ std::string\ \&url,\ \textcolor{keyword}{const}\ std::string\ \&file,\ \textcolor{keywordtype}{long}\ ssl\_version\ =\ CURL\_SSLVERSION\_TLSv1\_2);}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00067\ \ \ std::string\ \mbox{\hyperlink{httpcommon_8cpp_a6e66f07d8c89637cf295cec849bb73f2}{url\_escape}}(\textcolor{keyword}{const}\ std::string\ \&url);}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00074\ \ \ std::string\ \mbox{\hyperlink{httpcommon_8cpp_a6febf425259b50e439a71aca25d611dc}{url\_get\_host}}(\textcolor{keyword}{const}\ std::string\ \&url);}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{extern}\ std::string\ \mbox{\hyperlink{httpcommon_8cpp_a343a124c613eb26d3b348b26f2949e3c}{unique\_id}};\ \ }
+\DoxyCodeLine{00077\ \ \ \textcolor{keyword}{extern}\ uuid\_util::uuid\_t\ \mbox{\hyperlink{httpcommon_8cpp_a3b54c9936ddd69a26b817830e120cf0e}{uuid}};\ \ }
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{extern}\ \mbox{\hyperlink{network_8h_af265c335edb963e60ec75f612b9eef13}{net::net\_e}}\ \mbox{\hyperlink{httpcommon_8cpp_a8fc17e96b4b8e01fc666734280716dfe}{origin\_web\_ui\_allowed}};\ \ }
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \}\ \ \textcolor{comment}{//\ namespace\ http}}
+
+\end{DoxyCode}

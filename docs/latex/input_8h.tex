@@ -1,0 +1,164 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/input.h File Reference}
+\hypertarget{input_8h}{}\label{input_8h}\index{/Users/alexworland/autoBitrate/apollo/src/input.h@{/Users/alexworland/autoBitrate/apollo/src/input.h}}
+
+
+Declarations for gamepad, keyboard, and mouse input handling.  
+
+
+{\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include "{}platform/common.\+h"{}}\newline
+{\ttfamily \#include "{}thread\+\_\+safe.\+h"{}}\newline
+{\ttfamily \#include "{}crypto.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structinput_1_1touch__port__t}{input\+::touch\+\_\+port\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Touch port configuration structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{input_8cpp_ad2616fa2882f902e40ed9d251783cdef}{input\+::print}} (void \texorpdfstring{$\ast$}{*}input)
+\begin{DoxyCompactList}\small\item\em Forward declaration of input structure. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{input_8cpp_a4270b6d9a8dc15d78d5ec88c28a472b3}{input\+::reset}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&input)
+\begin{DoxyCompactList}\small\item\em Reset input device state. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{input_8cpp_a264a5ef9c071d88224a5ac048500f013}{input\+::passthrough}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&input, std\+::vector$<$ std\+::uint8\+\_\+t $>$ \&\&input\+\_\+data, const \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{crypto\+::\+PERM}} \&permission)
+\begin{DoxyCompactList}\small\item\em Called on the control stream thread to queue an input message. \end{DoxyCompactList}\item 
+std\+::unique\+\_\+ptr$<$ platf\+::deinit\+\_\+t $>$ \mbox{\hyperlink{input_8cpp_a43605f236cc9880b306a530c9040875c}{input\+::init}} ()
+\begin{DoxyCompactList}\small\item\em Initialize the input subsystem. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{input_8cpp_a1b841c2efb01fdcfb17cc452dd394bdb}{input\+::probe\+\_\+gamepads}} ()
+\begin{DoxyCompactList}\small\item\em Probe for available gamepad devices. \end{DoxyCompactList}\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \mbox{\hyperlink{input_8cpp_aafc5dea242b2ee32550394aab76b7cca}{input\+::alloc}} (safe\+::mail\+\_\+t \mbox{\hyperlink{namespacemail}{mail}})
+\begin{DoxyCompactList}\small\item\em Allocate a new input device. \end{DoxyCompactList}\item 
+std\+::pair$<$ float, float $>$ \mbox{\hyperlink{input_8cpp_aad1a158f9b68a3e9fe1bda77d5163d21}{input\+::scale\+\_\+client\+\_\+contact\+\_\+area}} (const std\+::pair$<$ float, float $>$ \&val, uint16\+\_\+t rotation, const std\+::pair$<$ float, float $>$ \&scalar)
+\begin{DoxyCompactList}\small\item\em Scale the ellipse axes according to the provided size. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Declarations for gamepad, keyboard, and mouse input handling. 
+
+
+
+\label{doc-func-members}
+\Hypertarget{input_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{input_8cpp_aafc5dea242b2ee32550394aab76b7cca}\index{input.h@{input.h}!alloc@{alloc}}
+\index{alloc@{alloc}!input.h@{input.h}}
+\doxysubsubsection{\texorpdfstring{alloc()}{alloc()}}
+{\footnotesize\ttfamily \label{input_8cpp_aafc5dea242b2ee32550394aab76b7cca} 
+std\+::shared\+\_\+ptr$<$ input\+\_\+t $>$ input\+::alloc (\begin{DoxyParamCaption}\item[{safe\+::mail\+\_\+t}]{mail}{}\end{DoxyParamCaption})}
+
+
+
+Allocate a new input device. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mail} & Mailbox for communication. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Shared pointer to input device. 
+\end{DoxyReturn}
+\Hypertarget{input_8cpp_a43605f236cc9880b306a530c9040875c}\index{input.h@{input.h}!init@{init}}
+\index{init@{init}!input.h@{input.h}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily \label{input_8cpp_a43605f236cc9880b306a530c9040875c} 
+std\+::unique\+\_\+ptr$<$ platf\+::deinit\+\_\+t $>$ input\+::init (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Initialize the input subsystem. 
+
+\begin{DoxyReturn}{Returns}
+Unique pointer to deinitialization object. 
+\end{DoxyReturn}
+\Hypertarget{input_8cpp_a264a5ef9c071d88224a5ac048500f013}\index{input.h@{input.h}!passthrough@{passthrough}}
+\index{passthrough@{passthrough}!input.h@{input.h}}
+\doxysubsubsection{\texorpdfstring{passthrough()}{passthrough()}}
+{\footnotesize\ttfamily \label{input_8cpp_a264a5ef9c071d88224a5ac048500f013} 
+void input\+::passthrough (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&}]{input}{, }\item[{std\+::vector$<$ std\+::uint8\+\_\+t $>$ \&\&}]{input\+\_\+data}{, }\item[{const \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{crypto\+::\+PERM}} \&}]{permission}{}\end{DoxyParamCaption})}
+
+
+
+Called on the control stream thread to queue an input message. 
+
+Pass through input data to the system.
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & The input context pointer. \\
+\hline
+{\em input\+\_\+data} & The input message.\\
+\hline
+{\em input} & Shared pointer to input device. \\
+\hline
+{\em input\+\_\+data} & The input data to process. \\
+\hline
+{\em permission} & The permissions for this input operation. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{input_8cpp_ad2616fa2882f902e40ed9d251783cdef}\index{input.h@{input.h}!print@{print}}
+\index{print@{print}!input.h@{input.h}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}}
+{\footnotesize\ttfamily \label{input_8cpp_ad2616fa2882f902e40ed9d251783cdef} 
+void input\+::print (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{input}{}\end{DoxyParamCaption})}
+
+
+
+Forward declaration of input structure. 
+
+Print input device information. 
+\begin{DoxyParams}{Parameters}
+{\em input} & Pointer to input device structure. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{input_8cpp_a1b841c2efb01fdcfb17cc452dd394bdb}\index{input.h@{input.h}!probe\_gamepads@{probe\_gamepads}}
+\index{probe\_gamepads@{probe\_gamepads}!input.h@{input.h}}
+\doxysubsubsection{\texorpdfstring{probe\_gamepads()}{probe\_gamepads()}}
+{\footnotesize\ttfamily \label{input_8cpp_a1b841c2efb01fdcfb17cc452dd394bdb} 
+bool input\+::probe\+\_\+gamepads (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Probe for available gamepad devices. 
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if gamepads were found, {\ttfamily false} otherwise. 
+\end{DoxyReturn}
+\Hypertarget{input_8cpp_a4270b6d9a8dc15d78d5ec88c28a472b3}\index{input.h@{input.h}!reset@{reset}}
+\index{reset@{reset}!input.h@{input.h}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily \label{input_8cpp_a4270b6d9a8dc15d78d5ec88c28a472b3} 
+void input\+::reset (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structinput_1_1input__t}{input\+\_\+t}} $>$ \&}]{input}{}\end{DoxyParamCaption})}
+
+
+
+Reset input device state. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & Shared pointer to input device. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{input_8cpp_aad1a158f9b68a3e9fe1bda77d5163d21}\index{input.h@{input.h}!scale\_client\_contact\_area@{scale\_client\_contact\_area}}
+\index{scale\_client\_contact\_area@{scale\_client\_contact\_area}!input.h@{input.h}}
+\doxysubsubsection{\texorpdfstring{scale\_client\_contact\_area()}{scale\_client\_contact\_area()}}
+{\footnotesize\ttfamily \label{input_8cpp_aad1a158f9b68a3e9fe1bda77d5163d21} 
+std\+::pair$<$ float, float $>$ input\+::scale\+\_\+client\+\_\+contact\+\_\+area (\begin{DoxyParamCaption}\item[{const std\+::pair$<$ float, float $>$ \&}]{val}{, }\item[{uint16\+\_\+t}]{rotation}{, }\item[{const std\+::pair$<$ float, float $>$ \&}]{scalar}{}\end{DoxyParamCaption})}
+
+
+
+Scale the ellipse axes according to the provided size. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em val} & The major and minor axis pair. \\
+\hline
+{\em rotation} & The rotation value from the touch/pen event. \\
+\hline
+{\em scalar} & The scalar cartesian coordinate pair. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The major and minor axis pair. 
+\end{DoxyReturn}

@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/alexworland/autoBitrate/apollo/build-docs/_deps/boost-subbuild/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
