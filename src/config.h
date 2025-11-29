@@ -398,11 +398,34 @@ namespace config {
     int max_bitrate_cap;  ///< Maximum bitrate cap
   };
 
+  /**
+   * @brief Global video configuration instance.
+   */
   extern video_t video;
+
+  /**
+   * @brief Global audio configuration instance.
+   */
   extern audio_t audio;
+
+  /**
+   * @brief Global stream configuration instance.
+   */
   extern stream_t stream;
+
+  /**
+   * @brief Global NVIDIA HTTP server configuration instance.
+   */
   extern nvhttp_t nvhttp;
+
+  /**
+   * @brief Global input configuration instance.
+   */
   extern input_t input;
+
+  /**
+   * @brief Global Sunshine application configuration instance.
+   */
   extern sunshine_t sunshine;
 
   int parse(int argc, char *argv[]);

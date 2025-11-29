@@ -147,11 +147,23 @@ namespace util {
   template<bool V, class X, class Y>
   struct __either;
 
+  /**
+   * @brief Internal template helper for conditional type selection.
+   * 
+   * Selects type X when condition is true.
+   * @internal Implementation detail for either_t.
+   */
   template<class X, class Y>
   struct __either<true, X, Y> {
     using type = X;
   };
 
+  /**
+   * @brief Internal template helper for conditional type selection.
+   * 
+   * Selects type Y when condition is false.
+   * @internal Implementation detail for either_t.
+   */
   template<class X, class Y>
   struct __either<false, X, Y> {
     using type = Y;
@@ -887,18 +899,42 @@ namespace util {
     std::is_pointer_v<T>;
 
   template<class T, class V = void>
+  /**
+   * @brief Internal template helper for false value selection.
+   * 
+   * Provides appropriate "false" value for different types.
+   * @internal Implementation detail for false_v.
+   */
   struct __false_v;
 
+  /**
+   * @brief Specialization for optional types.
+   * 
+   * Returns std::nullopt as the false value.
+   * @internal
+   */
   template<class T>
   struct __false_v<T, std::enable_if_t<instantiation_of_v<std::optional, T>>> {
     static constexpr std::nullopt_t value = std::nullopt;
   };
 
+  /**
+   * @brief Specialization for pointer types.
+   * 
+   * Returns nullptr as the false value.
+   * @internal
+   */
   template<class T>
   struct __false_v<T, std::enable_if_t<is_pointer_v<T>>> {
     static constexpr std::nullptr_t value = nullptr;
   };
 
+  /**
+   * @brief Specialization for bool type.
+   * 
+   * Returns false as the false value.
+   * @internal
+   */
   template<class T>
   struct __false_v<T, std::enable_if_t<std::is_same_v<T, bool>>> {
     static constexpr bool value = false;
@@ -1128,6 +1164,12 @@ namespace util {
     template<class T, class S = void>
     struct endian_helper {};
 
+    /**
+     * @brief Endian conversion helper for non-optional types.
+     * 
+     * Provides endian conversion functions for types that are not std::optional.
+     * @internal Implementation detail for endian conversion utilities.
+     */
     template<class T>
     struct endian_helper<T, std::enable_if_t<!(instantiation_of_v<std::optional, T>)>> {
       static inline T big(T x) {
@@ -1151,6 +1193,12 @@ namespace util {
       }
     };
 
+    /**
+     * @brief Endian conversion helper for optional types.
+     * 
+     * Provides endian conversion functions for std::optional types.
+     * @internal Implementation detail for endian conversion utilities.
+     */
     template<class T>
     struct endian_helper<T, std::enable_if_t<instantiation_of_v<std::optional, T>>> {
       static inline T little(T x) {
