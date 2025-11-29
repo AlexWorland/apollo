@@ -1,0 +1,446 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/crypto.h File Reference}
+\hypertarget{crypto_8h}{}\label{crypto_8h}\index{/Users/alexworland/autoBitrate/apollo/src/crypto.h@{/Users/alexworland/autoBitrate/apollo/src/crypto.h}}
+
+
+Declarations for cryptography functions.  
+
+
+{\ttfamily \#include $<$array$>$}\newline
+{\ttfamily \#include $<$list$>$}\newline
+{\ttfamily \#include $<$openssl/evp.\+h$>$}\newline
+{\ttfamily \#include $<$openssl/rand.\+h$>$}\newline
+{\ttfamily \#include $<$openssl/sha.\+h$>$}\newline
+{\ttfamily \#include $<$openssl/x509.\+h$>$}\newline
+{\ttfamily \#include $<$nlohmann/json.\+hpp$>$}\newline
+{\ttfamily \#include "{}utility.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structcrypto_1_1creds__t}{crypto\+::creds\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Credentials structure containing X.\+509 certificate and private key. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structcrypto_1_1command__entry__t}{crypto\+::command\+\_\+entry\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Command entry structure for pre/post commands. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structcrypto_1_1named__cert__t}{crypto\+::named\+\_\+cert\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Named certificate structure for client authentication. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classcrypto_1_1cert__chain__t}{crypto\+::cert\+\_\+chain\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Certificate chain for client certificate verification. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t}{crypto\+::cipher\+::cipher\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Base cipher class for encryption/decryption contexts. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classcrypto_1_1cipher_1_1ecb__t}{crypto\+::cipher\+::ecb\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em ECB (Electronic Codebook) mode cipher. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classcrypto_1_1cipher_1_1gcm__t}{crypto\+::cipher\+::gcm\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em AES-\/\+GCM cipher implementation. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classcrypto_1_1cipher_1_1cbc__t}{crypto\+::cipher\+::cbc\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em CBC (Cipher Block Chaining) mode cipher. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacecrypto_1_1cipher}{crypto\+::cipher}}
+\begin{DoxyCompactList}\small\item\em Cipher namespace for encryption/decryption operations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{crypto_8h_a7696eb7fa157b5aecea9e05310af15f8}\label{crypto_8h_a7696eb7fa157b5aecea9e05310af15f8} 
+using {\bfseries crypto\+::sha256\+\_\+t} = std\+::array$<$std\+::uint8\+\_\+t, SHA256\+\_\+\+DIGEST\+\_\+\+LENGTH$>$
+\begin{DoxyCompactList}\small\item\em SHA-\/256 hash type. \end{DoxyCompactList}\item 
+\Hypertarget{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}\label{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60} 
+using {\bfseries crypto\+::aes\+\_\+t} = std\+::vector$<$std\+::uint8\+\_\+t$>$
+\begin{DoxyCompactList}\small\item\em AES key type. \end{DoxyCompactList}\item 
+\Hypertarget{crypto_8h_a48d41be6bb46e6a718cc9b53ae46e968}\label{crypto_8h_a48d41be6bb46e6a718cc9b53ae46e968} 
+using {\bfseries crypto\+::x509\+\_\+t} = util\+::safe\+\_\+ptr$<$X509, X509\+\_\+free$>$
+\begin{DoxyCompactList}\small\item\em X.\+509 certificate type. \end{DoxyCompactList}\item 
+\Hypertarget{crypto_8h_aac17241b3768ddf4b4bb2948a67347cb}\label{crypto_8h_aac17241b3768ddf4b4bb2948a67347cb} 
+using {\bfseries crypto\+::x509\+\_\+store\+\_\+t} = util\+::safe\+\_\+ptr$<$X509\+\_\+\+STORE, X509\+\_\+\+STORE\+\_\+free$>$
+\begin{DoxyCompactList}\small\item\em X.\+509 certificate store type. \end{DoxyCompactList}\item 
+\Hypertarget{crypto_8h_ac0db8f446a4fb4fb6024601581930f9e}\label{crypto_8h_ac0db8f446a4fb4fb6024601581930f9e} 
+using {\bfseries crypto\+::x509\+\_\+store\+\_\+ctx\+\_\+t} = util\+::safe\+\_\+ptr$<$X509\+\_\+\+STORE\+\_\+\+CTX, X509\+\_\+\+STORE\+\_\+\+CTX\+\_\+free$>$
+\begin{DoxyCompactList}\small\item\em X.\+509 certificate store context type. \end{DoxyCompactList}\item 
+\Hypertarget{crypto_8h_a95350377f46087f06a43f30b694ccd10}\label{crypto_8h_a95350377f46087f06a43f30b694ccd10} 
+using {\bfseries crypto\+::cipher\+\_\+ctx\+\_\+t} = util\+::safe\+\_\+ptr$<$EVP\+\_\+\+CIPHER\+\_\+\+CTX, EVP\+\_\+\+CIPHER\+\_\+\+CTX\+\_\+free$>$
+\begin{DoxyCompactList}\small\item\em Cipher context type. \end{DoxyCompactList}\item 
+\Hypertarget{crypto_8h_aba2a75ea98a3dd4fb34da4f64ec90593}\label{crypto_8h_aba2a75ea98a3dd4fb34da4f64ec90593} 
+using {\bfseries crypto\+::md\+\_\+ctx\+\_\+t} = util\+::safe\+\_\+ptr$<$EVP\+\_\+\+MD\+\_\+\+CTX, \mbox{\hyperlink{crypto_8cpp_a7cc606e3e3a864b15423c499d201896c}{md\+\_\+ctx\+\_\+destroy}}$>$
+\begin{DoxyCompactList}\small\item\em Message digest context type. \end{DoxyCompactList}\item 
+\Hypertarget{crypto_8h_a70a0e2e88ed3509b42e41930346dd474}\label{crypto_8h_a70a0e2e88ed3509b42e41930346dd474} 
+using {\bfseries crypto\+::bio\+\_\+t} = util\+::safe\+\_\+ptr$<$BIO, BIO\+\_\+free\+\_\+all$>$
+\begin{DoxyCompactList}\small\item\em BIO (Basic I/O) type. \end{DoxyCompactList}\item 
+\Hypertarget{crypto_8h_a662a3669fbae0e3f49699ce03c1b2f40}\label{crypto_8h_a662a3669fbae0e3f49699ce03c1b2f40} 
+using {\bfseries crypto\+::pkey\+\_\+t} = util\+::safe\+\_\+ptr$<$EVP\+\_\+\+PKEY, EVP\+\_\+\+PKEY\+\_\+free$>$
+\begin{DoxyCompactList}\small\item\em Public/private key type. \end{DoxyCompactList}\item 
+\Hypertarget{crypto_8h_ab09332cf768de10383525cced4798aa3}\label{crypto_8h_ab09332cf768de10383525cced4798aa3} 
+using {\bfseries crypto\+::pkey\+\_\+ctx\+\_\+t} = util\+::safe\+\_\+ptr$<$EVP\+\_\+\+PKEY\+\_\+\+CTX, EVP\+\_\+\+PKEY\+\_\+\+CTX\+\_\+free$>$
+\begin{DoxyCompactList}\small\item\em Public/private key context type. \end{DoxyCompactList}\item 
+\Hypertarget{crypto_8h_a2e889b56979a4b65411b71605173c1d6}\label{crypto_8h_a2e889b56979a4b65411b71605173c1d6} 
+using {\bfseries crypto\+::bignum\+\_\+t} = util\+::safe\+\_\+ptr$<$BIGNUM, BN\+\_\+free$>$
+\begin{DoxyCompactList}\small\item\em Big number type. \end{DoxyCompactList}\item 
+\Hypertarget{crypto_8h_a9cf8f8956296bebc0933bbc8baa0ca01}\label{crypto_8h_a9cf8f8956296bebc0933bbc8baa0ca01} 
+using {\bfseries crypto\+::p\+\_\+named\+\_\+cert\+\_\+t} = std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{structcrypto_1_1named__cert__t}{named\+\_\+cert\+\_\+t}}$>$
+\begin{DoxyCompactList}\small\item\em Shared pointer to named certificate. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}\label{crypto_8h_a94c13146c12a7cb3dee5590eb995347e} 
+enum class \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{crypto\+::\+PERM}} \+: uint32\+\_\+t \{ \newline
+{\bfseries \+\_\+reserved} = 1
+, {\bfseries \+\_\+input} = \+\_\+reserved \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 8
+, {\bfseries input\+\_\+controller} = \+\_\+input \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 0
+, {\bfseries input\+\_\+touch} = \+\_\+input \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 1
+, \newline
+{\bfseries input\+\_\+pen} = \+\_\+input \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 2
+, {\bfseries input\+\_\+mouse} = \+\_\+input \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 3
+, {\bfseries input\+\_\+kbd} = \+\_\+input \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 4
+, {\bfseries \+\_\+all\+\_\+inputs} = input\+\_\+controller \texorpdfstring{$\vert$}{|} input\+\_\+touch \texorpdfstring{$\vert$}{|} input\+\_\+pen \texorpdfstring{$\vert$}{|} input\+\_\+mouse \texorpdfstring{$\vert$}{|} input\+\_\+kbd
+, \newline
+{\bfseries \+\_\+operation} = \+\_\+input \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 8
+, {\bfseries clipboard\+\_\+set} = \+\_\+operation \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 0
+, {\bfseries clipboard\+\_\+read} = \+\_\+operation \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 1
+, {\bfseries file\+\_\+upload} = \+\_\+operation \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 2
+, \newline
+{\bfseries file\+\_\+dwnload} = \+\_\+operation \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 3
+, {\bfseries server\+\_\+cmd} = \+\_\+operation \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 4
+, {\bfseries \+\_\+all\+\_\+opeiations} = clipboard\+\_\+set \texorpdfstring{$\vert$}{|} clipboard\+\_\+read \texorpdfstring{$\vert$}{|} file\+\_\+upload \texorpdfstring{$\vert$}{|} file\+\_\+dwnload \texorpdfstring{$\vert$}{|} server\+\_\+cmd
+, {\bfseries \+\_\+action} = \+\_\+operation \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 8
+, \newline
+{\bfseries list} = \+\_\+action \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 0
+, {\bfseries view} = \+\_\+action \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 1
+, {\bfseries launch} = \+\_\+action \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 2
+, {\bfseries \+\_\+allow\+\_\+view} = view \texorpdfstring{$\vert$}{|} launch
+, \newline
+{\bfseries \+\_\+all\+\_\+actions} = list \texorpdfstring{$\vert$}{|} view \texorpdfstring{$\vert$}{|} launch
+, {\bfseries \+\_\+default} = view \texorpdfstring{$\vert$}{|} list
+, {\bfseries \+\_\+no} = 0
+, {\bfseries \+\_\+all} = \+\_\+all\+\_\+inputs \texorpdfstring{$\vert$}{|} \+\_\+all\+\_\+opeiations \texorpdfstring{$\vert$}{|} \+\_\+all\+\_\+actions
+ \}
+\begin{DoxyCompactList}\small\item\em The permissions of a client. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{crypto_8cpp_a7cc606e3e3a864b15423c499d201896c}{crypto\+::md\+\_\+ctx\+\_\+destroy}} (EVP\+\_\+\+MD\+\_\+\+CTX \texorpdfstring{$\ast$}{*})
+\begin{DoxyCompactList}\small\item\em Destroy an EVP\+\_\+\+MD\+\_\+\+CTX context. \end{DoxyCompactList}\item 
+constexpr \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{PERM}} \mbox{\hyperlink{crypto_8h_ac5a657874b29f9901cbf3f17397d42c0}{crypto\+::operator\&}} (\mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{PERM}} x, \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{PERM}} y)
+\begin{DoxyCompactList}\small\item\em Bitwise AND operator for \doxylink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{PERM} enum. \end{DoxyCompactList}\item 
+constexpr bool \mbox{\hyperlink{crypto_8h_a22c0465bde0bd12f22d95638685f7a3c}{crypto\+::operator!}} (\mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{PERM}} p)
+\begin{DoxyCompactList}\small\item\em Logical NOT operator for \doxylink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{PERM} enum. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{crypto_8h_a7696eb7fa157b5aecea9e05310af15f8}{sha256\+\_\+t}} \mbox{\hyperlink{crypto_8cpp_a9b16e05955ed429ef3ee677d79b4fd15}{crypto\+::hash}} (const std\+::string\+\_\+view \&plaintext)
+\begin{DoxyCompactList}\small\item\em Hashes the given plaintext using SHA-\/256. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{aes\+\_\+t}} \mbox{\hyperlink{crypto_8cpp_a11319c26d01a31377811f310eee0caec}{crypto\+::gen\+\_\+aes\+\_\+key}} (const std\+::array$<$ uint8\+\_\+t, 16 $>$ \&salt, const std\+::string\+\_\+view \&pin)
+\begin{DoxyCompactList}\small\item\em Generate an AES key from salt and PIN. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{crypto_8h_a48d41be6bb46e6a718cc9b53ae46e968}{x509\+\_\+t}} \mbox{\hyperlink{crypto_8cpp_a62889f196a9be911e8d29b770b229478}{crypto\+::x509}} (const std\+::string\+\_\+view \&x)
+\begin{DoxyCompactList}\small\item\em Parse an X.\+509 certificate from PEM string. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{crypto_8h_a662a3669fbae0e3f49699ce03c1b2f40}{pkey\+\_\+t}} \mbox{\hyperlink{crypto_8cpp_aae41ddd5d053c4a01494c2d83ae02d6e}{crypto\+::pkey}} (const std\+::string\+\_\+view \&k)
+\begin{DoxyCompactList}\small\item\em Parse a private key from PEM string. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{crypto_8cpp_abf01644e86fce7d7480b2efbfd6f83bd}{crypto\+::pem}} (\mbox{\hyperlink{crypto_8h_a48d41be6bb46e6a718cc9b53ae46e968}{x509\+\_\+t}} \&\mbox{\hyperlink{crypto_8cpp_a62889f196a9be911e8d29b770b229478}{x509}})
+\begin{DoxyCompactList}\small\item\em Convert X.\+509 certificate to PEM string. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{crypto_8cpp_a05089d7ad719dabbf85115ba07f4df01}{crypto\+::pem}} (\mbox{\hyperlink{crypto_8h_a662a3669fbae0e3f49699ce03c1b2f40}{pkey\+\_\+t}} \&\mbox{\hyperlink{crypto_8cpp_aae41ddd5d053c4a01494c2d83ae02d6e}{pkey}})
+\begin{DoxyCompactList}\small\item\em Convert private key to PEM string. \end{DoxyCompactList}\item 
+std\+::vector$<$ uint8\+\_\+t $>$ \mbox{\hyperlink{crypto_8cpp_ab153ce0f7b496848078798882c943579}{crypto\+::sign256}} (const \mbox{\hyperlink{crypto_8h_a662a3669fbae0e3f49699ce03c1b2f40}{pkey\+\_\+t}} \&\mbox{\hyperlink{crypto_8cpp_aae41ddd5d053c4a01494c2d83ae02d6e}{pkey}}, const std\+::string\+\_\+view \&data)
+\begin{DoxyCompactList}\small\item\em Sign data using SHA-\/256 and private key. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{crypto_8cpp_a3fa8b6de27512e652cb4842dfa1aadef}{crypto\+::verify256}} (const \mbox{\hyperlink{crypto_8h_a48d41be6bb46e6a718cc9b53ae46e968}{x509\+\_\+t}} \&\mbox{\hyperlink{crypto_8cpp_a62889f196a9be911e8d29b770b229478}{x509}}, const std\+::string\+\_\+view \&data, const std\+::string\+\_\+view \&\mbox{\hyperlink{crypto_8cpp_a0d6c1279d1495e3875b68e14ae0eae4b}{signature}})
+\begin{DoxyCompactList}\small\item\em Verify a signature using SHA-\/256 and X.\+509 certificate. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structcrypto_1_1creds__t}{creds\+\_\+t}} \mbox{\hyperlink{crypto_8cpp_ad3916837476f7024d9bb090b3a8959e3}{crypto\+::gen\+\_\+creds}} (const std\+::string\+\_\+view \&cn, std\+::uint32\+\_\+t key\+\_\+bits)
+\begin{DoxyCompactList}\small\item\em Generate X.\+509 certificate and private key credentials. \end{DoxyCompactList}\item 
+std\+::string\+\_\+view \mbox{\hyperlink{crypto_8cpp_a0d6c1279d1495e3875b68e14ae0eae4b}{crypto\+::signature}} (const \mbox{\hyperlink{crypto_8h_a48d41be6bb46e6a718cc9b53ae46e968}{x509\+\_\+t}} \&x)
+\begin{DoxyCompactList}\small\item\em Get the signature from an X.\+509 certificate. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{crypto_8cpp_a190b13cdad89e7d1bd08de67690419c9}{crypto\+::rand}} (std\+::size\+\_\+t bytes)
+\begin{DoxyCompactList}\small\item\em Generate random bytes. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{crypto_8cpp_afe48ce90e7a39698f5af748412639fe9}{crypto\+::rand\+\_\+alphabet}} (std\+::size\+\_\+t bytes, const std\+::string\+\_\+view \&alphabet=std\+::string\+\_\+view \{"{}ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\%\&()=-\/"{}\})
+\begin{DoxyCompactList}\small\item\em Generate random string from specified alphabet. \end{DoxyCompactList}\item 
+constexpr std\+::size\+\_\+t \mbox{\hyperlink{namespacecrypto_1_1cipher_a83362cb085a6f14ef117cca84e07e8be}{crypto\+::cipher\+::round\+\_\+to\+\_\+pkcs7\+\_\+padded}} (std\+::size\+\_\+t size)
+\begin{DoxyCompactList}\small\item\em Round size up to PKCS\#7 padding boundary (16 bytes). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{namespacecrypto_1_1cipher_abbf07891ff1073d1d56598d882903ce9}\label{namespacecrypto_1_1cipher_abbf07891ff1073d1d56598d882903ce9} 
+constexpr std\+::size\+\_\+t {\bfseries crypto\+::cipher\+::tag\+\_\+size} = 16
+\begin{DoxyCompactList}\small\item\em GCM tag size in bytes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Declarations for cryptography functions. 
+
+
+
+\label{doc-func-members}
+\Hypertarget{crypto_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{crypto_8cpp_a11319c26d01a31377811f310eee0caec}\index{crypto.h@{crypto.h}!gen\_aes\_key@{gen\_aes\_key}}
+\index{gen\_aes\_key@{gen\_aes\_key}!crypto.h@{crypto.h}}
+\doxysubsubsection{\texorpdfstring{gen\_aes\_key()}{gen\_aes\_key()}}
+{\footnotesize\ttfamily \label{crypto_8cpp_a11319c26d01a31377811f310eee0caec} 
+aes\+\_\+t crypto\+::gen\+\_\+aes\+\_\+key (\begin{DoxyParamCaption}\item[{const std\+::array$<$ uint8\+\_\+t, 16 $>$ \&}]{salt}{, }\item[{const std\+::string\+\_\+view \&}]{pin}{}\end{DoxyParamCaption})}
+
+
+
+Generate an AES key from salt and PIN. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em salt} & The salt value (16 bytes). \\
+\hline
+{\em pin} & The PIN string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Generated AES key. 
+\end{DoxyReturn}
+\Hypertarget{crypto_8cpp_ad3916837476f7024d9bb090b3a8959e3}\index{crypto.h@{crypto.h}!gen\_creds@{gen\_creds}}
+\index{gen\_creds@{gen\_creds}!crypto.h@{crypto.h}}
+\doxysubsubsection{\texorpdfstring{gen\_creds()}{gen\_creds()}}
+{\footnotesize\ttfamily \label{crypto_8cpp_ad3916837476f7024d9bb090b3a8959e3} 
+creds\+\_\+t crypto\+::gen\+\_\+creds (\begin{DoxyParamCaption}\item[{const std\+::string\+\_\+view \&}]{cn}{, }\item[{std\+::uint32\+\_\+t}]{key\+\_\+bits}{}\end{DoxyParamCaption})}
+
+
+
+Generate X.\+509 certificate and private key credentials. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cn} & The common name (CN) for the certificate. \\
+\hline
+{\em key\+\_\+bits} & The key size in bits (e.\+g., 2048, 4096). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Credentials structure containing certificate and private key. 
+\end{DoxyReturn}
+\Hypertarget{crypto_8cpp_a9b16e05955ed429ef3ee677d79b4fd15}\index{crypto.h@{crypto.h}!hash@{hash}}
+\index{hash@{hash}!crypto.h@{crypto.h}}
+\doxysubsubsection{\texorpdfstring{hash()}{hash()}}
+{\footnotesize\ttfamily \label{crypto_8cpp_a9b16e05955ed429ef3ee677d79b4fd15} 
+sha256\+\_\+t crypto\+::hash (\begin{DoxyParamCaption}\item[{const std\+::string\+\_\+view \&}]{plaintext}{}\end{DoxyParamCaption})}
+
+
+
+Hashes the given plaintext using SHA-\/256. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em plaintext} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The SHA-\/256 hash of the plaintext. 
+\end{DoxyReturn}
+\Hypertarget{crypto_8cpp_a7cc606e3e3a864b15423c499d201896c}\index{crypto.h@{crypto.h}!md\_ctx\_destroy@{md\_ctx\_destroy}}
+\index{md\_ctx\_destroy@{md\_ctx\_destroy}!crypto.h@{crypto.h}}
+\doxysubsubsection{\texorpdfstring{md\_ctx\_destroy()}{md\_ctx\_destroy()}}
+{\footnotesize\ttfamily \label{crypto_8cpp_a7cc606e3e3a864b15423c499d201896c} 
+void crypto\+::md\+\_\+ctx\+\_\+destroy (\begin{DoxyParamCaption}\item[{EVP\+\_\+\+MD\+\_\+\+CTX \texorpdfstring{$\ast$}{*}}]{}{}\end{DoxyParamCaption})}
+
+
+
+Destroy an EVP\+\_\+\+MD\+\_\+\+CTX context. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ctx} & The message digest context to destroy. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{crypto_8h_a22c0465bde0bd12f22d95638685f7a3c}\index{crypto.h@{crypto.h}!operator"!@{operator"!}}
+\index{operator"!@{operator"!}!crypto.h@{crypto.h}}
+\doxysubsubsection{\texorpdfstring{operator"!()}{operator!()}}
+{\footnotesize\ttfamily \label{crypto_8h_a22c0465bde0bd12f22d95638685f7a3c} 
+bool crypto\+::operator! (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{PERM}}}]{p}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
+
+
+
+Logical NOT operator for PERM enum. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & Permission value to check. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if permission is zero (no permissions), {\ttfamily false} otherwise. 
+\end{DoxyReturn}
+\Hypertarget{crypto_8h_ac5a657874b29f9901cbf3f17397d42c0}\index{crypto.h@{crypto.h}!operator\&@{operator\&}}
+\index{operator\&@{operator\&}!crypto.h@{crypto.h}}
+\doxysubsubsection{\texorpdfstring{operator\&()}{operator\&()}}
+{\footnotesize\ttfamily \label{crypto_8h_ac5a657874b29f9901cbf3f17397d42c0} 
+PERM crypto\+::operator\& (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{PERM}}}]{x}{, }\item[{\mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{PERM}}}]{y}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [constexpr]}}
+
+
+
+Bitwise AND operator for PERM enum. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & First permission value. \\
+\hline
+{\em y} & Second permission value. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Bitwise AND of the two permission values. 
+\end{DoxyReturn}
+\Hypertarget{crypto_8cpp_a05089d7ad719dabbf85115ba07f4df01}\index{crypto.h@{crypto.h}!pem@{pem}}
+\index{pem@{pem}!crypto.h@{crypto.h}}
+\doxysubsubsection{\texorpdfstring{pem()}{pem()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{crypto_8cpp_a05089d7ad719dabbf85115ba07f4df01} 
+std\+::string crypto\+::pem (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{crypto_8h_a662a3669fbae0e3f49699ce03c1b2f40}{pkey\+\_\+t}} \&}]{pkey}{}\end{DoxyParamCaption})}
+
+
+
+Convert private key to PEM string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pkey} & The private key object. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+PEM-\/encoded private key string. 
+\end{DoxyReturn}
+\Hypertarget{crypto_8cpp_abf01644e86fce7d7480b2efbfd6f83bd}\index{crypto.h@{crypto.h}!pem@{pem}}
+\index{pem@{pem}!crypto.h@{crypto.h}}
+\doxysubsubsection{\texorpdfstring{pem()}{pem()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{crypto_8cpp_abf01644e86fce7d7480b2efbfd6f83bd} 
+std\+::string crypto\+::pem (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{crypto_8h_a48d41be6bb46e6a718cc9b53ae46e968}{x509\+\_\+t}} \&}]{x509}{}\end{DoxyParamCaption})}
+
+
+
+Convert X.\+509 certificate to PEM string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x509} & The X.\+509 certificate object. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+PEM-\/encoded certificate string. 
+\end{DoxyReturn}
+\Hypertarget{crypto_8cpp_aae41ddd5d053c4a01494c2d83ae02d6e}\index{crypto.h@{crypto.h}!pkey@{pkey}}
+\index{pkey@{pkey}!crypto.h@{crypto.h}}
+\doxysubsubsection{\texorpdfstring{pkey()}{pkey()}}
+{\footnotesize\ttfamily \label{crypto_8cpp_aae41ddd5d053c4a01494c2d83ae02d6e} 
+pkey\+\_\+t crypto\+::pkey (\begin{DoxyParamCaption}\item[{const std\+::string\+\_\+view \&}]{k}{}\end{DoxyParamCaption})}
+
+
+
+Parse a private key from PEM string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & The PEM-\/encoded private key string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Private key object. 
+\end{DoxyReturn}
+\Hypertarget{crypto_8cpp_a190b13cdad89e7d1bd08de67690419c9}\index{crypto.h@{crypto.h}!rand@{rand}}
+\index{rand@{rand}!crypto.h@{crypto.h}}
+\doxysubsubsection{\texorpdfstring{rand()}{rand()}}
+{\footnotesize\ttfamily \label{crypto_8cpp_a190b13cdad89e7d1bd08de67690419c9} 
+std\+::string crypto\+::rand (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{bytes}{}\end{DoxyParamCaption})}
+
+
+
+Generate random bytes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bytes} & Number of bytes to generate. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Random bytes as string. 
+\end{DoxyReturn}
+\Hypertarget{crypto_8cpp_afe48ce90e7a39698f5af748412639fe9}\index{crypto.h@{crypto.h}!rand\_alphabet@{rand\_alphabet}}
+\index{rand\_alphabet@{rand\_alphabet}!crypto.h@{crypto.h}}
+\doxysubsubsection{\texorpdfstring{rand\_alphabet()}{rand\_alphabet()}}
+{\footnotesize\ttfamily \label{crypto_8cpp_afe48ce90e7a39698f5af748412639fe9} 
+std\+::string crypto\+::rand\+\_\+alphabet (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{bytes}{, }\item[{const std\+::string\+\_\+view \&}]{alphabet}{ = {\ttfamily std\+:\+:string\+\_\+view~\{"{}ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\%\&()=-\/"{}\}}}\end{DoxyParamCaption})}
+
+
+
+Generate random string from specified alphabet. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bytes} & Number of characters to generate. \\
+\hline
+{\em alphabet} & The alphabet to use for generation (default\+: alphanumeric + special chars). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Random string. 
+\end{DoxyReturn}
+\Hypertarget{crypto_8cpp_ab153ce0f7b496848078798882c943579}\index{crypto.h@{crypto.h}!sign256@{sign256}}
+\index{sign256@{sign256}!crypto.h@{crypto.h}}
+\doxysubsubsection{\texorpdfstring{sign256()}{sign256()}}
+{\footnotesize\ttfamily \label{crypto_8cpp_ab153ce0f7b496848078798882c943579} 
+std\+::vector$<$ uint8\+\_\+t $>$ crypto\+::sign256 (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{crypto_8h_a662a3669fbae0e3f49699ce03c1b2f40}{pkey\+\_\+t}} \&}]{pkey}{, }\item[{const std\+::string\+\_\+view \&}]{data}{}\end{DoxyParamCaption})}
+
+
+
+Sign data using SHA-\/256 and private key. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pkey} & The private key to use for signing. \\
+\hline
+{\em data} & The data to sign. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Signature bytes. 
+\end{DoxyReturn}
+\Hypertarget{crypto_8cpp_a0d6c1279d1495e3875b68e14ae0eae4b}\index{crypto.h@{crypto.h}!signature@{signature}}
+\index{signature@{signature}!crypto.h@{crypto.h}}
+\doxysubsubsection{\texorpdfstring{signature()}{signature()}}
+{\footnotesize\ttfamily \label{crypto_8cpp_a0d6c1279d1495e3875b68e14ae0eae4b} 
+std\+::string\+\_\+view crypto\+::signature (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{crypto_8h_a48d41be6bb46e6a718cc9b53ae46e968}{x509\+\_\+t}} \&}]{x}{}\end{DoxyParamCaption})}
+
+
+
+Get the signature from an X.\+509 certificate. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & The X.\+509 certificate. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Signature as string view. 
+\end{DoxyReturn}
+\Hypertarget{crypto_8cpp_a3fa8b6de27512e652cb4842dfa1aadef}\index{crypto.h@{crypto.h}!verify256@{verify256}}
+\index{verify256@{verify256}!crypto.h@{crypto.h}}
+\doxysubsubsection{\texorpdfstring{verify256()}{verify256()}}
+{\footnotesize\ttfamily \label{crypto_8cpp_a3fa8b6de27512e652cb4842dfa1aadef} 
+bool crypto\+::verify256 (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{crypto_8h_a48d41be6bb46e6a718cc9b53ae46e968}{x509\+\_\+t}} \&}]{x509}{, }\item[{const std\+::string\+\_\+view \&}]{data}{, }\item[{const std\+::string\+\_\+view \&}]{signature}{}\end{DoxyParamCaption})}
+
+
+
+Verify a signature using SHA-\/256 and X.\+509 certificate. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x509} & The X.\+509 certificate containing the public key. \\
+\hline
+{\em data} & The original data that was signed. \\
+\hline
+{\em signature} & The signature to verify. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if signature is valid, {\ttfamily false} otherwise. 
+\end{DoxyReturn}
+\Hypertarget{crypto_8cpp_a62889f196a9be911e8d29b770b229478}\index{crypto.h@{crypto.h}!x509@{x509}}
+\index{x509@{x509}!crypto.h@{crypto.h}}
+\doxysubsubsection{\texorpdfstring{x509()}{x509()}}
+{\footnotesize\ttfamily \label{crypto_8cpp_a62889f196a9be911e8d29b770b229478} 
+x509\+\_\+t crypto\+::x509 (\begin{DoxyParamCaption}\item[{const std\+::string\+\_\+view \&}]{x}{}\end{DoxyParamCaption})}
+
+
+
+Parse an X.\+509 certificate from PEM string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & The PEM-\/encoded certificate string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+X.\+509 certificate object. 
+\end{DoxyReturn}

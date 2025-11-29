@@ -1,0 +1,55 @@
+\doxysection{entry\+\_\+handler.\+h}
+\hypertarget{entry__handler_8h_source}{}\label{entry__handler_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/entry\_handler.h@{/Users/alexworland/autoBitrate/apollo/src/entry\_handler.h}}
+\mbox{\hyperlink{entry__handler_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ standard\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <atomic>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <string\_view>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ local\ includes}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{thread__pool_8h}{thread\_pool.h}}"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{thread__safe_8h}{thread\_safe.h}}"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00023\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{entry__handler_8h_a237dbd01d8b0588ed0cfa5ce9d4e0b1d}{launch\_ui}}(\textcolor{keyword}{const}\ std::optional<std::string>\ \&path\ =\ std::nullopt);}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceargs}{args}}\ \{}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespaceargs_a12f74871184d794069843ca2f73a33e9}{creds}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *name,\ \textcolor{keywordtype}{int}\ argc,\ \textcolor{keywordtype}{char}\ *argv[]);}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00047\ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespaceargs_afee3c375307ccb9b232d063f806f6ebb}{help}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *name);}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespaceargs_a473eb95d65f3fc47ce193c8cfcc631da}{version}}();}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#ifdef\ \_WIN32}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordtype}{int}\ restore\_nvprefs\_undo();}
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00069\ \}\ \ \textcolor{comment}{//\ namespace\ args}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00074\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacelifetime}{lifetime}}\ \{}
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{char}\ **argv;}
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{extern}\ std::atomic\_int\ desired\_exit\_code;}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00083\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacelifetime_a8b0bdeb152a33f192bd40d76f780b6fb}{exit\_sunshine}}(\textcolor{keywordtype}{int}\ exit\_code,\ \textcolor{keywordtype}{bool}\ async);}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00088\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacelifetime_a27ba172c553f3a39672faab8178d8b60}{debug\_trap}}();}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00093\ \ \ \textcolor{keywordtype}{char}\ **\mbox{\hyperlink{namespacelifetime_afba0e62507253a24ffd9da31b523899c}{get\_argv}}();}
+\DoxyCodeLine{00094\ \}\ \ \textcolor{comment}{//\ namespace\ lifetime}}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00099\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{entry__handler_8h_a4f63b41eac6c27a64a19bcf19480a17f}{log\_publisher\_data}}();}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#ifdef\ \_WIN32}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00106\ \textcolor{keywordtype}{bool}\ is\_gamestream\_enabled();}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00111\ \textcolor{keyword}{namespace\ }service\_ctrl\ \{}
+\DoxyCodeLine{00118\ \ \ \textcolor{keywordtype}{bool}\ is\_service\_running();}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00126\ \ \ \textcolor{keywordtype}{bool}\ start\_service();}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00134\ \ \ \textcolor{keywordtype}{bool}\ wait\_for\_ui\_ready();}
+\DoxyCodeLine{00135\ \}\ \ \textcolor{comment}{//\ namespace\ service\_ctrl}}
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

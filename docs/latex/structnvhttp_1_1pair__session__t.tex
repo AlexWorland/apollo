@@ -1,0 +1,61 @@
+\doxysection{nvhttp\+::pair\+\_\+session\+\_\+t Struct Reference}
+\hypertarget{structnvhttp_1_1pair__session__t}{}\label{structnvhttp_1_1pair__session__t}\index{nvhttp::pair\_session\_t@{nvhttp::pair\_session\_t}}
+
+
+Pairing session structure.  
+
+
+
+
+{\ttfamily \#include $<$nvhttp.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structnvhttp_1_1pair__session__t_a4c3b25d9070daaaa8670b1449386d70a}\label{structnvhttp_1_1pair__session__t_a4c3b25d9070daaaa8670b1449386d70a} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>std::string {\bfseries uniqueID} = \{\}\\
+\>\>{\em Client unique identifier. }\\
+\>std::string {\bfseries cert} = \{\}\\
+\>\>{\em Client certificate. }\\
+\>std::string {\bfseries name} = \{\}\\
+\>\>{\em Client device name. }\\
+\} {\bfseries client}\\
+
+\end{tabbing}\item 
+\Hypertarget{structnvhttp_1_1pair__session__t_ac62197d5c55056e8aa808253c7fd8d8e}\label{structnvhttp_1_1pair__session__t_ac62197d5c55056e8aa808253c7fd8d8e} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{crypto\+::aes\+\_\+t}} $>$ {\bfseries cipher\+\_\+key} = \{\}
+\begin{DoxyCompactList}\small\item\em AES cipher key for pairing. \end{DoxyCompactList}\item 
+\Hypertarget{structnvhttp_1_1pair__session__t_aad99e16a8fc428079cf693cbd4064a42}\label{structnvhttp_1_1pair__session__t_aad99e16a8fc428079cf693cbd4064a42} 
+std\+::vector$<$ uint8\+\_\+t $>$ {\bfseries clienthash} = \{\}
+\begin{DoxyCompactList}\small\item\em Client hash for verification. \end{DoxyCompactList}\item 
+\Hypertarget{structnvhttp_1_1pair__session__t_abbf0fd97296938b928edec7fe3218593}\label{structnvhttp_1_1pair__session__t_abbf0fd97296938b928edec7fe3218593} 
+std\+::string {\bfseries serversecret} = \{\}
+\begin{DoxyCompactList}\small\item\em Server secret for pairing. \end{DoxyCompactList}\item 
+\Hypertarget{structnvhttp_1_1pair__session__t_a0a553e8f65eba6bc4ea4cf2f2c653807}\label{structnvhttp_1_1pair__session__t_a0a553e8f65eba6bc4ea4cf2f2c653807} 
+std\+::string {\bfseries serverchallenge} = \{\}
+\begin{DoxyCompactList}\small\item\em Server challenge for pairing. \end{DoxyCompactList}\item 
+\Hypertarget{structnvhttp_1_1pair__session__t_a232278e1eb3b550d9076ea578594ee66}\label{structnvhttp_1_1pair__session__t_a232278e1eb3b550d9076ea578594ee66} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>\mbox{\hyperlink{classutil_1_1_either}{util::Either}}$<$ std::shared\_ptr$<$ typename SimpleWeb::ServerBase$<$ SimpleWeb::HTTP $>$::Response $>$, std::shared\_ptr$<$ typename SimpleWeb::ServerBase$<$ \mbox{\hyperlink{classnvhttp_1_1_sunshine_h_t_t_p_s}{SunshineHTTPS}} $>$::Response $>$ $>$ {\bfseries response}\\
+\>\>{\em HTTP response for async PIN insertion. }\\
+\>std::string {\bfseries salt} = \{\}\\
+\>\>{\em Salt for key derivation. }\\
+\} {\bfseries async\_insert\_pin}\\
+
+\end{tabbing}\item 
+\Hypertarget{structnvhttp_1_1pair__session__t_af88082cd64c8dcdfb9f9b697f5ce4af3}\label{structnvhttp_1_1pair__session__t_af88082cd64c8dcdfb9f9b697f5ce4af3} 
+\mbox{\hyperlink{namespacenvhttp_a32c863c532893110e08c2746d919b07a}{PAIR\+\_\+\+PHASE}} {\bfseries last\+\_\+phase} = \mbox{\hyperlink{namespacenvhttp_a32c863c532893110e08c2746d919b07aab50339a10e1de285ac99d4c3990b8693}{PAIR\+\_\+\+PHASE\+::\+NONE}}
+\begin{DoxyCompactList}\small\item\em Used as a security measure to prevent out of order calls. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Pairing session structure. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{nvhttp_8h}{nvhttp.\+h}}\end{DoxyCompactItemize}

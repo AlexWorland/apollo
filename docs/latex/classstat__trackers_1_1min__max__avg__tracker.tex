@@ -1,0 +1,67 @@
+\doxysection{stat\+\_\+trackers\+::min\+\_\+max\+\_\+avg\+\_\+tracker\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classstat__trackers_1_1min__max__avg__tracker}{}\label{classstat__trackers_1_1min__max__avg__tracker}\index{stat\_trackers::min\_max\_avg\_tracker$<$ T $>$@{stat\_trackers::min\_max\_avg\_tracker$<$ T $>$}}
+
+
+Template class for tracking minimum, maximum, and average values.  
+
+
+
+
+{\ttfamily \#include $<$stat\+\_\+trackers.\+h$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classstat__trackers_1_1min__max__avg__tracker_a0228762cbeffcb952d8787433c00ba09}\label{classstat__trackers_1_1min__max__avg__tracker_a0228762cbeffcb952d8787433c00ba09} 
+using {\bfseries callback\+\_\+function} = std\+::function$<$void(T \mbox{\hyperlink{classstat__trackers_1_1min__max__avg__tracker_a50e42d9a25748d2aced67c46fe1d6af2}{stat\+\_\+min}}, T \mbox{\hyperlink{classstat__trackers_1_1min__max__avg__tracker_ad4e6d037df69af8076b225745eb1d8be}{stat\+\_\+max}}, double stat\+\_\+avg)$>$
+\begin{DoxyCompactList}\small\item\em Callback function type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classstat__trackers_1_1min__max__avg__tracker_a228908770a6e6f553daee3a39103392b}{collect\+\_\+and\+\_\+callback\+\_\+on\+\_\+interval}} (T stat, const \mbox{\hyperlink{classstat__trackers_1_1min__max__avg__tracker_a0228762cbeffcb952d8787433c00ba09}{callback\+\_\+function}} \&callback, std\+::chrono\+::seconds interval\+\_\+in\+\_\+seconds)
+\begin{DoxyCompactList}\small\item\em Collect a statistic value and call callback when interval elapses. \end{DoxyCompactList}\item 
+\Hypertarget{classstat__trackers_1_1min__max__avg__tracker_a62c090a29fc18d92af13efab4627d917}\label{classstat__trackers_1_1min__max__avg__tracker_a62c090a29fc18d92af13efab4627d917} 
+void {\bfseries reset} ()
+\begin{DoxyCompactList}\small\item\em Reset all collected statistics. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class stat\+\_\+trackers\+::min\+\_\+max\+\_\+avg\+\_\+tracker$<$ T $>$}
+Template class for tracking minimum, maximum, and average values. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The numeric type to track. \\
+\hline
+\end{DoxyTemplParams}
+
+
+\label{doc-func-members}
+\Hypertarget{classstat__trackers_1_1min__max__avg__tracker_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classstat__trackers_1_1min__max__avg__tracker_a228908770a6e6f553daee3a39103392b}\index{stat\_trackers::min\_max\_avg\_tracker$<$ T $>$@{stat\_trackers::min\_max\_avg\_tracker$<$ T $>$}!collect\_and\_callback\_on\_interval@{collect\_and\_callback\_on\_interval}}
+\index{collect\_and\_callback\_on\_interval@{collect\_and\_callback\_on\_interval}!stat\_trackers::min\_max\_avg\_tracker$<$ T $>$@{stat\_trackers::min\_max\_avg\_tracker$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{collect\_and\_callback\_on\_interval()}{collect\_and\_callback\_on\_interval()}}
+{\footnotesize\ttfamily \label{classstat__trackers_1_1min__max__avg__tracker_a228908770a6e6f553daee3a39103392b} 
+template$<$typename T$>$ \\
+void \mbox{\hyperlink{classstat__trackers_1_1min__max__avg__tracker}{stat\+\_\+trackers\+::min\+\_\+max\+\_\+avg\+\_\+tracker}}$<$ T $>$\+::collect\+\_\+and\+\_\+callback\+\_\+on\+\_\+interval (\begin{DoxyParamCaption}\item[{T}]{stat}{, }\item[{const \mbox{\hyperlink{classstat__trackers_1_1min__max__avg__tracker_a0228762cbeffcb952d8787433c00ba09}{callback\+\_\+function}} \&}]{callback}{, }\item[{std\+::chrono\+::seconds}]{interval\+\_\+in\+\_\+seconds}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Collect a statistic value and call callback when interval elapses. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em stat} & The statistic value to collect. \\
+\hline
+{\em callback} & The callback function to invoke when interval elapses. \\
+\hline
+{\em interval\+\_\+in\+\_\+seconds} & The time interval between callbacks. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{stat__trackers_8h}{stat\+\_\+trackers.\+h}}\end{DoxyCompactItemize}

@@ -1,0 +1,80 @@
+\doxysection{crypto\+::cert\+\_\+chain\+\_\+t Class Reference}
+\hypertarget{classcrypto_1_1cert__chain__t}{}\label{classcrypto_1_1cert__chain__t}\index{crypto::cert\_chain\_t@{crypto::cert\_chain\_t}}
+
+
+Certificate chain for client certificate verification.  
+
+
+
+
+{\ttfamily \#include $<$crypto.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classcrypto_1_1cert__chain__t_a697102db943445c385af7cf3f9f1a614}{add}} (\mbox{\hyperlink{crypto_8h_a9cf8f8956296bebc0933bbc8baa0ca01}{p\+\_\+named\+\_\+cert\+\_\+t}} \&named\+\_\+cert\+\_\+p)
+\begin{DoxyCompactList}\small\item\em Add a named certificate to the chain. \end{DoxyCompactList}\item 
+\Hypertarget{classcrypto_1_1cert__chain__t_ac49aabffbfb41c312667955736d87d54}\label{classcrypto_1_1cert__chain__t_ac49aabffbfb41c312667955736d87d54} 
+void {\bfseries clear} ()
+\begin{DoxyCompactList}\small\item\em Clear all certificates from the chain. \end{DoxyCompactList}\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classcrypto_1_1cert__chain__t_a5fe1c7904667a3c1293130cbac62a8cc}{verify}} (x509\+\_\+t\+::element\+\_\+type \texorpdfstring{$\ast$}{*}cert, \mbox{\hyperlink{crypto_8h_a9cf8f8956296bebc0933bbc8baa0ca01}{p\+\_\+named\+\_\+cert\+\_\+t}} \&named\+\_\+cert\+\_\+out)
+\begin{DoxyCompactList}\small\item\em Verify a certificate against the certificate chain. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Certificate chain for client certificate verification. 
+
+\label{doc-func-members}
+\Hypertarget{classcrypto_1_1cert__chain__t_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcrypto_1_1cert__chain__t_a697102db943445c385af7cf3f9f1a614}\index{crypto::cert\_chain\_t@{crypto::cert\_chain\_t}!add@{add}}
+\index{add@{add}!crypto::cert\_chain\_t@{crypto::cert\_chain\_t}}
+\doxysubsubsection{\texorpdfstring{add()}{add()}}
+{\footnotesize\ttfamily \label{classcrypto_1_1cert__chain__t_a697102db943445c385af7cf3f9f1a614} 
+void crypto\+::cert\+\_\+chain\+\_\+t\+::add (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{crypto_8h_a9cf8f8956296bebc0933bbc8baa0ca01}{p\+\_\+named\+\_\+cert\+\_\+t}} \&}]{named\+\_\+cert\+\_\+p}{}\end{DoxyParamCaption})}
+
+
+
+Add a named certificate to the chain. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em named\+\_\+cert\+\_\+p} & Shared pointer to the named certificate. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classcrypto_1_1cert__chain__t_a5fe1c7904667a3c1293130cbac62a8cc}\index{crypto::cert\_chain\_t@{crypto::cert\_chain\_t}!verify@{verify}}
+\index{verify@{verify}!crypto::cert\_chain\_t@{crypto::cert\_chain\_t}}
+\doxysubsubsection{\texorpdfstring{verify()}{verify()}}
+{\footnotesize\ttfamily \label{classcrypto_1_1cert__chain__t_a5fe1c7904667a3c1293130cbac62a8cc} 
+const char \texorpdfstring{$\ast$}{*} crypto\+::cert\+\_\+chain\+\_\+t\+::verify (\begin{DoxyParamCaption}\item[{x509\+\_\+t\+::element\+\_\+type \texorpdfstring{$\ast$}{*}}]{cert}{, }\item[{\mbox{\hyperlink{crypto_8h_a9cf8f8956296bebc0933bbc8baa0ca01}{p\+\_\+named\+\_\+cert\+\_\+t}} \&}]{named\+\_\+cert\+\_\+out}{}\end{DoxyParamCaption})}
+
+
+
+Verify a certificate against the certificate chain. 
+
+Verify the certificate chain. When certificates from two or more instances of Moonlight have been added to \doxylink{crypto_8h_aac17241b3768ddf4b4bb2948a67347cb}{x509\+\_\+store\+\_\+t}, only one of them will be verified by X509\+\_\+verify\+\_\+cert, resulting in only a single instance of Moonlight to be able to use Sunshine.
+
+
+\begin{DoxyParams}{Parameters}
+{\em cert} & The certificate to verify. \\
+\hline
+{\em named\+\_\+cert\+\_\+out} & Output parameter for the matched named certificate. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Error message string if verification fails, {\ttfamily nullptr} if successful.
+\end{DoxyReturn}
+To circumvent this, \doxylink{crypto_8h_aac17241b3768ddf4b4bb2948a67347cb}{x509\+\_\+store\+\_\+t} instance will be created for each instance of the certificates. 
+\begin{DoxyParams}{Parameters}
+{\em cert} & The certificate to verify. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+nullptr if the certificate is valid, otherwise an error string. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{crypto_8h}{crypto.\+h}}\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{crypto_8cpp}{crypto.\+cpp}}\end{DoxyCompactItemize}

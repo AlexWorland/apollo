@@ -1,0 +1,50 @@
+\doxysection{globals.\+h}
+\hypertarget{globals_8h_source}{}\label{globals_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/globals.h@{/Users/alexworland/autoBitrate/apollo/src/globals.h}}
+\mbox{\hyperlink{globals_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ local\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{entry__handler_8h}{entry\_handler.h}}"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{thread__pool_8h}{thread\_pool.h}}"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{extern}\ \mbox{\hyperlink{classthread__pool__util_1_1_thread_pool}{thread\_pool\_util::ThreadPool}}\ \mbox{\hyperlink{globals_8cpp_a13fbca386ee2f67e4a011aca224895f7}{task\_pool}};}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{globals_8cpp_abeb52d853aa3622d70b50c58c91dce71}{display\_cursor}};}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#ifdef\ \_WIN32}}
+\DoxyCodeLine{00022\ \ \ \textcolor{comment}{//\ Declare\ global\ singleton\ used\ for\ NVIDIA\ control\ panel\ modifications}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\ \ \#include\ "{}platform/windows/nvprefs/nvprefs\_interface.h"{}}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{extern}\ nvprefs::nvprefs\_interface\ nvprefs\_instance;}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacemail}{mail}}\ \{}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#define\ MAIL(x)\ \(\backslash\)}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\ \ constexpr\ auto\ x\ =\ std::string\_view\ \{\ \(\backslash\)}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\ \ \ \ \#x\ \(\backslash\)}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\ \ \}}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{extern}\ safe::mail\_t\ \mbox{\hyperlink{namespacemail_afda717136d37a1ddff4ec467413580ef}{man}};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \textcolor{comment}{//\ Global\ mail}}
+\DoxyCodeLine{00046\ \ \ MAIL(shutdown);}
+\DoxyCodeLine{00047\ \ \ MAIL(broadcast\_shutdown);}
+\DoxyCodeLine{00048\ \ \ MAIL(video\_packets);}
+\DoxyCodeLine{00049\ \ \ MAIL(audio\_packets);}
+\DoxyCodeLine{00050\ \ \ MAIL(switch\_display);}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \ \ \textcolor{comment}{//\ Local\ mail}}
+\DoxyCodeLine{00053\ \ \ MAIL(touch\_port);}
+\DoxyCodeLine{00054\ \ \ MAIL(idr);}
+\DoxyCodeLine{00055\ \ \ MAIL(invalidate\_ref\_frames);}
+\DoxyCodeLine{00056\ \ \ MAIL(gamepad\_feedback);}
+\DoxyCodeLine{00057\ \ \ MAIL(hdr);}
+\DoxyCodeLine{00058\ \ \ MAIL(bitrate\_change);}
+\DoxyCodeLine{00059\ \ \ MAIL(bitrate\_change\_confirmation);}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#undef\ MAIL}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \}\ \ \textcolor{comment}{//\ namespace\ mail}}
+
+\end{DoxyCode}

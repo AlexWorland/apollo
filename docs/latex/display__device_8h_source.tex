@@ -1,0 +1,53 @@
+\doxysection{display\+\_\+device.\+h}
+\hypertarget{display__device_8h_source}{}\label{display__device_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/display\_device.h@{/Users/alexworland/autoBitrate/apollo/src/display\_device.h}}
+\mbox{\hyperlink{display__device_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ standard\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <filesystem>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ lib\ includes}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <display\_device/types.h>}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ forward\ declarations}}
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }platf\ \{}
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{class\ }deinit\_t;}
+\DoxyCodeLine{00017\ \}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{namespace\ }config\ \{}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structconfig_1_1video__t}{video\_t}};}
+\DoxyCodeLine{00021\ \}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{namespace\ }rtsp\_stream\ \{}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\_session\_t}};}
+\DoxyCodeLine{00025\ \}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{namespace\ }display\_device\ \{}
+\DoxyCodeLine{00039\ \ \ [[nodiscard]]\ std::unique\_ptr<platf::deinit\_t>\ \mbox{\hyperlink{display__device_8cpp_a1fde5866033facfcff45422ebacd05d7}{init}}(\textcolor{keyword}{const}\ std::filesystem::path\ \&persistence\_filepath,\ \textcolor{keyword}{const}\ config::video\_t\ \&video\_config);}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00051\ \ \ [[nodiscard]]\ std::string\ \mbox{\hyperlink{display__device_8cpp_acbec3c2e5a77f8d7906407110bcf5ff5}{map\_output\_name}}(\textcolor{keyword}{const}\ std::string\ \&output\_name);}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ [[nodiscard]]\ std::string}
+\DoxyCodeLine{00054\ \ \ map\_display\_name(\textcolor{keyword}{const}\ std::string\ \&display\_name);}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{display__device_8cpp_a32ad14466b4ee7982d208efd29012354}{configure\_display}}(\textcolor{keyword}{const}\ config::video\_t\ \&video\_config,\ \textcolor{keyword}{const}\ rtsp\_stream::launch\_session\_t\ \&session);}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{display__device_8cpp_a32ad14466b4ee7982d208efd29012354}{configure\_display}}(\textcolor{keyword}{const}\ SingleDisplayConfiguration\ \&config);}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{display__device_8cpp_a1be8d50acef1df106cfa5d79fa17c048}{revert\_configuration}}();}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00124\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{display__device_8cpp_abbe93253aa71514fa18accdb45ef1390}{reset\_persistence}}();}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00134\ \ \ [[nodiscard]]\ EnumeratedDeviceList\ \mbox{\hyperlink{display__device_8cpp_aa54ea423c6d3d3cce1c9f30a0935228d}{enumerate\_devices}}();}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdisplay__device_1_1failed__to__parse__tag__t}{failed\_to\_parse\_tag\_t}}\ \{\};}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00144\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdisplay__device_1_1configuration__disabled__tag__t}{configuration\_disabled\_tag\_t}}\ \{\};}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00164\ \ \ [[nodiscard]]\ std::variant<failed\_to\_parse\_tag\_t,\ configuration\_disabled\_tag\_t,\ SingleDisplayConfiguration>\ \mbox{\hyperlink{display__device_8cpp_a13d7db8105180dedd47832acaf0fd8ac}{parse\_configuration}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structconfig_1_1video__t}{config::video\_t}}\ \&video\_config,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{rtsp\_stream::launch\_session\_t}}\ \&session);}
+\DoxyCodeLine{00165\ \}\ \ \textcolor{comment}{//\ namespace\ display\_device}}
+
+\end{DoxyCode}

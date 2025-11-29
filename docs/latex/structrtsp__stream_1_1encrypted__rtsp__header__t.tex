@@ -1,0 +1,47 @@
+\doxysection{rtsp\+\_\+stream\+::encrypted\+\_\+rtsp\+\_\+header\+\_\+t Struct Reference}
+\hypertarget{structrtsp__stream_1_1encrypted__rtsp__header__t}{}\label{structrtsp__stream_1_1encrypted__rtsp__header__t}\index{rtsp\_stream::encrypted\_rtsp\_header\_t@{rtsp\_stream::encrypted\_rtsp\_header\_t}}
+
+
+Encrypted RTSP message header.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structrtsp__stream_1_1encrypted__rtsp__header__t_a6f55f4b6a5712efe4d2fbd582d912d70}\label{structrtsp__stream_1_1encrypted__rtsp__header__t_a6f55f4b6a5712efe4d2fbd582d912d70} 
+uint8\+\_\+t \texorpdfstring{$\ast$}{*} {\bfseries payload} ()
+\item 
+\Hypertarget{structrtsp__stream_1_1encrypted__rtsp__header__t_ae9b66696cd632dbd9c11f5740c706ed0}\label{structrtsp__stream_1_1encrypted__rtsp__header__t_ae9b66696cd632dbd9c11f5740c706ed0} 
+std\+::uint32\+\_\+t {\bfseries payload\+\_\+length} ()
+\item 
+\Hypertarget{structrtsp__stream_1_1encrypted__rtsp__header__t_ad84623d219a1c03704925c2de0a69e78}\label{structrtsp__stream_1_1encrypted__rtsp__header__t_ad84623d219a1c03704925c2de0a69e78} 
+bool {\bfseries is\+\_\+encrypted} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structrtsp__stream_1_1encrypted__rtsp__header__t_ac3b6d7a798f88277231d505607e499ea}\label{structrtsp__stream_1_1encrypted__rtsp__header__t_ac3b6d7a798f88277231d505607e499ea} 
+std\+::uint32\+\_\+t {\bfseries type\+And\+Length}
+\item 
+\Hypertarget{structrtsp__stream_1_1encrypted__rtsp__header__t_aa1d38111952f50242413142f2ec4c385}\label{structrtsp__stream_1_1encrypted__rtsp__header__t_aa1d38111952f50242413142f2ec4c385} 
+std\+::uint32\+\_\+t {\bfseries sequence\+Number}
+\item 
+\Hypertarget{structrtsp__stream_1_1encrypted__rtsp__header__t_aa38d950b93e3200734a5b5ed7bdb5013}\label{structrtsp__stream_1_1encrypted__rtsp__header__t_aa38d950b93e3200734a5b5ed7bdb5013} 
+std\+::uint8\+\_\+t {\bfseries tag} \mbox{[}16\mbox{]}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structrtsp__stream_1_1encrypted__rtsp__header__t_a9c6deffd14d5c613070ae9fd9cf3c688}\label{structrtsp__stream_1_1encrypted__rtsp__header__t_a9c6deffd14d5c613070ae9fd9cf3c688} 
+static constexpr std\+::uint32\+\_\+t {\bfseries ENCRYPTED\+\_\+\+MESSAGE\+\_\+\+TYPE\+\_\+\+BIT} = 0x80000000
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Encrypted RTSP message header. 
+
+Header structure for encrypted RTSP messages with AES-\/\+GCM authentication. Contains payload length, sequence number, and authentication tag. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{rtsp_8cpp}{rtsp.\+cpp}}\end{DoxyCompactItemize}

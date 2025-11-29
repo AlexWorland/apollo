@@ -1,0 +1,116 @@
+\doxysection{uuid.\+h}
+\hypertarget{uuid_8h_source}{}\label{uuid_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/uuid.h@{/Users/alexworland/autoBitrate/apollo/src/uuid.h}}
+\mbox{\hyperlink{uuid_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ standard\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <random>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <cstdio>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceuuid__util}{uuid\_util}}\ \{}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{union\ }\mbox{\hyperlink{unionuuid__util_1_1uuid__t}{uuid\_t}}\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ std::uint8\_t\ b8[16];}
+\DoxyCodeLine{00023\ \ \ \ \ std::uint16\_t\ b16[8];}
+\DoxyCodeLine{00024\ \ \ \ \ std::uint32\_t\ b32[4];}
+\DoxyCodeLine{00025\ \ \ \ \ std::uint64\_t\ b64[2];}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{unionuuid__util_1_1uuid__t}{uuid\_t}}\ generate(std::default\_random\_engine\ \&engine)\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ std::uniform\_int\_distribution<std::uint8\_t>\ dist(0,\ std::numeric\_limits<std::uint8\_t>::max());}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \mbox{\hyperlink{unionuuid__util_1_1uuid__t}{uuid\_t}}\ buf;}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&el\ :\ buf.b8)\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ el\ =\ dist(engine);}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \ \ buf.b8[7]\ \&=\ (std::uint8\_t)\ 0b00101111;}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ buf.b8[9]\ \&=\ (std::uint8\_t)\ 0b10011111;}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ buf;}
+\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{unionuuid__util_1_1uuid__t}{uuid\_t}}\ generate()\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ std::random\_device\ r;}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \ \ std::default\_random\_engine\ engine\ \{r()\};}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ generate(engine);}
+\DoxyCodeLine{00047\ \ \ \ \ \}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{unionuuid__util_1_1uuid__t}{uuid\_t}}}
+\DoxyCodeLine{00050\ \ \ \ \ parse(std::string\&\ uuid\_str)\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (uuid\_str.length()\ !=\ 36)\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}Invalid\ UUID\ string\ length"{}});}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \mbox{\hyperlink{unionuuid__util_1_1uuid__t}{uuid\_t}}\ uuid;}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ temp16\_1;}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ temp32\_1,\ temp32\_2;}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{comment}{//\ Parse\ UUID\ format:\ xxxxxxxx-\/xxxx-\/xxxx-\/xxxx-\/xxxxxxxxxxxx}}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ data1,\ data2;}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ std::sscanf(}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ uuid\_str.c\_str(),\ \textcolor{stringliteral}{"{}\%8x-\/\%4x-\/\%4x-\/\%4x-\/\%8x\%4x"{}},}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \&uuid.b32[0],\ \&data1,\ \&data2,\ \&temp16\_1,\ \&temp32\_1,\ \&temp32\_2}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ );}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \textcolor{comment}{//\ Assign\ parsed\ values\ into\ uuid\_t\ structure}}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ uuid.b16[2]\ =\ \textcolor{keyword}{static\_cast<}std::uint16\_t\textcolor{keyword}{>}(data1);}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ uuid.b16[3]\ =\ \textcolor{keyword}{static\_cast<}std::uint16\_t\textcolor{keyword}{>}(data2);}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \textcolor{comment}{//\ Manually\ splitting\ the\ last\ segments\ into\ bytes}}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ uuid.b8[8]\ =\ (temp16\_1\ >>\ 8)\ \&\ 0xFF;}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ uuid.b8[9]\ =\ temp16\_1\ \&\ 0xFF;}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ uuid.b8[10]\ =\ (temp32\_1\ >>\ 24)\ \&\ 0xFF;}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ uuid.b8[11]\ =\ (temp32\_1\ >>\ 16)\ \&\ 0xFF;}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ uuid.b8[12]\ =\ (temp32\_1\ >>\ 8)\ \&\ 0xFF;}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ uuid.b8[13]\ =\ temp32\_1\ \&\ 0xFF;}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ uuid.b8[14]\ =\ (temp32\_2\ >>\ 8)\ \&\ 0xFF;}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ uuid.b8[15]\ =\ temp32\_2\ \&\ 0xFF;}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ uuid;}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \ \ [[nodiscard]]\ std::string\ string()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ std::string\ result;}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \ \ \ \ result.reserve(\textcolor{keyword}{sizeof}(\mbox{\hyperlink{unionuuid__util_1_1uuid__t}{uuid\_t}})\ *\ 2\ +\ 4);}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ hex\ =\ util::hex(*\textcolor{keyword}{this},\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ hex\_view\ =\ hex.to\_string\_view();}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \ \ \ \ std::string\_view\ slices[]\ =\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ hex\_view.substr(0,\ 8),}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ hex\_view.substr(8,\ 4),}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ hex\_view.substr(12,\ 4),}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ hex\_view.substr(16,\ 4)}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ last\_slice\ =\ hex\_view.substr(20,\ 12);}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&slice\ :\ slices)\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ std::copy(std::begin(slice),\ std::end(slice),\ std::back\_inserter(result));}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ result.push\_back(\textcolor{charliteral}{'-\/'});}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \ \ \ \ std::copy(std::begin(last\_slice),\ std::end(last\_slice),\ std::back\_inserter(result));}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00108\ \ \ \ \ \}}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ \mbox{\hyperlink{unionuuid__util_1_1uuid__t}{uuid\_t}}\ \&other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ b64[0]\ ==\ other.b64[0]\ \&\&\ b64[1]\ ==\ other.b64[1];}
+\DoxyCodeLine{00112\ \ \ \ \ \}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ operator<(\textcolor{keyword}{const}\ \mbox{\hyperlink{unionuuid__util_1_1uuid__t}{uuid\_t}}\ \&other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (b64[0]\ <\ other.b64[0]\ ||\ (b64[0]\ ==\ other.b64[0]\ \&\&\ b64[1]\ <\ other.b64[1]));}
+\DoxyCodeLine{00116\ \ \ \ \ \}}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ operator>(\textcolor{keyword}{const}\ \mbox{\hyperlink{unionuuid__util_1_1uuid__t}{uuid\_t}}\ \&other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (b64[0]\ >\ other.b64[0]\ ||\ (b64[0]\ ==\ other.b64[0]\ \&\&\ b64[1]\ >\ other.b64[1]));}
+\DoxyCodeLine{00120\ \ \ \ \ \}}
+\DoxyCodeLine{00121\ \ \ \};}
+\DoxyCodeLine{00122\ \}\ \ \textcolor{comment}{//\ namespace\ uuid\_util}}
+
+\end{DoxyCode}

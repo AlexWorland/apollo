@@ -1,0 +1,151 @@
+\doxysection{rtsp\+\_\+stream\+::socket\+\_\+t Class Reference}
+\hypertarget{classrtsp__stream_1_1socket__t}{}\label{classrtsp__stream_1_1socket__t}\index{rtsp\_stream::socket\_t@{rtsp\_stream::socket\_t}}
+
+
+RTSP socket handler.  
+
+
+Inheritance diagram for rtsp\+\_\+stream\+::socket\+\_\+t\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classrtsp__stream_1_1socket__t}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classrtsp__stream_1_1socket__t_ab5dcc72f74ae2ff911cc31bcbda2fe69}\label{classrtsp__stream_1_1socket__t_ab5dcc72f74ae2ff911cc31bcbda2fe69} 
+{\bfseries socket\+\_\+t} (boost\+::asio\+::io\+\_\+context \&io\+\_\+context, std\+::function$<$ void(tcp\+::socket \&sock, \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\+\_\+session\+\_\+t}} \&, msg\+\_\+t \&\&)$>$ \&\&handle\+\_\+data\+\_\+fn)
+\item 
+\Hypertarget{classrtsp__stream_1_1socket__t_a8a38376735294ad4e1492725df542148}\label{classrtsp__stream_1_1socket__t_a8a38376735294ad4e1492725df542148} 
+void {\bfseries read} ()
+\begin{DoxyCompactList}\small\item\em Queue an asynchronous read to begin the next message. \end{DoxyCompactList}\item 
+\Hypertarget{classrtsp__stream_1_1socket__t_a80a322cb230e890e59b1c1b077791493}\label{classrtsp__stream_1_1socket__t_a80a322cb230e890e59b1c1b077791493} 
+void {\bfseries read\+\_\+plaintext\+\_\+payload} ()
+\begin{DoxyCompactList}\small\item\em Queue an asynchronous read of the payload portion of a plaintext message. \end{DoxyCompactList}\item 
+\Hypertarget{classrtsp__stream_1_1socket__t_a91bedb145e12bfff0a3018846ed380b1}\label{classrtsp__stream_1_1socket__t_a91bedb145e12bfff0a3018846ed380b1} 
+void {\bfseries handle\+\_\+data} (msg\+\_\+t \&\&req)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classrtsp__stream_1_1socket__t_aa5d9513a1d925414c03bcd3a2ee21c06}{handle\+\_\+read\+\_\+encrypted\+\_\+header}} (std\+::shared\+\_\+ptr$<$ socket\+\_\+t $>$ \&socket, const boost\+::system\+::error\+\_\+code \&ec, std\+::size\+\_\+t bytes)
+\begin{DoxyCompactList}\small\item\em Handle the initial read of the header of an encrypted message. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classrtsp__stream_1_1socket__t_a7d34db431c906f572a66573567762843}{handle\+\_\+read\+\_\+encrypted\+\_\+message}} (std\+::shared\+\_\+ptr$<$ socket\+\_\+t $>$ \&socket, const boost\+::system\+::error\+\_\+code \&ec, std\+::size\+\_\+t bytes)
+\begin{DoxyCompactList}\small\item\em Handle the final read of the content of an encrypted message. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classrtsp__stream_1_1socket__t_ac0327746c3c82cd6f3a42d19ff1c3f19}{handle\+\_\+plaintext\+\_\+payload}} (std\+::shared\+\_\+ptr$<$ socket\+\_\+t $>$ \&socket, const boost\+::system\+::error\+\_\+code \&ec, std\+::size\+\_\+t bytes)
+\begin{DoxyCompactList}\small\item\em Handle the read of the payload portion of a plaintext message. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{classrtsp__stream_1_1socket__t_ac5403f57f6dc725f706cfc2008dd3345}{handle\+\_\+read\+\_\+plaintext}} (std\+::shared\+\_\+ptr$<$ socket\+\_\+t $>$ \&socket, const boost\+::system\+::error\+\_\+code \&ec, std\+::size\+\_\+t bytes)
+\begin{DoxyCompactList}\small\item\em Handle the read of the header portion of a plaintext message. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classrtsp__stream_1_1socket__t_a097f33d6c2d8ec755e585d9260a5cfc8}\label{classrtsp__stream_1_1socket__t_a097f33d6c2d8ec755e585d9260a5cfc8} 
+std\+::function$<$ void(tcp\+::socket \&sock, \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\+\_\+session\+\_\+t}} \&, msg\+\_\+t \&\&)$>$ {\bfseries handle\+\_\+data\+\_\+fn}
+\item 
+\Hypertarget{classrtsp__stream_1_1socket__t_aa44c9a82b724a67b7f99d10e5a59d264}\label{classrtsp__stream_1_1socket__t_aa44c9a82b724a67b7f99d10e5a59d264} 
+tcp\+::socket {\bfseries sock}
+\item 
+\Hypertarget{classrtsp__stream_1_1socket__t_ab05b17b5b99cb2ac8838f312397b3293}\label{classrtsp__stream_1_1socket__t_ab05b17b5b99cb2ac8838f312397b3293} 
+std\+::array$<$ char, 2048 $>$ {\bfseries msg\+\_\+buf}
+\item 
+\Hypertarget{classrtsp__stream_1_1socket__t_ae8a7c43dd6dd2f3bc229c679f7276074}\label{classrtsp__stream_1_1socket__t_ae8a7c43dd6dd2f3bc229c679f7276074} 
+char \texorpdfstring{$\ast$}{*} {\bfseries crlf}
+\item 
+\Hypertarget{classrtsp__stream_1_1socket__t_a2b8b9975285539f3e66dfd5b66700a1a}\label{classrtsp__stream_1_1socket__t_a2b8b9975285539f3e66dfd5b66700a1a} 
+char \texorpdfstring{$\ast$}{*} {\bfseries begin} = msg\+\_\+buf.\+data()
+\item 
+\Hypertarget{classrtsp__stream_1_1socket__t_a41acb53ad444e5740c08a8be9b6cacb8}\label{classrtsp__stream_1_1socket__t_a41acb53ad444e5740c08a8be9b6cacb8} 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\+\_\+session\+\_\+t}} $>$ {\bfseries session}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+RTSP socket handler. 
+
+Manages RTSP connection state, message reading (both plaintext and encrypted), and message handling for a single RTSP client connection. 
+
+\label{doc-func-members}
+\Hypertarget{classrtsp__stream_1_1socket__t_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classrtsp__stream_1_1socket__t_ac0327746c3c82cd6f3a42d19ff1c3f19}\index{rtsp\_stream::socket\_t@{rtsp\_stream::socket\_t}!handle\_plaintext\_payload@{handle\_plaintext\_payload}}
+\index{handle\_plaintext\_payload@{handle\_plaintext\_payload}!rtsp\_stream::socket\_t@{rtsp\_stream::socket\_t}}
+\doxysubsubsection{\texorpdfstring{handle\_plaintext\_payload()}{handle\_plaintext\_payload()}}
+{\footnotesize\ttfamily \label{classrtsp__stream_1_1socket__t_ac0327746c3c82cd6f3a42d19ff1c3f19} 
+void rtsp\+\_\+stream\+::socket\+\_\+t\+::handle\+\_\+plaintext\+\_\+payload (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ socket\+\_\+t $>$ \&}]{socket}{, }\item[{const boost\+::system\+::error\+\_\+code \&}]{ec}{, }\item[{std\+::size\+\_\+t}]{bytes}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Handle the read of the payload portion of a plaintext message. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em socket} & The socket the message was received on. \\
+\hline
+{\em ec} & The error code of the read operation. \\
+\hline
+{\em bytes} & The number of bytes read. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classrtsp__stream_1_1socket__t_aa5d9513a1d925414c03bcd3a2ee21c06}\index{rtsp\_stream::socket\_t@{rtsp\_stream::socket\_t}!handle\_read\_encrypted\_header@{handle\_read\_encrypted\_header}}
+\index{handle\_read\_encrypted\_header@{handle\_read\_encrypted\_header}!rtsp\_stream::socket\_t@{rtsp\_stream::socket\_t}}
+\doxysubsubsection{\texorpdfstring{handle\_read\_encrypted\_header()}{handle\_read\_encrypted\_header()}}
+{\footnotesize\ttfamily \label{classrtsp__stream_1_1socket__t_aa5d9513a1d925414c03bcd3a2ee21c06} 
+void rtsp\+\_\+stream\+::socket\+\_\+t\+::handle\+\_\+read\+\_\+encrypted\+\_\+header (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ socket\+\_\+t $>$ \&}]{socket}{, }\item[{const boost\+::system\+::error\+\_\+code \&}]{ec}{, }\item[{std\+::size\+\_\+t}]{bytes}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Handle the initial read of the header of an encrypted message. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em socket} & The socket the message was received on. \\
+\hline
+{\em ec} & The error code of the read operation. \\
+\hline
+{\em bytes} & The number of bytes read. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classrtsp__stream_1_1socket__t_a7d34db431c906f572a66573567762843}\index{rtsp\_stream::socket\_t@{rtsp\_stream::socket\_t}!handle\_read\_encrypted\_message@{handle\_read\_encrypted\_message}}
+\index{handle\_read\_encrypted\_message@{handle\_read\_encrypted\_message}!rtsp\_stream::socket\_t@{rtsp\_stream::socket\_t}}
+\doxysubsubsection{\texorpdfstring{handle\_read\_encrypted\_message()}{handle\_read\_encrypted\_message()}}
+{\footnotesize\ttfamily \label{classrtsp__stream_1_1socket__t_a7d34db431c906f572a66573567762843} 
+void rtsp\+\_\+stream\+::socket\+\_\+t\+::handle\+\_\+read\+\_\+encrypted\+\_\+message (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ socket\+\_\+t $>$ \&}]{socket}{, }\item[{const boost\+::system\+::error\+\_\+code \&}]{ec}{, }\item[{std\+::size\+\_\+t}]{bytes}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Handle the final read of the content of an encrypted message. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em socket} & The socket the message was received on. \\
+\hline
+{\em ec} & The error code of the read operation. \\
+\hline
+{\em bytes} & The number of bytes read. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classrtsp__stream_1_1socket__t_ac5403f57f6dc725f706cfc2008dd3345}\index{rtsp\_stream::socket\_t@{rtsp\_stream::socket\_t}!handle\_read\_plaintext@{handle\_read\_plaintext}}
+\index{handle\_read\_plaintext@{handle\_read\_plaintext}!rtsp\_stream::socket\_t@{rtsp\_stream::socket\_t}}
+\doxysubsubsection{\texorpdfstring{handle\_read\_plaintext()}{handle\_read\_plaintext()}}
+{\footnotesize\ttfamily \label{classrtsp__stream_1_1socket__t_ac5403f57f6dc725f706cfc2008dd3345} 
+void rtsp\+\_\+stream\+::socket\+\_\+t\+::handle\+\_\+read\+\_\+plaintext (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ socket\+\_\+t $>$ \&}]{socket}{, }\item[{const boost\+::system\+::error\+\_\+code \&}]{ec}{, }\item[{std\+::size\+\_\+t}]{bytes}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Handle the read of the header portion of a plaintext message. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em socket} & The socket the message was received on. \\
+\hline
+{\em ec} & The error code of the read operation. \\
+\hline
+{\em bytes} & The number of bytes read. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{rtsp_8cpp}{rtsp.\+cpp}}\end{DoxyCompactItemize}

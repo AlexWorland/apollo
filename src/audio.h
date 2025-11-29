@@ -12,6 +12,12 @@
 #include <bitset>
 
 namespace audio {
+  /**
+   * @brief Audio stream configuration enumeration.
+   * 
+   * Defines available audio stream configurations for different channel layouts
+   * and quality levels.
+   */
   enum stream_config_e : int {
     STEREO,  ///< Stereo
     HIGH_STEREO,  ///< High stereo
@@ -79,10 +85,37 @@ namespace audio {
     platf::sink_t sink;  ///< Audio sink
   };
 
+  /**
+   * @brief Audio buffer type.
+   * 
+   * Buffer for storing raw audio data as bytes.
+   */
   using buffer_t = util::buffer_t<std::uint8_t>;
+
+  /**
+   * @brief Audio packet type.
+   * 
+   * Pair of channel data pointer and audio buffer containing encoded audio data.
+   */
   using packet_t = std::pair<void *, buffer_t>;
+
+  /**
+   * @brief Audio context reference type.
+   * 
+   * Shared pointer reference to audio context for managing audio sink lifecycle.
+   */
   using audio_ctx_ref_t = safe::shared_t<audio_ctx_t>::ptr_t;
 
+  /**
+   * @brief Capture audio from the system and encode it.
+   * 
+   * Captures audio from the selected audio sink, encodes it using Opus,
+   * and sends encoded packets through the mail system.
+   * 
+   * @param mail Mail system for communication and packet delivery.
+   * @param config Audio configuration including channels, quality, and flags.
+   * @param channel_data Channel-specific data pointer to include with packets.
+   */
   void capture(safe::mail_t mail, config_t config, void *channel_data);
 
   /**

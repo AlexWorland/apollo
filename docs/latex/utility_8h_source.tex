@@ -1,0 +1,1097 @@
+\doxysection{utility.\+h}
+\hypertarget{utility_8h_source}{}\label{utility_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/utility.h@{/Users/alexworland/autoBitrate/apollo/src/utility.h}}
+\mbox{\hyperlink{utility_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ standard\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <condition\_variable>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <mutex>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <optional>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <ostream>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <string\_view>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <variant>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <nlohmann/json.hpp>}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#define\ KITTY\_WHILE\_LOOP(x,\ y,\ z)\ \(\backslash\)}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\ \ \{\ \(\backslash\)}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\ \ \ \ x;\ \(\backslash\)}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\ \ \ \ while\ (y)\ z\ \(\backslash\)}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\ \ \}}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00038\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structargument__type}{argument\_type}};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ U>}
+\DoxyCodeLine{00041\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structargument__type}{argument\_type}}<T(U)>\ \{}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{typedef}\ U\ type;}
+\DoxyCodeLine{00043\ \};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#define\ KITTY\_USING\_MOVE\_T(move\_t,\ t,\ init\_val,\ z)\ \(\backslash\)}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\ \ class\ move\_t\ \{\ \(\backslash\)}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\ \ public:\ \(\backslash\)}}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\ \ \ \ using\ element\_type\ =\ typename\ argument\_type<void(t)>::type;\ \(\backslash\)}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\(\backslash\)}}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\ \ \ \ move\_t():\ \(\backslash\)}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ el\ \{init\_val\}\ \{\ \(\backslash\)}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\ \ \ \ \}\ \(\backslash\)}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\ \ \ \ template<class...\ Args>\ \(\backslash\)}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\ \ \ \ move\_t(Args\ \&\&...args):\ \(\backslash\)}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ el\ \{std::forward<Args>(args)...\}\ \{\ \(\backslash\)}}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\ \ \ \ \}\ \(\backslash\)}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\ \ \ \ move\_t(const\ move\_t\ \&)\ =\ delete;\ \(\backslash\)}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\(\backslash\)}}
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\ \ \ \ move\_t(move\_t\ \&\&other)\ noexcept:\ \(\backslash\)}}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ el\ \{std::move(other.el)\}\ \{\ \(\backslash\)}}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\ \ \ \ \ \ other.el\ =\ element\_type\ \{init\_val\};\ \(\backslash\)}}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\ \ \ \ \}\ \(\backslash\)}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\(\backslash\)}}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\ \ \ \ move\_t\ \&operator=(const\ move\_t\ \&)\ =\ delete;\ \(\backslash\)}}
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\(\backslash\)}}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\ \ \ \ move\_t\ \&operator=(move\_t\ \&\&other)\ \{\ \(\backslash\)}}
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\ \ \ \ \ \ std::swap(el,\ other.el);\ \(\backslash\)}}
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{\ \ \ \ \ \ return\ *this;\ \(\backslash\)}}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\ \ \ \ \}\ \(\backslash\)}}
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\ \ \ \ element\_type\ *operator-\/>()\ \{\ \(\backslash\)}}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\ \ \ \ \ \ return\ \&el;\ \(\backslash\)}}
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\ \ \ \ \}\ \(\backslash\)}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\ \ \ \ const\ element\_type\ *operator-\/>()\ const\ \{\ \(\backslash\)}}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\ \ \ \ \ \ return\ \&el;\ \(\backslash\)}}
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\ \ \ \ \}\ \(\backslash\)}}
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\(\backslash\)}}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\ \ \ \ inline\ element\_type\ release()\ \{\ \(\backslash\)}}
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\ \ \ \ \ \ element\_type\ val\ =\ std::move(el);\ \(\backslash\)}}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\ \ \ \ \ \ el\ =\ element\_type\ \{init\_val\};\ \(\backslash\)}}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\ \ \ \ \ \ return\ val;\ \(\backslash\)}}
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\ \ \ \ \}\ \(\backslash\)}}
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\(\backslash\)}}
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\ \ \ \ \string~move\_t()\ z\ \(\backslash\)}}
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\(\backslash\)}}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\ \ \ \ \ \ element\_type\ el;\ \(\backslash\)}}
+\DoxyCodeLine{00086\ \textcolor{preprocessor}{\ \ \}}}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#define\ KITTY\_DECL\_CONSTR(x)\ \(\backslash\)}}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\ \ x(x\ \&\&)\ noexcept\ =\ default;\ \(\backslash\)}}
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\ \ x\ \&operator=(x\ \&\&)\ noexcept\ =\ default;\ \(\backslash\)}}
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{\ \ x();}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#define\ KITTY\_DEFAULT\_CONSTR\_MOVE(x)\ \(\backslash\)}}
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\ \ x(x\ \&\&)\ noexcept\ =\ default;\ \(\backslash\)}}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\ \ x\ \&operator=(x\ \&\&)\ noexcept\ =\ default;}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#define\ KITTY\_DEFAULT\_CONSTR\_MOVE\_THROW(x)\ \(\backslash\)}}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\ \ x(x\ \&\&)\ =\ default;\ \(\backslash\)}}
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\ \ x\ \&operator=(x\ \&\&)\ =\ default;\ \(\backslash\)}}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\ \ x()\ =\ default;}}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#define\ KITTY\_DEFAULT\_CONSTR(x)\ \(\backslash\)}}
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\ \ KITTY\_DEFAULT\_CONSTR\_MOVE(x)\ \(\backslash\)}}
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\ \ x(const\ x\ \&)\ noexcept\ =\ default;\ \(\backslash\)}}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\ \ x\ \&operator=(const\ x\ \&)\ =\ default;}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#define\ TUPLE\_2D(a,\ b,\ expr)\ \(\backslash\)}}
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\ \ decltype(expr)\ a\#\#\_\#\#b\ =\ expr;\ \(\backslash\)}}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\ \ auto\ \&a\ =\ std::get<0>(a\#\#\_\#\#b);\ \(\backslash\)}}
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\ \ auto\ \&b\ =\ std::get<1>(a\#\#\_\#\#b)}}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#define\ TUPLE\_2D\_REF(a,\ b,\ expr)\ \(\backslash\)}}
+\DoxyCodeLine{00113\ \textcolor{preprocessor}{\ \ auto\ \&a\#\#\_\#\#b\ =\ expr;\ \(\backslash\)}}
+\DoxyCodeLine{00114\ \textcolor{preprocessor}{\ \ auto\ \&a\ =\ std::get<0>(a\#\#\_\#\#b);\ \(\backslash\)}}
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\ \ auto\ \&b\ =\ std::get<1>(a\#\#\_\#\#b)}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \textcolor{preprocessor}{\#define\ TUPLE\_3D(a,\ b,\ c,\ expr)\ \(\backslash\)}}
+\DoxyCodeLine{00118\ \textcolor{preprocessor}{\ \ decltype(expr)\ a\#\#\_\#\#b\#\#\_\#\#c\ =\ expr;\ \(\backslash\)}}
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\ \ auto\ \&a\ =\ std::get<0>(a\#\#\_\#\#b\#\#\_\#\#c);\ \(\backslash\)}}
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\ \ auto\ \&b\ =\ std::get<1>(a\#\#\_\#\#b\#\#\_\#\#c);\ \(\backslash\)}}
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{\ \ auto\ \&c\ =\ std::get<2>(a\#\#\_\#\#b\#\#\_\#\#c)}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \textcolor{preprocessor}{\#define\ TUPLE\_3D\_REF(a,\ b,\ c,\ expr)\ \(\backslash\)}}
+\DoxyCodeLine{00124\ \textcolor{preprocessor}{\ \ auto\ \&a\#\#\_\#\#b\#\#\_\#\#c\ =\ expr;\ \(\backslash\)}}
+\DoxyCodeLine{00125\ \textcolor{preprocessor}{\ \ auto\ \&a\ =\ std::get<0>(a\#\#\_\#\#b\#\#\_\#\#c);\ \(\backslash\)}}
+\DoxyCodeLine{00126\ \textcolor{preprocessor}{\ \ auto\ \&b\ =\ std::get<1>(a\#\#\_\#\#b\#\#\_\#\#c);\ \(\backslash\)}}
+\DoxyCodeLine{00127\ \textcolor{preprocessor}{\ \ auto\ \&c\ =\ std::get<2>(a\#\#\_\#\#b\#\#\_\#\#c)}}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \textcolor{preprocessor}{\#define\ TUPLE\_EL(a,\ b,\ expr)\ \(\backslash\)}}
+\DoxyCodeLine{00130\ \textcolor{preprocessor}{\ \ decltype(expr)\ a\#\#\_\ =\ expr;\ \(\backslash\)}}
+\DoxyCodeLine{00131\ \textcolor{preprocessor}{\ \ auto\ \&a\ =\ std::get<b>(a\#\#\_)}}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \textcolor{preprocessor}{\#define\ TUPLE\_EL\_REF(a,\ b,\ expr)\ \(\backslash\)}}
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{\ \ auto\ \&a\ =\ std::get<b>(expr)}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \textcolor{keyword}{namespace\ }util\ \{}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{template}<\textcolor{keyword}{typename}...>\ \textcolor{keyword}{class\ }X,\ \textcolor{keyword}{class}...\ Y>}
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structutil_1_1____instantiation__of}{\_\_instantiation\_of}}:\ \textcolor{keyword}{public}\ std::false\_type\ \{\};}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{template}<\textcolor{keyword}{typename}...>\ \textcolor{keyword}{class\ }X,\ \textcolor{keyword}{class}...\ Y>}
+\DoxyCodeLine{00142\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structutil_1_1____instantiation__of}{\_\_instantiation\_of}}<X,\ X<Y...>>:\ \textcolor{keyword}{public}\ std::true\_type\ \{\};}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{template}<\textcolor{keyword}{typename}...>\ \textcolor{keyword}{class\ }X,\ \textcolor{keyword}{class\ }T,\ \textcolor{keyword}{class}...\ Y>}
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ instantiation\_of\_v\ =\ \mbox{\hyperlink{structutil_1_1____instantiation__of}{\_\_instantiation\_of}}<X,\ T,\ Y...>::value;}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \ \ \textcolor{keyword}{template}<\textcolor{keywordtype}{bool}\ V,\ \textcolor{keyword}{class}\ X,\ \textcolor{keyword}{class}\ Y>}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structutil_1_1____either}{\_\_either}};}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00156\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ X,\ \textcolor{keyword}{class}\ Y>}
+\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structutil_1_1____either}{\_\_either}}<true,\ X,\ Y>\ \{}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keyword}{using\ }type\ =\ X;}
+\DoxyCodeLine{00159\ \ \ \};}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00167\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ X,\ \textcolor{keyword}{class}\ Y>}
+\DoxyCodeLine{00168\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structutil_1_1____either}{\_\_either}}<false,\ X,\ Y>\ \{}
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keyword}{using\ }type\ =\ Y;}
+\DoxyCodeLine{00170\ \ \ \};}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00172\ \ \ \textcolor{keyword}{template}<\textcolor{keywordtype}{bool}\ V,\ \textcolor{keyword}{class}\ X,\ \textcolor{keyword}{class}\ Y>}
+\DoxyCodeLine{00173\ \ \ \textcolor{keyword}{using\ }either\_t\ =\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{structutil_1_1____either}{\_\_either<V,\ X,\ Y>::type}};}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00175\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}...\ Ts>}
+\DoxyCodeLine{00176\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structutil_1_1overloaded}{overloaded}}:\ Ts...\ \{}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keyword}{using\ }Ts::operator()...;}
+\DoxyCodeLine{00178\ \ \ \};}
+\DoxyCodeLine{00179\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}...\ Ts>}
+\DoxyCodeLine{00180\ \ \ \mbox{\hyperlink{structutil_1_1overloaded}{overloaded}}(Ts...)\ -\/>\ \mbox{\hyperlink{structutil_1_1overloaded}{overloaded}}<Ts...>;}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00190\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00191\ \ \ \textcolor{keyword}{class\ }FailGuard\ \{}
+\DoxyCodeLine{00192\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00193\ \ \ \ \ FailGuard()\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \ \ \ \ FailGuard(T\ \&\&f)\ \textcolor{keyword}{noexcept}:}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \_func\ \{std::forward<T>(f)\}\ \{}
+\DoxyCodeLine{00197\ \ \ \ \ \}}
+\DoxyCodeLine{00198\ }
+\DoxyCodeLine{00199\ \ \ \ \ FailGuard(FailGuard\ \&\&other)\ \textcolor{keyword}{noexcept}:}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \_func\ \{std::move(other.\_func)\}\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ this-\/>failure\ =\ other.failure;}
+\DoxyCodeLine{00202\ }
+\DoxyCodeLine{00203\ \ \ \ \ \ \ other.failure\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00204\ \ \ \ \ \}}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \ \ \ \ FailGuard(\textcolor{keyword}{const}\ FailGuard\ \&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00208\ \ \ \ \ FailGuard\ \&operator=(\textcolor{keyword}{const}\ FailGuard\ \&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00209\ \ \ \ \ FailGuard\ \&operator=(FailGuard\ \&\&other)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00210\ }
+\DoxyCodeLine{00211\ \ \ \ \ \string~FailGuard()\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (failure)\ \{}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \_func();}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00215\ \ \ \ \ \}}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keywordtype}{void}\ disable()\ \{}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ failure\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00219\ \ \ \ \ \}}
+\DoxyCodeLine{00220\ }
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{keywordtype}{bool}\ failure\ \{\textcolor{keyword}{true}\};}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00224\ \ \ \ \ T\ \_func;}
+\DoxyCodeLine{00225\ \ \ \};}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00228\ \ \ [[nodiscard]]\ \textcolor{keyword}{auto}\ fail\_guard(T\ \&\&f)\ \{}
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classutil_1_1_fail_guard}{FailGuard<T>}}\ \{std::forward<T>(f)\};}
+\DoxyCodeLine{00230\ \ \ \}}
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00232\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00233\ \ \ \textcolor{keywordtype}{void}\ append\_struct(std::vector<uint8\_t>\ \&buf,\ \textcolor{keyword}{const}\ T\ \&\_struct)\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{size\_t}\ data\_len\ =\ \textcolor{keyword}{sizeof}(\_struct);}
+\DoxyCodeLine{00235\ }
+\DoxyCodeLine{00236\ \ \ \ \ buf.reserve(data\_len);}
+\DoxyCodeLine{00237\ }
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keyword}{auto}\ *data\ =\ (uint8\_t\ *)\ \&\_struct;}
+\DoxyCodeLine{00239\ }
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ x\ =\ 0;\ x\ <\ data\_len;\ ++x)\ \{}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ buf.push\_back(data[x]);}
+\DoxyCodeLine{00242\ \ \ \ \ \}}
+\DoxyCodeLine{00243\ \ \ \}}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00252\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00253\ \ \ \textcolor{keyword}{class\ }Hex\ \{}
+\DoxyCodeLine{00254\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00255\ \ \ \ \ \textcolor{keyword}{typedef}\ T\ elem\_type;}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00258\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ \_bits[16]\ \{}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \textcolor{charliteral}{'0'},}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \textcolor{charliteral}{'1'},}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \textcolor{charliteral}{'2'},}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \textcolor{charliteral}{'3'},}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \textcolor{charliteral}{'4'},}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \textcolor{charliteral}{'5'},}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \textcolor{charliteral}{'6'},}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \textcolor{charliteral}{'7'},}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \textcolor{charliteral}{'8'},}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \textcolor{charliteral}{'9'},}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \textcolor{charliteral}{'A'},}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \textcolor{charliteral}{'B'},}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \textcolor{charliteral}{'C'},}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \textcolor{charliteral}{'D'},}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \textcolor{charliteral}{'E'},}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \textcolor{charliteral}{'F'}}
+\DoxyCodeLine{00275\ \ \ \ \ \};}
+\DoxyCodeLine{00276\ }
+\DoxyCodeLine{00277\ \ \ \ \ \textcolor{keywordtype}{char}\ \_hex[\textcolor{keyword}{sizeof}(elem\_type)\ *\ 2];}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00280\ \ \ \ \ Hex(\textcolor{keyword}{const}\ elem\_type\ \&elem,\ \textcolor{keywordtype}{bool}\ rev)\ \{}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!rev)\ \{}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t\ *data\ =\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const\ }uint8\_t\ *\textcolor{keyword}{>}(\&elem)\ +\ \textcolor{keyword}{sizeof}(elem\_type)\ -\/\ 1;}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ it\ =\ begin();\ it\ <\ cend();)\ \{}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \ \ *it++\ =\ \_bits[*data\ /\ 16];}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \ \ *it++\ =\ \_bits[*data-\/-\/\ \%\ 16];}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t\ *data\ =\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const\ }uint8\_t\ *\textcolor{keyword}{>}(\&elem);}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ it\ =\ begin();\ it\ <\ cend();)\ \{}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \ \ *it++\ =\ \_bits[*data\ /\ 16];}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \ \ *it++\ =\ \_bits[*data++\ \%\ 16];}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00294\ \ \ \ \ \}}
+\DoxyCodeLine{00295\ }
+\DoxyCodeLine{00296\ \ \ \ \ \textcolor{keywordtype}{char}\ *begin()\ \{}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_hex;}
+\DoxyCodeLine{00298\ \ \ \ \ \}}
+\DoxyCodeLine{00299\ }
+\DoxyCodeLine{00300\ \ \ \ \ \textcolor{keywordtype}{char}\ *end()\ \{}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_hex\ +\ \textcolor{keyword}{sizeof}(elem\_type)\ *\ 2;}
+\DoxyCodeLine{00302\ \ \ \ \ \}}
+\DoxyCodeLine{00303\ }
+\DoxyCodeLine{00304\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *begin()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_hex;}
+\DoxyCodeLine{00306\ \ \ \ \ \}}
+\DoxyCodeLine{00307\ }
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *end()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_hex\ +\ \textcolor{keyword}{sizeof}(elem\_type)\ *\ 2;}
+\DoxyCodeLine{00310\ \ \ \ \ \}}
+\DoxyCodeLine{00311\ }
+\DoxyCodeLine{00312\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *cbegin()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_hex;}
+\DoxyCodeLine{00314\ \ \ \ \ \}}
+\DoxyCodeLine{00315\ }
+\DoxyCodeLine{00316\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *cend()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_hex\ +\ \textcolor{keyword}{sizeof}(elem\_type)\ *\ 2;}
+\DoxyCodeLine{00318\ \ \ \ \ \}}
+\DoxyCodeLine{00319\ }
+\DoxyCodeLine{00320\ \ \ \ \ std::string\ to\_string()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{begin(),\ end()\};}
+\DoxyCodeLine{00322\ \ \ \ \ \}}
+\DoxyCodeLine{00323\ }
+\DoxyCodeLine{00324\ \ \ \ \ std::string\_view\ to\_string\_view()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{begin(),\ \textcolor{keyword}{sizeof}(elem\_type)\ *\ 2\};}
+\DoxyCodeLine{00326\ \ \ \ \ \}}
+\DoxyCodeLine{00327\ \ \ \};}
+\DoxyCodeLine{00328\ }
+\DoxyCodeLine{00329\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00330\ \ \ \mbox{\hyperlink{classutil_1_1_hex}{Hex<T>}}\ hex(\textcolor{keyword}{const}\ T\ \&elem,\ \textcolor{keywordtype}{bool}\ rev\ =\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00331\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classutil_1_1_hex}{Hex<T>}}(elem,\ rev);}
+\DoxyCodeLine{00332\ \ \ \}}
+\DoxyCodeLine{00333\ }
+\DoxyCodeLine{00334\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00335\ \ \ std::string\ log\_hex(\textcolor{keyword}{const}\ T\ \&value)\ \{}
+\DoxyCodeLine{00336\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}0x"{}}\ +\ Hex<T>(value,\ \textcolor{keyword}{false}).to\_string();}
+\DoxyCodeLine{00337\ \ \ \}}
+\DoxyCodeLine{00338\ }
+\DoxyCodeLine{00339\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ It>}
+\DoxyCodeLine{00340\ \ \ std::string\ hex\_vec(It\ begin,\ It\ end,\ \textcolor{keywordtype}{bool}\ rev\ =\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00341\ \ \ \ \ \textcolor{keyword}{auto}\ str\_size\ =\ 2\ *\ std::distance(begin,\ end);}
+\DoxyCodeLine{00342\ }
+\DoxyCodeLine{00343\ \ \ \ \ std::string\ hex;}
+\DoxyCodeLine{00344\ \ \ \ \ hex.resize(str\_size);}
+\DoxyCodeLine{00345\ }
+\DoxyCodeLine{00346\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ \_bits[16]\ \{}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \textcolor{charliteral}{'0'},}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \textcolor{charliteral}{'1'},}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \textcolor{charliteral}{'2'},}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \textcolor{charliteral}{'3'},}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \textcolor{charliteral}{'4'},}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \textcolor{charliteral}{'5'},}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \textcolor{charliteral}{'6'},}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \textcolor{charliteral}{'7'},}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \textcolor{charliteral}{'8'},}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \textcolor{charliteral}{'9'},}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \textcolor{charliteral}{'A'},}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \textcolor{charliteral}{'B'},}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \textcolor{charliteral}{'C'},}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \textcolor{charliteral}{'D'},}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \textcolor{charliteral}{'E'},}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \textcolor{charliteral}{'F'}}
+\DoxyCodeLine{00363\ \ \ \ \ \};}
+\DoxyCodeLine{00364\ }
+\DoxyCodeLine{00365\ \ \ \ \ \textcolor{keywordflow}{if}\ (rev)\ \{}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ it\ =\ std::begin(hex);\ it\ <\ std::end(hex);)\ \{}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ *it++\ =\ \_bits[((uint8\_t)\ *begin)\ /\ 16];}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ *it++\ =\ \_bits[((uint8\_t)\ *begin++)\ \%\ 16];}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00370\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ -\/-\/end;}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ it\ =\ std::begin(hex);\ it\ <\ std::end(hex);)\ \{}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ *it++\ =\ \_bits[((uint8\_t)\ *end)\ /\ 16];}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \ \ *it++\ =\ \_bits[((uint8\_t)\ *end-\/-\/)\ \%\ 16];}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00376\ \ \ \ \ \}}
+\DoxyCodeLine{00377\ }
+\DoxyCodeLine{00378\ \ \ \ \ \textcolor{keywordflow}{return}\ hex;}
+\DoxyCodeLine{00379\ \ \ \}}
+\DoxyCodeLine{00380\ }
+\DoxyCodeLine{00381\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ C>}
+\DoxyCodeLine{00382\ \ \ std::string\ hex\_vec(C\ \&\&c,\ \textcolor{keywordtype}{bool}\ rev\ =\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00383\ \ \ \ \ \textcolor{keywordflow}{return}\ hex\_vec(std::begin(c),\ std::end(c),\ rev);}
+\DoxyCodeLine{00384\ \ \ \}}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00386\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00387\ \ \ T\ from\_hex(\textcolor{keyword}{const}\ std::string\_view\ \&hex,\ \textcolor{keywordtype}{bool}\ rev\ =\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00388\ \ \ \ \ std::uint8\_t\ buf[\textcolor{keyword}{sizeof}(T)];}
+\DoxyCodeLine{00389\ }
+\DoxyCodeLine{00390\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{char}\ \textcolor{keyword}{constexpr}\ shift\_bit\ =\ \textcolor{charliteral}{'a'}\ -\/\ \textcolor{charliteral}{'A'};}
+\DoxyCodeLine{00391\ }
+\DoxyCodeLine{00392\ \ \ \ \ \textcolor{keyword}{auto}\ is\_convertable\ =\ [](\textcolor{keywordtype}{char}\ ch)\ -\/>\ \textcolor{keywordtype}{bool}\ \{}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (isdigit(ch))\ \{}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00396\ }
+\DoxyCodeLine{00397\ \ \ \ \ \ \ ch\ |=\ shift\_bit;}
+\DoxyCodeLine{00398\ }
+\DoxyCodeLine{00399\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{charliteral}{'a'}\ >\ ch\ ||\ ch\ >\ \textcolor{charliteral}{'z'})\ \{}
+\DoxyCodeLine{00400\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00402\ }
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00404\ \ \ \ \ \};}
+\DoxyCodeLine{00405\ }
+\DoxyCodeLine{00406\ \ \ \ \ \textcolor{keyword}{auto}\ buf\_size\ =\ std::count\_if(std::begin(hex),\ std::end(hex),\ is\_convertable)\ /\ 2;}
+\DoxyCodeLine{00407\ \ \ \ \ \textcolor{keyword}{auto}\ padding\ =\ \textcolor{keyword}{sizeof}(T)\ -\/\ buf\_size;}
+\DoxyCodeLine{00408\ }
+\DoxyCodeLine{00409\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *data\ =\ hex.data()\ +\ hex.size()\ -\/\ 1;}
+\DoxyCodeLine{00410\ }
+\DoxyCodeLine{00411\ \ \ \ \ \textcolor{keyword}{auto}\ convert\ =\ [](\textcolor{keywordtype}{char}\ ch)\ -\/>\ std::uint8\_t\ \{}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ch\ >=\ \textcolor{charliteral}{'0'}\ \&\&\ ch\ <=\ \textcolor{charliteral}{'9'})\ \{}
+\DoxyCodeLine{00413\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (std::uint8\_t)\ ch\ -\/\ \textcolor{charliteral}{'0'};}
+\DoxyCodeLine{00414\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00415\ }
+\DoxyCodeLine{00416\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (std::uint8\_t)\ (ch\ |\ (char)\ 32)\ -\/\ \textcolor{charliteral}{'a'}\ +\ (\textcolor{keywordtype}{char})\ 10;}
+\DoxyCodeLine{00417\ \ \ \ \ \};}
+\DoxyCodeLine{00418\ }
+\DoxyCodeLine{00419\ \ \ \ \ std::fill\_n(buf\ +\ buf\_size,\ padding,\ 0);}
+\DoxyCodeLine{00420\ }
+\DoxyCodeLine{00421\ \ \ \ \ std::for\_each\_n(buf,\ buf\_size,\ [\&](\textcolor{keyword}{auto}\ \&el)\ \{}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!is\_convertable(*data))\ \{}
+\DoxyCodeLine{00423\ \ \ \ \ \ \ \ \ -\/-\/data;}
+\DoxyCodeLine{00424\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00425\ \ \ \ \ \ \ std::uint8\_t\ ch\_r\ =\ convert(*data-\/-\/);}
+\DoxyCodeLine{00426\ }
+\DoxyCodeLine{00427\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!is\_convertable(*data))\ \{}
+\DoxyCodeLine{00428\ \ \ \ \ \ \ \ \ -\/-\/data;}
+\DoxyCodeLine{00429\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00430\ \ \ \ \ \ \ std::uint8\_t\ ch\_l\ =\ convert(*data-\/-\/);}
+\DoxyCodeLine{00431\ }
+\DoxyCodeLine{00432\ \ \ \ \ \ \ el\ =\ (ch\_l\ <<\ 4)\ |\ ch\_r;}
+\DoxyCodeLine{00433\ \ \ \ \ \});}
+\DoxyCodeLine{00434\ }
+\DoxyCodeLine{00435\ \ \ \ \ \textcolor{keywordflow}{if}\ (rev)\ \{}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ std::reverse(std::begin(buf),\ std::end(buf));}
+\DoxyCodeLine{00437\ \ \ \ \ \}}
+\DoxyCodeLine{00438\ }
+\DoxyCodeLine{00439\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{reinterpret\_cast<}T\ *\textcolor{keyword}{>}(buf);}
+\DoxyCodeLine{00440\ \ \ \}}
+\DoxyCodeLine{00441\ }
+\DoxyCodeLine{00442\ \ \ \textcolor{keyword}{inline}\ std::string\ from\_hex\_vec(\textcolor{keyword}{const}\ std::string\ \&hex,\ \textcolor{keywordtype}{bool}\ rev\ =\ \textcolor{keyword}{false})\ \{}
+\DoxyCodeLine{00443\ \ \ \ \ std::string\ buf;}
+\DoxyCodeLine{00444\ }
+\DoxyCodeLine{00445\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{char}\ \textcolor{keyword}{constexpr}\ shift\_bit\ =\ \textcolor{charliteral}{'a'}\ -\/\ \textcolor{charliteral}{'A'};}
+\DoxyCodeLine{00446\ \ \ \ \ \textcolor{keyword}{auto}\ is\_convertable\ =\ [](\textcolor{keywordtype}{char}\ ch)\ -\/>\ \textcolor{keywordtype}{bool}\ \{}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (isdigit(ch))\ \{}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00449\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00450\ }
+\DoxyCodeLine{00451\ \ \ \ \ \ \ ch\ |=\ shift\_bit;}
+\DoxyCodeLine{00452\ }
+\DoxyCodeLine{00453\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{charliteral}{'a'}\ >\ ch\ ||\ ch\ >\ \textcolor{charliteral}{'z'})\ \{}
+\DoxyCodeLine{00454\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00455\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00456\ }
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00458\ \ \ \ \ \};}
+\DoxyCodeLine{00459\ }
+\DoxyCodeLine{00460\ \ \ \ \ \textcolor{keyword}{auto}\ buf\_size\ =\ std::count\_if(std::begin(hex),\ std::end(hex),\ is\_convertable)\ /\ 2;}
+\DoxyCodeLine{00461\ \ \ \ \ buf.resize(buf\_size);}
+\DoxyCodeLine{00462\ }
+\DoxyCodeLine{00463\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *data\ =\ hex.data()\ +\ hex.size()\ -\/\ 1;}
+\DoxyCodeLine{00464\ }
+\DoxyCodeLine{00465\ \ \ \ \ \textcolor{keyword}{auto}\ convert\ =\ [](\textcolor{keywordtype}{char}\ ch)\ -\/>\ std::uint8\_t\ \{}
+\DoxyCodeLine{00466\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ch\ >=\ \textcolor{charliteral}{'0'}\ \&\&\ ch\ <=\ \textcolor{charliteral}{'9'})\ \{}
+\DoxyCodeLine{00467\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (std::uint8\_t)\ ch\ -\/\ \textcolor{charliteral}{'0'};}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00469\ }
+\DoxyCodeLine{00470\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (std::uint8\_t)\ (ch\ |\ (char)\ 32)\ -\/\ \textcolor{charliteral}{'a'}\ +\ (\textcolor{keywordtype}{char})\ 10;}
+\DoxyCodeLine{00471\ \ \ \ \ \};}
+\DoxyCodeLine{00472\ }
+\DoxyCodeLine{00473\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ \&el\ :\ buf)\ \{}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!is\_convertable(*data))\ \{}
+\DoxyCodeLine{00475\ \ \ \ \ \ \ \ \ -\/-\/data;}
+\DoxyCodeLine{00476\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ std::uint8\_t\ ch\_r\ =\ convert(*data-\/-\/);}
+\DoxyCodeLine{00478\ }
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!is\_convertable(*data))\ \{}
+\DoxyCodeLine{00480\ \ \ \ \ \ \ \ \ -\/-\/data;}
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00482\ \ \ \ \ \ \ std::uint8\_t\ ch\_l\ =\ convert(*data-\/-\/);}
+\DoxyCodeLine{00483\ }
+\DoxyCodeLine{00484\ \ \ \ \ \ \ el\ =\ (ch\_l\ <<\ 4)\ |\ ch\_r;}
+\DoxyCodeLine{00485\ \ \ \ \ \}}
+\DoxyCodeLine{00486\ }
+\DoxyCodeLine{00487\ \ \ \ \ \textcolor{keywordflow}{if}\ (rev)\ \{}
+\DoxyCodeLine{00488\ \ \ \ \ \ \ std::reverse(std::begin(buf),\ std::end(buf));}
+\DoxyCodeLine{00489\ \ \ \ \ \}}
+\DoxyCodeLine{00490\ }
+\DoxyCodeLine{00491\ \ \ \ \ \textcolor{keywordflow}{return}\ buf;}
+\DoxyCodeLine{00492\ \ \ \}}
+\DoxyCodeLine{00493\ }
+\DoxyCodeLine{00494\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00495\ \ \ T\ get\_non\_string\_json\_value(\textcolor{keyword}{const}\ nlohmann::json\&\ j,\ \textcolor{keyword}{const}\ std::string\&\ key,\ \textcolor{keyword}{const}\ T\&\ default\_value\ =\ T\{\})\ \{}
+\DoxyCodeLine{00496\ \ \ \ \ \textcolor{keywordflow}{if}\ (!j.contains(key))}
+\DoxyCodeLine{00497\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ default\_value;}
+\DoxyCodeLine{00498\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ val\ =\ j.at(key);}
+\DoxyCodeLine{00499\ \ \ \ \ \textcolor{keywordflow}{if}\ (val.is\_number()\ ||\ val.is\_boolean())}
+\DoxyCodeLine{00500\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ val.get<T>();}
+\DoxyCodeLine{00501\ \ \ \ \ \textcolor{keywordflow}{if}\ (val.is\_string())\ \{}
+\DoxyCodeLine{00502\ \ \ \ \ \ \ std::string\ s\ =\ val.get<std::string>();}
+\DoxyCodeLine{00503\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same\_v<T,\ int>)\ \{}
+\DoxyCodeLine{00504\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::stoi(s);}
+\DoxyCodeLine{00505\ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same\_v<T,\ double>)\ \{}
+\DoxyCodeLine{00506\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::stod(s);}
+\DoxyCodeLine{00507\ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same\_v<T,\ bool>)\ \{}
+\DoxyCodeLine{00508\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ s\ ==\ \textcolor{stringliteral}{"{}true"{}};}
+\DoxyCodeLine{00509\ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same\_v<T,\ std::string>)\ \{}
+\DoxyCodeLine{00510\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ s;}
+\DoxyCodeLine{00511\ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00512\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ default\_value;}
+\DoxyCodeLine{00513\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00514\ \ \ \ \ \}}
+\DoxyCodeLine{00515\ \ \ \ \ \textcolor{keywordflow}{return}\ default\_value;}
+\DoxyCodeLine{00516\ \ \ \}}
+\DoxyCodeLine{00517\ }
+\DoxyCodeLine{00525\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00526\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classutil_1_1hash}{hash}}\ \{}
+\DoxyCodeLine{00527\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00528\ \ \ \ \ \textcolor{keyword}{using\ }value\_type\ =\ T;}
+\DoxyCodeLine{00529\ }
+\DoxyCodeLine{00530\ \ \ \ \ std::size\_t\ operator()(\textcolor{keyword}{const}\ value\_type\ \&value)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00531\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ *p\ =\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const\ }\textcolor{keywordtype}{char}\ *\textcolor{keyword}{>}(\&value);}
+\DoxyCodeLine{00532\ }
+\DoxyCodeLine{00533\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::hash<std::string\_view>\ \{\}(std::string\_view\ \{p,\ \textcolor{keyword}{sizeof}(value\_type)\});}
+\DoxyCodeLine{00534\ \ \ \ \ \}}
+\DoxyCodeLine{00535\ \ \ \};}
+\DoxyCodeLine{00536\ }
+\DoxyCodeLine{00537\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00538\ \ \ \textcolor{keyword}{auto}\ enm(\textcolor{keyword}{const}\ T\ \&val)\ -\/>\ \textcolor{keyword}{const}\ std::underlying\_type\_t<T>\ \&\ \{}
+\DoxyCodeLine{00539\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const\ }std::underlying\_type\_t<T>\ *\textcolor{keyword}{>}(\&val);}
+\DoxyCodeLine{00540\ \ \ \}}
+\DoxyCodeLine{00541\ }
+\DoxyCodeLine{00542\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00543\ \ \ \textcolor{keyword}{auto}\ enm(T\ \&val)\ -\/>\ std::underlying\_type\_t<T>\ \&\ \{}
+\DoxyCodeLine{00544\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{reinterpret\_cast<}std::underlying\_type\_t<T>\ *\textcolor{keyword}{>}(\&val);}
+\DoxyCodeLine{00545\ \ \ \}}
+\DoxyCodeLine{00546\ }
+\DoxyCodeLine{00547\ \ \ \textcolor{keyword}{inline}\ std::int64\_t\ from\_chars(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *begin,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *end)\ \{}
+\DoxyCodeLine{00548\ \ \ \ \ \textcolor{keywordflow}{if}\ (begin\ ==\ end)\ \{}
+\DoxyCodeLine{00549\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00550\ \ \ \ \ \}}
+\DoxyCodeLine{00551\ }
+\DoxyCodeLine{00552\ \ \ \ \ std::int64\_t\ res\ \{\};}
+\DoxyCodeLine{00553\ \ \ \ \ std::int64\_t\ mul\ =\ 1;}
+\DoxyCodeLine{00554\ \ \ \ \ \textcolor{keywordflow}{while}\ (begin\ !=\ -\/-\/end)\ \{}
+\DoxyCodeLine{00555\ \ \ \ \ \ \ res\ +=\ (std::int64\_t)\ (*end\ -\/\ \textcolor{charliteral}{'0'})\ *\ mul;}
+\DoxyCodeLine{00556\ }
+\DoxyCodeLine{00557\ \ \ \ \ \ \ mul\ *=\ 10;}
+\DoxyCodeLine{00558\ \ \ \ \ \}}
+\DoxyCodeLine{00559\ }
+\DoxyCodeLine{00560\ \ \ \ \ \textcolor{keywordflow}{return}\ *begin\ !=\ \textcolor{charliteral}{'-\/'}\ ?\ res\ +\ (std::int64\_t)\ (*begin\ -\/\ \textcolor{charliteral}{'0'})\ *\ mul\ :\ -\/res;}
+\DoxyCodeLine{00561\ \ \ \}}
+\DoxyCodeLine{00562\ }
+\DoxyCodeLine{00563\ \ \ \textcolor{keyword}{inline}\ std::int64\_t\ from\_view(\textcolor{keyword}{const}\ std::string\_view\ \&number)\ \{}
+\DoxyCodeLine{00564\ \ \ \ \ \textcolor{keywordflow}{return}\ from\_chars(std::begin(number),\ std::end(number));}
+\DoxyCodeLine{00565\ \ \ \}}
+\DoxyCodeLine{00566\ }
+\DoxyCodeLine{00576\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ X,\ \textcolor{keyword}{class}\ Y>}
+\DoxyCodeLine{00577\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classutil_1_1_either}{Either}}:\ \textcolor{keyword}{public}\ std::variant<std::monostate,\ X,\ Y>\ \{}
+\DoxyCodeLine{00578\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00579\ \ \ \ \ \textcolor{keyword}{using\ }std::variant<std::monostate,\ X,\ Y>::variant;}
+\DoxyCodeLine{00580\ }
+\DoxyCodeLine{00581\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ has\_left()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00582\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::holds\_alternative<X>(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00583\ \ \ \ \ \}}
+\DoxyCodeLine{00584\ }
+\DoxyCodeLine{00585\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ has\_right()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00586\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::holds\_alternative<Y>(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00587\ \ \ \ \ \}}
+\DoxyCodeLine{00588\ }
+\DoxyCodeLine{00589\ \ \ \ \ X\ \&left()\ \{}
+\DoxyCodeLine{00590\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::get<X>(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00591\ \ \ \ \ \}}
+\DoxyCodeLine{00592\ }
+\DoxyCodeLine{00593\ \ \ \ \ Y\ \&right()\ \{}
+\DoxyCodeLine{00594\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::get<Y>(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00595\ \ \ \ \ \}}
+\DoxyCodeLine{00596\ }
+\DoxyCodeLine{00597\ \ \ \ \ \textcolor{keyword}{const}\ X\ \&left()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00598\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::get<X>(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00599\ \ \ \ \ \}}
+\DoxyCodeLine{00600\ }
+\DoxyCodeLine{00601\ \ \ \ \ \textcolor{keyword}{const}\ Y\ \&right()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00602\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::get<Y>(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00603\ \ \ \ \ \}}
+\DoxyCodeLine{00604\ \ \ \};}
+\DoxyCodeLine{00605\ }
+\DoxyCodeLine{00615\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ D\ =\ std::default\_delete<T>>}
+\DoxyCodeLine{00616\ \ \ \textcolor{keyword}{class\ }uniq\_ptr\ \{}
+\DoxyCodeLine{00617\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00618\ \ \ \ \ \textcolor{keyword}{using\ }element\_type\ =\ T;}
+\DoxyCodeLine{00619\ \ \ \ \ \textcolor{keyword}{using\ }pointer\ =\ element\_type\ *;}
+\DoxyCodeLine{00620\ \ \ \ \ \textcolor{keyword}{using\ }const\_pointer\ =\ element\_type\ \textcolor{keyword}{const}\ *;}
+\DoxyCodeLine{00621\ \ \ \ \ \textcolor{keyword}{using\ }deleter\_type\ =\ D;}
+\DoxyCodeLine{00622\ }
+\DoxyCodeLine{00623\ \ \ \ \ \textcolor{keyword}{constexpr}\ uniq\_ptr()\ \textcolor{keyword}{noexcept}:}
+\DoxyCodeLine{00624\ \ \ \ \ \ \ \ \ \_p\ \{\textcolor{keyword}{nullptr}\}\ \{}
+\DoxyCodeLine{00625\ \ \ \ \ \}}
+\DoxyCodeLine{00626\ }
+\DoxyCodeLine{00627\ \ \ \ \ \textcolor{keyword}{constexpr}\ uniq\_ptr(std::nullptr\_t)\ \textcolor{keyword}{noexcept}:}
+\DoxyCodeLine{00628\ \ \ \ \ \ \ \ \ \_p\ \{\textcolor{keyword}{nullptr}\}\ \{}
+\DoxyCodeLine{00629\ \ \ \ \ \}}
+\DoxyCodeLine{00630\ }
+\DoxyCodeLine{00631\ \ \ \ \ uniq\_ptr(\textcolor{keyword}{const}\ uniq\_ptr\ \&other)\ \textcolor{keyword}{noexcept}\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00632\ \ \ \ \ uniq\_ptr\ \&operator=(\textcolor{keyword}{const}\ uniq\_ptr\ \&other)\ \textcolor{keyword}{noexcept}\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00633\ }
+\DoxyCodeLine{00634\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ V>}
+\DoxyCodeLine{00635\ \ \ \ \ uniq\_ptr(V\ *p)\ \textcolor{keyword}{noexcept}:}
+\DoxyCodeLine{00636\ \ \ \ \ \ \ \ \ \_p\ \{p\}\ \{}
+\DoxyCodeLine{00637\ \ \ \ \ \ \ \textcolor{keyword}{static\_assert}(std::is\_same\_v<element\_type,\ void>\ ||\ std::is\_same\_v<element\_type,\ V>\ ||\ std::is\_base\_of\_v<element\_type,\ V>,\ \textcolor{stringliteral}{"{}element\_type\ must\ be\ base\ class\ of\ V"{}});}
+\DoxyCodeLine{00638\ \ \ \ \ \}}
+\DoxyCodeLine{00639\ }
+\DoxyCodeLine{00640\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ V>}
+\DoxyCodeLine{00641\ \ \ \ \ uniq\_ptr(std::unique\_ptr<V,\ deleter\_type>\ \&\&uniq)\ \textcolor{keyword}{noexcept}:}
+\DoxyCodeLine{00642\ \ \ \ \ \ \ \ \ \_p\ \{uniq.release()\}\ \{}
+\DoxyCodeLine{00643\ \ \ \ \ \ \ \textcolor{keyword}{static\_assert}(std::is\_same\_v<element\_type,\ void>\ ||\ std::is\_same\_v<T,\ V>\ ||\ std::is\_base\_of\_v<element\_type,\ V>,\ \textcolor{stringliteral}{"{}element\_type\ must\ be\ base\ class\ of\ V"{}});}
+\DoxyCodeLine{00644\ \ \ \ \ \}}
+\DoxyCodeLine{00645\ }
+\DoxyCodeLine{00646\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ V>}
+\DoxyCodeLine{00647\ \ \ \ \ uniq\_ptr(uniq\_ptr<V,\ deleter\_type>\ \&\&other)\ \textcolor{keyword}{noexcept}:}
+\DoxyCodeLine{00648\ \ \ \ \ \ \ \ \ \_p\ \{other.release()\}\ \{}
+\DoxyCodeLine{00649\ \ \ \ \ \ \ \textcolor{keyword}{static\_assert}(std::is\_same\_v<element\_type,\ void>\ ||\ std::is\_same\_v<T,\ V>\ ||\ std::is\_base\_of\_v<element\_type,\ V>,\ \textcolor{stringliteral}{"{}element\_type\ must\ be\ base\ class\ of\ V"{}});}
+\DoxyCodeLine{00650\ \ \ \ \ \}}
+\DoxyCodeLine{00651\ }
+\DoxyCodeLine{00652\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ V>}
+\DoxyCodeLine{00653\ \ \ \ \ uniq\_ptr\ \&operator=(uniq\_ptr<V,\ deleter\_type>\ \&\&other)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00654\ \ \ \ \ \ \ \textcolor{keyword}{static\_assert}(std::is\_same\_v<element\_type,\ void>\ ||\ std::is\_same\_v<T,\ V>\ ||\ std::is\_base\_of\_v<element\_type,\ V>,\ \textcolor{stringliteral}{"{}element\_type\ must\ be\ base\ class\ of\ V"{}});}
+\DoxyCodeLine{00655\ \ \ \ \ \ \ reset(other.release());}
+\DoxyCodeLine{00656\ }
+\DoxyCodeLine{00657\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00658\ \ \ \ \ \}}
+\DoxyCodeLine{00659\ }
+\DoxyCodeLine{00660\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ V>}
+\DoxyCodeLine{00661\ \ \ \ \ uniq\_ptr\ \&operator=(std::unique\_ptr<V,\ deleter\_type>\ \&\&uniq)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00662\ \ \ \ \ \ \ \textcolor{keyword}{static\_assert}(std::is\_same\_v<element\_type,\ void>\ ||\ std::is\_same\_v<T,\ V>\ ||\ std::is\_base\_of\_v<element\_type,\ V>,\ \textcolor{stringliteral}{"{}element\_type\ must\ be\ base\ class\ of\ V"{}});}
+\DoxyCodeLine{00663\ }
+\DoxyCodeLine{00664\ \ \ \ \ \ \ reset(uniq.release());}
+\DoxyCodeLine{00665\ }
+\DoxyCodeLine{00666\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00667\ \ \ \ \ \}}
+\DoxyCodeLine{00668\ }
+\DoxyCodeLine{00669\ \ \ \ \ \string~uniq\_ptr()\ \{}
+\DoxyCodeLine{00670\ \ \ \ \ \ \ reset();}
+\DoxyCodeLine{00671\ \ \ \ \ \}}
+\DoxyCodeLine{00672\ }
+\DoxyCodeLine{00673\ \ \ \ \ \textcolor{keywordtype}{void}\ reset(pointer\ p\ =\ pointer())\ \{}
+\DoxyCodeLine{00674\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_p)\ \{}
+\DoxyCodeLine{00675\ \ \ \ \ \ \ \ \ \_deleter(\_p);}
+\DoxyCodeLine{00676\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00677\ }
+\DoxyCodeLine{00678\ \ \ \ \ \ \ \_p\ =\ p;}
+\DoxyCodeLine{00679\ \ \ \ \ \}}
+\DoxyCodeLine{00680\ }
+\DoxyCodeLine{00681\ \ \ \ \ pointer\ release()\ \{}
+\DoxyCodeLine{00682\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ tmp\ =\ \_p;}
+\DoxyCodeLine{00683\ \ \ \ \ \ \ \_p\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00684\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ tmp;}
+\DoxyCodeLine{00685\ \ \ \ \ \}}
+\DoxyCodeLine{00686\ }
+\DoxyCodeLine{00687\ \ \ \ \ pointer\ get()\ \{}
+\DoxyCodeLine{00688\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_p;}
+\DoxyCodeLine{00689\ \ \ \ \ \}}
+\DoxyCodeLine{00690\ }
+\DoxyCodeLine{00691\ \ \ \ \ const\_pointer\ get()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00692\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_p;}
+\DoxyCodeLine{00693\ \ \ \ \ \}}
+\DoxyCodeLine{00694\ }
+\DoxyCodeLine{00695\ \ \ \ \ std::add\_lvalue\_reference\_t<element\_type\ const>\ operator*()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00696\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\_p;}
+\DoxyCodeLine{00697\ \ \ \ \ \}}
+\DoxyCodeLine{00698\ }
+\DoxyCodeLine{00699\ \ \ \ \ std::add\_lvalue\_reference\_t<element\_type>\ operator*()\ \{}
+\DoxyCodeLine{00700\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\_p;}
+\DoxyCodeLine{00701\ \ \ \ \ \}}
+\DoxyCodeLine{00702\ }
+\DoxyCodeLine{00703\ \ \ \ \ const\_pointer\ operator-\/>()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00704\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_p;}
+\DoxyCodeLine{00705\ \ \ \ \ \}}
+\DoxyCodeLine{00706\ }
+\DoxyCodeLine{00707\ \ \ \ \ pointer\ operator-\/>()\ \{}
+\DoxyCodeLine{00708\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_p;}
+\DoxyCodeLine{00709\ \ \ \ \ \}}
+\DoxyCodeLine{00710\ }
+\DoxyCodeLine{00711\ \ \ \ \ pointer\ *operator\&()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00712\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \&\_p;}
+\DoxyCodeLine{00713\ \ \ \ \ \}}
+\DoxyCodeLine{00714\ }
+\DoxyCodeLine{00715\ \ \ \ \ pointer\ *operator\&()\ \{}
+\DoxyCodeLine{00716\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \&\_p;}
+\DoxyCodeLine{00717\ \ \ \ \ \}}
+\DoxyCodeLine{00718\ }
+\DoxyCodeLine{00719\ \ \ \ \ deleter\_type\ \&get\_deleter()\ \{}
+\DoxyCodeLine{00720\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_deleter;}
+\DoxyCodeLine{00721\ \ \ \ \ \}}
+\DoxyCodeLine{00722\ }
+\DoxyCodeLine{00723\ \ \ \ \ \textcolor{keyword}{const}\ deleter\_type\ \&get\_deleter()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00724\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_deleter;}
+\DoxyCodeLine{00725\ \ \ \ \ \}}
+\DoxyCodeLine{00726\ }
+\DoxyCodeLine{00727\ \ \ \ \ \textcolor{keyword}{explicit}\ \textcolor{keyword}{operator}\ bool()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00728\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_p\ !=\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00729\ \ \ \ \ \}}
+\DoxyCodeLine{00730\ }
+\DoxyCodeLine{00731\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00732\ \ \ \ \ pointer\ \_p;}
+\DoxyCodeLine{00733\ \ \ \ \ deleter\_type\ \_deleter;}
+\DoxyCodeLine{00734\ \ \ \};}
+\DoxyCodeLine{00735\ }
+\DoxyCodeLine{00736\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T1,\ \textcolor{keyword}{class}\ D1,\ \textcolor{keyword}{class}\ T2,\ \textcolor{keyword}{class}\ D2>}
+\DoxyCodeLine{00737\ \ \ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\_ptr<T1,\ D1>}}\ \&x,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\_ptr<T2,\ D2>}}\ \&y)\ \{}
+\DoxyCodeLine{00738\ \ \ \ \ \textcolor{keywordflow}{return}\ x.get()\ ==\ y.get();}
+\DoxyCodeLine{00739\ \ \ \}}
+\DoxyCodeLine{00740\ }
+\DoxyCodeLine{00741\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T1,\ \textcolor{keyword}{class}\ D1,\ \textcolor{keyword}{class}\ T2,\ \textcolor{keyword}{class}\ D2>}
+\DoxyCodeLine{00742\ \ \ \textcolor{keywordtype}{bool}\ operator!=(\textcolor{keyword}{const}\ uniq\_ptr<T1,\ D1>\ \&x,\ \textcolor{keyword}{const}\ uniq\_ptr<T2,\ D2>\ \&y)\ \{}
+\DoxyCodeLine{00743\ \ \ \ \ \textcolor{keywordflow}{return}\ x.get()\ !=\ y.get();}
+\DoxyCodeLine{00744\ \ \ \}}
+\DoxyCodeLine{00745\ }
+\DoxyCodeLine{00746\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T1,\ \textcolor{keyword}{class}\ D1,\ \textcolor{keyword}{class}\ T2,\ \textcolor{keyword}{class}\ D2>}
+\DoxyCodeLine{00747\ \ \ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ std::unique\_ptr<T1,\ D1>\ \&x,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\_ptr<T2,\ D2>}}\ \&y)\ \{}
+\DoxyCodeLine{00748\ \ \ \ \ \textcolor{keywordflow}{return}\ x.get()\ ==\ y.get();}
+\DoxyCodeLine{00749\ \ \ \}}
+\DoxyCodeLine{00750\ }
+\DoxyCodeLine{00751\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T1,\ \textcolor{keyword}{class}\ D1,\ \textcolor{keyword}{class}\ T2,\ \textcolor{keyword}{class}\ D2>}
+\DoxyCodeLine{00752\ \ \ \textcolor{keywordtype}{bool}\ operator!=(\textcolor{keyword}{const}\ std::unique\_ptr<T1,\ D1>\ \&x,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\_ptr<T2,\ D2>}}\ \&y)\ \{}
+\DoxyCodeLine{00753\ \ \ \ \ \textcolor{keywordflow}{return}\ x.get()\ !=\ y.get();}
+\DoxyCodeLine{00754\ \ \ \}}
+\DoxyCodeLine{00755\ }
+\DoxyCodeLine{00756\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T1,\ \textcolor{keyword}{class}\ D1,\ \textcolor{keyword}{class}\ T2,\ \textcolor{keyword}{class}\ D2>}
+\DoxyCodeLine{00757\ \ \ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\_ptr<T1,\ D1>}}\ \&x,\ \textcolor{keyword}{const}\ std::unique\_ptr<T1,\ D1>\ \&y)\ \{}
+\DoxyCodeLine{00758\ \ \ \ \ \textcolor{keywordflow}{return}\ x.get()\ ==\ y.get();}
+\DoxyCodeLine{00759\ \ \ \}}
+\DoxyCodeLine{00760\ }
+\DoxyCodeLine{00761\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T1,\ \textcolor{keyword}{class}\ D1,\ \textcolor{keyword}{class}\ T2,\ \textcolor{keyword}{class}\ D2>}
+\DoxyCodeLine{00762\ \ \ \textcolor{keywordtype}{bool}\ operator!=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\_ptr<T1,\ D1>}}\ \&x,\ \textcolor{keyword}{const}\ std::unique\_ptr<T1,\ D1>\ \&y)\ \{}
+\DoxyCodeLine{00763\ \ \ \ \ \textcolor{keywordflow}{return}\ x.get()\ !=\ y.get();}
+\DoxyCodeLine{00764\ \ \ \}}
+\DoxyCodeLine{00765\ }
+\DoxyCodeLine{00766\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ D>}
+\DoxyCodeLine{00767\ \ \ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\_ptr<T,\ D>}}\ \&x,\ std::nullptr\_t)\ \{}
+\DoxyCodeLine{00768\ \ \ \ \ \textcolor{keywordflow}{return}\ !(bool)\ x;}
+\DoxyCodeLine{00769\ \ \ \}}
+\DoxyCodeLine{00770\ }
+\DoxyCodeLine{00771\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ D>}
+\DoxyCodeLine{00772\ \ \ \textcolor{keywordtype}{bool}\ operator!=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\_ptr<T,\ D>}}\ \&x,\ std::nullptr\_t)\ \{}
+\DoxyCodeLine{00773\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{bool})\ x;}
+\DoxyCodeLine{00774\ \ \ \}}
+\DoxyCodeLine{00775\ }
+\DoxyCodeLine{00776\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ D>}
+\DoxyCodeLine{00777\ \ \ \textcolor{keywordtype}{bool}\ operator==(std::nullptr\_t,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\_ptr<T,\ D>}}\ \&y)\ \{}
+\DoxyCodeLine{00778\ \ \ \ \ \textcolor{keywordflow}{return}\ !(bool)\ y;}
+\DoxyCodeLine{00779\ \ \ \}}
+\DoxyCodeLine{00780\ }
+\DoxyCodeLine{00781\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ D>}
+\DoxyCodeLine{00782\ \ \ \textcolor{keywordtype}{bool}\ operator!=(std::nullptr\_t,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\_ptr<T,\ D>}}\ \&y)\ \{}
+\DoxyCodeLine{00783\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keywordtype}{bool})\ y;}
+\DoxyCodeLine{00784\ \ \ \}}
+\DoxyCodeLine{00785\ }
+\DoxyCodeLine{00786\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ P>}
+\DoxyCodeLine{00787\ \ \ \textcolor{keyword}{using\ }shared\_t\ =\ std::shared\_ptr<typename\ P::element\_type>;}
+\DoxyCodeLine{00788\ }
+\DoxyCodeLine{00789\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ P,\ \textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00790\ \ \ shared\_t<P>\ make\_shared(T\ *pointer)\ \{}
+\DoxyCodeLine{00791\ \ \ \ \ \textcolor{keywordflow}{return}\ shared\_t<P>(\textcolor{keyword}{reinterpret\_cast<}typename\ P::pointer\textcolor{keyword}{>}(pointer),\ \textcolor{keyword}{typename}\ P::deleter\_type());}
+\DoxyCodeLine{00792\ \ \ \}}
+\DoxyCodeLine{00793\ }
+\DoxyCodeLine{00802\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00803\ \ \ \textcolor{keyword}{class\ }wrap\_ptr\ \{}
+\DoxyCodeLine{00804\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00805\ \ \ \ \ \textcolor{keyword}{using\ }element\_type\ =\ T;}
+\DoxyCodeLine{00806\ \ \ \ \ \textcolor{keyword}{using\ }pointer\ =\ element\_type\ *;}
+\DoxyCodeLine{00807\ \ \ \ \ \textcolor{keyword}{using\ }const\_pointer\ =\ element\_type\ \textcolor{keyword}{const}\ *;}
+\DoxyCodeLine{00808\ \ \ \ \ \textcolor{keyword}{using\ }reference\ =\ element\_type\ \&;}
+\DoxyCodeLine{00809\ \ \ \ \ \textcolor{keyword}{using\ }const\_reference\ =\ element\_type\ \textcolor{keyword}{const}\ \&;}
+\DoxyCodeLine{00810\ }
+\DoxyCodeLine{00811\ \ \ \ \ wrap\_ptr():}
+\DoxyCodeLine{00812\ \ \ \ \ \ \ \ \ \_own\_ptr\ \{\textcolor{keyword}{false}\},}
+\DoxyCodeLine{00813\ \ \ \ \ \ \ \ \ \_p\ \{\textcolor{keyword}{nullptr}\}\ \{}
+\DoxyCodeLine{00814\ \ \ \ \ \}}
+\DoxyCodeLine{00815\ }
+\DoxyCodeLine{00816\ \ \ \ \ wrap\_ptr(pointer\ p):}
+\DoxyCodeLine{00817\ \ \ \ \ \ \ \ \ \_own\_ptr\ \{\textcolor{keyword}{false}\},}
+\DoxyCodeLine{00818\ \ \ \ \ \ \ \ \ \_p\ \{p\}\ \{}
+\DoxyCodeLine{00819\ \ \ \ \ \}}
+\DoxyCodeLine{00820\ }
+\DoxyCodeLine{00821\ \ \ \ \ wrap\_ptr(std::unique\_ptr<element\_type>\ \&\&uniq\_p):}
+\DoxyCodeLine{00822\ \ \ \ \ \ \ \ \ \_own\_ptr\ \{\textcolor{keyword}{true}\},}
+\DoxyCodeLine{00823\ \ \ \ \ \ \ \ \ \_p\ \{uniq\_p.release()\}\ \{}
+\DoxyCodeLine{00824\ \ \ \ \ \}}
+\DoxyCodeLine{00825\ }
+\DoxyCodeLine{00826\ \ \ \ \ wrap\_ptr(wrap\_ptr\ \&\&other):}
+\DoxyCodeLine{00827\ \ \ \ \ \ \ \ \ \_own\_ptr\ \{other.\_own\_ptr\},}
+\DoxyCodeLine{00828\ \ \ \ \ \ \ \ \ \_p\ \{other.\_p\}\ \{}
+\DoxyCodeLine{00829\ \ \ \ \ \ \ other.\_own\_ptr\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00830\ \ \ \ \ \}}
+\DoxyCodeLine{00831\ }
+\DoxyCodeLine{00832\ \ \ \ \ wrap\_ptr\ \&operator=(wrap\_ptr\ \&\&other)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00833\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_own\_ptr)\ \{}
+\DoxyCodeLine{00834\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ \_p;}
+\DoxyCodeLine{00835\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00836\ }
+\DoxyCodeLine{00837\ \ \ \ \ \ \ \_p\ =\ other.\_p;}
+\DoxyCodeLine{00838\ }
+\DoxyCodeLine{00839\ \ \ \ \ \ \ \_own\_ptr\ =\ other.\_own\_ptr;}
+\DoxyCodeLine{00840\ \ \ \ \ \ \ other.\_own\_ptr\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00841\ }
+\DoxyCodeLine{00842\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00843\ \ \ \ \ \}}
+\DoxyCodeLine{00844\ }
+\DoxyCodeLine{00845\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ V>}
+\DoxyCodeLine{00846\ \ \ \ \ wrap\_ptr\ \&operator=(std::unique\_ptr<V>\ \&\&\mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\_ptr}})\ \{}
+\DoxyCodeLine{00847\ \ \ \ \ \ \ \textcolor{keyword}{static\_assert}(std::is\_base\_of\_v<element\_type,\ V>,\ \textcolor{stringliteral}{"{}element\_type\ must\ be\ base\ class\ of\ V"{}});}
+\DoxyCodeLine{00848\ \ \ \ \ \ \ \_own\_ptr\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00849\ \ \ \ \ \ \ \_p\ =\ \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\_ptr}}.release();}
+\DoxyCodeLine{00850\ }
+\DoxyCodeLine{00851\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00852\ \ \ \ \ \}}
+\DoxyCodeLine{00853\ }
+\DoxyCodeLine{00854\ \ \ \ \ wrap\_ptr\ \&operator=(pointer\ p)\ \{}
+\DoxyCodeLine{00855\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_own\_ptr)\ \{}
+\DoxyCodeLine{00856\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ \_p;}
+\DoxyCodeLine{00857\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00858\ }
+\DoxyCodeLine{00859\ \ \ \ \ \ \ \_p\ =\ p;}
+\DoxyCodeLine{00860\ \ \ \ \ \ \ \_own\_ptr\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00861\ }
+\DoxyCodeLine{00862\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00863\ \ \ \ \ \}}
+\DoxyCodeLine{00864\ }
+\DoxyCodeLine{00865\ \ \ \ \ \string~wrap\_ptr()\ \{}
+\DoxyCodeLine{00866\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_own\_ptr)\ \{}
+\DoxyCodeLine{00867\ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ \_p;}
+\DoxyCodeLine{00868\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00869\ }
+\DoxyCodeLine{00870\ \ \ \ \ \ \ \_own\_ptr\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00871\ \ \ \ \ \}}
+\DoxyCodeLine{00872\ }
+\DoxyCodeLine{00873\ \ \ \ \ const\_reference\ operator*()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00874\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\_p;}
+\DoxyCodeLine{00875\ \ \ \ \ \}}
+\DoxyCodeLine{00876\ }
+\DoxyCodeLine{00877\ \ \ \ \ reference\ operator*()\ \{}
+\DoxyCodeLine{00878\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\_p;}
+\DoxyCodeLine{00879\ \ \ \ \ \}}
+\DoxyCodeLine{00880\ }
+\DoxyCodeLine{00881\ \ \ \ \ const\_pointer\ operator-\/>()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00882\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_p;}
+\DoxyCodeLine{00883\ \ \ \ \ \}}
+\DoxyCodeLine{00884\ }
+\DoxyCodeLine{00885\ \ \ \ \ pointer\ operator-\/>()\ \{}
+\DoxyCodeLine{00886\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_p;}
+\DoxyCodeLine{00887\ \ \ \ \ \}}
+\DoxyCodeLine{00888\ }
+\DoxyCodeLine{00889\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00890\ \ \ \ \ \textcolor{keywordtype}{bool}\ \_own\_ptr;}
+\DoxyCodeLine{00891\ \ \ \ \ pointer\ \_p;}
+\DoxyCodeLine{00892\ \ \ \};}
+\DoxyCodeLine{00893\ }
+\DoxyCodeLine{00894\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00895\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ is\_pointer\_v\ =}
+\DoxyCodeLine{00896\ \ \ \ \ instantiation\_of\_v<std::unique\_ptr,\ T>\ ||}
+\DoxyCodeLine{00897\ \ \ \ \ instantiation\_of\_v<std::shared\_ptr,\ T>\ ||}
+\DoxyCodeLine{00898\ \ \ \ \ instantiation\_of\_v<uniq\_ptr,\ T>\ ||}
+\DoxyCodeLine{00899\ \ \ \ \ std::is\_pointer\_v<T>;}
+\DoxyCodeLine{00900\ }
+\DoxyCodeLine{00901\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ V\ =\ \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{00908\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structutil_1_1____false__v}{\_\_false\_v}};}
+\DoxyCodeLine{00909\ }
+\DoxyCodeLine{00916\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00917\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structutil_1_1____false__v}{\_\_false\_v}}<T,\ std::enable\_if\_t<instantiation\_of\_v<std::optional,\ T>>>\ \{}
+\DoxyCodeLine{00918\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ std::nullopt\_t\ value\ =\ std::nullopt;}
+\DoxyCodeLine{00919\ \ \ \};}
+\DoxyCodeLine{00920\ }
+\DoxyCodeLine{00927\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00928\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structutil_1_1____false__v}{\_\_false\_v}}<T,\ std::enable\_if\_t<is\_pointer\_v<T>>>\ \{}
+\DoxyCodeLine{00929\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ std::nullptr\_t\ value\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00930\ \ \ \};}
+\DoxyCodeLine{00931\ }
+\DoxyCodeLine{00938\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00939\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structutil_1_1____false__v}{\_\_false\_v}}<T,\ std::enable\_if\_t<std::is\_same\_v<T,\ bool>>>\ \{}
+\DoxyCodeLine{00940\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ value\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00941\ \ \ \};}
+\DoxyCodeLine{00942\ }
+\DoxyCodeLine{00943\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00944\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ false\_v\ =\ \mbox{\hyperlink{structutil_1_1____false__v}{\_\_false\_v<T>::value}};}
+\DoxyCodeLine{00945\ }
+\DoxyCodeLine{00946\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00947\ \ \ \textcolor{keyword}{using\ }optional\_t\ =\ either\_t<}
+\DoxyCodeLine{00948\ \ \ \ \ (std::is\_same\_v<T,\ bool>\ ||\ is\_pointer\_v<T>),}
+\DoxyCodeLine{00949\ \ \ \ \ T,}
+\DoxyCodeLine{00950\ \ \ \ \ std::optional<T>>;}
+\DoxyCodeLine{00951\ }
+\DoxyCodeLine{00952\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00960\ \ \ \textcolor{keyword}{class\ }buffer\_t\ \{}
+\DoxyCodeLine{00961\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00962\ \ \ \ \ buffer\_t():}
+\DoxyCodeLine{00963\ \ \ \ \ \ \ \ \ \_els\ \{0\}\ \{\};}
+\DoxyCodeLine{00964\ }
+\DoxyCodeLine{00965\ \ \ \ \ buffer\_t(buffer\_t\ \&\&o)\ \textcolor{keyword}{noexcept}:}
+\DoxyCodeLine{00966\ \ \ \ \ \ \ \ \ \_els\ \{o.\_els\},}
+\DoxyCodeLine{00967\ \ \ \ \ \ \ \ \ \_buf\ \{std::move(o.\_buf)\}\ \{}
+\DoxyCodeLine{00968\ \ \ \ \ \ \ o.\_els\ =\ 0;}
+\DoxyCodeLine{00969\ \ \ \ \ \}}
+\DoxyCodeLine{00970\ }
+\DoxyCodeLine{00971\ \ \ \ \ buffer\_t(\textcolor{keyword}{const}\ buffer\_t\ \&o):}
+\DoxyCodeLine{00972\ \ \ \ \ \ \ \ \ \_els\ \{o.\_els\},}
+\DoxyCodeLine{00973\ \ \ \ \ \ \ \ \ \_buf\ \{std::make\_unique<T[]>(\_els)\}\ \{}
+\DoxyCodeLine{00974\ \ \ \ \ \ \ std::copy(o.begin(),\ o.end(),\ begin());}
+\DoxyCodeLine{00975\ \ \ \ \ \}}
+\DoxyCodeLine{00976\ }
+\DoxyCodeLine{00977\ \ \ \ \ buffer\_t\ \&operator=(buffer\_t\ \&\&o)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00978\ \ \ \ \ \ \ std::swap(\_els,\ o.\_els);}
+\DoxyCodeLine{00979\ \ \ \ \ \ \ std::swap(\_buf,\ o.\_buf);}
+\DoxyCodeLine{00980\ }
+\DoxyCodeLine{00981\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00982\ \ \ \ \ \};}
+\DoxyCodeLine{00983\ }
+\DoxyCodeLine{00984\ \ \ \ \ \textcolor{keyword}{explicit}\ buffer\_t(\textcolor{keywordtype}{size\_t}\ elements):}
+\DoxyCodeLine{00985\ \ \ \ \ \ \ \ \ \_els\ \{elements\},}
+\DoxyCodeLine{00986\ \ \ \ \ \ \ \ \ \_buf\ \{std::make\_unique<T[]>(elements)\}\ \{}
+\DoxyCodeLine{00987\ \ \ \ \ \}}
+\DoxyCodeLine{00988\ }
+\DoxyCodeLine{00989\ \ \ \ \ \textcolor{keyword}{explicit}\ buffer\_t(\textcolor{keywordtype}{size\_t}\ elements,\ \textcolor{keyword}{const}\ T\ \&t):}
+\DoxyCodeLine{00990\ \ \ \ \ \ \ \ \ \_els\ \{elements\},}
+\DoxyCodeLine{00991\ \ \ \ \ \ \ \ \ \_buf\ \{std::make\_unique<T[]>(elements)\}\ \{}
+\DoxyCodeLine{00992\ \ \ \ \ \ \ std::fill\_n(\_buf.get(),\ elements,\ t);}
+\DoxyCodeLine{00993\ \ \ \ \ \}}
+\DoxyCodeLine{00994\ }
+\DoxyCodeLine{00995\ \ \ \ \ T\ \&operator[](\textcolor{keywordtype}{size\_t}\ el)\ \{}
+\DoxyCodeLine{00996\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_buf[el];}
+\DoxyCodeLine{00997\ \ \ \ \ \}}
+\DoxyCodeLine{00998\ }
+\DoxyCodeLine{00999\ \ \ \ \ \textcolor{keyword}{const}\ T\ \&operator[](\textcolor{keywordtype}{size\_t}\ el)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{01000\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_buf[el];}
+\DoxyCodeLine{01001\ \ \ \ \ \}}
+\DoxyCodeLine{01002\ }
+\DoxyCodeLine{01003\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ size()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{01004\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_els;}
+\DoxyCodeLine{01005\ \ \ \ \ \}}
+\DoxyCodeLine{01006\ }
+\DoxyCodeLine{01007\ \ \ \ \ \textcolor{keywordtype}{void}\ fake\_resize(std::size\_t\ els)\ \{}
+\DoxyCodeLine{01008\ \ \ \ \ \ \ \_els\ =\ els;}
+\DoxyCodeLine{01009\ \ \ \ \ \}}
+\DoxyCodeLine{01010\ }
+\DoxyCodeLine{01011\ \ \ \ \ T\ *begin()\ \{}
+\DoxyCodeLine{01012\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_buf.get();}
+\DoxyCodeLine{01013\ \ \ \ \ \}}
+\DoxyCodeLine{01014\ }
+\DoxyCodeLine{01015\ \ \ \ \ \textcolor{keyword}{const}\ T\ *begin()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{01016\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_buf.get();}
+\DoxyCodeLine{01017\ \ \ \ \ \}}
+\DoxyCodeLine{01018\ }
+\DoxyCodeLine{01019\ \ \ \ \ T\ *end()\ \{}
+\DoxyCodeLine{01020\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_buf.get()\ +\ \_els;}
+\DoxyCodeLine{01021\ \ \ \ \ \}}
+\DoxyCodeLine{01022\ }
+\DoxyCodeLine{01023\ \ \ \ \ \textcolor{keyword}{const}\ T\ *end()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{01024\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_buf.get()\ +\ \_els;}
+\DoxyCodeLine{01025\ \ \ \ \ \}}
+\DoxyCodeLine{01026\ }
+\DoxyCodeLine{01027\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{01028\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \_els;}
+\DoxyCodeLine{01029\ \ \ \ \ std::unique\_ptr<T[]>\ \_buf;}
+\DoxyCodeLine{01030\ \ \ \};}
+\DoxyCodeLine{01031\ }
+\DoxyCodeLine{01032\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{01033\ \ \ T\ either(std::optional<T>\ \&\&l,\ T\ \&\&r)\ \{}
+\DoxyCodeLine{01034\ \ \ \ \ \textcolor{keywordflow}{if}\ (l)\ \{}
+\DoxyCodeLine{01035\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::move(*l);}
+\DoxyCodeLine{01036\ \ \ \ \ \}}
+\DoxyCodeLine{01037\ }
+\DoxyCodeLine{01038\ \ \ \ \ \textcolor{keywordflow}{return}\ std::forward<T>(r);}
+\DoxyCodeLine{01039\ \ \ \}}
+\DoxyCodeLine{01040\ }
+\DoxyCodeLine{01049\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class\ }ReturnType,\ \textcolor{keyword}{class}...\ Args>}
+\DoxyCodeLine{01050\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structutil_1_1_function}{Function}}\ \{}
+\DoxyCodeLine{01051\ \ \ \ \ \textcolor{keyword}{typedef}\ ReturnType\ (*type)(Args...);}
+\DoxyCodeLine{01052\ \ \ \};}
+\DoxyCodeLine{01053\ }
+\DoxyCodeLine{01063\ \ \ template<class\ T,\ class\ ReturnType,\ typename\ Function<ReturnType,\ T>::type\ function>}
+\DoxyCodeLine{01064\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structutil_1_1_destroy}{Destroy}}\ \{}
+\DoxyCodeLine{01065\ \ \ \ \ \textcolor{keyword}{typedef}\ T\ pointer;}
+\DoxyCodeLine{01066\ }
+\DoxyCodeLine{01067\ \ \ \ \ \textcolor{keywordtype}{void}\ operator()(pointer\ p)\ \{}
+\DoxyCodeLine{01068\ \ \ \ \ \ \ function(p);}
+\DoxyCodeLine{01069\ \ \ \ \ \}}
+\DoxyCodeLine{01070\ \ \ \};}
+\DoxyCodeLine{01071\ }
+\DoxyCodeLine{01072\ \ \ template<class\ T,\ typename\ Function<void,\ T\ *>::type\ function>}
+\DoxyCodeLine{01073\ \ \ \textcolor{keyword}{using\ }safe\_ptr\ =\ \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\_ptr<T,\ Destroy<T\ *,\ void,\ function>}}>;}
+\DoxyCodeLine{01074\ }
+\DoxyCodeLine{01075\ \ \ \textcolor{comment}{//\ You\ cannot\ specialize\ an\ alias}}
+\DoxyCodeLine{01076\ \ \ template<class\ T,\ class\ ReturnType,\ typename\ Function<ReturnType,\ T\ *>::type\ function>}
+\DoxyCodeLine{01077\ \ \ \textcolor{keyword}{using\ }safe\_ptr\_v2\ =\ \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\_ptr<T,\ Destroy<T\ *,\ ReturnType,\ function>}}>;}
+\DoxyCodeLine{01078\ }
+\DoxyCodeLine{01079\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{01080\ \ \ \textcolor{keywordtype}{void}\ c\_free(T\ *p)\ \{}
+\DoxyCodeLine{01081\ \ \ \ \ free(p);}
+\DoxyCodeLine{01082\ \ \ \}}
+\DoxyCodeLine{01083\ }
+\DoxyCodeLine{01084\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ ReturnType,\ ReturnType\ (**function)(T\ *)>}
+\DoxyCodeLine{01085\ \ \ \textcolor{keywordtype}{void}\ dynamic(T\ *p)\ \{}
+\DoxyCodeLine{01086\ \ \ \ \ (*function)(p);}
+\DoxyCodeLine{01087\ \ \ \}}
+\DoxyCodeLine{01088\ }
+\DoxyCodeLine{01089\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T,\ \textcolor{keywordtype}{void}\ (**function)(T\ *)>}
+\DoxyCodeLine{01090\ \ \ \textcolor{keyword}{using\ }dyn\_safe\_ptr\ =\ safe\_ptr<T,\ dynamic<T,\ void,\ function>>;}
+\DoxyCodeLine{01091\ }
+\DoxyCodeLine{01092\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ ReturnType,\ ReturnType\ (**function)(T\ *)>}
+\DoxyCodeLine{01093\ \ \ \textcolor{keyword}{using\ }dyn\_safe\_ptr\_v2\ =\ safe\_ptr<T,\ dynamic<T,\ ReturnType,\ function>>;}
+\DoxyCodeLine{01094\ }
+\DoxyCodeLine{01095\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{01096\ \ \ \textcolor{keyword}{using\ }c\_ptr\ =\ safe\_ptr<T,\ c\_free<T>>;}
+\DoxyCodeLine{01097\ }
+\DoxyCodeLine{01098\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ It>}
+\DoxyCodeLine{01099\ \ \ std::string\_view\ view(It\ begin,\ It\ end)\ \{}
+\DoxyCodeLine{01100\ \ \ \ \ \textcolor{keywordflow}{return}\ std::string\_view\ \{(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *)\ begin,\ (std::size\_t)\ (end\ -\/\ begin)\};}
+\DoxyCodeLine{01101\ \ \ \}}
+\DoxyCodeLine{01102\ }
+\DoxyCodeLine{01103\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{01104\ \ \ std::string\_view\ view(\textcolor{keyword}{const}\ T\ \&data)\ \{}
+\DoxyCodeLine{01105\ \ \ \ \ \textcolor{keywordflow}{return}\ std::string\_view((\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *)\ \&data,\ \textcolor{keyword}{sizeof}(T));}
+\DoxyCodeLine{01106\ \ \ \}}
+\DoxyCodeLine{01107\ }
+\DoxyCodeLine{01113\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structutil_1_1point__t}{point\_t}}\ \{}
+\DoxyCodeLine{01114\ \ \ \ \ \textcolor{keywordtype}{double}\ x;}
+\DoxyCodeLine{01115\ \ \ \ \ \textcolor{keywordtype}{double}\ y;}
+\DoxyCodeLine{01116\ }
+\DoxyCodeLine{01117\ \ \ \ \ \textcolor{keyword}{friend}\ std::ostream\ \&operator<<(std::ostream\ \&os,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structutil_1_1point__t}{point\_t}}\ \&p)\ \{}
+\DoxyCodeLine{01118\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (os\ <<\ \textcolor{stringliteral}{"{}Point(x:\ "{}}\ <<\ p.x\ <<\ \textcolor{stringliteral}{"{},\ y:\ "{}}\ <<\ p.y\ <<\ \textcolor{stringliteral}{"{})"{}});}
+\DoxyCodeLine{01119\ \ \ \ \ \}}
+\DoxyCodeLine{01120\ \ \ \};}
+\DoxyCodeLine{01121\ }
+\DoxyCodeLine{01122\ \ \ \textcolor{keyword}{namespace\ }endian\ \{}
+\DoxyCodeLine{01130\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T\ =\ \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{01131\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structutil_1_1endian_1_1endianness}{endianness}}\ \{}
+\DoxyCodeLine{01132\ \ \ \ \ \ \ enum\ :\ \textcolor{keywordtype}{bool}\ \{}
+\DoxyCodeLine{01133\ \textcolor{preprocessor}{\#if\ defined(\_\_BYTE\_ORDER)\ \&\&\ \_\_BYTE\_ORDER\ ==\ \_\_BIG\_ENDIAN\ ||\ \(\backslash\)}}
+\DoxyCodeLine{01134\ \textcolor{preprocessor}{\ \ defined(\_\_BIG\_ENDIAN\_\_)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{01135\ \textcolor{preprocessor}{\ \ defined(\_\_ARMEB\_\_)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{01136\ \textcolor{preprocessor}{\ \ defined(\_\_THUMBEB\_\_)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{01137\ \textcolor{preprocessor}{\ \ defined(\_\_AARCH64EB\_\_)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{01138\ \textcolor{preprocessor}{\ \ defined(\_MIBSEB)\ ||\ defined(\_\_MIBSEB)\ ||\ defined(\_\_MIBSEB\_\_)}}
+\DoxyCodeLine{01139\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ It's\ a\ big-\/endian\ target\ architecture}}
+\DoxyCodeLine{01140\ \ \ \ \ \ \ \ \ little\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{01141\ \textcolor{preprocessor}{\#elif\ defined(\_\_BYTE\_ORDER)\ \&\&\ \_\_BYTE\_ORDER\ ==\ \_\_LITTLE\_ENDIAN\ ||\ \(\backslash\)}}
+\DoxyCodeLine{01142\ \textcolor{preprocessor}{\ \ defined(\_\_LITTLE\_ENDIAN\_\_)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{01143\ \textcolor{preprocessor}{\ \ defined(\_\_ARMEL\_\_)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{01144\ \textcolor{preprocessor}{\ \ defined(\_\_THUMBEL\_\_)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{01145\ \textcolor{preprocessor}{\ \ defined(\_\_AARCH64EL\_\_)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{01146\ \textcolor{preprocessor}{\ \ defined(\_MIPSEL)\ ||\ defined(\_\_MIPSEL)\ ||\ defined(\_\_MIPSEL\_\_)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{01147\ \textcolor{preprocessor}{\ \ defined(\_WIN32)}}
+\DoxyCodeLine{01148\ \ \ \ \ \ \ \ \ little\ =\ \textcolor{keyword}{true},\ \ }
+\DoxyCodeLine{01149\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{01150\ \textcolor{preprocessor}{\ \ \#error\ "{}Unknown\ Endianness"{}}}
+\DoxyCodeLine{01151\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01152\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structutil_1_1endian_1_1endianness_abb78b1181e158e521ce2a86fbcbfef64abfebce2fec1156dd59b05f69137ef32f}{big}}\ =\ !little\ \ }
+\DoxyCodeLine{01153\ \ \ \ \ \ \ \};}
+\DoxyCodeLine{01154\ \ \ \ \ \};}
+\DoxyCodeLine{01155\ }
+\DoxyCodeLine{01164\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ S\ =\ \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{01165\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structutil_1_1endian_1_1endian__helper}{endian\_helper}}\ \{\};}
+\DoxyCodeLine{01166\ }
+\DoxyCodeLine{01173\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{01174\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structutil_1_1endian_1_1endian__helper}{endian\_helper}}<T,\ std::enable\_if\_t<!(instantiation\_of\_v<std::optional,\ T>)>>\ \{}
+\DoxyCodeLine{01175\ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ T\ big(T\ x)\ \{}
+\DoxyCodeLine{01176\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (\mbox{\hyperlink{structutil_1_1endian_1_1endianness}{endianness<T>::little}})\ \{}
+\DoxyCodeLine{01177\ \ \ \ \ \ \ \ \ \ \ uint8\_t\ *data\ =\ \textcolor{keyword}{reinterpret\_cast<}uint8\_t\ *\textcolor{keyword}{>}(\&x);}
+\DoxyCodeLine{01178\ }
+\DoxyCodeLine{01179\ \ \ \ \ \ \ \ \ \ \ std::reverse(data,\ data\ +\ \textcolor{keyword}{sizeof}(x));}
+\DoxyCodeLine{01180\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01181\ }
+\DoxyCodeLine{01182\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ x;}
+\DoxyCodeLine{01183\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01184\ }
+\DoxyCodeLine{01185\ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ T\ little(T\ x)\ \{}
+\DoxyCodeLine{01186\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (\mbox{\hyperlink{structutil_1_1endian_1_1endianness_abb78b1181e158e521ce2a86fbcbfef64abfebce2fec1156dd59b05f69137ef32f}{endianness<T>::big}})\ \{}
+\DoxyCodeLine{01187\ \ \ \ \ \ \ \ \ \ \ uint8\_t\ *data\ =\ \textcolor{keyword}{reinterpret\_cast<}uint8\_t\ *\textcolor{keyword}{>}(\&x);}
+\DoxyCodeLine{01188\ }
+\DoxyCodeLine{01189\ \ \ \ \ \ \ \ \ \ \ std::reverse(data,\ data\ +\ \textcolor{keyword}{sizeof}(x));}
+\DoxyCodeLine{01190\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01191\ }
+\DoxyCodeLine{01192\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ x;}
+\DoxyCodeLine{01193\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01194\ \ \ \ \ \};}
+\DoxyCodeLine{01195\ }
+\DoxyCodeLine{01202\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{01203\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structutil_1_1endian_1_1endian__helper}{endian\_helper}}<T,\ std::enable\_if\_t<instantiation\_of\_v<std::optional,\ T>>>\ \{}
+\DoxyCodeLine{01204\ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ T\ little(T\ x)\ \{}
+\DoxyCodeLine{01205\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!x)\ \{}
+\DoxyCodeLine{01206\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ x;}
+\DoxyCodeLine{01207\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01208\ }
+\DoxyCodeLine{01209\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (\mbox{\hyperlink{structutil_1_1endian_1_1endianness_abb78b1181e158e521ce2a86fbcbfef64abfebce2fec1156dd59b05f69137ef32f}{endianness<T>::big}})\ \{}
+\DoxyCodeLine{01210\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ *data\ =\ \textcolor{keyword}{reinterpret\_cast<}uint8\_t\ *\textcolor{keyword}{>}(\&*x);}
+\DoxyCodeLine{01211\ }
+\DoxyCodeLine{01212\ \ \ \ \ \ \ \ \ \ \ std::reverse(data,\ data\ +\ \textcolor{keyword}{sizeof}(*x));}
+\DoxyCodeLine{01213\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01214\ }
+\DoxyCodeLine{01215\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ x;}
+\DoxyCodeLine{01216\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01217\ }
+\DoxyCodeLine{01218\ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ T\ big(T\ x)\ \{}
+\DoxyCodeLine{01219\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!x)\ \{}
+\DoxyCodeLine{01220\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ x;}
+\DoxyCodeLine{01221\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01222\ }
+\DoxyCodeLine{01223\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (\mbox{\hyperlink{structutil_1_1endian_1_1endianness}{endianness<T>::little}})\ \{}
+\DoxyCodeLine{01224\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ *data\ =\ \textcolor{keyword}{reinterpret\_cast<}uint8\_t\ *\textcolor{keyword}{>}(\&*x);}
+\DoxyCodeLine{01225\ }
+\DoxyCodeLine{01226\ \ \ \ \ \ \ \ \ \ \ std::reverse(data,\ data\ +\ \textcolor{keyword}{sizeof}(*x));}
+\DoxyCodeLine{01227\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01228\ }
+\DoxyCodeLine{01229\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ x;}
+\DoxyCodeLine{01230\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01231\ \ \ \ \ \};}
+\DoxyCodeLine{01232\ }
+\DoxyCodeLine{01233\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{01234\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{auto}\ little(T\ x)\ \{}
+\DoxyCodeLine{01235\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structutil_1_1endian_1_1endian__helper}{endian\_helper<T>::little}}(x);}
+\DoxyCodeLine{01236\ \ \ \ \ \}}
+\DoxyCodeLine{01237\ }
+\DoxyCodeLine{01238\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{01239\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{auto}\ big(T\ x)\ \{}
+\DoxyCodeLine{01240\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ endian\_helper<T>::big(x);}
+\DoxyCodeLine{01241\ \ \ \ \ \}}
+\DoxyCodeLine{01242\ \ \ \}\ \ \textcolor{comment}{//\ namespace\ endian}}
+\DoxyCodeLine{01243\ \}\ \ \textcolor{comment}{//\ namespace\ util}}
+
+\end{DoxyCode}

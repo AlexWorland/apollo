@@ -19,15 +19,41 @@
 
 namespace audio {
   using namespace std::literals;
+  /**
+   * @brief Opus multistream encoder pointer type.
+   * 
+   * Smart pointer managing OpusMSEncoder lifecycle with automatic cleanup.
+   */
   using opus_t = util::safe_ptr<OpusMSEncoder, opus_multistream_encoder_destroy>;
+
+  /**
+   * @brief Audio sample queue type.
+   * 
+   * Thread-safe queue for passing audio samples between capture and encoding threads.
+   */
   using sample_queue_t = std::shared_ptr<safe::queue_t<std::vector<float>>>;
 
   static int start_audio_control(audio_ctx_t &ctx);
   static void stop_audio_control(audio_ctx_t &);
   static void apply_surround_params(opus_stream_config_t &stream, const stream_params_t &params);
 
+  /**
+   * @brief Map channel count and quality to stream configuration index.
+   * 
+   * Determines which predefined stream configuration to use based on
+   * the number of channels and quality setting.
+   * 
+   * @param channels Number of audio channels (2, 6, or 8).
+   * @param quality Whether to use high quality configuration.
+   * @return Index into stream_configs array.
+   */
   int map_stream(int channels, bool quality);
 
+  /**
+   * @brief Audio sample rate in Hz.
+   * 
+   * Standard sample rate used for all audio encoding (48 kHz).
+   */
   constexpr auto SAMPLE_RATE = 48000;
 
   // NOTE: If you adjust the bitrates listed here, make sure to update the
@@ -83,6 +109,16 @@ namespace audio {
     },
   };
 
+  /**
+   * @brief Audio encoding thread function.
+   * 
+   * Encodes audio samples from the queue using Opus multistream encoder
+   * and sends encoded packets through the mail system.
+   * 
+   * @param samples Thread-safe queue of audio sample buffers to encode.
+   * @param config Audio configuration for encoding parameters.
+   * @param channel_data Channel-specific data pointer to include with packets.
+   */
   void encodeThread(sample_queue_t samples, config_t config, void *channel_data) {
     auto packets = mail::man->queue<packet_t>(mail::audio_packets);
     auto stream = stream_configs[map_stream(config.channels, config.flags[config_t::HIGH_QUALITY])];

@@ -1,0 +1,85 @@
+\doxysection{audio\+::config\+\_\+t Struct Reference}
+\hypertarget{structaudio_1_1config__t}{}\label{structaudio_1_1config__t}\index{audio::config\_t@{audio::config\_t}}
+
+
+Audio configuration structure.  
+
+
+
+
+{\ttfamily \#include $<$audio.\+h$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4e}{flags\+\_\+e}} \+: int \{ \mbox{\hyperlink{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4ea074914c54c0e81c85766e256b9569146}{HIGH\+\_\+\+QUALITY}}
+, \mbox{\hyperlink{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4eab06a898479ab3ee47891e67aca79605c}{HOST\+\_\+\+AUDIO}}
+, \mbox{\hyperlink{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4ea6604b50063a86f05beee3a94612d85df}{CUSTOM\+\_\+\+SURROUND\+\_\+\+PARAMS}}
+, \mbox{\hyperlink{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4ea0ff783d83b02fef4d443a318bfaee87e}{MAX\+\_\+\+FLAGS}}
+ \}
+\begin{DoxyCompactList}\small\item\em Audio configuration flags. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structaudio_1_1config__t_a09de02ad79d25581d15b4245f3caf151}\label{structaudio_1_1config__t_a09de02ad79d25581d15b4245f3caf151} 
+int {\bfseries packet\+Duration}
+\begin{DoxyCompactList}\small\item\em Packet duration in milliseconds. \end{DoxyCompactList}\item 
+\Hypertarget{structaudio_1_1config__t_a4b42c51a5d1d90c83fae29fd61e380ae}\label{structaudio_1_1config__t_a4b42c51a5d1d90c83fae29fd61e380ae} 
+int {\bfseries channels}
+\begin{DoxyCompactList}\small\item\em Number of audio channels. \end{DoxyCompactList}\item 
+\Hypertarget{structaudio_1_1config__t_a5de0a0a48c17e1bfcfe1fffdbc05bce9}\label{structaudio_1_1config__t_a5de0a0a48c17e1bfcfe1fffdbc05bce9} 
+int {\bfseries mask}
+\begin{DoxyCompactList}\small\item\em Channel mask. \end{DoxyCompactList}\item 
+\Hypertarget{structaudio_1_1config__t_a41ab1b133f4b211cc974e2ac9bdc2afe}\label{structaudio_1_1config__t_a41ab1b133f4b211cc974e2ac9bdc2afe} 
+\mbox{\hyperlink{structaudio_1_1stream__params__t}{stream\+\_\+params\+\_\+t}} {\bfseries custom\+Stream\+Params}
+\begin{DoxyCompactList}\small\item\em Custom stream parameters. \end{DoxyCompactList}\item 
+\Hypertarget{structaudio_1_1config__t_aad43a405d83c8bae4d7df6ad45e42618}\label{structaudio_1_1config__t_aad43a405d83c8bae4d7df6ad45e42618} 
+std\+::bitset$<$ \mbox{\hyperlink{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4ea0ff783d83b02fef4d443a318bfaee87e}{MAX\+\_\+\+FLAGS}} $>$ {\bfseries flags}
+\begin{DoxyCompactList}\small\item\em Configuration flags. \end{DoxyCompactList}\item 
+\Hypertarget{structaudio_1_1config__t_a14d3997bfdcd29246b7db69bc5e2ec9c}\label{structaudio_1_1config__t_a14d3997bfdcd29246b7db69bc5e2ec9c} 
+uint64\+\_\+t {\bfseries \+\_\+\+\_\+padding}
+\begin{DoxyCompactList}\small\item\em Padding to prevent input\+\_\+only from being overwritten. \end{DoxyCompactList}\item 
+\Hypertarget{structaudio_1_1config__t_a31b3bbf6193c9ae9bc00a44108605790}\label{structaudio_1_1config__t_a31b3bbf6193c9ae9bc00a44108605790} 
+bool {\bfseries input\+\_\+only}
+\begin{DoxyCompactList}\small\item\em Whether this is input-\/only mode. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Audio configuration structure. 
+
+\label{doc-enum-members}
+\Hypertarget{structaudio_1_1config__t_doc-enum-members}
+\doxysubsection{Member Enumeration Documentation}
+\Hypertarget{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4e}\index{audio::config\_t@{audio::config\_t}!flags\_e@{flags\_e}}
+\index{flags\_e@{flags\_e}!audio::config\_t@{audio::config\_t}}
+\doxysubsubsection{\texorpdfstring{flags\_e}{flags\_e}}
+{\footnotesize\ttfamily \label{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4e} 
+enum \mbox{\hyperlink{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4e}{audio\+::config\+\_\+t\+::flags\+\_\+e}} \+: int}
+
+
+
+Audio configuration flags. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{HIGH\_QUALITY@{HIGH\_QUALITY}!audio::config\_t@{audio::config\_t}}\index{audio::config\_t@{audio::config\_t}!HIGH\_QUALITY@{HIGH\_QUALITY}}}\Hypertarget{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4ea074914c54c0e81c85766e256b9569146}\label{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4ea074914c54c0e81c85766e256b9569146} 
+HIGH\+\_\+\+QUALITY&High quality audio. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{HOST\_AUDIO@{HOST\_AUDIO}!audio::config\_t@{audio::config\_t}}\index{audio::config\_t@{audio::config\_t}!HOST\_AUDIO@{HOST\_AUDIO}}}\Hypertarget{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4eab06a898479ab3ee47891e67aca79605c}\label{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4eab06a898479ab3ee47891e67aca79605c} 
+HOST\+\_\+\+AUDIO&Host audio. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CUSTOM\_SURROUND\_PARAMS@{CUSTOM\_SURROUND\_PARAMS}!audio::config\_t@{audio::config\_t}}\index{audio::config\_t@{audio::config\_t}!CUSTOM\_SURROUND\_PARAMS@{CUSTOM\_SURROUND\_PARAMS}}}\Hypertarget{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4ea6604b50063a86f05beee3a94612d85df}\label{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4ea6604b50063a86f05beee3a94612d85df} 
+CUSTOM\+\_\+\+SURROUND\+\_\+\+PARAMS&Custom surround parameters. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MAX\_FLAGS@{MAX\_FLAGS}!audio::config\_t@{audio::config\_t}}\index{audio::config\_t@{audio::config\_t}!MAX\_FLAGS@{MAX\_FLAGS}}}\Hypertarget{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4ea0ff783d83b02fef4d443a318bfaee87e}\label{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4ea0ff783d83b02fef4d443a318bfaee87e} 
+MAX\+\_\+\+FLAGS&Maximum number of flags. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{audio_8h}{audio.\+h}}\end{DoxyCompactItemize}

@@ -1,0 +1,72 @@
+\doxysection{util\+::buffer\+\_\+t\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classutil_1_1buffer__t}{}\label{classutil_1_1buffer__t}\index{util::buffer\_t$<$ T $>$@{util::buffer\_t$<$ T $>$}}
+
+
+Buffer container for binary data.  
+
+
+
+
+{\ttfamily \#include $<$utility.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classutil_1_1buffer__t_a581f0cb41af05b5ad596e82ab9ce3a5b}\label{classutil_1_1buffer__t_a581f0cb41af05b5ad596e82ab9ce3a5b} 
+{\bfseries buffer\+\_\+t} (buffer\+\_\+t \&\&o) noexcept
+\item 
+\Hypertarget{classutil_1_1buffer__t_a605cc46715a2079b6682d444f644676c}\label{classutil_1_1buffer__t_a605cc46715a2079b6682d444f644676c} 
+{\bfseries buffer\+\_\+t} (const buffer\+\_\+t \&o)
+\item 
+\Hypertarget{classutil_1_1buffer__t_a66b11b43c8567cd67c38e7a9b0138c6b}\label{classutil_1_1buffer__t_a66b11b43c8567cd67c38e7a9b0138c6b} 
+buffer\+\_\+t \& {\bfseries operator=} (buffer\+\_\+t \&\&o) noexcept
+\item 
+\Hypertarget{classutil_1_1buffer__t_a3d88706930ed6c7e2554503cde6c19cc}\label{classutil_1_1buffer__t_a3d88706930ed6c7e2554503cde6c19cc} 
+{\bfseries buffer\+\_\+t} (size\+\_\+t elements)
+\item 
+\Hypertarget{classutil_1_1buffer__t_a165c225fd12a57f44b074f6df423b3c7}\label{classutil_1_1buffer__t_a165c225fd12a57f44b074f6df423b3c7} 
+{\bfseries buffer\+\_\+t} (size\+\_\+t elements, const T \&t)
+\item 
+\Hypertarget{classutil_1_1buffer__t_a074084dd5f5ec2d0acde51ab46490114}\label{classutil_1_1buffer__t_a074084dd5f5ec2d0acde51ab46490114} 
+T \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t el)
+\item 
+\Hypertarget{classutil_1_1buffer__t_a28a0d86033dbd7fa412fb4103c1ccfcc}\label{classutil_1_1buffer__t_a28a0d86033dbd7fa412fb4103c1ccfcc} 
+const T \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (size\+\_\+t el) const
+\item 
+\Hypertarget{classutil_1_1buffer__t_a22a5a75f4d40539d2d140321e64dcb8e}\label{classutil_1_1buffer__t_a22a5a75f4d40539d2d140321e64dcb8e} 
+size\+\_\+t {\bfseries size} () const
+\item 
+\Hypertarget{classutil_1_1buffer__t_ac28bb67dfe9bfa658ccd94b87e594d07}\label{classutil_1_1buffer__t_ac28bb67dfe9bfa658ccd94b87e594d07} 
+void {\bfseries fake\+\_\+resize} (std\+::size\+\_\+t els)
+\item 
+\Hypertarget{classutil_1_1buffer__t_ab0d474340c277b177294484d918e138d}\label{classutil_1_1buffer__t_ab0d474340c277b177294484d918e138d} 
+T \texorpdfstring{$\ast$}{*} {\bfseries begin} ()
+\item 
+\Hypertarget{classutil_1_1buffer__t_a7effff0fddfe4de9c8beb7a87cfcfd76}\label{classutil_1_1buffer__t_a7effff0fddfe4de9c8beb7a87cfcfd76} 
+const T \texorpdfstring{$\ast$}{*} {\bfseries begin} () const
+\item 
+\Hypertarget{classutil_1_1buffer__t_a4f3b5a2ecf3c41872d77788689986324}\label{classutil_1_1buffer__t_a4f3b5a2ecf3c41872d77788689986324} 
+T \texorpdfstring{$\ast$}{*} {\bfseries end} ()
+\item 
+\Hypertarget{classutil_1_1buffer__t_a2091f3bb445e26d4ea7f4f64bef3fa90}\label{classutil_1_1buffer__t_a2091f3bb445e26d4ea7f4f64bef3fa90} 
+const T \texorpdfstring{$\ast$}{*} {\bfseries end} () const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T$>$\newline
+class util\+::buffer\+\_\+t$<$ T $>$}
+Buffer container for binary data. 
+
+Provides a resizable buffer for storing binary data with convenient access methods.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Element type (typically char or uint8\+\_\+t). \\
+\hline
+\end{DoxyTemplParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{utility_8h}{utility.\+h}}\end{DoxyCompactItemize}

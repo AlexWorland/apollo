@@ -1,0 +1,148 @@
+\doxysection{logging.\+h}
+\hypertarget{logging_8h_source}{}\label{logging_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/logging.h@{/Users/alexworland/autoBitrate/apollo/src/logging.h}}
+\mbox{\hyperlink{logging_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ lib\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <boost/log/common.hpp>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <boost/log/sinks.hpp>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{using\ }text\_sink\ =\ boost::log::sinks::asynchronous\_sink<boost::log::sinks::text\_ostream\_backend>;}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{extern}\ boost::log::sources::severity\_logger<int>\ verbose;}
+\DoxyCodeLine{00014\ \textcolor{keyword}{extern}\ boost::log::sources::severity\_logger<int>\ debug;}
+\DoxyCodeLine{00015\ \textcolor{keyword}{extern}\ boost::log::sources::severity\_logger<int>\ info;}
+\DoxyCodeLine{00016\ \textcolor{keyword}{extern}\ boost::log::sources::severity\_logger<int>\ warning;}
+\DoxyCodeLine{00017\ \textcolor{keyword}{extern}\ boost::log::sources::severity\_logger<int>\ error;}
+\DoxyCodeLine{00018\ \textcolor{keyword}{extern}\ boost::log::sources::severity\_logger<int>\ fatal;}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#ifdef\ SUNSHINE\_TESTS}}
+\DoxyCodeLine{00020\ \textcolor{keyword}{extern}\ boost::log::sources::severity\_logger<int>\ tests;}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{config_8h}{config.h}}"{}}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{stat__trackers_8h}{stat\_trackers.h}}"{}}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacelogging}{logging}}\ \{}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classlogging_1_1deinit__t}{deinit\_t}}\ \{}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00040\ \ \ \ \ \mbox{\hyperlink{classlogging_1_1deinit__t_aa18017a64b183e5beb6fc9cd77a697a6}{\string~deinit\_t}}();}
+\DoxyCodeLine{00041\ \ \ \};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacelogging_a11f171cd89599eef361b13bd85d250a0}{deinit}}();}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{void}\ formatter(\textcolor{keyword}{const}\ boost::log::record\_view\ \&view,\ boost::log::formatting\_ostream\ \&os);}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00062\ \ \ [[nodiscard]]\ std::unique\_ptr<deinit\_t>\ \mbox{\hyperlink{namespacelogging_a3609795d7d5469929c8d6aa5c8563f1e}{init}}(\textcolor{keywordtype}{int}\ min\_log\_level,\ \textcolor{keyword}{const}\ std::string\ \&log\_file);}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00068\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacelogging_a1d7b8d4f36fbbce1bb2ea95222c1032e}{setup\_av\_logging}}(\textcolor{keywordtype}{int}\ min\_log\_level);}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00074\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacelogging_a8d229a92cdf8a81494f80298e322ef43}{setup\_libdisplaydevice\_logging}}(\textcolor{keywordtype}{int}\ min\_log\_level);}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00082\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacelogging_a96f754b0ebd0874dd7387f0f016fdab8}{log\_flush}}();}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00091\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacelogging_a2e9cc953e537ca48326eadba8e948947}{print\_help}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *name);}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{class\ }min\_max\_avg\_periodic\_logger\ \{}
+\DoxyCodeLine{00108\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00109\ \ \ \ \ min\_max\_avg\_periodic\_logger(boost::log::sources::severity\_logger<int>\ \&severity,\ std::string\_view\ message,\ std::string\_view\ units,\ std::chrono::seconds\ interval\_in\_seconds\ =\ std::chrono::seconds(20)):}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ severity(severity),}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ message(message),}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ units(units),}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ interval(interval\_in\_seconds),}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ enabled(\mbox{\hyperlink{config_8cpp_ab1574b9a185050000a067e2484eab328}{config::sunshine}}.min\_log\_level\ <=\ severity.default\_severity())\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordtype}{void}\ collect\_and\_log(\textcolor{keyword}{const}\ T\ \&value)\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (enabled)\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ print\_info\ =\ [\&](\textcolor{keyword}{const}\ T\ \&min\_value,\ \textcolor{keyword}{const}\ T\ \&max\_value,\ \textcolor{keywordtype}{double}\ avg\_value)\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ f\ =\ \mbox{\hyperlink{stat__trackers_8cpp_a43215955146150d9ceaca7ec8165bfdc}{stat\_trackers::two\_digits\_after\_decimal}}();}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_floating\_point\_v<T>)\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \ \ BOOST\_LOG(severity.get())\ <<\ message\ <<\ \textcolor{stringliteral}{"{}\ (min/max/avg):\ "{}}\ <<\ f\ \%\ min\_value\ <<\ units\ <<\ \textcolor{stringliteral}{"{}/"{}}\ <<\ f\ \%\ max\_value\ <<\ units\ <<\ \textcolor{stringliteral}{"{}/"{}}\ <<\ f\ \%\ avg\_value\ <<\ units;}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ BOOST\_LOG(severity.get())\ <<\ message\ <<\ \textcolor{stringliteral}{"{}\ (min/max/avg):\ "{}}\ <<\ min\_value\ <<\ units\ <<\ \textcolor{stringliteral}{"{}/"{}}\ <<\ max\_value\ <<\ units\ <<\ \textcolor{stringliteral}{"{}/"{}}\ <<\ f\ \%\ avg\_value\ <<\ units;}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ tracker.collect\_and\_callback\_on\_interval(value,\ print\_info,\ interval);}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \ \ \}}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordtype}{void}\ collect\_and\_log(std::function<T()>\ func)\ \{}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (enabled)\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ collect\_and\_log(func());}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00135\ \ \ \ \ \}}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordtype}{void}\ reset()\ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (enabled)\ \{}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ tracker.reset();}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \ \ \}}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_enabled()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ enabled;}
+\DoxyCodeLine{00145\ \ \ \ \ \}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00148\ \ \ \ \ std::reference\_wrapper<boost::log::sources::severity\_logger<int>>\ severity;}
+\DoxyCodeLine{00149\ \ \ \ \ std::string\ message;}
+\DoxyCodeLine{00150\ \ \ \ \ std::string\ units;}
+\DoxyCodeLine{00151\ \ \ \ \ std::chrono::seconds\ interval;}
+\DoxyCodeLine{00152\ \ \ \ \ \textcolor{keywordtype}{bool}\ enabled;}
+\DoxyCodeLine{00153\ \ \ \ \ \mbox{\hyperlink{classstat__trackers_1_1min__max__avg__tracker}{stat\_trackers::min\_max\_avg\_tracker<T>}}\ tracker;}
+\DoxyCodeLine{00154\ \ \ \};}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00171\ \ \ \textcolor{keyword}{class\ }time\_delta\_periodic\_logger\ \{}
+\DoxyCodeLine{00172\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00173\ \ \ \ \ time\_delta\_periodic\_logger(boost::log::sources::severity\_logger<int>\ \&severity,\ std::string\_view\ message,\ std::chrono::seconds\ interval\_in\_seconds\ =\ std::chrono::seconds(20)):}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ logger(severity,\ message,\ \textcolor{stringliteral}{"{}ms"{}},\ interval\_in\_seconds)\ \{}
+\DoxyCodeLine{00175\ \ \ \ \ \}}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keywordtype}{void}\ first\_point(\textcolor{keyword}{const}\ std::chrono::steady\_clock::time\_point\ \&point)\ \{}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (logger.is\_enabled())\ \{}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ point1\ =\ point;}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00181\ \ \ \ \ \}}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keywordtype}{void}\ first\_point\_now()\ \{}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (logger.is\_enabled())\ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ first\_point(std::chrono::steady\_clock::now());}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00187\ \ \ \ \ \}}
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keywordtype}{void}\ second\_point\_and\_log(\textcolor{keyword}{const}\ std::chrono::steady\_clock::time\_point\ \&point)\ \{}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (logger.is\_enabled())\ \{}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ logger.collect\_and\_log(std::chrono::duration<double,\ std::milli>(point\ -\/\ point1).count());}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00193\ \ \ \ \ \}}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keywordtype}{void}\ second\_point\_now\_and\_log()\ \{}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (logger.is\_enabled())\ \{}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ second\_point\_and\_log(std::chrono::steady\_clock::now());}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00199\ \ \ \ \ \}}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keywordtype}{void}\ reset()\ \{}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (logger.is\_enabled())\ \{}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ logger.reset();}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00205\ \ \ \ \ \}}
+\DoxyCodeLine{00206\ }
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_enabled()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ logger.is\_enabled();}
+\DoxyCodeLine{00209\ \ \ \ \ \}}
+\DoxyCodeLine{00210\ }
+\DoxyCodeLine{00211\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00212\ \ \ \ \ std::chrono::steady\_clock::time\_point\ point1\ =\ std::chrono::steady\_clock::now();}
+\DoxyCodeLine{00213\ \ \ \ \ \mbox{\hyperlink{classlogging_1_1min__max__avg__periodic__logger}{min\_max\_avg\_periodic\_logger<double>}}\ logger;}
+\DoxyCodeLine{00214\ \ \ \};}
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00221\ \ \ std::string\ \mbox{\hyperlink{namespacelogging_a2598089e9a171456a1e4dcd95ce47223}{bracket}}(\textcolor{keyword}{const}\ std::string\ \&input);}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00228\ \ \ std::wstring\ \mbox{\hyperlink{namespacelogging_a2598089e9a171456a1e4dcd95ce47223}{bracket}}(\textcolor{keyword}{const}\ std::wstring\ \&input);}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00230\ \}\ \ \textcolor{comment}{//\ namespace\ logging}}
+
+\end{DoxyCode}

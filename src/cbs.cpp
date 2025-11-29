@@ -19,12 +19,31 @@ extern "C" {
 using namespace std::literals;
 
 namespace cbs {
+  /**
+   * @brief Close and free a CodedBitstreamContext.
+   * 
+   * Closes and frees resources associated with a CodedBitstreamContext.
+   * Used as a deleter for the ctx_t smart pointer.
+   * 
+   * @param c Pointer to the CodedBitstreamContext to close.
+   */
   void close(CodedBitstreamContext *c) {
     ff_cbs_close(&c);
   }
 
+  /**
+   * @brief Coded bitstream context pointer type.
+   * 
+   * Smart pointer managing CodedBitstreamContext lifecycle with automatic cleanup.
+   */
   using ctx_t = util::safe_ptr<CodedBitstreamContext, close>;
 
+  /**
+   * @brief Coded bitstream fragment wrapper.
+   * 
+   * Wraps FFmpeg's CodedBitstreamFragment with proper move semantics
+   * and initialization for handling H.264/H.265/AV1 bitstream fragments.
+   */
   class frag_t: public CodedBitstreamFragment {
   public:
     frag_t(frag_t &&o) {
@@ -54,6 +73,18 @@ namespace cbs {
     }
   };
 
+  /**
+   * @brief Write NAL unit to bitstream using existing context.
+   * 
+   * Inserts a NAL unit into a coded bitstream fragment and writes it
+   * to a buffer using the provided context.
+   * 
+   * @param cbs_ctx Coded bitstream context to use for writing.
+   * @param nal NAL unit type.
+   * @param uh NAL unit header structure (codec-specific).
+   * @param codec_id Codec ID (H.264, H.265, AV1, etc.).
+   * @return Buffer containing the written bitstream data, or empty buffer on error.
+   */
   util::buffer_t<std::uint8_t> write(cbs::ctx_t &cbs_ctx, std::uint8_t nal, void *uh, AVCodecID codec_id) {
     cbs::frag_t frag;
     auto err = ff_cbs_insert_unit_content(&frag, -1, nal, uh, nullptr);
@@ -79,6 +110,17 @@ namespace cbs {
     return data;
   }
 
+  /**
+   * @brief Write NAL unit to bitstream (creates temporary context).
+   * 
+   * Creates a temporary coded bitstream context and writes a NAL unit
+   * to a buffer. Convenience function for one-off operations.
+   * 
+   * @param nal NAL unit type.
+   * @param uh NAL unit header structure (codec-specific).
+   * @param codec_id Codec ID (H.264, H.265, AV1, etc.).
+   * @return Buffer containing the written bitstream data, or empty buffer on error.
+   */
   util::buffer_t<std::uint8_t> write(std::uint8_t nal, void *uh, AVCodecID codec_id) {
     cbs::ctx_t cbs_ctx;
     ff_cbs_init(&cbs_ctx, codec_id, nullptr);

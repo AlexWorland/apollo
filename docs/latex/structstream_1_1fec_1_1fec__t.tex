@@ -1,0 +1,59 @@
+\doxysection{stream\+::fec\+::fec\+\_\+t Struct Reference}
+\hypertarget{structstream_1_1fec_1_1fec__t}{}\label{structstream_1_1fec_1_1fec__t}\index{stream::fec::fec\_t@{stream::fec::fec\_t}}
+
+
+Forward Error Correction (FEC) structure.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structstream_1_1fec_1_1fec__t_a87eb496a6c1c7d8ce652ed9f41cf3763}\label{structstream_1_1fec_1_1fec__t_a87eb496a6c1c7d8ce652ed9f41cf3763} 
+char \texorpdfstring{$\ast$}{*} {\bfseries data} (size\+\_\+t el)
+\item 
+\Hypertarget{structstream_1_1fec_1_1fec__t_a10672b8b5bf26c00872c89e92dfbda26}\label{structstream_1_1fec_1_1fec__t_a10672b8b5bf26c00872c89e92dfbda26} 
+char \texorpdfstring{$\ast$}{*} {\bfseries prefix} (size\+\_\+t el)
+\item 
+\Hypertarget{structstream_1_1fec_1_1fec__t_abb5c78e4a4f5fe3b20be655adad3bd5c}\label{structstream_1_1fec_1_1fec__t_abb5c78e4a4f5fe3b20be655adad3bd5c} 
+size\+\_\+t {\bfseries size} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structstream_1_1fec_1_1fec__t_a247f259b38cf2818717ebbb6fde23f88}\label{structstream_1_1fec_1_1fec__t_a247f259b38cf2818717ebbb6fde23f88} 
+size\+\_\+t {\bfseries data\+\_\+shards}
+\item 
+\Hypertarget{structstream_1_1fec_1_1fec__t_aaa8ab4dc922fddf21e8721a7ecbf5533}\label{structstream_1_1fec_1_1fec__t_aaa8ab4dc922fddf21e8721a7ecbf5533} 
+size\+\_\+t {\bfseries nr\+\_\+shards}
+\item 
+\Hypertarget{structstream_1_1fec_1_1fec__t_a8e397ad6957d0e84c8d43b746559be26}\label{structstream_1_1fec_1_1fec__t_a8e397ad6957d0e84c8d43b746559be26} 
+size\+\_\+t {\bfseries percentage}
+\item 
+\Hypertarget{structstream_1_1fec_1_1fec__t_aa9c1827445bf040428f4163779359471}\label{structstream_1_1fec_1_1fec__t_aa9c1827445bf040428f4163779359471} 
+size\+\_\+t {\bfseries blocksize}
+\item 
+\Hypertarget{structstream_1_1fec_1_1fec__t_a6424196ebcddbb54fd2742afb1087009}\label{structstream_1_1fec_1_1fec__t_a6424196ebcddbb54fd2742afb1087009} 
+size\+\_\+t {\bfseries prefixsize}
+\item 
+\Hypertarget{structstream_1_1fec_1_1fec__t_a3a3bc1651b683bdb3cceb84b938199ea}\label{structstream_1_1fec_1_1fec__t_a3a3bc1651b683bdb3cceb84b938199ea} 
+\mbox{\hyperlink{classutil_1_1buffer__t}{util\+::buffer\+\_\+t}}$<$ char $>$ {\bfseries shards}
+\item 
+\Hypertarget{structstream_1_1fec_1_1fec__t_a457e6df8c0497e1d54fc89adf4238dec}\label{structstream_1_1fec_1_1fec__t_a457e6df8c0497e1d54fc89adf4238dec} 
+\mbox{\hyperlink{classutil_1_1buffer__t}{util\+::buffer\+\_\+t}}$<$ char $>$ {\bfseries headers}
+\item 
+\Hypertarget{structstream_1_1fec_1_1fec__t_ac5b3aa3fdb070ddd8415fe02143061b8}\label{structstream_1_1fec_1_1fec__t_ac5b3aa3fdb070ddd8415fe02143061b8} 
+\mbox{\hyperlink{classutil_1_1buffer__t}{util\+::buffer\+\_\+t}}$<$ uint8\+\_\+t \texorpdfstring{$\ast$}{*} $>$ {\bfseries shards\+\_\+p}
+\item 
+\Hypertarget{structstream_1_1fec_1_1fec__t_a1bc831dedc6fb61510009c3e1923ccb9}\label{structstream_1_1fec_1_1fec__t_a1bc831dedc6fb61510009c3e1923ccb9} 
+std\+::vector$<$ platf\+::buffer\+\_\+descriptor\+\_\+t $>$ {\bfseries payload\+\_\+buffers}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Forward Error Correction (FEC) structure. 
+
+Manages FEC encoding for video packets, including data shards, parity shards, and buffer management for Reed-\/\+Solomon encoding. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{stream_8cpp}{stream.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,63 @@
+\doxysection{safe\+::queue\+\_\+t\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classsafe_1_1queue__t}{}\label{classsafe_1_1queue__t}\index{safe::queue\_t$<$ T $>$@{safe::queue\_t$<$ T $>$}}
+
+
+Thread-\/safe queue class.  
+
+
+
+
+{\ttfamily \#include $<$thread\+\_\+safe.\+h$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classsafe_1_1queue__t_a52a78368eacbae20b2078af4466b5976}\label{classsafe_1_1queue__t_a52a78368eacbae20b2078af4466b5976} 
+using {\bfseries status\+\_\+t} = util\+::optional\+\_\+t$<$T$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classsafe_1_1queue__t_a10b8472e74081d80f9ad4d34c99fb7b6}\label{classsafe_1_1queue__t_a10b8472e74081d80f9ad4d34c99fb7b6} 
+{\bfseries queue\+\_\+t} (std\+::uint32\+\_\+t max\+\_\+elements=32)
+\item 
+\Hypertarget{classsafe_1_1queue__t_ae916aa56b55d72f2f1cae892af8fe672}\label{classsafe_1_1queue__t_ae916aa56b55d72f2f1cae892af8fe672} 
+{\footnotesize template$<$class... Args$>$ }\\void {\bfseries raise} (Args \&\&...\mbox{\hyperlink{namespaceargs}{args}})
+\item 
+\Hypertarget{classsafe_1_1queue__t_ab5c18bc1ca8e97dd4608c0ca7d15127f}\label{classsafe_1_1queue__t_ab5c18bc1ca8e97dd4608c0ca7d15127f} 
+bool {\bfseries peek} ()
+\item 
+\Hypertarget{classsafe_1_1queue__t_a434fc136cc2fd3cad3a88db4e8b26eef}\label{classsafe_1_1queue__t_a434fc136cc2fd3cad3a88db4e8b26eef} 
+{\footnotesize template$<$class Rep, class Period$>$ }\\status\+\_\+t {\bfseries pop} (std\+::chrono\+::duration$<$ Rep, Period $>$ delay)
+\item 
+\Hypertarget{classsafe_1_1queue__t_ae0e91dbd2441b71ebe68007fab40b1c7}\label{classsafe_1_1queue__t_ae0e91dbd2441b71ebe68007fab40b1c7} 
+status\+\_\+t {\bfseries pop} ()
+\item 
+\Hypertarget{classsafe_1_1queue__t_ae5792515f84279d4f7fba91546277bd1}\label{classsafe_1_1queue__t_ae5792515f84279d4f7fba91546277bd1} 
+std\+::vector$<$ T $>$ \& {\bfseries unsafe} ()
+\item 
+\Hypertarget{classsafe_1_1queue__t_a16bef3012c08ef3a5cdf2144e39b4b1b}\label{classsafe_1_1queue__t_a16bef3012c08ef3a5cdf2144e39b4b1b} 
+void {\bfseries stop} ()
+\item 
+\Hypertarget{classsafe_1_1queue__t_afe18da1bb89a269ea718bcaa9057b435}\label{classsafe_1_1queue__t_afe18da1bb89a269ea718bcaa9057b435} 
+bool {\bfseries running} () const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T$>$\newline
+class safe\+::queue\+\_\+t$<$ T $>$}
+Thread-\/safe queue class. 
+
+Provides a thread-\/safe FIFO queue with a maximum size limit. When the queue reaches maximum capacity, it automatically clears. Thread-\/safe\+: all operations are protected by internal mutex.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The type of elements stored in the queue. \\
+\hline
+\end{DoxyTemplParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{thread__safe_8h}{thread\+\_\+safe.\+h}}\end{DoxyCompactItemize}

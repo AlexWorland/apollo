@@ -1,0 +1,93 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/globals.h File Reference}
+\hypertarget{globals_8h}{}\label{globals_8h}\index{/Users/alexworland/autoBitrate/apollo/src/globals.h@{/Users/alexworland/autoBitrate/apollo/src/globals.h}}
+
+
+Declarations for globally accessible variables and functions.  
+
+
+{\ttfamily \#include "{}entry\+\_\+handler.\+h"{}}\newline
+{\ttfamily \#include "{}thread\+\_\+pool.\+h"{}}\newline
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacemail}{mail}}
+\begin{DoxyCompactList}\small\item\em Handles process-\/wide communication. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{globals_8h_aa3ee7970e6b675d35d4268f7a2213f2d}{MAIL}}(x)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{namespacemail_a8d5662b8219d44dcb6fd204a29931d83}\label{namespacemail_a8d5662b8219d44dcb6fd204a29931d83} 
+{\bfseries mail\+::\+MAIL} (shutdown)
+\item 
+\Hypertarget{namespacemail_ab21b25c5c8f2a16e3599261375125b18}\label{namespacemail_ab21b25c5c8f2a16e3599261375125b18} 
+{\bfseries mail\+::\+MAIL} (broadcast\+\_\+shutdown)
+\item 
+\Hypertarget{namespacemail_aaa167a21295a5a9c28d037457fd95420}\label{namespacemail_aaa167a21295a5a9c28d037457fd95420} 
+{\bfseries mail\+::\+MAIL} (video\+\_\+packets)
+\item 
+\Hypertarget{namespacemail_a5df474107cfecf0cd94988d848a947c7}\label{namespacemail_a5df474107cfecf0cd94988d848a947c7} 
+{\bfseries mail\+::\+MAIL} (audio\+\_\+packets)
+\item 
+\Hypertarget{namespacemail_a53024f97b71ab0eb93468468525543ce}\label{namespacemail_a53024f97b71ab0eb93468468525543ce} 
+{\bfseries mail\+::\+MAIL} (switch\+\_\+display)
+\item 
+\Hypertarget{namespacemail_a03ae646eb41cbae234b8a1e91480d75e}\label{namespacemail_a03ae646eb41cbae234b8a1e91480d75e} 
+{\bfseries mail\+::\+MAIL} (touch\+\_\+port)
+\item 
+\Hypertarget{namespacemail_a520da6124b949c996304aa81acd42a13}\label{namespacemail_a520da6124b949c996304aa81acd42a13} 
+{\bfseries mail\+::\+MAIL} (idr)
+\item 
+\Hypertarget{namespacemail_a1764f957a7dc2905ec7ca8d39213bdd8}\label{namespacemail_a1764f957a7dc2905ec7ca8d39213bdd8} 
+{\bfseries mail\+::\+MAIL} (invalidate\+\_\+ref\+\_\+frames)
+\item 
+\Hypertarget{namespacemail_a92b310149e3e3a8ed3342e7e0698fea2}\label{namespacemail_a92b310149e3e3a8ed3342e7e0698fea2} 
+{\bfseries mail\+::\+MAIL} (gamepad\+\_\+feedback)
+\item 
+\Hypertarget{namespacemail_af0a5316ff8f91e62b9881711a0bb232d}\label{namespacemail_af0a5316ff8f91e62b9881711a0bb232d} 
+{\bfseries mail\+::\+MAIL} (hdr)
+\item 
+\Hypertarget{namespacemail_a898d2bcef8562c71a2cff365a95158c5}\label{namespacemail_a898d2bcef8562c71a2cff365a95158c5} 
+{\bfseries mail\+::\+MAIL} (bitrate\+\_\+change)
+\item 
+\Hypertarget{namespacemail_a317148036ee74100148bf42fa3178c69}\label{namespacemail_a317148036ee74100148bf42fa3178c69} 
+{\bfseries mail\+::\+MAIL} (bitrate\+\_\+change\+\_\+confirmation)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{globals_8h_a13fbca386ee2f67e4a011aca224895f7}\label{globals_8h_a13fbca386ee2f67e4a011aca224895f7} 
+\mbox{\hyperlink{classthread__pool__util_1_1_thread_pool}{thread\+\_\+pool\+\_\+util\+::\+Thread\+Pool}} {\bfseries task\+\_\+pool}
+\begin{DoxyCompactList}\small\item\em A thread pool for processing tasks. \end{DoxyCompactList}\item 
+\Hypertarget{globals_8h_abeb52d853aa3622d70b50c58c91dce71}\label{globals_8h_abeb52d853aa3622d70b50c58c91dce71} 
+bool {\bfseries display\+\_\+cursor}
+\begin{DoxyCompactList}\small\item\em A boolean flag to indicate whether the cursor should be displayed. \end{DoxyCompactList}\item 
+\Hypertarget{namespacemail_afda717136d37a1ddff4ec467413580ef}\label{namespacemail_afda717136d37a1ddff4ec467413580ef} 
+safe\+::mail\+\_\+t {\bfseries mail\+::man}
+\begin{DoxyCompactList}\small\item\em A process-\/wide communication mechanism. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Declarations for globally accessible variables and functions. 
+
+
+
+\label{doc-define-members}
+\Hypertarget{globals_8h_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{globals_8h_aa3ee7970e6b675d35d4268f7a2213f2d}\index{globals.h@{globals.h}!MAIL@{MAIL}}
+\index{MAIL@{MAIL}!globals.h@{globals.h}}
+\doxysubsubsection{\texorpdfstring{MAIL}{MAIL}}
+{\footnotesize\ttfamily \label{globals_8h_aa3ee7970e6b675d35d4268f7a2213f2d} 
+\#define MAIL(\begin{DoxyParamCaption}\item[{}]{x}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ x\ =\ std::string\_view\ \{\ \(\backslash\)}
+\DoxyCodeLine{\textcolor{preprocessor}{\ \ \ \ \#x\ \(\backslash\)}}
+\DoxyCodeLine{\textcolor{preprocessor}{\ \ \}}}
+
+\end{DoxyCode}

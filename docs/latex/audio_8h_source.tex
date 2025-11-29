@@ -1,0 +1,81 @@
+\doxysection{audio.\+h}
+\hypertarget{audio_8h_source}{}\label{audio_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/audio.h@{/Users/alexworland/autoBitrate/apollo/src/audio.h}}
+\mbox{\hyperlink{audio_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ local\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}platform/common.h"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{thread__safe_8h}{thread\_safe.h}}"{}}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{utility_8h}{utility.h}}"{}}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <bitset>}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }audio\ \{}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{audio_8h_ac92552a5fdc9c1f75dfca4542c7f3cd9}{stream\_config\_e}}\ :\ \textcolor{keywordtype}{int}\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \mbox{\hyperlink{audio_8h_ac92552a5fdc9c1f75dfca4542c7f3cd9a7890cc01d9ec2540b6330a25365ddbc5}{STEREO}},\ \ }
+\DoxyCodeLine{00023\ \ \ \ \ \mbox{\hyperlink{audio_8h_ac92552a5fdc9c1f75dfca4542c7f3cd9a2c8d41b662fa736c28187960d05f773e}{HIGH\_STEREO}},\ \ }
+\DoxyCodeLine{00024\ \ \ \ \ \mbox{\hyperlink{audio_8h_ac92552a5fdc9c1f75dfca4542c7f3cd9a76bdfe77a1e4a8ea436c099112beba8f}{SURROUND51}},\ \ }
+\DoxyCodeLine{00025\ \ \ \ \ \mbox{\hyperlink{audio_8h_ac92552a5fdc9c1f75dfca4542c7f3cd9a98f7c38e4754dc0f21a5ea7a689ba7d4}{HIGH\_SURROUND51}},\ \ }
+\DoxyCodeLine{00026\ \ \ \ \ \mbox{\hyperlink{audio_8h_ac92552a5fdc9c1f75dfca4542c7f3cd9ad09001a7ffb508cb770ff3907be15c7b}{SURROUND71}},\ \ }
+\DoxyCodeLine{00027\ \ \ \ \ \mbox{\hyperlink{audio_8h_ac92552a5fdc9c1f75dfca4542c7f3cd9a8d647db81d57921ec933c5cf6b9fd0cb}{HIGH\_SURROUND71}},\ \ }
+\DoxyCodeLine{00028\ \ \ \ \ \mbox{\hyperlink{audio_8h_ac92552a5fdc9c1f75dfca4542c7f3cd9aea5748c50c878b9d1f90504c4d377a3d}{MAX\_STREAM\_CONFIG}}\ \ }
+\DoxyCodeLine{00029\ \ \ \};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structaudio_1_1opus__stream__config__t}{opus\_stream\_config\_t}}\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ std::int32\_t\ \mbox{\hyperlink{structaudio_1_1opus__stream__config__t_a05f0034d7df9be79ababdb0a53d25f02}{sampleRate}};\ \ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structaudio_1_1opus__stream__config__t_a5e557e4b87141a10b9e4cd86dc3193b2}{channelCount}};\ \ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structaudio_1_1opus__stream__config__t_a154b5fff6edfd2591cc54fb806ea51e9}{streams}};\ \ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structaudio_1_1opus__stream__config__t_a6cc2e46759e86f6840db20437abbc473}{coupledStreams}};\ \ }
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{const}\ std::uint8\_t\ *\mbox{\hyperlink{structaudio_1_1opus__stream__config__t_ae4e07aa81c98c04cca8494d34d8debb9}{mapping}};\ \ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structaudio_1_1opus__stream__config__t_aeb185e67b8e82fda349713ed69c3671e}{bitrate}};\ \ }
+\DoxyCodeLine{00041\ \ \ \};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structaudio_1_1stream__params__t}{stream\_params\_t}}\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structaudio_1_1stream__params__t_a69384eb905f7c5795d7a3bcdd4a8a00c}{channelCount}};\ \ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structaudio_1_1stream__params__t_a284a1b063a5ad74c075aa1ccdec23540}{streams}};\ \ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structaudio_1_1stream__params__t_ae41e6ccb9abb08f88cf8f4c2a2d839de}{coupledStreams}};\ \ }
+\DoxyCodeLine{00050\ \ \ \ \ std::uint8\_t\ \mbox{\hyperlink{structaudio_1_1stream__params__t_aeed1906920c048ac2c45fb23b308a551}{mapping}}[8];\ \ }
+\DoxyCodeLine{00051\ \ \ \};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{extern}\ \mbox{\hyperlink{structaudio_1_1opus__stream__config__t}{opus\_stream\_config\_t}}\ \mbox{\hyperlink{audio_8cpp_a5a46ad6f50b6032175ee1f935360622d}{stream\_configs}}[\mbox{\hyperlink{audio_8h_ac92552a5fdc9c1f75dfca4542c7f3cd9aea5748c50c878b9d1f90504c4d377a3d}{MAX\_STREAM\_CONFIG}}];\ \ }
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00058\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structaudio_1_1config__t}{config\_t}}\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{enum}\ \mbox{\hyperlink{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4e}{flags\_e}}\ :\ \textcolor{keywordtype}{int}\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \mbox{\hyperlink{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4ea074914c54c0e81c85766e256b9569146}{HIGH\_QUALITY}},\ \ }
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \mbox{\hyperlink{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4eab06a898479ab3ee47891e67aca79605c}{HOST\_AUDIO}},\ \ }
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \mbox{\hyperlink{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4ea6604b50063a86f05beee3a94612d85df}{CUSTOM\_SURROUND\_PARAMS}},\ \ }
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \mbox{\hyperlink{structaudio_1_1config__t_a042a4ceabf73b3fb1f20937aa934fc4ea0ff783d83b02fef4d443a318bfaee87e}{MAX\_FLAGS}}\ \ }
+\DoxyCodeLine{00067\ \ \ \ \ \};}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structaudio_1_1config__t_a09de02ad79d25581d15b4245f3caf151}{packetDuration}};\ \ }
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structaudio_1_1config__t_a4b42c51a5d1d90c83fae29fd61e380ae}{channels}};\ \ }
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structaudio_1_1config__t_a5de0a0a48c17e1bfcfe1fffdbc05bce9}{mask}};\ \ }
+\DoxyCodeLine{00072\ \ \ \ \ \mbox{\hyperlink{structaudio_1_1stream__params__t}{stream\_params\_t}}\ \mbox{\hyperlink{structaudio_1_1config__t_a41ab1b133f4b211cc974e2ac9bdc2afe}{customStreamParams}};\ \ }
+\DoxyCodeLine{00073\ \ \ \ \ std::bitset<MAX\_FLAGS>\ \mbox{\hyperlink{structaudio_1_1config__t_aad43a405d83c8bae4d7df6ad45e42618}{flags}};\ \ }
+\DoxyCodeLine{00074\ \ \ \ \ uint64\_t\ \mbox{\hyperlink{structaudio_1_1config__t_a14d3997bfdcd29246b7db69bc5e2ec9c}{\_\_padding}};\ \ }
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structaudio_1_1config__t_a31b3bbf6193c9ae9bc00a44108605790}{input\_only}};\ \ }
+\DoxyCodeLine{00076\ \ \ \};}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structaudio_1_1audio__ctx__t}{audio\_ctx\_t}}\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ std::unique\_ptr<std::atomic\_bool>\ \mbox{\hyperlink{structaudio_1_1audio__ctx__t_ad55484b8d0ea41bec8eaf0e2c46d418a}{sink\_flag}};\ \ }
+\DoxyCodeLine{00083\ \ \ \ \ std::unique\_ptr<platf::audio\_control\_t>\ \mbox{\hyperlink{structaudio_1_1audio__ctx__t_a25e5d121185e97d4203dd2fbe032f75c}{control}};\ \ }
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structaudio_1_1audio__ctx__t_a5e4f5bd8180f94a8b40720d3dfe64b1f}{restore\_sink}};\ \ }
+\DoxyCodeLine{00085\ \ \ \ \ platf::sink\_t\ \mbox{\hyperlink{structaudio_1_1audio__ctx__t_ac22c3cc27a55966d969a9ca0dc78768c}{sink}};\ \ }
+\DoxyCodeLine{00086\ \ \ \};}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{audio_8h_a208536a48fedc9bee7a37c20450347fe}{buffer\_t}}\ =\ \mbox{\hyperlink{classutil_1_1buffer__t}{util::buffer\_t<std::uint8\_t>}};}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00100\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{audio_8h_abe0a730704a0bf6b80dcc8f75d704ffd}{packet\_t}}\ =\ std::pair<void\ *,\ buffer\_t>;}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{audio_8h_aa090183dda3ff69e10765b34e048a6a9}{audio\_ctx\_ref\_t}}\ =\ \mbox{\hyperlink{structsafe_1_1shared__t_1_1ptr__t}{safe::shared\_t<audio\_ctx\_t>::ptr\_t}};}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00119\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{audio_8cpp_a50f4f1627a2b1c7ae2021dd0dbf21b03}{capture}}(safe::mail\_t\ \mbox{\hyperlink{namespacemail}{mail}},\ \mbox{\hyperlink{structaudio_1_1config__t}{config\_t}}\ config,\ \textcolor{keywordtype}{void}\ *channel\_data);}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00131\ \ \ \mbox{\hyperlink{audio_8h_aa090183dda3ff69e10765b34e048a6a9}{audio\_ctx\_ref\_t}}\ \mbox{\hyperlink{audio_8cpp_acf6045021b53fd7c6583fe9ac2740fbe}{get\_audio\_ctx\_ref}}();}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00147\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{audio_8cpp_a7ca978d7523c30309defd31a66d1654c}{is\_audio\_ctx\_sink\_available}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structaudio_1_1audio__ctx__t}{audio\_ctx\_t}}\ \&ctx);}
+\DoxyCodeLine{00148\ \}\ \ \textcolor{comment}{//\ namespace\ audio}}
+
+\end{DoxyCode}

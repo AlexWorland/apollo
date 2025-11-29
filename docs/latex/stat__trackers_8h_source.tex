@@ -1,0 +1,56 @@
+\doxysection{stat\+\_\+trackers.\+h}
+\hypertarget{stat__trackers_8h_source}{}\label{stat__trackers_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/stat\_trackers.h@{/Users/alexworland/autoBitrate/apollo/src/stat\_trackers.h}}
+\mbox{\hyperlink{stat__trackers_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ standard\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <chrono>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <functional>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ lib\ includes}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <boost/format.hpp>}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }stat\_trackers\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00021\ \ \ boost::format\ \mbox{\hyperlink{stat__trackers_8cpp_a393959b036f3d10a1c648d5bb899a73a}{one\_digit\_after\_decimal}}();}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00027\ \ \ boost::format\ \mbox{\hyperlink{stat__trackers_8cpp_a43215955146150d9ceaca7ec8165bfdc}{two\_digits\_after\_decimal}}();}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classstat__trackers_1_1min__max__avg__tracker}{min\_max\_avg\_tracker}}\ \{}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{classstat__trackers_1_1min__max__avg__tracker_a0228762cbeffcb952d8787433c00ba09}{callback\_function}}\ =\ std::function<void(T\ \mbox{\hyperlink{classstat__trackers_1_1min__max__avg__tracker_a50e42d9a25748d2aced67c46fe1d6af2}{stat\_min}},\ T\ \mbox{\hyperlink{classstat__trackers_1_1min__max__avg__tracker_ad4e6d037df69af8076b225745eb1d8be}{stat\_max}},\ \textcolor{keywordtype}{double}\ stat\_avg)>;\ \ }
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classstat__trackers_1_1min__max__avg__tracker_a228908770a6e6f553daee3a39103392b}{collect\_and\_callback\_on\_interval}}(T\ stat,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classstat__trackers_1_1min__max__avg__tracker_a0228762cbeffcb952d8787433c00ba09}{callback\_function}}\ \&callback,\ std::chrono::seconds\ interval\_in\_seconds)\ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (data.calls\ ==\ 0)\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ data.last\_callback\_time\ =\ std::chrono::steady\_clock::now();}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (std::chrono::steady\_clock::now()\ >\ data.last\_callback\_time\ +\ interval\_in\_seconds)\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ callback(data.stat\_min,\ data.stat\_max,\ data.stat\_total\ /\ data.calls);}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ data\ =\ \{\};}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ data.stat\_min\ =\ std::min(data.stat\_min,\ stat);}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ data.stat\_max\ =\ std::max(data.stat\_max,\ stat);}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ data.stat\_total\ +=\ stat;}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ data.calls\ +=\ 1;}
+\DoxyCodeLine{00055\ \ \ \ \ \}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classstat__trackers_1_1min__max__avg__tracker_a62c090a29fc18d92af13efab4627d917}{reset}}()\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ data\ =\ \{\};}
+\DoxyCodeLine{00062\ \ \ \ \ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ std::chrono::steady\_clock::time\_point\ \mbox{\hyperlink{classstat__trackers_1_1min__max__avg__tracker_a3d5bf49c27f059d375b100dc99a1c18b}{last\_callback\_time}}\ =\ std::chrono::steady\_clock::now();\ \ }
+\DoxyCodeLine{00070\ \ \ \ \ \ \ T\ \mbox{\hyperlink{classstat__trackers_1_1min__max__avg__tracker_a50e42d9a25748d2aced67c46fe1d6af2}{stat\_min}}\ =\ std::numeric\_limits<T>::max();\ \ }
+\DoxyCodeLine{00071\ \ \ \ \ \ \ T\ \mbox{\hyperlink{classstat__trackers_1_1min__max__avg__tracker_ad4e6d037df69af8076b225745eb1d8be}{stat\_max}}\ =\ std::numeric\_limits<T>::min();\ \ }
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{classstat__trackers_1_1min__max__avg__tracker_a3050a1425881ebf31c5b6ad10ac97b55}{stat\_total}}\ =\ 0;\ \ }
+\DoxyCodeLine{00073\ \ \ \ \ \ \ uint32\_t\ \mbox{\hyperlink{classstat__trackers_1_1min__max__avg__tracker_adf41b21e477994baf1d6de635ceb97d0}{calls}}\ =\ 0;\ \ }
+\DoxyCodeLine{00074\ \ \ \ \ \}\ data;}
+\DoxyCodeLine{00075\ \ \ \};}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \}\ \ \textcolor{comment}{//\ namespace\ stat\_trackers}}
+
+\end{DoxyCode}

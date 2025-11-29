@@ -1,0 +1,233 @@
+\doxysection{proc\+::proc\+\_\+t Class Reference}
+\hypertarget{classproc_1_1proc__t}{}\label{classproc_1_1proc__t}\index{proc::proc\_t@{proc::proc\_t}}
+
+
+Process manager class for launching and managing applications.  
+
+
+
+
+{\ttfamily \#include $<$process.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classproc_1_1proc__t_aeea31c928aafbe42629ca2d086105a92}{proc\+\_\+t}} (boost\+::process\+::v1\+::environment \&\&env, std\+::vector$<$ \mbox{\hyperlink{structproc_1_1ctx__t}{ctx\+\_\+t}} $>$ \&\&apps)
+\begin{DoxyCompactList}\small\item\em Construct process manager with environment and applications. \end{DoxyCompactList}\item 
+\Hypertarget{classproc_1_1proc__t_a9beb9a57d286ec07b62702bd20530ff9}\label{classproc_1_1proc__t_a9beb9a57d286ec07b62702bd20530ff9} 
+void {\bfseries launch\+\_\+input\+\_\+only} ()
+\begin{DoxyCompactList}\small\item\em Launch input-\/only mode (no application). \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classproc_1_1proc__t_a263d78c8d725e7750aa8191c74dcef23}{execute}} (const \mbox{\hyperlink{structproc_1_1ctx__t}{ctx\+\_\+t}} \&\+\_\+app, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+t}} $>$ launch\+\_\+session)
+\begin{DoxyCompactList}\small\item\em Execute an application. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classproc_1_1proc__t_a3c524382f5450f61614271f7a0dfb130}{running}} ()
+\begin{DoxyCompactList}\small\item\em Get the currently running application ID. \end{DoxyCompactList}\item 
+const std\+::vector$<$ \mbox{\hyperlink{structproc_1_1ctx__t}{ctx\+\_\+t}} $>$ \& \mbox{\hyperlink{classproc_1_1proc__t_aa69e09cd849b7c3cb05542dca8665d4a}{get\+\_\+apps}} () const
+\begin{DoxyCompactList}\small\item\em Get applications list (const). \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{structproc_1_1ctx__t}{ctx\+\_\+t}} $>$ \& \mbox{\hyperlink{classproc_1_1proc__t_a609fc5bd79897f6d7bbfd38bf1c9ed52}{get\+\_\+apps}} ()
+\begin{DoxyCompactList}\small\item\em Get applications list. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classproc_1_1proc__t_a1df0673c6cbcd276de51c2a9ab1a17ef}{get\+\_\+app\+\_\+image}} (int app\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Get application image path. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classproc_1_1proc__t_a5396a912e3fdb692bf4e885f25bbee25}{get\+\_\+last\+\_\+run\+\_\+app\+\_\+name}} ()
+\begin{DoxyCompactList}\small\item\em Get the name of the last run application. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classproc_1_1proc__t_a760d692844d117d9795fb91174ea16e7}{get\+\_\+running\+\_\+app\+\_\+uuid}} ()
+\begin{DoxyCompactList}\small\item\em Get the UUID of the currently running application. \end{DoxyCompactList}\item 
+boost\+::process\+::v1\+::environment \mbox{\hyperlink{classproc_1_1proc__t_aaa54a533679597ee0e4183a26a7d7989}{get\+\_\+env}} ()
+\begin{DoxyCompactList}\small\item\em Get the process environment. \end{DoxyCompactList}\item 
+\Hypertarget{classproc_1_1proc__t_aff681a1eec7ef5e3040f9e08c217c59a}\label{classproc_1_1proc__t_aff681a1eec7ef5e3040f9e08c217c59a} 
+void {\bfseries resume} ()
+\begin{DoxyCompactList}\small\item\em Resume a paused application. \end{DoxyCompactList}\item 
+\Hypertarget{classproc_1_1proc__t_abbfb8d1c947b043dc072b5534c2fa927}\label{classproc_1_1proc__t_abbfb8d1c947b043dc072b5534c2fa927} 
+void {\bfseries pause} ()
+\begin{DoxyCompactList}\small\item\em Pause a running application. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classproc_1_1proc__t_ad388bb7a8381e80fa709d973c3452b1a}{terminate}} (bool immediate=false, bool needs\+\_\+refresh=true)
+\begin{DoxyCompactList}\small\item\em Terminate the running application. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classproc_1_1proc__t_a0229cbaaaf2a59f83f9bd7ec940b8916}\label{classproc_1_1proc__t_a0229cbaaaf2a59f83f9bd7ec940b8916} 
+std\+::string {\bfseries display\+\_\+name}
+\begin{DoxyCompactList}\small\item\em Current display name. \end{DoxyCompactList}\item 
+\Hypertarget{classproc_1_1proc__t_a35373b5d8d10998a239b8108a1f6a597}\label{classproc_1_1proc__t_a35373b5d8d10998a239b8108a1f6a597} 
+std\+::string {\bfseries initial\+\_\+display}
+\begin{DoxyCompactList}\small\item\em Initial display name. \end{DoxyCompactList}\item 
+\Hypertarget{classproc_1_1proc__t_adc61b8415e06e727982f0cc54727f4d3}\label{classproc_1_1proc__t_adc61b8415e06e727982f0cc54727f4d3} 
+std\+::string {\bfseries mode\+\_\+changed\+\_\+display}
+\begin{DoxyCompactList}\small\item\em Display name after mode change. \end{DoxyCompactList}\item 
+\Hypertarget{classproc_1_1proc__t_ac4a31e330400242298dd22781c727fb6}\label{classproc_1_1proc__t_ac4a31e330400242298dd22781c727fb6} 
+bool {\bfseries initial\+\_\+hdr} = false
+\begin{DoxyCompactList}\small\item\em Initial HDR state. \end{DoxyCompactList}\item 
+\Hypertarget{classproc_1_1proc__t_a200772a989fab1cabf61f1506e0e3da6}\label{classproc_1_1proc__t_a200772a989fab1cabf61f1506e0e3da6} 
+bool {\bfseries virtual\+\_\+display} = false
+\begin{DoxyCompactList}\small\item\em Whether virtual display is active. \end{DoxyCompactList}\item 
+\Hypertarget{classproc_1_1proc__t_a55a4ac10bacf7210f9289a7751fa3b88}\label{classproc_1_1proc__t_a55a4ac10bacf7210f9289a7751fa3b88} 
+bool {\bfseries allow\+\_\+client\+\_\+commands} = false
+\begin{DoxyCompactList}\small\item\em Whether client commands are allowed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Process manager class for launching and managing applications. 
+
+\label{doc-constructors}
+\Hypertarget{classproc_1_1proc__t_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classproc_1_1proc__t_aeea31c928aafbe42629ca2d086105a92}\index{proc::proc\_t@{proc::proc\_t}!proc\_t@{proc\_t}}
+\index{proc\_t@{proc\_t}!proc::proc\_t@{proc::proc\_t}}
+\doxysubsubsection{\texorpdfstring{proc\_t()}{proc\_t()}}
+{\footnotesize\ttfamily \label{classproc_1_1proc__t_aeea31c928aafbe42629ca2d086105a92} 
+proc\+::proc\+\_\+t\+::proc\+\_\+t (\begin{DoxyParamCaption}\item[{boost\+::process\+::v1\+::environment \&\&}]{env}{, }\item[{std\+::vector$<$ \mbox{\hyperlink{structproc_1_1ctx__t}{ctx\+\_\+t}} $>$ \&\&}]{apps}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct process manager with environment and applications. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em env} & Process environment variables. \\
+\hline
+{\em apps} & List of application contexts. \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-func-members}
+\Hypertarget{classproc_1_1proc__t_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classproc_1_1proc__t_a263d78c8d725e7750aa8191c74dcef23}\index{proc::proc\_t@{proc::proc\_t}!execute@{execute}}
+\index{execute@{execute}!proc::proc\_t@{proc::proc\_t}}
+\doxysubsubsection{\texorpdfstring{execute()}{execute()}}
+{\footnotesize\ttfamily \label{classproc_1_1proc__t_a263d78c8d725e7750aa8191c74dcef23} 
+int proc\+::proc\+\_\+t\+::execute (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structproc_1_1ctx__t}{ctx\+\_\+t}} \&}]{\+\_\+app}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+t}} $>$}]{launch\+\_\+session}{}\end{DoxyParamCaption})}
+
+
+
+Execute an application. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+app} & The application context. \\
+\hline
+{\em launch\+\_\+session} & The launch session parameters. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Application ID on success, 0 on failure. 
+\end{DoxyReturn}
+\Hypertarget{classproc_1_1proc__t_a1df0673c6cbcd276de51c2a9ab1a17ef}\index{proc::proc\_t@{proc::proc\_t}!get\_app\_image@{get\_app\_image}}
+\index{get\_app\_image@{get\_app\_image}!proc::proc\_t@{proc::proc\_t}}
+\doxysubsubsection{\texorpdfstring{get\_app\_image()}{get\_app\_image()}}
+{\footnotesize\ttfamily \label{classproc_1_1proc__t_a1df0673c6cbcd276de51c2a9ab1a17ef} 
+std\+::string proc\+::proc\+\_\+t\+::get\+\_\+app\+\_\+image (\begin{DoxyParamCaption}\item[{int}]{app\+\_\+id}{}\end{DoxyParamCaption})}
+
+
+
+Get application image path. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em app\+\_\+id} & The application ID. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Image path string. 
+\end{DoxyReturn}
+\Hypertarget{classproc_1_1proc__t_a609fc5bd79897f6d7bbfd38bf1c9ed52}\index{proc::proc\_t@{proc::proc\_t}!get\_apps@{get\_apps}}
+\index{get\_apps@{get\_apps}!proc::proc\_t@{proc::proc\_t}}
+\doxysubsubsection{\texorpdfstring{get\_apps()}{get\_apps()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classproc_1_1proc__t_a609fc5bd79897f6d7bbfd38bf1c9ed52} 
+std\+::vector$<$ \mbox{\hyperlink{structproc_1_1ctx__t}{ctx\+\_\+t}} $>$ \& proc\+::proc\+\_\+t\+::get\+\_\+apps (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Get applications list. 
+
+\begin{DoxyReturn}{Returns}
+Reference to applications vector. 
+\end{DoxyReturn}
+\Hypertarget{classproc_1_1proc__t_aa69e09cd849b7c3cb05542dca8665d4a}\index{proc::proc\_t@{proc::proc\_t}!get\_apps@{get\_apps}}
+\index{get\_apps@{get\_apps}!proc::proc\_t@{proc::proc\_t}}
+\doxysubsubsection{\texorpdfstring{get\_apps()}{get\_apps()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classproc_1_1proc__t_aa69e09cd849b7c3cb05542dca8665d4a} 
+const std\+::vector$<$ \mbox{\hyperlink{structproc_1_1ctx__t}{ctx\+\_\+t}} $>$ \& proc\+::proc\+\_\+t\+::get\+\_\+apps (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Get applications list (const). 
+
+\begin{DoxyReturn}{Returns}
+Const reference to applications vector. 
+\end{DoxyReturn}
+\Hypertarget{classproc_1_1proc__t_aaa54a533679597ee0e4183a26a7d7989}\index{proc::proc\_t@{proc::proc\_t}!get\_env@{get\_env}}
+\index{get\_env@{get\_env}!proc::proc\_t@{proc::proc\_t}}
+\doxysubsubsection{\texorpdfstring{get\_env()}{get\_env()}}
+{\footnotesize\ttfamily \label{classproc_1_1proc__t_aaa54a533679597ee0e4183a26a7d7989} 
+boost\+::process\+::environment proc\+::proc\+\_\+t\+::get\+\_\+env (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Get the process environment. 
+
+\begin{DoxyReturn}{Returns}
+Environment object. 
+\end{DoxyReturn}
+\Hypertarget{classproc_1_1proc__t_a5396a912e3fdb692bf4e885f25bbee25}\index{proc::proc\_t@{proc::proc\_t}!get\_last\_run\_app\_name@{get\_last\_run\_app\_name}}
+\index{get\_last\_run\_app\_name@{get\_last\_run\_app\_name}!proc::proc\_t@{proc::proc\_t}}
+\doxysubsubsection{\texorpdfstring{get\_last\_run\_app\_name()}{get\_last\_run\_app\_name()}}
+{\footnotesize\ttfamily \label{classproc_1_1proc__t_a5396a912e3fdb692bf4e885f25bbee25} 
+std\+::string proc\+::proc\+\_\+t\+::get\+\_\+last\+\_\+run\+\_\+app\+\_\+name (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Get the name of the last run application. 
+
+\begin{DoxyReturn}{Returns}
+Application name string. 
+\end{DoxyReturn}
+\Hypertarget{classproc_1_1proc__t_a760d692844d117d9795fb91174ea16e7}\index{proc::proc\_t@{proc::proc\_t}!get\_running\_app\_uuid@{get\_running\_app\_uuid}}
+\index{get\_running\_app\_uuid@{get\_running\_app\_uuid}!proc::proc\_t@{proc::proc\_t}}
+\doxysubsubsection{\texorpdfstring{get\_running\_app\_uuid()}{get\_running\_app\_uuid()}}
+{\footnotesize\ttfamily \label{classproc_1_1proc__t_a760d692844d117d9795fb91174ea16e7} 
+std\+::string proc\+::proc\+\_\+t\+::get\+\_\+running\+\_\+app\+\_\+uuid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Get the UUID of the currently running application. 
+
+\begin{DoxyReturn}{Returns}
+Application UUID string. 
+\end{DoxyReturn}
+\Hypertarget{classproc_1_1proc__t_a3c524382f5450f61614271f7a0dfb130}\index{proc::proc\_t@{proc::proc\_t}!running@{running}}
+\index{running@{running}!proc::proc\_t@{proc::proc\_t}}
+\doxysubsubsection{\texorpdfstring{running()}{running()}}
+{\footnotesize\ttfamily \label{classproc_1_1proc__t_a3c524382f5450f61614271f7a0dfb130} 
+int proc\+::proc\+\_\+t\+::running (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Get the currently running application ID. 
+
+\begin{DoxyReturn}{Returns}
+Application ID if a process is running, otherwise 0. 
+\end{DoxyReturn}
+\Hypertarget{classproc_1_1proc__t_ad388bb7a8381e80fa709d973c3452b1a}\index{proc::proc\_t@{proc::proc\_t}!terminate@{terminate}}
+\index{terminate@{terminate}!proc::proc\_t@{proc::proc\_t}}
+\doxysubsubsection{\texorpdfstring{terminate()}{terminate()}}
+{\footnotesize\ttfamily \label{classproc_1_1proc__t_ad388bb7a8381e80fa709d973c3452b1a} 
+void proc\+::proc\+\_\+t\+::terminate (\begin{DoxyParamCaption}\item[{bool}]{immediate}{ = {\ttfamily false}, }\item[{bool}]{needs\+\_\+refresh}{ = {\ttfamily true}}\end{DoxyParamCaption})}
+
+
+
+Terminate the running application. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em immediate} & Whether to terminate immediately (default\+: false). \\
+\hline
+{\em needs\+\_\+refresh} & Whether to refresh the display (default\+: true). \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{process_8h}{process.\+h}}\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{process_8cpp}{process.\+cpp}}\end{DoxyCompactItemize}

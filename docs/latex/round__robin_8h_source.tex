@@ -1,0 +1,189 @@
+\doxysection{round\+\_\+robin.\+h}
+\hypertarget{round__robin_8h_source}{}\label{round__robin_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/round\_robin.h@{/Users/alexworland/autoBitrate/apollo/src/round\_robin.h}}
+\mbox{\hyperlink{round__robin_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ standard\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <iterator>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespaceround__robin__util}{round\_robin\_util}}\ \{}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ V,\ \textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classround__robin__util_1_1it__wrap__t}{it\_wrap\_t}}\ \{}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{using\ }iterator\_category\ =\ std::random\_access\_iterator\_tag;}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keyword}{using\ }value\_type\ =\ V;}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{using\ }difference\_type\ =\ V;}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{using\ }pointer\ =\ V\ *;}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{using\ }const\_pointer\ =\ V\ \textcolor{keyword}{const}\ *;}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{using\ }reference\ =\ V\ \&;}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{using\ }const\_reference\ =\ V\ \textcolor{keyword}{const}\ \&;}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{typedef}\ T\ iterator;}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{typedef}\ std::ptrdiff\_t\ diff\_t;}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ iterator\ operator+=(diff\_t\ step)\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (step-\/-\/\ >\ 0)\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ ++\_this();}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_this();}
+\DoxyCodeLine{00044\ \ \ \ \ \}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ iterator\ operator-\/=(diff\_t\ step)\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (step-\/-\/\ >\ 0)\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ -\/-\/\_this();}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_this();}
+\DoxyCodeLine{00052\ \ \ \ \ \}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ iterator\ operator+(diff\_t\ step)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ iterator\ new\_\ =\ \_this();}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ new\_\ +=\ step;}
+\DoxyCodeLine{00058\ \ \ \ \ \}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \ \ iterator\ operator-\/(diff\_t\ step)\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ iterator\ new\_\ =\ \_this();}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ new\_\ -\/=\ step;}
+\DoxyCodeLine{00064\ \ \ \ \ \}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \ \ diff\_t\ operator-\/(iterator\ first)\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ diff\_t\ step\ =\ 0;}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (first\ !=\ \_this())\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ ++step;}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ ++first;}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ step;}
+\DoxyCodeLine{00074\ \ \ \ \ \}}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ iterator\ operator++()\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \_this().inc();}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_this();}
+\DoxyCodeLine{00079\ \ \ \ \ \}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ \ \ iterator\ operator-\/-\/()\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \_this().dec();}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_this();}
+\DoxyCodeLine{00084\ \ \ \ \ \}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \ \ iterator\ operator++(\textcolor{keywordtype}{int})\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ iterator\ new\_\ =\ \_this();}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ \ \ \ \ ++\_this();}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ new\_;}
+\DoxyCodeLine{00092\ \ \ \ \ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \ \ iterator\ operator-\/-\/(\textcolor{keywordtype}{int})\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ iterator\ new\_\ =\ \_this();}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \ \ \ \ -\/-\/\_this();}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ new\_;}
+\DoxyCodeLine{00100\ \ \ \ \ \}}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \ \ reference\ operator*()\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\_this().get();}
+\DoxyCodeLine{00104\ \ \ \ \ \}}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \ \ const\_reference\ operator*()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\_this().get();}
+\DoxyCodeLine{00108\ \ \ \ \ \}}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \ \ \ \ pointer\ operator-\/>()\ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \&*\_this();}
+\DoxyCodeLine{00112\ \ \ \ \ \}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \ \ const\_pointer\ operator-\/>()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \&*\_this();}
+\DoxyCodeLine{00116\ \ \ \ \ \}}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator!=(\textcolor{keyword}{const}\ iterator\ \&other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !(\_this()\ ==\ other);}
+\DoxyCodeLine{00120\ \ \ \ \ \}}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator<(\textcolor{keyword}{const}\ iterator\ \&other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !(\_this()\ >=\ other);}
+\DoxyCodeLine{00124\ \ \ \ \ \}}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator>=(\textcolor{keyword}{const}\ iterator\ \&other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_this()\ ==\ other\ ||\ \_this()\ >\ other;}
+\DoxyCodeLine{00128\ \ \ \ \ \}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator<=(\textcolor{keyword}{const}\ iterator\ \&other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_this()\ ==\ other\ ||\ \_this()\ <\ other;}
+\DoxyCodeLine{00132\ \ \ \ \ \}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator==(\textcolor{keyword}{const}\ iterator\ \&other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_this().eq(other);}
+\DoxyCodeLine{00136\ \ \ \ \ \};}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keywordtype}{bool}\ operator>(\textcolor{keyword}{const}\ iterator\ \&other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_this().gt(other);}
+\DoxyCodeLine{00140\ \ \ \ \ \}}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00143\ \ \ \ \ iterator\ \&\_this()\ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{static\_cast<}iterator\ *\textcolor{keyword}{>}(\textcolor{keyword}{this});}
+\DoxyCodeLine{00145\ \ \ \ \ \}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keyword}{const}\ iterator\ \&\_this()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }iterator\ *\textcolor{keyword}{>}(\textcolor{keyword}{this});}
+\DoxyCodeLine{00149\ \ \ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \};}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00160\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ V,\ \textcolor{keyword}{class}\ It>}
+\DoxyCodeLine{00161\ \ \ \textcolor{keyword}{class\ }round\_robin\_t:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classround__robin__util_1_1it__wrap__t}{it\_wrap\_t}}<V,\ round\_robin\_t<V,\ It>>\ \{}
+\DoxyCodeLine{00162\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keyword}{using\ }iterator\ =\ It;}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keyword}{using\ }pointer\ =\ V\ *;}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00166\ \ \ \ \ round\_robin\_t(iterator\ begin,\ iterator\ end):}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \_begin(begin),}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \_end(end),}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \_pos(begin)\ \{}
+\DoxyCodeLine{00170\ \ \ \ \ \}}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordtype}{void}\ inc()\ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ ++\_pos;}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_pos\ ==\ \_end)\ \{}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \_pos\ =\ \_begin;}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00178\ \ \ \ \ \}}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{keywordtype}{void}\ dec()\ \{}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_pos\ ==\ \_begin)\ \{}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \_pos\ =\ \_end;}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ \ \ \ \ -\/-\/\_pos;}
+\DoxyCodeLine{00186\ \ \ \ \ \}}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{keywordtype}{bool}\ eq(\textcolor{keyword}{const}\ round\_robin\_t\ \&other)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\_pos\ ==\ *other.\_pos;}
+\DoxyCodeLine{00190\ \ \ \ \ \}}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00192\ \ \ \ \ pointer\ get()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \&*\_pos;}
+\DoxyCodeLine{00194\ \ \ \ \ \}}
+\DoxyCodeLine{00195\ }
+\DoxyCodeLine{00196\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00197\ \ \ \ \ It\ \_begin;}
+\DoxyCodeLine{00198\ \ \ \ \ It\ \_end;}
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00200\ \ \ \ \ It\ \_pos;}
+\DoxyCodeLine{00201\ \ \ \};}
+\DoxyCodeLine{00202\ }
+\DoxyCodeLine{00203\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ V,\ \textcolor{keyword}{class}\ It>}
+\DoxyCodeLine{00204\ \ \ \mbox{\hyperlink{classround__robin__util_1_1round__robin__t}{round\_robin\_t<V,\ It>}}\ make\_round\_robin(It\ begin,\ It\ end)\ \{}
+\DoxyCodeLine{00205\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classround__robin__util_1_1round__robin__t}{round\_robin\_t<V,\ It>}}(begin,\ end);}
+\DoxyCodeLine{00206\ \ \ \}}
+\DoxyCodeLine{00207\ \}\ \ \textcolor{comment}{//\ namespace\ round\_robin\_util}}
+
+\end{DoxyCode}

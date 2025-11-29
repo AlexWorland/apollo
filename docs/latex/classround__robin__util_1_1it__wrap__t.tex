@@ -1,0 +1,122 @@
+\doxysection{round\+\_\+robin\+\_\+util\+::it\+\_\+wrap\+\_\+t\texorpdfstring{$<$}{<} V, T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classround__robin__util_1_1it__wrap__t}{}\label{classround__robin__util_1_1it__wrap__t}\index{round\_robin\_util::it\_wrap\_t$<$ V, T $>$@{round\_robin\_util::it\_wrap\_t$<$ V, T $>$}}
+
+
+Iterator wrapper for round-\/robin iteration.  
+
+
+
+
+{\ttfamily \#include $<$round\+\_\+robin.\+h$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_ab6a1a1c2290148373562ff7de6aeac6a}\label{classround__robin__util_1_1it__wrap__t_ab6a1a1c2290148373562ff7de6aeac6a} 
+using {\bfseries iterator\+\_\+category} = std\+::random\+\_\+access\+\_\+iterator\+\_\+tag
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_a629d89095b4f2cb4871b495825a0f513}\label{classround__robin__util_1_1it__wrap__t_a629d89095b4f2cb4871b495825a0f513} 
+using {\bfseries value\+\_\+type} = V
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_a3ff7a15125e724fb286da70518a89863}\label{classround__robin__util_1_1it__wrap__t_a3ff7a15125e724fb286da70518a89863} 
+using {\bfseries difference\+\_\+type} = V
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_afc0d7d38d15c430d094e1c5c07bd0a7a}\label{classround__robin__util_1_1it__wrap__t_afc0d7d38d15c430d094e1c5c07bd0a7a} 
+using {\bfseries pointer} = V \texorpdfstring{$\ast$}{*}
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_a6c609438052e29bc0fbfdee7fcc953bd}\label{classround__robin__util_1_1it__wrap__t_a6c609438052e29bc0fbfdee7fcc953bd} 
+using {\bfseries const\+\_\+pointer} = V const \texorpdfstring{$\ast$}{*}
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_a788a276f89ad2bbf5df18da8046305ef}\label{classround__robin__util_1_1it__wrap__t_a788a276f89ad2bbf5df18da8046305ef} 
+using {\bfseries reference} = V \&
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_ae73550df92376c00df840778aece320e}\label{classround__robin__util_1_1it__wrap__t_ae73550df92376c00df840778aece320e} 
+using {\bfseries const\+\_\+reference} = V const \&
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_a93c0ddc77c1f92d460490cdc11b3fb9f}\label{classround__robin__util_1_1it__wrap__t_a93c0ddc77c1f92d460490cdc11b3fb9f} 
+typedef T {\bfseries iterator}
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_ac28e4de486e016af38cbb3db0cd492cb}\label{classround__robin__util_1_1it__wrap__t_ac28e4de486e016af38cbb3db0cd492cb} 
+typedef std\+::ptrdiff\+\_\+t {\bfseries diff\+\_\+t}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_a7a9614cd163a6797df90e970247b944c}\label{classround__robin__util_1_1it__wrap__t_a7a9614cd163a6797df90e970247b944c} 
+iterator {\bfseries operator+=} (diff\+\_\+t step)
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_a90728bcd5ee2bdc8d1a6c8454ba063dd}\label{classround__robin__util_1_1it__wrap__t_a90728bcd5ee2bdc8d1a6c8454ba063dd} 
+iterator {\bfseries operator-\/=} (diff\+\_\+t step)
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_a0794031dee32a4e646228b49cdfe5345}\label{classround__robin__util_1_1it__wrap__t_a0794031dee32a4e646228b49cdfe5345} 
+iterator {\bfseries operator+} (diff\+\_\+t step)
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_ac9cfca017765d5926bc356275be39400}\label{classround__robin__util_1_1it__wrap__t_ac9cfca017765d5926bc356275be39400} 
+iterator {\bfseries operator-\/} (diff\+\_\+t step)
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_a19c00a33ab5bb76183ccf27894dc62fc}\label{classround__robin__util_1_1it__wrap__t_a19c00a33ab5bb76183ccf27894dc62fc} 
+diff\+\_\+t {\bfseries operator-\/} (iterator first)
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_a9e347012b1d01e729ebaba56c6f9ba46}\label{classround__robin__util_1_1it__wrap__t_a9e347012b1d01e729ebaba56c6f9ba46} 
+iterator {\bfseries operator++} ()
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_a7f6161164f25b4aa37218f183d0ba9e7}\label{classround__robin__util_1_1it__wrap__t_a7f6161164f25b4aa37218f183d0ba9e7} 
+iterator {\bfseries operator-\/-\/} ()
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_a23628583fca20aee1b8aaecb74a1df6d}\label{classround__robin__util_1_1it__wrap__t_a23628583fca20aee1b8aaecb74a1df6d} 
+iterator {\bfseries operator++} (int)
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_afdb101cae65705a32f727792193eb5c0}\label{classround__robin__util_1_1it__wrap__t_afdb101cae65705a32f727792193eb5c0} 
+iterator {\bfseries operator-\/-\/} (int)
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_a4d6eb3f093094e8f6a64eb9ed98acd13}\label{classround__robin__util_1_1it__wrap__t_a4d6eb3f093094e8f6a64eb9ed98acd13} 
+reference {\bfseries operator\texorpdfstring{$\ast$}{*}} ()
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_a970c366265b411aaacf9383bbee0f5ba}\label{classround__robin__util_1_1it__wrap__t_a970c366265b411aaacf9383bbee0f5ba} 
+const\+\_\+reference {\bfseries operator\texorpdfstring{$\ast$}{*}} () const
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_a6ad9e56965f67f9f85c09c53b379c2a9}\label{classround__robin__util_1_1it__wrap__t_a6ad9e56965f67f9f85c09c53b379c2a9} 
+pointer {\bfseries operator-\/$>$} ()
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_ab691392f02d786bf8b13cba5d2225298}\label{classround__robin__util_1_1it__wrap__t_ab691392f02d786bf8b13cba5d2225298} 
+const\+\_\+pointer {\bfseries operator-\/$>$} () const
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_a2cd6a79a59c68c02bc46ca60998706ce}\label{classround__robin__util_1_1it__wrap__t_a2cd6a79a59c68c02bc46ca60998706ce} 
+bool {\bfseries operator!=} (const iterator \&other) const
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_a1b70705f01d0e0f7389ea8e4739440fe}\label{classround__robin__util_1_1it__wrap__t_a1b70705f01d0e0f7389ea8e4739440fe} 
+bool {\bfseries operator$<$} (const iterator \&other) const
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_a124cc27efaee9111b6ae92287d2c1f16}\label{classround__robin__util_1_1it__wrap__t_a124cc27efaee9111b6ae92287d2c1f16} 
+bool {\bfseries operator$>$=} (const iterator \&other) const
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_a1933a261d101e83052bfb54a56604af0}\label{classround__robin__util_1_1it__wrap__t_a1933a261d101e83052bfb54a56604af0} 
+bool {\bfseries operator$<$=} (const iterator \&other) const
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_a0f2a238cfac9cad560e5ed22914b9585}\label{classround__robin__util_1_1it__wrap__t_a0f2a238cfac9cad560e5ed22914b9585} 
+bool {\bfseries operator==} (const iterator \&other) const
+\item 
+\Hypertarget{classround__robin__util_1_1it__wrap__t_a9ea11a629ce609665400c569131b82e0}\label{classround__robin__util_1_1it__wrap__t_a9ea11a629ce609665400c569131b82e0} 
+bool {\bfseries operator$>$} (const iterator \&other) const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class V, class T$>$\newline
+class round\+\_\+robin\+\_\+util\+::it\+\_\+wrap\+\_\+t$<$ V, T $>$}
+Iterator wrapper for round-\/robin iteration. 
+
+Wraps an iterator to provide round-\/robin iteration semantics.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em V} & Value type. \\
+\hline
+{\em T} & Iterator type. \\
+\hline
+\end{DoxyTemplParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{round__robin_8h}{round\+\_\+robin.\+h}}\end{DoxyCompactItemize}

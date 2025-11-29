@@ -1,0 +1,87 @@
+\doxysection{rtsp.\+h}
+\hypertarget{rtsp_8h_source}{}\label{rtsp_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/rtsp.h@{/Users/alexworland/autoBitrate/apollo/src/rtsp.h}}
+\mbox{\hyperlink{rtsp_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ standard\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <atomic>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <list>}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ local\ includes}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{crypto_8h}{crypto.h}}"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{thread__safe_8h}{thread\_safe.h}}"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#ifdef\ \_WIN32}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\ \ \#include\ <windows.h>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ Resolve\ circular\ dependencies}}
+\DoxyCodeLine{00021\ \textcolor{keyword}{namespace\ }stream\ \{}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structstream_1_1session__t}{session\_t}};}
+\DoxyCodeLine{00023\ \}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{keyword}{namespace\ }rtsp\_stream\ \{}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{rtsp_8h_a95684f47b24a8e40ea2696ebd531dec3}{RTSP\_SETUP\_PORT}}\ =\ 21;\ \ }
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\_session\_t}}\ \{}
+\DoxyCodeLine{00032\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_aad51ede246174ea9ec20160f983a403e}{id}};\ \ }
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ \mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{crypto::aes\_t}}\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_a249e653ee14307f0eb8a8532088f5d99}{gcm\_key}};\ \ }
+\DoxyCodeLine{00035\ \ \ \ \ \mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{crypto::aes\_t}}\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_acbde55eff577410256a57b838798d168}{iv}};\ \ }
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ std::string\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_a1bb226e0877d9782b6b8210ccef48d33}{av\_ping\_payload}};\ \ }
+\DoxyCodeLine{00038\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_a88a98f4d2e306040b6db940bec4d9fc7}{control\_connect\_data}};\ \ }
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ std::string\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_aa5303532f533036162cff0918c063f8b}{device\_name}};\ \ }
+\DoxyCodeLine{00041\ \ \ \ \ std::string\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_a4e601abe1678bb69136fb9ec7cb4d7e4}{unique\_id}};\ \ }
+\DoxyCodeLine{00042\ \ \ \ \ \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{crypto::PERM}}\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_aa1a2f2368e102db68eb29a016a5be196}{perm}};\ \ }
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_a0cb71d8c417567546b68c7eaede1b96e}{input\_only}};\ \ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_a19fd0dd553ccd432b57da061d0d2cb31}{host\_audio}};\ \ }
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_aac01f7356bd399d406ba6c33b7e39c1d}{auto\_bitrate\_enabled}}\ =\ \textcolor{keyword}{false};\ \ }
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_abaa53efbf991592563d67a99dd8e835a}{auto\_bitrate\_min\_kbps}}\ =\ 0;\ \ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_a564dac351f77ab49724eb26b0462aaf2}{auto\_bitrate\_max\_kbps}}\ =\ 0;\ \ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_a93c15b5b9672cee3d420053274794c31}{width}};\ \ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_a72b99b0018afc6e26621588d564c71b0}{height}};\ \ }
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_a5afc012d1322cabcbf79561467490181}{fps}};\ \ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_a1e7bceed3da4b1749beea9775a2d51b7}{gcmap}};\ \ }
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_a994c7465d844e8b3186197b11628df38}{surround\_info}};\ \ }
+\DoxyCodeLine{00054\ \ \ \ \ std::string\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_a87355e09fd6150fb9c6706dbc86e21c7}{surround\_params}};\ \ }
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_a476be00873a40ac5c0ede7735f2bde76}{enable\_hdr}};\ \ }
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_ac4cd9aa24306953b7aaa9a7795a2b02c}{enable\_sops}};\ \ }
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_a5f5f376bf5714957eaebcdd828811a02}{virtual\_display}};\ \ }
+\DoxyCodeLine{00058\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_a504908f255adfaa60488e7e210372b80}{scale\_factor}};\ \ }
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \ \ std::optional<crypto::cipher::gcm\_t>\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_a6629e0a8240f5e321cf604f3be29cbd7}{rtsp\_cipher}};\ \ }
+\DoxyCodeLine{00061\ \ \ \ \ std::string\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_a8acb66f1e447ad0b09b8805bfa20145f}{rtsp\_url\_scheme}};\ \ }
+\DoxyCodeLine{00062\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_a748bd786b8bb92086e343688d187902c}{rtsp\_iv\_counter}};\ \ }
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ std::list<crypto::command\_entry\_t>\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_a3c21ec708bc0e148b47d24e8b691730d}{client\_do\_cmds}};\ \ }
+\DoxyCodeLine{00065\ \ \ \ \ std::list<crypto::command\_entry\_t>\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t_afbd02842efe0734b8542b6bbfe09f30f}{client\_undo\_cmds}};\ \ }
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\ \ \#ifdef\ \_WIN32}}
+\DoxyCodeLine{00068\ \ \ \ \ GUID\ display\_guid\{\};\ \ }
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\ \ \#endif}}
+\DoxyCodeLine{00070\ \ \ \};}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00076\ \ \ \textcolor{keywordtype}{void}\ launch\_session\_raise(std::shared\_ptr<launch\_session\_t>\ launch\_session);}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00082\ \ \ \textcolor{keywordtype}{void}\ launch\_session\_clear(uint32\_t\ launch\_session\_id);}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00088\ \ \ \textcolor{keywordtype}{int}\ session\_count();}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00095\ \ \ std::shared\_ptr<stream::session\_t>}
+\DoxyCodeLine{00096\ \ \ find\_session(\textcolor{keyword}{const}\ std::string\_view\&\ uuid);}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00102\ \ \ std::list<std::string>}
+\DoxyCodeLine{00103\ \ \ get\_all\_session\_uuids();}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00108\ \ \ \textcolor{keywordtype}{void}\ terminate\_sessions();}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00113\ \ \ \textcolor{keywordtype}{void}\ start();}
+\DoxyCodeLine{00114\ \}\ \ \textcolor{comment}{//\ namespace\ rtsp\_stream}}
+
+\end{DoxyCode}

@@ -1,0 +1,344 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/stream.cpp File Reference}
+\hypertarget{stream_8cpp}{}\label{stream_8cpp}\index{/Users/alexworland/autoBitrate/apollo/src/stream.cpp@{/Users/alexworland/autoBitrate/apollo/src/stream.cpp}}
+
+
+Definitions for the streaming protocols.  
+
+
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$future$>$}\newline
+{\ttfamily \#include $<$queue$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+{\ttfamily \#include $<$boost/endian/arithmetic.\+hpp$>$}\newline
+{\ttfamily \#include $<$openssl/err.\+h$>$}\newline
+{\ttfamily \#include $<$moonlight-\/common-\/c/src/\+Limelight-\/internal.\+h$>$}\newline
+{\ttfamily \#include "{}rswrapper.\+h"{}}\newline
+{\ttfamily \#include "{}auto\+\_\+bitrate.\+h"{}}\newline
+{\ttfamily \#include "{}config.\+h"{}}\newline
+{\ttfamily \#include "{}crypto.\+h"{}}\newline
+{\ttfamily \#include "{}display\+\_\+device.\+h"{}}\newline
+{\ttfamily \#include "{}globals.\+h"{}}\newline
+{\ttfamily \#include "{}input.\+h"{}}\newline
+{\ttfamily \#include "{}logging.\+h"{}}\newline
+{\ttfamily \#include "{}network.\+h"{}}\newline
+{\ttfamily \#include "{}platform/common.\+h"{}}\newline
+{\ttfamily \#include "{}process.\+h"{}}\newline
+{\ttfamily \#include "{}stream.\+h"{}}\newline
+{\ttfamily \#include "{}sync.\+h"{}}\newline
+{\ttfamily \#include "{}system\+\_\+tray.\+h"{}}\newline
+{\ttfamily \#include "{}thread\+\_\+safe.\+h"{}}\newline
+{\ttfamily \#include "{}utility.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structstream_1_1video__short__frame__header__t}{stream\+::video\+\_\+short\+\_\+frame\+\_\+header\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Short frame header for video packets. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstream_1_1video__packet__raw__t}{stream\+::video\+\_\+packet\+\_\+raw\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Raw video packet structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstream_1_1video__packet__enc__prefix__t}{stream\+::video\+\_\+packet\+\_\+enc\+\_\+prefix\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Encrypted video packet prefix. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstream_1_1audio__packet__t}{stream\+::audio\+\_\+packet\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Audio packet structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstream_1_1control__header__v2}{stream\+::control\+\_\+header\+\_\+v2}}
+\begin{DoxyCompactList}\small\item\em Control message header (version 2). \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstream_1_1control__terminate__t}{stream\+::control\+\_\+terminate\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Control message\+: terminate stream. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstream_1_1control__rumble__t}{stream\+::control\+\_\+rumble\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Control message\+: gamepad rumble. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstream_1_1control__rumble__triggers__t}{stream\+::control\+\_\+rumble\+\_\+triggers\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Control message\+: trigger rumble. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstream_1_1control__set__motion__event__t}{stream\+::control\+\_\+set\+\_\+motion\+\_\+event\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Control message\+: set motion event. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstream_1_1control__set__rgb__led__t}{stream\+::control\+\_\+set\+\_\+rgb\+\_\+led\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Control message\+: set RGB LED. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstream_1_1control__adaptive__triggers__t}{stream\+::control\+\_\+adaptive\+\_\+triggers\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Control message\+: adaptive triggers. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstream_1_1control__hdr__mode__t}{stream\+::control\+\_\+hdr\+\_\+mode\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Control message\+: HDR mode. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstream_1_1control__bitrate__stats__t}{stream\+::control\+\_\+bitrate\+\_\+stats\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Control message\+: bitrate statistics. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstream_1_1control__connection__status__t}{stream\+::control\+\_\+connection\+\_\+status\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Control message\+: connection status. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstream_1_1control__auto__bitrate__stats__v2__t}{stream\+::control\+\_\+auto\+\_\+bitrate\+\_\+stats\+\_\+v2\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Control message\+: auto bitrate statistics (version 2). \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstream_1_1control__encrypted__t}{stream\+::control\+\_\+encrypted\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Encrypted control message wrapper. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structstream_1_1fec_1_1fec__t}{stream\+::fec\+::fec\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Forward Error Correction (FEC) structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacestream_1_1session}{stream\+::session}}
+\begin{DoxyCompactList}\small\item\em Session management functions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{stream_8cpp_ab707fefef119f17cab70698c59f01205}\label{stream_8cpp_ab707fefef119f17cab70698c59f01205} 
+\#define {\bfseries IDX\+\_\+\+START\+\_\+A}~0
+\item 
+\Hypertarget{stream_8cpp_a9dec6c594d20683188ab369105025d15}\label{stream_8cpp_a9dec6c594d20683188ab369105025d15} 
+\#define {\bfseries IDX\+\_\+\+START\+\_\+B}~1
+\item 
+\Hypertarget{stream_8cpp_a4c61ec8991fd808c4408ca2b64be85de}\label{stream_8cpp_a4c61ec8991fd808c4408ca2b64be85de} 
+\#define {\bfseries IDX\+\_\+\+INVALIDATE\+\_\+\+REF\+\_\+\+FRAMES}~2
+\item 
+\Hypertarget{stream_8cpp_a37e15a45508410fd73fb67d55b4fb62c}\label{stream_8cpp_a37e15a45508410fd73fb67d55b4fb62c} 
+\#define {\bfseries IDX\+\_\+\+LOSS\+\_\+\+STATS}~3
+\item 
+\Hypertarget{stream_8cpp_a75391f9758a943ca467efc8e368138d6}\label{stream_8cpp_a75391f9758a943ca467efc8e368138d6} 
+\#define {\bfseries IDX\+\_\+\+INPUT\+\_\+\+DATA}~5
+\item 
+\Hypertarget{stream_8cpp_aa48f669fa7162490547b4239930f6e57}\label{stream_8cpp_aa48f669fa7162490547b4239930f6e57} 
+\#define {\bfseries IDX\+\_\+\+RUMBLE\+\_\+\+DATA}~6
+\item 
+\Hypertarget{stream_8cpp_a27ca10c0acb079faae199655c1aac751}\label{stream_8cpp_a27ca10c0acb079faae199655c1aac751} 
+\#define {\bfseries IDX\+\_\+\+TERMINATION}~7
+\item 
+\Hypertarget{stream_8cpp_a511520fe9f2ada972bff165ad0393b0f}\label{stream_8cpp_a511520fe9f2ada972bff165ad0393b0f} 
+\#define {\bfseries IDX\+\_\+\+PERIODIC\+\_\+\+PING}~8
+\item 
+\Hypertarget{stream_8cpp_a9cba6af557c9ae1288ad532d11887093}\label{stream_8cpp_a9cba6af557c9ae1288ad532d11887093} 
+\#define {\bfseries IDX\+\_\+\+REQUEST\+\_\+\+IDR\+\_\+\+FRAME}~9
+\item 
+\Hypertarget{stream_8cpp_ae3ee8399b15c59a3a0d5a257649b56f0}\label{stream_8cpp_ae3ee8399b15c59a3a0d5a257649b56f0} 
+\#define {\bfseries IDX\+\_\+\+ENCRYPTED}~10
+\item 
+\Hypertarget{stream_8cpp_a1ee225326a28e27a82da448a41fcfe0b}\label{stream_8cpp_a1ee225326a28e27a82da448a41fcfe0b} 
+\#define {\bfseries IDX\+\_\+\+HDR\+\_\+\+MODE}~11
+\item 
+\Hypertarget{stream_8cpp_ae60bd4faf192599d513b8181738d153b}\label{stream_8cpp_ae60bd4faf192599d513b8181738d153b} 
+\#define {\bfseries IDX\+\_\+\+RUMBLE\+\_\+\+TRIGGER\+\_\+\+DATA}~12
+\item 
+\Hypertarget{stream_8cpp_a65722db5b9ee2649155cb2756314360b}\label{stream_8cpp_a65722db5b9ee2649155cb2756314360b} 
+\#define {\bfseries IDX\+\_\+\+SET\+\_\+\+MOTION\+\_\+\+EVENT}~13
+\item 
+\Hypertarget{stream_8cpp_ab5832d835dce26dd8e6d0fbc4e0b188d}\label{stream_8cpp_ab5832d835dce26dd8e6d0fbc4e0b188d} 
+\#define {\bfseries IDX\+\_\+\+SET\+\_\+\+RGB\+\_\+\+LED}~14
+\item 
+\Hypertarget{stream_8cpp_af59dc2b65c8b14619cd9c741a0ac87d5}\label{stream_8cpp_af59dc2b65c8b14619cd9c741a0ac87d5} 
+\#define {\bfseries IDX\+\_\+\+EXEC\+\_\+\+SERVER\+\_\+\+CMD}~15
+\item 
+\Hypertarget{stream_8cpp_a30d967cc04242cd0f50288027c8f69d1}\label{stream_8cpp_a30d967cc04242cd0f50288027c8f69d1} 
+\#define {\bfseries IDX\+\_\+\+SET\+\_\+\+CLIPBOARD}~16
+\item 
+\Hypertarget{stream_8cpp_afe294160be2696ff5a7971507f6d31f5}\label{stream_8cpp_afe294160be2696ff5a7971507f6d31f5} 
+\#define {\bfseries IDX\+\_\+\+FILE\+\_\+\+TRANSFER\+\_\+\+NONCE\+\_\+\+REQUEST}~17
+\item 
+\Hypertarget{stream_8cpp_a982901812df01cfe2e7cae479e8867cf}\label{stream_8cpp_a982901812df01cfe2e7cae479e8867cf} 
+\#define {\bfseries IDX\+\_\+\+SET\+\_\+\+ADAPTIVE\+\_\+\+TRIGGERS}~18
+\item 
+\Hypertarget{stream_8cpp_a3e147cbe9fbd0b142b600a7c23e65a49}\label{stream_8cpp_a3e147cbe9fbd0b142b600a7c23e65a49} 
+\#define {\bfseries IDX\+\_\+\+CONNECTION\+\_\+\+STATUS}~19
+\item 
+\Hypertarget{stream_8cpp_a2454b6c72a85c27ab99454a45868d676}\label{stream_8cpp_a2454b6c72a85c27ab99454a45868d676} 
+\#define {\bfseries IDX\+\_\+\+BITRATE\+\_\+\+STATS}~20
+\item 
+\Hypertarget{stream_8cpp_a30588b4416575b6e438fa31eff133488}\label{stream_8cpp_a30588b4416575b6e438fa31eff133488} 
+\#define {\bfseries IDX\+\_\+\+AUTO\+\_\+\+BITRATE\+\_\+\+STATS\+\_\+\+V2}~21
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \mbox{\hyperlink{structstream_1_1control__encrypted__t}{stream\+::control\+\_\+encrypted\+\_\+t}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{stream_8cpp_a530adc5a5602245a81084215dd2cecb3}{stream\+::control\+\_\+encrypted\+\_\+p}}
+\begin{DoxyCompactList}\small\item\em Encrypted control message wrapper. \end{DoxyCompactList}\item 
+\Hypertarget{stream_8cpp_aa423875c01f4b35639e19269dd49a536}\label{stream_8cpp_aa423875c01f4b35639e19269dd49a536} 
+using {\bfseries stream\+::audio\+\_\+aes\+\_\+t} = std\+::array$<$char, round\+\_\+to\+\_\+pkcs7\+\_\+padded(MAX\+\_\+\+AUDIO\+\_\+\+PACKET\+\_\+\+SIZE)$>$
+\item 
+using \mbox{\hyperlink{stream_8cpp_a1bb7aa6128fbee7f551e2a32d193b877}{stream\+::fec\+::rs\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{stream_8cpp_a701f184f1431ee038a5be6dad832341d}\label{stream_8cpp_a701f184f1431ee038a5be6dad832341d} 
+constexpr std\+::size\+\_\+t {\bfseries stream\+::round\+\_\+to\+\_\+pkcs7\+\_\+padded} (std\+::size\+\_\+t size)
+\item 
+\Hypertarget{stream_8cpp_a23700ab060eca0033689e90053baf929}\label{stream_8cpp_a23700ab060eca0033689e90053baf929} 
+int {\bfseries stream\+::start\+\_\+broadcast} (\mbox{\hyperlink{structstream_1_1broadcast__ctx__t}{broadcast\+\_\+ctx\+\_\+t}} \&ctx)
+\item 
+\Hypertarget{stream_8cpp_aa6fca7eb69456887d2409db223f887b8}\label{stream_8cpp_aa6fca7eb69456887d2409db223f887b8} 
+void {\bfseries stream\+::end\+\_\+broadcast} (\mbox{\hyperlink{structstream_1_1broadcast__ctx__t}{broadcast\+\_\+ctx\+\_\+t}} \&ctx)
+\item 
+int \mbox{\hyperlink{stream_8cpp_af7a5db61aec2a842b69b689c29b70029}{stream\+::send\+\_\+bitrate\+\_\+stats}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespacestream_1_1session}{session}})
+\begin{DoxyCompactList}\small\item\em Send auto bitrate statistics to client. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{stream_8cpp_a028e50a0dfe45a37a81358dfc28b165b}{stream\+::send\+\_\+connection\+\_\+status}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespacestream_1_1session}{session}}, int status)
+\begin{DoxyCompactList}\small\item\em Send connection status to client. \end{DoxyCompactList}\item 
+std\+::vector$<$ uint8\+\_\+t $>$ \mbox{\hyperlink{stream_8cpp_acf11da53448f14003493dcab0c7b1740}{stream\+::concat\+\_\+and\+\_\+insert}} (uint64\+\_\+t insert\+\_\+size, uint64\+\_\+t slice\+\_\+size, const std\+::string\+\_\+view \&data1, const std\+::string\+\_\+view \&data2)
+\begin{DoxyCompactList}\small\item\em Combines two buffers and inserts new buffers at each slice boundary of the result. \end{DoxyCompactList}\item 
+\Hypertarget{stream_8cpp_aa41bd62ee126020d9ef0d8ddc8e73a83}\label{stream_8cpp_aa41bd62ee126020d9ef0d8ddc8e73a83} 
+std\+::vector$<$ uint8\+\_\+t $>$ {\bfseries stream\+::replace} (const std\+::string\+\_\+view \&original, const std\+::string\+\_\+view \&old, const std\+::string\+\_\+view \&\+\_\+new)
+\item 
+int \mbox{\hyperlink{stream_8cpp_af70f1a7a070fb184162c5e076afa35f8}{stream\+::send\+\_\+feedback\+\_\+msg}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespacestream_1_1session}{session}}, platf\+::gamepad\+\_\+feedback\+\_\+msg\+\_\+t \&msg)
+\begin{DoxyCompactList}\small\item\em Pass gamepad feedback data back to the client. \end{DoxyCompactList}\item 
+\Hypertarget{stream_8cpp_a1e1a1daed1482d8733998fa8658fe36c}\label{stream_8cpp_a1e1a1daed1482d8733998fa8658fe36c} 
+int {\bfseries stream\+::send\+\_\+hdr\+\_\+mode} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespacestream_1_1session}{session}}, video\+::hdr\+\_\+info\+\_\+t hdr\+\_\+info)
+\item 
+\Hypertarget{stream_8cpp_a175dcbcdf5f643405c44e971adbda35a}\label{stream_8cpp_a175dcbcdf5f643405c44e971adbda35a} 
+void {\bfseries stream\+::control\+Broadcast\+Thread} (\mbox{\hyperlink{classstream_1_1control__server__t}{control\+\_\+server\+\_\+t}} \texorpdfstring{$\ast$}{*}server)
+\item 
+\Hypertarget{stream_8cpp_ac412153c50a010978c7f668c3a5855f9}\label{stream_8cpp_ac412153c50a010978c7f668c3a5855f9} 
+void {\bfseries stream\+::recv\+Thread} (\mbox{\hyperlink{structstream_1_1broadcast__ctx__t}{broadcast\+\_\+ctx\+\_\+t}} \&ctx)
+\item 
+\Hypertarget{stream_8cpp_aa2a82c031674e5d67b395e6c900a8b4a}\label{stream_8cpp_aa2a82c031674e5d67b395e6c900a8b4a} 
+void {\bfseries stream\+::video\+Broadcast\+Thread} (udp\+::socket \&sock)
+\item 
+\Hypertarget{stream_8cpp_a6a1b6ad3a47054563e805b41638486f5}\label{stream_8cpp_a6a1b6ad3a47054563e805b41638486f5} 
+void {\bfseries stream\+::audio\+Broadcast\+Thread} (udp\+::socket \&sock)
+\item 
+\Hypertarget{stream_8cpp_aa5ee70b4e8e310b90c36376386908ee6}\label{stream_8cpp_aa5ee70b4e8e310b90c36376386908ee6} 
+int {\bfseries stream\+::recv\+\_\+ping} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespacestream_1_1session}{session}}, decltype(broadcast)\+::ptr\+\_\+t ref, \mbox{\hyperlink{stream_8h_a1427e256cc01c127e100b0a903cacc5f}{socket\+\_\+e}} type, std\+::string\+\_\+view expected\+\_\+payload, udp\+::endpoint \&peer, std\+::chrono\+::milliseconds timeout)
+\item 
+\Hypertarget{stream_8cpp_a32ca738e00215b0889b0db9961a97389}\label{stream_8cpp_a32ca738e00215b0889b0db9961a97389} 
+void {\bfseries stream\+::video\+Thread} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespacestream_1_1session}{session}})
+\item 
+\Hypertarget{stream_8cpp_a7d28807e0eebf5e323cbf6543b340e81}\label{stream_8cpp_a7d28807e0eebf5e323cbf6543b340e81} 
+void {\bfseries stream\+::audio\+Thread} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespacestream_1_1session}{session}})
+\item 
+\mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188de}{state\+\_\+e}} \mbox{\hyperlink{namespacestream_1_1session_a7aae2685f26ac3d991ae41861530fd07}{stream\+::session\+::state}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}})
+\begin{DoxyCompactList}\small\item\em Get the current state of a session. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacestream_1_1session_a9d466943738a6a0365da4f54c990ba5e}{stream\+::session\+::send}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}}, const std\+::string\+\_\+view \&payload)
+\begin{DoxyCompactList}\small\item\em Send a control message to the session. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{namespacestream_1_1session_a6e6dba8ca4221d0c94d0a4dc0a14c01f}{stream\+::session\+::uuid}} (const \mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}})
+\begin{DoxyCompactList}\small\item\em Get the UUID of a session. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacestream_1_1session_a47437a61c2e2db084f5d802595540d1f}{stream\+::session\+::uuid\+\_\+match}} (const \mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}}, const std\+::string\+\_\+view \&\mbox{\hyperlink{namespacestream_1_1session_a6e6dba8ca4221d0c94d0a4dc0a14c01f}{uuid}})
+\begin{DoxyCompactList}\small\item\em Check if session UUID matches. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacestream_1_1session_ab76bf145c19c75d056a26522e591b919}{stream\+::session\+::update\+\_\+device\+\_\+info}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}}, const std\+::string \&name, const \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{crypto\+::\+PERM}} \&new\+Perm)
+\begin{DoxyCompactList}\small\item\em Update device information for a session. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacestream_1_1session_a6d3e111379cfb5b644a8cc9652b6523a}{stream\+::session\+::stop}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}})
+\begin{DoxyCompactList}\small\item\em Stop a streaming session. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacestream_1_1session_af9e804bb3827272a5afc7669a6100a75}{stream\+::session\+::graceful\+\_\+stop}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}})
+\begin{DoxyCompactList}\small\item\em Gracefully stop a streaming session. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacestream_1_1session_ad6441df13e4c115de4047ea8f3074ec2}{stream\+::session\+::join}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}})
+\begin{DoxyCompactList}\small\item\em Join session threads (wait for completion). \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{namespacestream_1_1session_a57687f4eec57d53f2839dffb564e1f42}{stream\+::session\+::start}} (\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \&\mbox{\hyperlink{namespacestream_1_1session}{session}}, const std\+::string \&addr\+\_\+string)
+\begin{DoxyCompactList}\small\item\em Start a streaming session. \end{DoxyCompactList}\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} $>$ \mbox{\hyperlink{namespacestream_1_1session_a3a968bef60291eac635060c406580646}{stream\+::session\+::alloc}} (\mbox{\hyperlink{structstream_1_1config__t}{config\+\_\+t}} \&config, \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+t}} \&launch\+\_\+session)
+\begin{DoxyCompactList}\small\item\em Allocate a new streaming session. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{stream_8cpp_a2b26f35513e01a7aedd234ca2110b8e7}\label{stream_8cpp_a2b26f35513e01a7aedd234ca2110b8e7} 
+constexpr uint32\+\_\+t {\bfseries AUTO\+\_\+\+BITRATE\+\_\+\+DEFAULT\+\_\+\+INTERVAL\+\_\+\+MS} = 50
+\item 
+\Hypertarget{stream_8cpp_a5cd3c7f608ea1b3e30a0dd8cf21139a4}\label{stream_8cpp_a5cd3c7f608ea1b3e30a0dd8cf21139a4} 
+constexpr std\+::size\+\_\+t {\bfseries stream\+::\+MAX\+\_\+\+AUDIO\+\_\+\+PACKET\+\_\+\+SIZE} = 1400
+\item 
+\Hypertarget{namespacestream_1_1session_a65ee00760ab0559a8b71a470e42159ae}\label{namespacestream_1_1session_a65ee00760ab0559a8b71a470e42159ae} 
+std\+::atomic\+\_\+uint {\bfseries stream\+::session\+::running\+\_\+sessions}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Definitions for the streaming protocols. 
+
+
+
+\label{doc-typedef-members}
+\Hypertarget{stream_8cpp_doc-typedef-members}
+\doxysubsection{Typedef Documentation}
+\Hypertarget{stream_8cpp_a530adc5a5602245a81084215dd2cecb3}\index{stream.cpp@{stream.cpp}!control\_encrypted\_p@{control\_encrypted\_p}}
+\index{control\_encrypted\_p@{control\_encrypted\_p}!stream.cpp@{stream.cpp}}
+\doxysubsubsection{\texorpdfstring{control\_encrypted\_p}{control\_encrypted\_p}}
+{\footnotesize\ttfamily \label{stream_8cpp_a530adc5a5602245a81084215dd2cecb3} 
+typedef struct \mbox{\hyperlink{structstream_1_1control__encrypted__t}{stream\+::control\+\_\+encrypted\+\_\+t}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{stream_8cpp_a530adc5a5602245a81084215dd2cecb3}{stream\+::control\+\_\+encrypted\+\_\+p}}}
+
+
+
+Encrypted control message wrapper. 
+
+Wraps control messages with encryption metadata including sequence number, initialization vector, and authentication tag for AES-\/\+GCM encryption. \Hypertarget{stream_8cpp_a1bb7aa6128fbee7f551e2a32d193b877}\index{stream.cpp@{stream.cpp}!rs\_t@{rs\_t}}
+\index{rs\_t@{rs\_t}!stream.cpp@{stream.cpp}}
+\doxysubsubsection{\texorpdfstring{rs\_t}{rs\_t}}
+{\footnotesize\ttfamily \label{stream_8cpp_a1bb7aa6128fbee7f551e2a32d193b877} 
+using stream\+::fec\+::rs\+\_\+t}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ util::safe\_ptr<reed\_solomon,\ [](reed\_solomon\ *rs)\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ reed\_solomon\_release(rs);}
+\DoxyCodeLine{\ \ \ \ \}>}
+
+\end{DoxyCode}
+
+
+\label{doc-func-members}
+\Hypertarget{stream_8cpp_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{stream_8cpp_acf11da53448f14003493dcab0c7b1740}\index{stream.cpp@{stream.cpp}!concat\_and\_insert@{concat\_and\_insert}}
+\index{concat\_and\_insert@{concat\_and\_insert}!stream.cpp@{stream.cpp}}
+\doxysubsubsection{\texorpdfstring{concat\_and\_insert()}{concat\_and\_insert()}}
+{\footnotesize\ttfamily \label{stream_8cpp_acf11da53448f14003493dcab0c7b1740} 
+std\+::vector$<$ uint8\+\_\+t $>$ stream\+::concat\+\_\+and\+\_\+insert (\begin{DoxyParamCaption}\item[{uint64\+\_\+t}]{insert\+\_\+size}{, }\item[{uint64\+\_\+t}]{slice\+\_\+size}{, }\item[{const std\+::string\+\_\+view \&}]{data1}{, }\item[{const std\+::string\+\_\+view \&}]{data2}{}\end{DoxyParamCaption})}
+
+
+
+Combines two buffers and inserts new buffers at each slice boundary of the result. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em insert\+\_\+size} & The number of bytes to insert. \\
+\hline
+{\em slice\+\_\+size} & The number of bytes between insertions. \\
+\hline
+{\em data1} & The first data buffer. \\
+\hline
+{\em data2} & The second data buffer. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{stream_8cpp_af7a5db61aec2a842b69b689c29b70029}\index{stream.cpp@{stream.cpp}!send\_bitrate\_stats@{send\_bitrate\_stats}}
+\index{send\_bitrate\_stats@{send\_bitrate\_stats}!stream.cpp@{stream.cpp}}
+\doxysubsubsection{\texorpdfstring{send\_bitrate\_stats()}{send\_bitrate\_stats()}}
+{\footnotesize\ttfamily \label{stream_8cpp_af7a5db61aec2a842b69b689c29b70029} 
+int stream\+::send\+\_\+bitrate\+\_\+stats (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{session}{}\end{DoxyParamCaption})}
+
+
+
+Send auto bitrate statistics to client. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The streaming session. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, -\/1 on error. 
+\end{DoxyReturn}
+\Hypertarget{stream_8cpp_a028e50a0dfe45a37a81358dfc28b165b}\index{stream.cpp@{stream.cpp}!send\_connection\_status@{send\_connection\_status}}
+\index{send\_connection\_status@{send\_connection\_status}!stream.cpp@{stream.cpp}}
+\doxysubsubsection{\texorpdfstring{send\_connection\_status()}{send\_connection\_status()}}
+{\footnotesize\ttfamily \label{stream_8cpp_a028e50a0dfe45a37a81358dfc28b165b} 
+int stream\+::send\+\_\+connection\+\_\+status (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{session}{, }\item[{int}]{status}{}\end{DoxyParamCaption})}
+
+
+
+Send connection status to client. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The streaming session. \\
+\hline
+{\em status} & Connection status (0 = OKAY, 1 = POOR). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, -\/1 on error. 
+\end{DoxyReturn}
+\Hypertarget{stream_8cpp_af70f1a7a070fb184162c5e076afa35f8}\index{stream.cpp@{stream.cpp}!send\_feedback\_msg@{send\_feedback\_msg}}
+\index{send\_feedback\_msg@{send\_feedback\_msg}!stream.cpp@{stream.cpp}}
+\doxysubsubsection{\texorpdfstring{send\_feedback\_msg()}{send\_feedback\_msg()}}
+{\footnotesize\ttfamily \label{stream_8cpp_af70f1a7a070fb184162c5e076afa35f8} 
+int stream\+::send\+\_\+feedback\+\_\+msg (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{session}{, }\item[{platf\+::gamepad\+\_\+feedback\+\_\+msg\+\_\+t \&}]{msg}{}\end{DoxyParamCaption})}
+
+
+
+Pass gamepad feedback data back to the client. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em session} & The session object. \\
+\hline
+{\em msg} & The message to pass. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success. 
+\end{DoxyReturn}

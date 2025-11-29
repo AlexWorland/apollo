@@ -1,0 +1,72 @@
+\doxysection{safe\+::alarm\+\_\+raw\+\_\+t\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classsafe_1_1alarm__raw__t}{}\label{classsafe_1_1alarm__raw__t}\index{safe::alarm\_raw\_t$<$ T $>$@{safe::alarm\_raw\_t$<$ T $>$}}
+
+
+Thread-\/safe alarm class.  
+
+
+
+
+{\ttfamily \#include $<$thread\+\_\+safe.\+h$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classsafe_1_1alarm__raw__t_abf66d26ae9585ababd42b207923cd2c7}\label{classsafe_1_1alarm__raw__t_abf66d26ae9585ababd42b207923cd2c7} 
+using {\bfseries status\+\_\+t} = util\+::optional\+\_\+t$<$T$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classsafe_1_1alarm__raw__t_a986b5fc6d5e5b3061d12a09bd6742434}\label{classsafe_1_1alarm__raw__t_a986b5fc6d5e5b3061d12a09bd6742434} 
+void {\bfseries ring} (const status\+\_\+t \&status)
+\item 
+\Hypertarget{classsafe_1_1alarm__raw__t_ae0568a07403f09afa4b06c52d096271e}\label{classsafe_1_1alarm__raw__t_ae0568a07403f09afa4b06c52d096271e} 
+void {\bfseries ring} (status\+\_\+t \&\&status)
+\item 
+\Hypertarget{classsafe_1_1alarm__raw__t_a23a01f0f0548d0e268d9ab7d5564eeab}\label{classsafe_1_1alarm__raw__t_a23a01f0f0548d0e268d9ab7d5564eeab} 
+{\footnotesize template$<$class Rep, class Period$>$ }\\auto {\bfseries wait\+\_\+for} (const std\+::chrono\+::duration$<$ Rep, Period $>$ \&rel\+\_\+time)
+\item 
+\Hypertarget{classsafe_1_1alarm__raw__t_a869fff830446d1f455ddb162770c216e}\label{classsafe_1_1alarm__raw__t_a869fff830446d1f455ddb162770c216e} 
+{\footnotesize template$<$class Rep, class Period, class Pred$>$ }\\auto {\bfseries wait\+\_\+for} (const std\+::chrono\+::duration$<$ Rep, Period $>$ \&rel\+\_\+time, Pred \&\&pred)
+\item 
+\Hypertarget{classsafe_1_1alarm__raw__t_af566a011a5721704f3407067737754fb}\label{classsafe_1_1alarm__raw__t_af566a011a5721704f3407067737754fb} 
+{\footnotesize template$<$class Rep, class Period$>$ }\\auto {\bfseries wait\+\_\+until} (const std\+::chrono\+::duration$<$ Rep, Period $>$ \&rel\+\_\+time)
+\item 
+\Hypertarget{classsafe_1_1alarm__raw__t_a6c8b15451d1da9e5edc890057c1031a1}\label{classsafe_1_1alarm__raw__t_a6c8b15451d1da9e5edc890057c1031a1} 
+{\footnotesize template$<$class Rep, class Period, class Pred$>$ }\\auto {\bfseries wait\+\_\+until} (const std\+::chrono\+::duration$<$ Rep, Period $>$ \&rel\+\_\+time, Pred \&\&pred)
+\item 
+\Hypertarget{classsafe_1_1alarm__raw__t_a3c8227adb5dce1bdefd2cdd56bb2919c}\label{classsafe_1_1alarm__raw__t_a3c8227adb5dce1bdefd2cdd56bb2919c} 
+auto {\bfseries wait} ()
+\item 
+\Hypertarget{classsafe_1_1alarm__raw__t_aaef44220f62963f47189cae66dcfa159}\label{classsafe_1_1alarm__raw__t_aaef44220f62963f47189cae66dcfa159} 
+{\footnotesize template$<$class Pred$>$ }\\auto {\bfseries wait} (Pred \&\&pred)
+\item 
+\Hypertarget{classsafe_1_1alarm__raw__t_adefe3f218c8e7387879d6a075cae854e}\label{classsafe_1_1alarm__raw__t_adefe3f218c8e7387879d6a075cae854e} 
+const status\+\_\+t \& {\bfseries status} () const
+\item 
+\Hypertarget{classsafe_1_1alarm__raw__t_a1d29210ed4904f673193c8a448e574ac}\label{classsafe_1_1alarm__raw__t_a1d29210ed4904f673193c8a448e574ac} 
+status\+\_\+t \& {\bfseries status} ()
+\item 
+\Hypertarget{classsafe_1_1alarm__raw__t_a074eca3e907abe59416e40f8163ba7e3}\label{classsafe_1_1alarm__raw__t_a074eca3e907abe59416e40f8163ba7e3} 
+void {\bfseries reset} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T$>$\newline
+class safe\+::alarm\+\_\+raw\+\_\+t$<$ T $>$}
+Thread-\/safe alarm class. 
+
+Provides a thread-\/safe alarm mechanism that can be "{}rung"{} to signal waiting threads. Supports timeout-\/based waiting and predicate-\/based waiting. Thread-\/safe\+: all operations are protected by internal mutex.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The type of status value associated with the alarm. \\
+\hline
+\end{DoxyTemplParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{thread__safe_8h}{thread\+\_\+safe.\+h}}\end{DoxyCompactItemize}

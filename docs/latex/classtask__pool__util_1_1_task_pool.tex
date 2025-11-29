@@ -1,0 +1,119 @@
+\doxysection{task\+\_\+pool\+\_\+util\+::Task\+Pool Class Reference}
+\hypertarget{classtask__pool__util_1_1_task_pool}{}\label{classtask__pool__util_1_1_task_pool}\index{task\_pool\_util::TaskPool@{task\_pool\_util::TaskPool}}
+
+
+Thread pool for asynchronous task execution.  
+
+
+
+
+{\ttfamily \#include $<$task\+\_\+pool.\+h$>$}
+
+Inheritance diagram for task\+\_\+pool\+\_\+util\+::Task\+Pool\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classtask__pool__util_1_1_task_pool}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classtask__pool__util_1_1_task_pool_1_1timer__task__t}{timer\+\_\+task\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Timer task result structure. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classtask__pool__util_1_1_task_pool_a7c780591330d3630345b822e071a387a}\label{classtask__pool__util_1_1_task_pool_a7c780591330d3630345b822e071a387a} 
+typedef std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classtask__pool__util_1_1___impl_base}{\+\_\+\+Impl\+Base}} $>$ {\bfseries \+\_\+\+\_\+task}
+\item 
+\Hypertarget{classtask__pool__util_1_1_task_pool_ac3f8b3059b89df244726d28a227c4edf}\label{classtask__pool__util_1_1_task_pool_ac3f8b3059b89df244726d28a227c4edf} 
+typedef \mbox{\hyperlink{classtask__pool__util_1_1___impl_base}{\+\_\+\+Impl\+Base}} \texorpdfstring{$\ast$}{*} {\bfseries task\+\_\+id\+\_\+t}
+\item 
+\Hypertarget{classtask__pool__util_1_1_task_pool_a4b093defe8024df296e8dbbee18fd888}\label{classtask__pool__util_1_1_task_pool_a4b093defe8024df296e8dbbee18fd888} 
+typedef std\+::chrono\+::steady\+\_\+clock\+::time\+\_\+point {\bfseries \+\_\+\+\_\+time\+\_\+point}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classtask__pool__util_1_1_task_pool_a35a60343a772e8a133efba1004e5d631}\label{classtask__pool__util_1_1_task_pool_a35a60343a772e8a133efba1004e5d631} 
+{\bfseries Task\+Pool} (Task\+Pool \&\&other) noexcept
+\item 
+\Hypertarget{classtask__pool__util_1_1_task_pool_a253ff856744985a91e43b4e1f668f6f5}\label{classtask__pool__util_1_1_task_pool_a253ff856744985a91e43b4e1f668f6f5} 
+Task\+Pool \& {\bfseries operator=} (Task\+Pool \&\&other) noexcept
+\item 
+\Hypertarget{classtask__pool__util_1_1_task_pool_ac3504912da8532bf99f858ac38efa458}\label{classtask__pool__util_1_1_task_pool_ac3504912da8532bf99f858ac38efa458} 
+{\footnotesize template$<$class Function, class... Args$>$ }\\auto {\bfseries push} (Function \&\&new\+Task, Args \&\&...\mbox{\hyperlink{namespaceargs}{args}})
+\item 
+\Hypertarget{classtask__pool__util_1_1_task_pool_a6fd6bcdfea64ea39b20256399e5a1630}\label{classtask__pool__util_1_1_task_pool_a6fd6bcdfea64ea39b20256399e5a1630} 
+void {\bfseries push\+Delayed} (std\+::pair$<$ \+\_\+\+\_\+time\+\_\+point, \+\_\+\+\_\+task $>$ \&\&task)
+\item 
+{\footnotesize template$<$class Function, class X, class Y, class... Args$>$ }\\auto \mbox{\hyperlink{classtask__pool__util_1_1_task_pool_acf403ca5189c02ac12a0540de29f7280}{push\+Delayed}} (Function \&\&new\+Task, std\+::chrono\+::duration$<$ X, Y $>$ duration, Args \&\&...\mbox{\hyperlink{namespaceargs}{args}})
+\item 
+{\footnotesize template$<$class X, class Y$>$ }\\void \mbox{\hyperlink{classtask__pool__util_1_1_task_pool_acd005004e051dbb33466768b2defa9b8}{delay}} (task\+\_\+id\+\_\+t task\+\_\+id, std\+::chrono\+::duration$<$ X, Y $>$ duration)
+\item 
+\Hypertarget{classtask__pool__util_1_1_task_pool_a0097ad1f4429ca34b2e9c24a6a91c04a}\label{classtask__pool__util_1_1_task_pool_a0097ad1f4429ca34b2e9c24a6a91c04a} 
+bool {\bfseries cancel} (task\+\_\+id\+\_\+t task\+\_\+id)
+\item 
+\Hypertarget{classtask__pool__util_1_1_task_pool_a776961d8db87b748dedf30d29ee96014}\label{classtask__pool__util_1_1_task_pool_a776961d8db87b748dedf30d29ee96014} 
+std\+::optional$<$ std\+::pair$<$ \+\_\+\+\_\+time\+\_\+point, \+\_\+\+\_\+task $>$ $>$ {\bfseries pop} (task\+\_\+id\+\_\+t task\+\_\+id)
+\item 
+\Hypertarget{classtask__pool__util_1_1_task_pool_a1315203b0e5069e3efda8a1d5c0d8d7b}\label{classtask__pool__util_1_1_task_pool_a1315203b0e5069e3efda8a1d5c0d8d7b} 
+std\+::optional$<$ \+\_\+\+\_\+task $>$ {\bfseries pop} ()
+\item 
+\Hypertarget{classtask__pool__util_1_1_task_pool_afa9b7626d491a0ce5cbbe57a52c72e9e}\label{classtask__pool__util_1_1_task_pool_afa9b7626d491a0ce5cbbe57a52c72e9e} 
+bool {\bfseries ready} ()
+\item 
+\Hypertarget{classtask__pool__util_1_1_task_pool_a93b87027d32c1b88513e34e8ffe0d115}\label{classtask__pool__util_1_1_task_pool_a93b87027d32c1b88513e34e8ffe0d115} 
+std\+::optional$<$ \+\_\+\+\_\+time\+\_\+point $>$ {\bfseries next} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classtask__pool__util_1_1_task_pool_ab510a77890e112d1c8f756e292285306}\label{classtask__pool__util_1_1_task_pool_ab510a77890e112d1c8f756e292285306} 
+std\+::deque$<$ \+\_\+\+\_\+task $>$ {\bfseries \+\_\+tasks}
+\item 
+\Hypertarget{classtask__pool__util_1_1_task_pool_aa59949510f76727de3db737fab454fd6}\label{classtask__pool__util_1_1_task_pool_aa59949510f76727de3db737fab454fd6} 
+std\+::vector$<$ std\+::pair$<$ \+\_\+\+\_\+time\+\_\+point, \+\_\+\+\_\+task $>$ $>$ {\bfseries \+\_\+timer\+\_\+tasks}
+\item 
+\Hypertarget{classtask__pool__util_1_1_task_pool_ae9687e9e9e426f0b44e75b60ae629960}\label{classtask__pool__util_1_1_task_pool_ae9687e9e9e426f0b44e75b60ae629960} 
+std\+::mutex {\bfseries \+\_\+task\+\_\+mutex}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Thread pool for asynchronous task execution. 
+
+Manages a pool of worker threads for executing tasks asynchronously. Supports scheduled tasks and timer-\/based execution. 
+
+\label{doc-func-members}
+\Hypertarget{classtask__pool__util_1_1_task_pool_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classtask__pool__util_1_1_task_pool_acd005004e051dbb33466768b2defa9b8}\index{task\_pool\_util::TaskPool@{task\_pool\_util::TaskPool}!delay@{delay}}
+\index{delay@{delay}!task\_pool\_util::TaskPool@{task\_pool\_util::TaskPool}}
+\doxysubsubsection{\texorpdfstring{delay()}{delay()}}
+{\footnotesize\ttfamily \label{classtask__pool__util_1_1_task_pool_acd005004e051dbb33466768b2defa9b8} 
+template$<$class X, class Y$>$ \\
+void task\+\_\+pool\+\_\+util\+::\+Task\+Pool\+::delay (\begin{DoxyParamCaption}\item[{task\+\_\+id\+\_\+t}]{task\+\_\+id}{, }\item[{std\+::chrono\+::duration$<$ X, Y $>$}]{duration}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em task\+\_\+id} & The id of the task to delay. \\
+\hline
+{\em duration} & The delay before executing the task. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classtask__pool__util_1_1_task_pool_acf403ca5189c02ac12a0540de29f7280}\index{task\_pool\_util::TaskPool@{task\_pool\_util::TaskPool}!pushDelayed@{pushDelayed}}
+\index{pushDelayed@{pushDelayed}!task\_pool\_util::TaskPool@{task\_pool\_util::TaskPool}}
+\doxysubsubsection{\texorpdfstring{pushDelayed()}{pushDelayed()}}
+{\footnotesize\ttfamily \label{classtask__pool__util_1_1_task_pool_acf403ca5189c02ac12a0540de29f7280} 
+template$<$class Function, class X, class Y, class... Args$>$ \\
+auto task\+\_\+pool\+\_\+util\+::\+Task\+Pool\+::push\+Delayed (\begin{DoxyParamCaption}\item[{Function \&\&}]{new\+Task}{, }\item[{std\+::chrono\+::duration$<$ X, Y $>$}]{duration}{, }\item[{Args \&\&...}]{args}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+An id to potentially delay the task. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{task__pool_8h}{task\+\_\+pool.\+h}}\end{DoxyCompactItemize}

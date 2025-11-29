@@ -1,0 +1,126 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/rtsp.h File Reference}
+\hypertarget{rtsp_8h}{}\label{rtsp_8h}\index{/Users/alexworland/autoBitrate/apollo/src/rtsp.h@{/Users/alexworland/autoBitrate/apollo/src/rtsp.h}}
+
+
+Declarations for RTSP streaming.  
+
+
+{\ttfamily \#include $<$atomic$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$list$>$}\newline
+{\ttfamily \#include "{}crypto.\+h"{}}\newline
+{\ttfamily \#include "{}thread\+\_\+safe.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Launch session structure containing client connection parameters. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{rtsp_8cpp_ace65558c3b0a45389132782bf0ae76af}{rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+raise}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\+\_\+session\+\_\+t}} $>$ launch\+\_\+session)
+\begin{DoxyCompactList}\small\item\em Raise/activate a launch session. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{rtsp_8cpp_a58910a8858632361972daa6afb96d84a}{rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+clear}} (uint32\+\_\+t launch\+\_\+session\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Clear state for the specified launch session. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{rtsp_8cpp_ac328e4d3b111e0fd4219b13737d99d6d}{rtsp\+\_\+stream\+::session\+\_\+count}} ()
+\begin{DoxyCompactList}\small\item\em Get the number of active sessions. \end{DoxyCompactList}\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structstream_1_1session__t}{stream\+::session\+\_\+t}} $>$ \mbox{\hyperlink{rtsp_8cpp_a226a5d9986c10450c111cb7ba7704f53}{rtsp\+\_\+stream\+::find\+\_\+session}} (const std\+::string\+\_\+view \&uuid)
+\begin{DoxyCompactList}\small\item\em Find a session by UUID. \end{DoxyCompactList}\item 
+std\+::list$<$ std\+::string $>$ \mbox{\hyperlink{rtsp_8cpp_ac06dc570a4d3b4ae0083b42c9ad8b866}{rtsp\+\_\+stream\+::get\+\_\+all\+\_\+session\+\_\+uuids}} ()
+\begin{DoxyCompactList}\small\item\em Get all active session UUIDs. \end{DoxyCompactList}\item 
+\Hypertarget{rtsp_8cpp_a10870a2e7029f864eb050932b6e03b3e}\label{rtsp_8cpp_a10870a2e7029f864eb050932b6e03b3e} 
+void {\bfseries rtsp\+\_\+stream\+::terminate\+\_\+sessions} ()
+\begin{DoxyCompactList}\small\item\em Terminates all running streaming sessions. \end{DoxyCompactList}\item 
+\Hypertarget{rtsp_8cpp_ae0ea344308f556ed0816ab85675738fc}\label{rtsp_8cpp_ae0ea344308f556ed0816ab85675738fc} 
+void {\bfseries rtsp\+\_\+stream\+::start} ()
+\begin{DoxyCompactList}\small\item\em Runs the RTSP server loop. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{rtsp_8h_a95684f47b24a8e40ea2696ebd531dec3}\label{rtsp_8h_a95684f47b24a8e40ea2696ebd531dec3} 
+constexpr auto {\bfseries rtsp\+\_\+stream\+::\+RTSP\+\_\+\+SETUP\+\_\+\+PORT} = 21
+\begin{DoxyCompactList}\small\item\em RTSP setup port offset from base port. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Declarations for RTSP streaming. 
+
+
+
+\label{doc-func-members}
+\Hypertarget{rtsp_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{rtsp_8cpp_a226a5d9986c10450c111cb7ba7704f53}\index{rtsp.h@{rtsp.h}!find\_session@{find\_session}}
+\index{find\_session@{find\_session}!rtsp.h@{rtsp.h}}
+\doxysubsubsection{\texorpdfstring{find\_session()}{find\_session()}}
+{\footnotesize\ttfamily \label{rtsp_8cpp_a226a5d9986c10450c111cb7ba7704f53} 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structstream_1_1session__t}{stream\+::session\+\_\+t}} $>$ rtsp\+\_\+stream\+::find\+\_\+session (\begin{DoxyParamCaption}\item[{const std\+::string\+\_\+view \&}]{uuid}{}\end{DoxyParamCaption})}
+
+
+
+Find a session by UUID. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em uuid} & The session UUID. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Shared pointer to session, or nullptr if not found. 
+\end{DoxyReturn}
+\Hypertarget{rtsp_8cpp_ac06dc570a4d3b4ae0083b42c9ad8b866}\index{rtsp.h@{rtsp.h}!get\_all\_session\_uuids@{get\_all\_session\_uuids}}
+\index{get\_all\_session\_uuids@{get\_all\_session\_uuids}!rtsp.h@{rtsp.h}}
+\doxysubsubsection{\texorpdfstring{get\_all\_session\_uuids()}{get\_all\_session\_uuids()}}
+{\footnotesize\ttfamily \label{rtsp_8cpp_ac06dc570a4d3b4ae0083b42c9ad8b866} 
+std\+::list$<$ std\+::string $>$ rtsp\+\_\+stream\+::get\+\_\+all\+\_\+session\+\_\+uuids (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Get all active session UUIDs. 
+
+\begin{DoxyReturn}{Returns}
+List of session UUID strings. 
+\end{DoxyReturn}
+\Hypertarget{rtsp_8cpp_a58910a8858632361972daa6afb96d84a}\index{rtsp.h@{rtsp.h}!launch\_session\_clear@{launch\_session\_clear}}
+\index{launch\_session\_clear@{launch\_session\_clear}!rtsp.h@{rtsp.h}}
+\doxysubsubsection{\texorpdfstring{launch\_session\_clear()}{launch\_session\_clear()}}
+{\footnotesize\ttfamily \label{rtsp_8cpp_a58910a8858632361972daa6afb96d84a} 
+void rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+clear (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{launch\+\_\+session\+\_\+id}{}\end{DoxyParamCaption})}
+
+
+
+Clear state for the specified launch session. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em launch\+\_\+session\+\_\+id} & The ID of the session to clear. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{rtsp_8cpp_ace65558c3b0a45389132782bf0ae76af}\index{rtsp.h@{rtsp.h}!launch\_session\_raise@{launch\_session\_raise}}
+\index{launch\_session\_raise@{launch\_session\_raise}!rtsp.h@{rtsp.h}}
+\doxysubsubsection{\texorpdfstring{launch\_session\_raise()}{launch\_session\_raise()}}
+{\footnotesize\ttfamily \label{rtsp_8cpp_ace65558c3b0a45389132782bf0ae76af} 
+void rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+raise (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\+\_\+session\+\_\+t}} $>$}]{launch\+\_\+session}{}\end{DoxyParamCaption})}
+
+
+
+Raise/activate a launch session. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em launch\+\_\+session} & Shared pointer to the launch session. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{rtsp_8cpp_ac328e4d3b111e0fd4219b13737d99d6d}\index{rtsp.h@{rtsp.h}!session\_count@{session\_count}}
+\index{session\_count@{session\_count}!rtsp.h@{rtsp.h}}
+\doxysubsubsection{\texorpdfstring{session\_count()}{session\_count()}}
+{\footnotesize\ttfamily \label{rtsp_8cpp_ac328e4d3b111e0fd4219b13737d99d6d} 
+int rtsp\+\_\+stream\+::session\+\_\+count (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Get the number of active sessions. 
+
+\begin{DoxyReturn}{Returns}
+Count of active sessions. 
+\end{DoxyReturn}

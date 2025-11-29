@@ -1,0 +1,200 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/display\+\_\+device.cpp File Reference}
+\hypertarget{display__device_8cpp}{}\label{display__device_8cpp}\index{/Users/alexworland/autoBitrate/apollo/src/display\_device.cpp@{/Users/alexworland/autoBitrate/apollo/src/display\_device.cpp}}
+
+
+Definitions for display device handling.  
+
+
+{\ttfamily \#include "{}display\+\_\+device.\+h"{}}\newline
+{\ttfamily \#include $<$boost/algorithm/string.\+hpp$>$}\newline
+{\ttfamily \#include $<$display\+\_\+device/audio\+\_\+context\+\_\+interface.\+h$>$}\newline
+{\ttfamily \#include $<$display\+\_\+device/file\+\_\+settings\+\_\+persistence.\+h$>$}\newline
+{\ttfamily \#include $<$display\+\_\+device/json.\+h$>$}\newline
+{\ttfamily \#include $<$display\+\_\+device/retry\+\_\+scheduler.\+h$>$}\newline
+{\ttfamily \#include $<$display\+\_\+device/settings\+\_\+manager\+\_\+interface.\+h$>$}\newline
+{\ttfamily \#include $<$mutex$>$}\newline
+{\ttfamily \#include $<$regex$>$}\newline
+{\ttfamily \#include "{}audio.\+h"{}}\newline
+{\ttfamily \#include "{}platform/common.\+h"{}}\newline
+{\ttfamily \#include "{}rtsp.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::unique\+\_\+ptr$<$ platf\+::deinit\+\_\+t $>$ \mbox{\hyperlink{display__device_8cpp_a1fde5866033facfcff45422ebacd05d7}{display\+\_\+device\+::init}} (const std\+::filesystem\+::path \&persistence\+\_\+filepath, const \mbox{\hyperlink{structconfig_1_1video__t}{config\+::video\+\_\+t}} \&video\+\_\+config)
+\begin{DoxyCompactList}\small\item\em Initialize the implementation and perform the initial state recovery (if needed). \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{display__device_8cpp_acbec3c2e5a77f8d7906407110bcf5ff5}{display\+\_\+device\+::map\+\_\+output\+\_\+name}} (const std\+::string \&output\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Map the output name to a specific display. \end{DoxyCompactList}\item 
+\Hypertarget{display__device_8cpp_a8bb9ef7a5416acc26f52a4777c51ddd0}\label{display__device_8cpp_a8bb9ef7a5416acc26f52a4777c51ddd0} 
+std\+::string {\bfseries display\+\_\+device\+::map\+\_\+display\+\_\+name} (const std\+::string \&display\+\_\+name)
+\item 
+void \mbox{\hyperlink{display__device_8cpp_a32ad14466b4ee7982d208efd29012354}{display\+\_\+device\+::configure\+\_\+display}} (const \mbox{\hyperlink{structconfig_1_1video__t}{config\+::video\+\_\+t}} \&video\+\_\+config, const \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+t}} \&session)
+\begin{DoxyCompactList}\small\item\em Configure the display device based on the user configuration and the session information. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{display__device_8cpp_a327c6fb42eeeb82185bbc3af3cf20979}{display\+\_\+device\+::configure\+\_\+display}} (const Single\+Display\+Configuration \&config)
+\begin{DoxyCompactList}\small\item\em Configure the display device using the provided configuration. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{display__device_8cpp_a1be8d50acef1df106cfa5d79fa17c048}{display\+\_\+device\+::revert\+\_\+configuration}} ()
+\begin{DoxyCompactList}\small\item\em Revert the display configuration and restore the previous state. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{display__device_8cpp_abbe93253aa71514fa18accdb45ef1390}{display\+\_\+device\+::reset\+\_\+persistence}} ()
+\begin{DoxyCompactList}\small\item\em Reset the persistence and currently held initial display state. \end{DoxyCompactList}\item 
+Enumerated\+Device\+List \mbox{\hyperlink{display__device_8cpp_aa54ea423c6d3d3cce1c9f30a0935228d}{display\+\_\+device\+::enumerate\+\_\+devices}} ()
+\begin{DoxyCompactList}\small\item\em Enumerate the available devices. \end{DoxyCompactList}\item 
+std\+::variant$<$ \mbox{\hyperlink{structdisplay__device_1_1failed__to__parse__tag__t}{failed\+\_\+to\+\_\+parse\+\_\+tag\+\_\+t}}, \mbox{\hyperlink{structdisplay__device_1_1configuration__disabled__tag__t}{configuration\+\_\+disabled\+\_\+tag\+\_\+t}}, Single\+Display\+Configuration $>$ \mbox{\hyperlink{display__device_8cpp_a13d7db8105180dedd47832acaf0fd8ac}{display\+\_\+device\+::parse\+\_\+configuration}} (const \mbox{\hyperlink{structconfig_1_1video__t}{config\+::video\+\_\+t}} \&video\+\_\+config, const \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+t}} \&session)
+\begin{DoxyCompactList}\small\item\em Parse the user configuration and the session information. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Definitions for display device handling. 
+
+
+
+\label{doc-func-members}
+\Hypertarget{display__device_8cpp_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{display__device_8cpp_a32ad14466b4ee7982d208efd29012354}\index{display\_device.cpp@{display\_device.cpp}!configure\_display@{configure\_display}}
+\index{configure\_display@{configure\_display}!display\_device.cpp@{display\_device.cpp}}
+\doxysubsubsection{\texorpdfstring{configure\_display()}{configure\_display()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{display__device_8cpp_a32ad14466b4ee7982d208efd29012354} 
+void display\+\_\+device\+::configure\+\_\+display (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structconfig_1_1video__t}{config\+::video\+\_\+t}} \&}]{video\+\_\+config}{, }\item[{const \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+t}} \&}]{session}{}\end{DoxyParamCaption})}
+
+
+
+Configure the display device based on the user configuration and the session information. 
+
+\begin{DoxyNote}{Note}
+This is a convenience method for calling similar method of a different signature.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em video\+\_\+config} & User\textquotesingle{}s video related configuration. \\
+\hline
+{\em session} & Session information.\\
+\hline
+\end{DoxyParams}
+@examples const std\+::shared\+\_\+ptr$<$rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+t$>$ launch\+\_\+session; const \doxylink{structconfig_1_1video__t}{config\+::video\+\_\+t} \&video\+\_\+config \{ \doxylink{config_8cpp_ab072b2cc5bcce908fe5fa7087f0f4254}{config\+::video} \};
+
+configure\+\_\+display(video\+\_\+config, \texorpdfstring{$\ast$}{*}launch\+\_\+session); @examples\+\_\+end \Hypertarget{display__device_8cpp_a327c6fb42eeeb82185bbc3af3cf20979}\index{display\_device.cpp@{display\_device.cpp}!configure\_display@{configure\_display}}
+\index{configure\_display@{configure\_display}!display\_device.cpp@{display\_device.cpp}}
+\doxysubsubsection{\texorpdfstring{configure\_display()}{configure\_display()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{display__device_8cpp_a327c6fb42eeeb82185bbc3af3cf20979} 
+void display\+\_\+device\+::configure\+\_\+display (\begin{DoxyParamCaption}\item[{const Single\+Display\+Configuration \&}]{config}{}\end{DoxyParamCaption})}
+
+
+
+Configure the display device using the provided configuration. 
+
+In some cases configuring display can fail due to transient issues and we will keep trying every 5 seconds, even if the stream has already started as there was no possibility to apply settings before the stream start.
+
+Therefore, there is no return value as we still want to continue with the stream, so that the users can do something about it once they are connected. Otherwise, we might prevent users from logging in at all if we keep failing to apply configuration.
+
+
+\begin{DoxyParams}{Parameters}
+{\em config} & Configuration for the display.\\
+\hline
+\end{DoxyParams}
+@examples const Single\+Display\+Configuration valid\+\_\+config \{ \}; configure\+\_\+display(valid\+\_\+config); @examples\+\_\+end \Hypertarget{display__device_8cpp_aa54ea423c6d3d3cce1c9f30a0935228d}\index{display\_device.cpp@{display\_device.cpp}!enumerate\_devices@{enumerate\_devices}}
+\index{enumerate\_devices@{enumerate\_devices}!display\_device.cpp@{display\_device.cpp}}
+\doxysubsubsection{\texorpdfstring{enumerate\_devices()}{enumerate\_devices()}}
+{\footnotesize\ttfamily \label{display__device_8cpp_aa54ea423c6d3d3cce1c9f30a0935228d} 
+Enumerated\+Device\+List display\+\_\+device\+::enumerate\+\_\+devices (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Enumerate the available devices. 
+
+\begin{DoxyReturn}{Returns}
+A list of devices.
+\end{DoxyReturn}
+@examples const auto devices = enumerate\+\_\+devices(); @examples\+\_\+end \Hypertarget{display__device_8cpp_a1fde5866033facfcff45422ebacd05d7}\index{display\_device.cpp@{display\_device.cpp}!init@{init}}
+\index{init@{init}!display\_device.cpp@{display\_device.cpp}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily \label{display__device_8cpp_a1fde5866033facfcff45422ebacd05d7} 
+std\+::unique\+\_\+ptr$<$ platf\+::deinit\+\_\+t $>$ display\+\_\+device\+::init (\begin{DoxyParamCaption}\item[{const std\+::filesystem\+::path \&}]{persistence\+\_\+filepath}{, }\item[{const \mbox{\hyperlink{structconfig_1_1video__t}{config\+::video\+\_\+t}} \&}]{video\+\_\+config}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Initialize the implementation and perform the initial state recovery (if needed). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em persistence\+\_\+filepath} & File location for reading/saving persistent state. \\
+\hline
+{\em video\+\_\+config} & User\textquotesingle{}s video related configuration. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A deinit\+\_\+t instance that performs cleanup when destroyed.
+\end{DoxyReturn}
+@examples const \doxylink{structconfig_1_1video__t}{config\+::video\+\_\+t} \&video\+\_\+config \{ \doxylink{config_8cpp_ab072b2cc5bcce908fe5fa7087f0f4254}{config\+::video} \}; const auto init\+\_\+guard \{ init("{}/my/persitence/file.\+state"{}, video\+\_\+config) \}; @examples\+\_\+end \Hypertarget{display__device_8cpp_acbec3c2e5a77f8d7906407110bcf5ff5}\index{display\_device.cpp@{display\_device.cpp}!map\_output\_name@{map\_output\_name}}
+\index{map\_output\_name@{map\_output\_name}!display\_device.cpp@{display\_device.cpp}}
+\doxysubsubsection{\texorpdfstring{map\_output\_name()}{map\_output\_name()}}
+{\footnotesize\ttfamily \label{display__device_8cpp_acbec3c2e5a77f8d7906407110bcf5ff5} 
+std\+::string display\+\_\+device\+::map\+\_\+output\+\_\+name (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{output\+\_\+name}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Map the output name to a specific display. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em output\+\_\+name} & The user-\/configurable output name. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Mapped display name or empty string if the output name could not be mapped.
+\end{DoxyReturn}
+@examples const auto mapped\+\_\+name\+\_\+config \{ map\+\_\+output\+\_\+name(config\+::video.\+output\+\_\+name) \}; const auto mapped\+\_\+name\+\_\+custom \{ map\+\_\+output\+\_\+name("{}\{some-\/device-\/id\}"{}) \}; @examples\+\_\+end \Hypertarget{display__device_8cpp_a13d7db8105180dedd47832acaf0fd8ac}\index{display\_device.cpp@{display\_device.cpp}!parse\_configuration@{parse\_configuration}}
+\index{parse\_configuration@{parse\_configuration}!display\_device.cpp@{display\_device.cpp}}
+\doxysubsubsection{\texorpdfstring{parse\_configuration()}{parse\_configuration()}}
+{\footnotesize\ttfamily \label{display__device_8cpp_a13d7db8105180dedd47832acaf0fd8ac} 
+std\+::variant$<$ failed\+\_\+to\+\_\+parse\+\_\+tag\+\_\+t, configuration\+\_\+disabled\+\_\+tag\+\_\+t, Single\+Display\+Configuration $>$ display\+\_\+device\+::parse\+\_\+configuration (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structconfig_1_1video__t}{config\+::video\+\_\+t}} \&}]{video\+\_\+config}{, }\item[{const \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+t}} \&}]{session}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}}
+
+
+
+Parse the user configuration and the session information. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em video\+\_\+config} & User\textquotesingle{}s video related configuration. \\
+\hline
+{\em session} & Session information. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Parsed single display configuration or a tag indicating that the parsing has failed or a tag indicating that the user does not want to perform any configuration.
+\end{DoxyReturn}
+@examples const std\+::shared\+\_\+ptr$<$rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+t$>$ launch\+\_\+session; const \doxylink{structconfig_1_1video__t}{config\+::video\+\_\+t} \&video\+\_\+config \{ \doxylink{config_8cpp_ab072b2cc5bcce908fe5fa7087f0f4254}{config\+::video} \};
+
+const auto config \{ parse\+\_\+configuration(video\+\_\+config, \texorpdfstring{$\ast$}{*}launch\+\_\+session) \}; if (const auto \texorpdfstring{$\ast$}{*}parsed\+\_\+config \{ std\+::get\+\_\+if$<$\+Single\+Display\+Configuration$>$(\&result) \}; parsed\+\_\+config) \{ configure\+\_\+display(\texorpdfstring{$\ast$}{*}config); \} @examples\+\_\+end \Hypertarget{display__device_8cpp_abbe93253aa71514fa18accdb45ef1390}\index{display\_device.cpp@{display\_device.cpp}!reset\_persistence@{reset\_persistence}}
+\index{reset\_persistence@{reset\_persistence}!display\_device.cpp@{display\_device.cpp}}
+\doxysubsubsection{\texorpdfstring{reset\_persistence()}{reset\_persistence()}}
+{\footnotesize\ttfamily \label{display__device_8cpp_abbe93253aa71514fa18accdb45ef1390} 
+bool display\+\_\+device\+::reset\+\_\+persistence (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Reset the persistence and currently held initial display state. 
+
+This is normally used to get out of the "{}broken"{} state where the algorithm wants to restore the initial display state, but it is no longer possible.
+
+This could happen if the display is no longer available or the hardware was changed and the device ids no longer match.
+
+The user then accepts that Sunshine is not able to restore the state and "{}agrees"{} to do it manually.
+
+\begin{DoxyReturn}{Returns}
+True if persistence was reset, false otherwise. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Whether the function succeeds or fails, any of the scheduled "{}retries"{} from other methods will be stopped to not interfere with the user actions.
+\end{DoxyNote}
+@examples const auto result = reset\+\_\+persistence(); @examples\+\_\+end \Hypertarget{display__device_8cpp_a1be8d50acef1df106cfa5d79fa17c048}\index{display\_device.cpp@{display\_device.cpp}!revert\_configuration@{revert\_configuration}}
+\index{revert\_configuration@{revert\_configuration}!display\_device.cpp@{display\_device.cpp}}
+\doxysubsubsection{\texorpdfstring{revert\_configuration()}{revert\_configuration()}}
+{\footnotesize\ttfamily \label{display__device_8cpp_a1be8d50acef1df106cfa5d79fa17c048} 
+void display\+\_\+device\+::revert\+\_\+configuration (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Revert the display configuration and restore the previous state. 
+
+In case the state could not be restored, by default it will be retried again in 5 seconds (repeating indefinitely until success or until persistence is reset).
+
+@examples revert\+\_\+configuration(); @examples\+\_\+end 

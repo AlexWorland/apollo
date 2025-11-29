@@ -1,0 +1,53 @@
+\doxysection{nvhttp\+::Sunshine\+HTTPSServer Class Reference}
+\hypertarget{classnvhttp_1_1_sunshine_h_t_t_p_s_server}{}\label{classnvhttp_1_1_sunshine_h_t_t_p_s_server}\index{nvhttp::SunshineHTTPSServer@{nvhttp::SunshineHTTPSServer}}
+
+
+HTTPS server for Game\+Stream protocol.  
+
+
+Inheritance diagram for nvhttp\+::Sunshine\+HTTPSServer\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classnvhttp_1_1_sunshine_h_t_t_p_s_server}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classnvhttp_1_1_sunshine_h_t_t_p_s_server_ad9dd4d3722e6a1d7aaab0c0cc5da7b4f}\label{classnvhttp_1_1_sunshine_h_t_t_p_s_server_ad9dd4d3722e6a1d7aaab0c0cc5da7b4f} 
+{\bfseries Sunshine\+HTTPSServer} (const std\+::string \&certification\+\_\+file, const std\+::string \&private\+\_\+key\+\_\+file)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classnvhttp_1_1_sunshine_h_t_t_p_s_server_a842815514e70048b8c2fb7b4ff7d875a}\label{classnvhttp_1_1_sunshine_h_t_t_p_s_server_a842815514e70048b8c2fb7b4ff7d875a} 
+std\+::function$<$ bool(std\+::shared\+\_\+ptr$<$ Request $>$, SSL \texorpdfstring{$\ast$}{*})$>$ {\bfseries verify}
+\item 
+\Hypertarget{classnvhttp_1_1_sunshine_h_t_t_p_s_server_adce21e9049c1eade3b67ee33e8d5e077}\label{classnvhttp_1_1_sunshine_h_t_t_p_s_server_adce21e9049c1eade3b67ee33e8d5e077} 
+std\+::function$<$ void(std\+::shared\+\_\+ptr$<$ Response $>$, std\+::shared\+\_\+ptr$<$ Request $>$)$>$ {\bfseries on\+\_\+verify\+\_\+failed}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classnvhttp_1_1_sunshine_h_t_t_p_s_server_a2611a307d4b8c7d6961c47a1ebb58ad6}\label{classnvhttp_1_1_sunshine_h_t_t_p_s_server_a2611a307d4b8c7d6961c47a1ebb58ad6} 
+void {\bfseries after\+\_\+bind} () override
+\item 
+\Hypertarget{classnvhttp_1_1_sunshine_h_t_t_p_s_server_a314efcab31bfdabe152d57ddf1452c47}\label{classnvhttp_1_1_sunshine_h_t_t_p_s_server_a314efcab31bfdabe152d57ddf1452c47} 
+void {\bfseries accept} () override
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classnvhttp_1_1_sunshine_h_t_t_p_s_server_a826da7053b57d4ccc9583e8ff394db7a}\label{classnvhttp_1_1_sunshine_h_t_t_p_s_server_a826da7053b57d4ccc9583e8ff394db7a} 
+boost\+::asio\+::ssl\+::context {\bfseries context}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+HTTPS server for Game\+Stream protocol. 
+
+Extends Simple\+Web\+::\+Server\+Base to provide SSL/\+TLS support with client certificate verification for secure Game\+Stream communication. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{nvhttp_8cpp}{nvhttp.\+cpp}}\end{DoxyCompactItemize}

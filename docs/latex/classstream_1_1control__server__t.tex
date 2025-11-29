@@ -1,0 +1,158 @@
+\doxysection{stream\+::control\+\_\+server\+\_\+t Class Reference}
+\hypertarget{classstream_1_1control__server__t}{}\label{classstream_1_1control__server__t}\index{stream::control\_server\_t@{stream::control\_server\_t}}
+
+
+Control server for managing streaming sessions.  
+
+
+
+
+{\ttfamily \#include $<$stream.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classstream_1_1control__server__t_aa9034b891ab21bf3fd4c4050afa1eb39}\label{classstream_1_1control__server__t_aa9034b891ab21bf3fd4c4050afa1eb39} 
+int {\bfseries bind} (\mbox{\hyperlink{network_8h_a1ed5da07a6d5b35033bd4de7bca12dab}{net\+::af\+\_\+e}} address\+\_\+family, std\+::uint16\+\_\+t port)
+\item 
+\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classstream_1_1control__server__t_aff72c7a34ce0cca315250f288b9ce2cf}{get\+\_\+session}} (const net\+::peer\+\_\+t peer, uint32\+\_\+t connect\+\_\+data)
+\begin{DoxyCompactList}\small\item\em Get session associated with peer address. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classstream_1_1control__server__t_a7de30674d72502ee5724e3c60f333586}{iterate}} (std\+::chrono\+::milliseconds timeout)
+\begin{DoxyCompactList}\small\item\em Iterate over control messages and process them. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classstream_1_1control__server__t_ae5a7e8f715d43010dbcd0307ceb56c45}{call}} (std\+::uint16\+\_\+t type, \mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespacestream_1_1session}{session}}, const std\+::string\+\_\+view \&payload, bool reinjected)
+\begin{DoxyCompactList}\small\item\em Call the handler for a given control stream message. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classstream_1_1control__server__t_a646a0ad725dfe4b98ac8b0f5c1233ab6}{map}} (uint16\+\_\+t type, std\+::function$<$ void(\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}, const std\+::string\+\_\+view \&)$>$ cb)
+\begin{DoxyCompactList}\small\item\em Map a message type to a callback handler. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classstream_1_1control__server__t_ac90d905b81022ab28988e665511069d7}{send}} (const std\+::string\+\_\+view \&payload, net\+::peer\+\_\+t peer)
+\begin{DoxyCompactList}\small\item\em Send a payload to a peer. \end{DoxyCompactList}\item 
+\Hypertarget{classstream_1_1control__server__t_a4dc00456eb5b2712176117c1937e7e2a}\label{classstream_1_1control__server__t_a4dc00456eb5b2712176117c1937e7e2a} 
+void {\bfseries flush} ()
+\begin{DoxyCompactList}\small\item\em Flush pending messages. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classstream_1_1control__server__t_a43f6fa9a17d5facd04d460984e9dffd3}\label{classstream_1_1control__server__t_a43f6fa9a17d5facd04d460984e9dffd3} 
+std\+::unordered\+\_\+map$<$ std\+::uint16\+\_\+t, std\+::function$<$ void(\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}, const std\+::string\+\_\+view \&)$>$ $>$ {\bfseries \+\_\+map\+\_\+type\+\_\+cb}
+\begin{DoxyCompactList}\small\item\em Message type to callback mapping. \end{DoxyCompactList}\item 
+\Hypertarget{classstream_1_1control__server__t_abcc6fe2a0a80155f482de661f6d332cb}\label{classstream_1_1control__server__t_abcc6fe2a0a80155f482de661f6d332cb} 
+\mbox{\hyperlink{classsync__util_1_1sync__t}{sync\+\_\+util\+::sync\+\_\+t}}$<$ std\+::vector$<$ \mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*} $>$ $>$ {\bfseries \+\_\+sessions}
+\begin{DoxyCompactList}\small\item\em All active sessions (including those waiting for peer connection). \end{DoxyCompactList}\item 
+\Hypertarget{classstream_1_1control__server__t_a5649626f9247d3eb5b9a998f218cbe7b}\label{classstream_1_1control__server__t_a5649626f9247d3eb5b9a998f218cbe7b} 
+\mbox{\hyperlink{classsync__util_1_1sync__t}{sync\+\_\+util\+::sync\+\_\+t}}$<$ std\+::map$<$ net\+::peer\+\_\+t, \mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*} $>$ $>$ {\bfseries \+\_\+peer\+\_\+to\+\_\+session}
+\begin{DoxyCompactList}\small\item\em ENet peer to session mapping. \end{DoxyCompactList}\item 
+\Hypertarget{classstream_1_1control__server__t_a3aeef0e7db1604d2c3d2a77c2b98b304}\label{classstream_1_1control__server__t_a3aeef0e7db1604d2c3d2a77c2b98b304} 
+ENet\+Address {\bfseries \+\_\+addr}
+\begin{DoxyCompactList}\small\item\em ENet address. \end{DoxyCompactList}\item 
+\Hypertarget{classstream_1_1control__server__t_a4918c0ecfd56e2a9ec53ae0cab31f453}\label{classstream_1_1control__server__t_a4918c0ecfd56e2a9ec53ae0cab31f453} 
+net\+::host\+\_\+t {\bfseries \+\_\+host}
+\begin{DoxyCompactList}\small\item\em ENet host. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Control server for managing streaming sessions. 
+
+\label{doc-func-members}
+\Hypertarget{classstream_1_1control__server__t_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classstream_1_1control__server__t_ae5a7e8f715d43010dbcd0307ceb56c45}\index{stream::control\_server\_t@{stream::control\_server\_t}!call@{call}}
+\index{call@{call}!stream::control\_server\_t@{stream::control\_server\_t}}
+\doxysubsubsection{\texorpdfstring{call()}{call()}}
+{\footnotesize\ttfamily \label{classstream_1_1control__server__t_ae5a7e8f715d43010dbcd0307ceb56c45} 
+void stream\+::control\+\_\+server\+\_\+t\+::call (\begin{DoxyParamCaption}\item[{std\+::uint16\+\_\+t}]{type}{, }\item[{\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{session}{, }\item[{const std\+::string\+\_\+view \&}]{payload}{, }\item[{bool}]{reinjected}{}\end{DoxyParamCaption})}
+
+
+
+Call the handler for a given control stream message. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & The message type. \\
+\hline
+{\em session} & The session the message was received on. \\
+\hline
+{\em payload} & The payload of the message. \\
+\hline
+{\em reinjected} & {\ttfamily true} if this message is being reprocessed after decryption. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classstream_1_1control__server__t_aff72c7a34ce0cca315250f288b9ce2cf}\index{stream::control\_server\_t@{stream::control\_server\_t}!get\_session@{get\_session}}
+\index{get\_session@{get\_session}!stream::control\_server\_t@{stream::control\_server\_t}}
+\doxysubsubsection{\texorpdfstring{get\_session()}{get\_session()}}
+{\footnotesize\ttfamily \label{classstream_1_1control__server__t_aff72c7a34ce0cca315250f288b9ce2cf} 
+\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*} stream\+::control\+\_\+server\+\_\+t\+::get\+\_\+session (\begin{DoxyParamCaption}\item[{const net\+::peer\+\_\+t}]{peer}{, }\item[{uint32\+\_\+t}]{connect\+\_\+data}{}\end{DoxyParamCaption})}
+
+
+
+Get session associated with peer address. 
+
+If no session is found, try to find an unclaimed session (marked by port 0). If none are found, return nullptr. 
+\begin{DoxyParams}{Parameters}
+{\em peer} & The ENet peer. \\
+\hline
+{\em connect\+\_\+data} & The connection data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to session, or nullptr if not found. 
+\end{DoxyReturn}
+\Hypertarget{classstream_1_1control__server__t_a7de30674d72502ee5724e3c60f333586}\index{stream::control\_server\_t@{stream::control\_server\_t}!iterate@{iterate}}
+\index{iterate@{iterate}!stream::control\_server\_t@{stream::control\_server\_t}}
+\doxysubsubsection{\texorpdfstring{iterate()}{iterate()}}
+{\footnotesize\ttfamily \label{classstream_1_1control__server__t_a7de30674d72502ee5724e3c60f333586} 
+void stream\+::control\+\_\+server\+\_\+t\+::iterate (\begin{DoxyParamCaption}\item[{std\+::chrono\+::milliseconds}]{timeout}{}\end{DoxyParamCaption})}
+
+
+
+Iterate over control messages and process them. 
+
+\begin{DoxyNote}{Note}
+Circular dependency\+: iterate refers to session, session refers to \doxylink{structstream_1_1broadcast__ctx__t}{broadcast\+\_\+ctx\+\_\+t}, \doxylink{structstream_1_1broadcast__ctx__t}{broadcast\+\_\+ctx\+\_\+t} refers to \doxylink{classstream_1_1control__server__t}{control\+\_\+server\+\_\+t}. Therefore, iterate is implemented further down in the source file. 
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em timeout} & The timeout for waiting for messages. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classstream_1_1control__server__t_a646a0ad725dfe4b98ac8b0f5c1233ab6}\index{stream::control\_server\_t@{stream::control\_server\_t}!map@{map}}
+\index{map@{map}!stream::control\_server\_t@{stream::control\_server\_t}}
+\doxysubsubsection{\texorpdfstring{map()}{map()}}
+{\footnotesize\ttfamily \label{classstream_1_1control__server__t_a646a0ad725dfe4b98ac8b0f5c1233ab6} 
+void stream\+::control\+\_\+server\+\_\+t\+::map (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{type}{, }\item[{std\+::function$<$ void(\mbox{\hyperlink{structstream_1_1session__t}{session\+\_\+t}} \texorpdfstring{$\ast$}{*}, const std\+::string\+\_\+view \&)$>$}]{cb}{}\end{DoxyParamCaption})}
+
+
+
+Map a message type to a callback handler. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & The message type. \\
+\hline
+{\em cb} & The callback function to handle the message. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classstream_1_1control__server__t_ac90d905b81022ab28988e665511069d7}\index{stream::control\_server\_t@{stream::control\_server\_t}!send@{send}}
+\index{send@{send}!stream::control\_server\_t@{stream::control\_server\_t}}
+\doxysubsubsection{\texorpdfstring{send()}{send()}}
+{\footnotesize\ttfamily \label{classstream_1_1control__server__t_ac90d905b81022ab28988e665511069d7} 
+int stream\+::control\+\_\+server\+\_\+t\+::send (\begin{DoxyParamCaption}\item[{const std\+::string\+\_\+view \&}]{payload}{, }\item[{net\+::peer\+\_\+t}]{peer}{}\end{DoxyParamCaption})}
+
+
+
+Send a payload to a peer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em payload} & The data to send. \\
+\hline
+{\em peer} & The destination peer. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, non-\/zero on error. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{stream_8h}{stream.\+h}}\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{stream_8cpp}{stream.\+cpp}}\end{DoxyCompactItemize}

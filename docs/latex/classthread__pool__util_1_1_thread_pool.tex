@@ -1,0 +1,97 @@
+\doxysection{thread\+\_\+pool\+\_\+util\+::Thread\+Pool Class Reference}
+\hypertarget{classthread__pool__util_1_1_thread_pool}{}\label{classthread__pool__util_1_1_thread_pool}\index{thread\_pool\_util::ThreadPool@{thread\_pool\_util::ThreadPool}}
+
+
+{\ttfamily \#include $<$thread\+\_\+pool.\+h$>$}
+
+Inheritance diagram for thread\+\_\+pool\+\_\+util\+::Thread\+Pool\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classthread__pool__util_1_1_thread_pool}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classthread__pool__util_1_1_thread_pool_a5a1945c79c3d363c7c8d68a58ca356d9}\label{classthread__pool__util_1_1_thread_pool_a5a1945c79c3d363c7c8d68a58ca356d9} 
+typedef Task\+Pool\+::\+\_\+\+\_\+task {\bfseries \+\_\+\+\_\+task}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types inherited from \mbox{\hyperlink{classtask__pool__util_1_1_task_pool}{task\+\_\+pool\+\_\+util\+::\+Task\+Pool}}}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classtask__pool__util_1_1___impl_base}{\+\_\+\+Impl\+Base}} $>$ {\bfseries \+\_\+\+\_\+task}
+\item 
+typedef \mbox{\hyperlink{classtask__pool__util_1_1___impl_base}{\+\_\+\+Impl\+Base}} \texorpdfstring{$\ast$}{*} {\bfseries task\+\_\+id\+\_\+t}
+\item 
+typedef std\+::chrono\+::steady\+\_\+clock\+::time\+\_\+point {\bfseries \+\_\+\+\_\+time\+\_\+point}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classthread__pool__util_1_1_thread_pool_a4564e0bd6442d73625d5f3d565ee9b62}\label{classthread__pool__util_1_1_thread_pool_a4564e0bd6442d73625d5f3d565ee9b62} 
+{\bfseries Thread\+Pool} (int threads)
+\item 
+\Hypertarget{classthread__pool__util_1_1_thread_pool_af72e3c6e74621645f83203856b953aea}\label{classthread__pool__util_1_1_thread_pool_af72e3c6e74621645f83203856b953aea} 
+{\footnotesize template$<$class Function, class... Args$>$ }\\auto {\bfseries push} (Function \&\&new\+Task, Args \&\&...\mbox{\hyperlink{namespaceargs}{args}})
+\item 
+\Hypertarget{classthread__pool__util_1_1_thread_pool_a850042509dc795e75cde51133988d278}\label{classthread__pool__util_1_1_thread_pool_a850042509dc795e75cde51133988d278} 
+void {\bfseries push\+Delayed} (std\+::pair$<$ \+\_\+\+\_\+time\+\_\+point, \+\_\+\+\_\+task $>$ \&\&task)
+\item 
+\Hypertarget{classthread__pool__util_1_1_thread_pool_a30a511ea9ef37e750f65f0d17d8af6f6}\label{classthread__pool__util_1_1_thread_pool_a30a511ea9ef37e750f65f0d17d8af6f6} 
+{\footnotesize template$<$class Function, class X, class Y, class... Args$>$ }\\auto {\bfseries push\+Delayed} (Function \&\&new\+Task, std\+::chrono\+::duration$<$ X, Y $>$ duration, Args \&\&...\mbox{\hyperlink{namespaceargs}{args}})
+\item 
+\Hypertarget{classthread__pool__util_1_1_thread_pool_a852bd9bc1d235540b23463cf5750378b}\label{classthread__pool__util_1_1_thread_pool_a852bd9bc1d235540b23463cf5750378b} 
+void {\bfseries start} (int threads)
+\item 
+\Hypertarget{classthread__pool__util_1_1_thread_pool_ac93d2ef0fe76b021a3d43dfa947b6e06}\label{classthread__pool__util_1_1_thread_pool_ac93d2ef0fe76b021a3d43dfa947b6e06} 
+void {\bfseries stop} ()
+\item 
+\Hypertarget{classthread__pool__util_1_1_thread_pool_aa382828de921b831003e35a280705637}\label{classthread__pool__util_1_1_thread_pool_aa382828de921b831003e35a280705637} 
+void {\bfseries join} ()
+\item 
+\Hypertarget{classthread__pool__util_1_1_thread_pool_acbca788d853703db82fb536158312421}\label{classthread__pool__util_1_1_thread_pool_acbca788d853703db82fb536158312421} 
+void {\bfseries \+\_\+main} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classtask__pool__util_1_1_task_pool}{task\+\_\+pool\+\_\+util\+::\+Task\+Pool}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Task\+Pool} (Task\+Pool \&\&other) noexcept
+\item 
+Task\+Pool \& {\bfseries operator=} (Task\+Pool \&\&other) noexcept
+\item 
+{\footnotesize template$<$class Function, class... Args$>$ }\\auto {\bfseries push} (Function \&\&new\+Task, Args \&\&...\mbox{\hyperlink{namespaceargs}{args}})
+\item 
+void {\bfseries push\+Delayed} (std\+::pair$<$ \+\_\+\+\_\+time\+\_\+point, \+\_\+\+\_\+task $>$ \&\&task)
+\item 
+{\footnotesize template$<$class Function, class X, class Y, class... Args$>$ }\\auto \mbox{\hyperlink{classtask__pool__util_1_1_task_pool_acf403ca5189c02ac12a0540de29f7280}{push\+Delayed}} (Function \&\&new\+Task, std\+::chrono\+::duration$<$ X, Y $>$ duration, Args \&\&...\mbox{\hyperlink{namespaceargs}{args}})
+\item 
+{\footnotesize template$<$class X, class Y$>$ }\\void \mbox{\hyperlink{classtask__pool__util_1_1_task_pool_acd005004e051dbb33466768b2defa9b8}{delay}} (task\+\_\+id\+\_\+t task\+\_\+id, std\+::chrono\+::duration$<$ X, Y $>$ duration)
+\item 
+bool {\bfseries cancel} (task\+\_\+id\+\_\+t task\+\_\+id)
+\item 
+std\+::optional$<$ std\+::pair$<$ \+\_\+\+\_\+time\+\_\+point, \+\_\+\+\_\+task $>$ $>$ {\bfseries pop} (task\+\_\+id\+\_\+t task\+\_\+id)
+\item 
+std\+::optional$<$ \+\_\+\+\_\+task $>$ {\bfseries pop} ()
+\item 
+bool {\bfseries ready} ()
+\item 
+std\+::optional$<$ \+\_\+\+\_\+time\+\_\+point $>$ {\bfseries next} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{classtask__pool__util_1_1_task_pool}{task\+\_\+pool\+\_\+util\+::\+Task\+Pool}}}
+\begin{DoxyCompactItemize}
+\item 
+std\+::deque$<$ \+\_\+\+\_\+task $>$ {\bfseries \+\_\+tasks}
+\item 
+std\+::vector$<$ std\+::pair$<$ \+\_\+\+\_\+time\+\_\+point, \+\_\+\+\_\+task $>$ $>$ {\bfseries \+\_\+timer\+\_\+tasks}
+\item 
+std\+::mutex {\bfseries \+\_\+task\+\_\+mutex}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Allow threads to execute unhindered while keeping full control over the threads. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{thread__pool_8h}{thread\+\_\+pool.\+h}}\end{DoxyCompactItemize}

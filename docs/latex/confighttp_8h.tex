@@ -1,0 +1,89 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/confighttp.h File Reference}
+\hypertarget{confighttp_8h}{}\label{confighttp_8h}\index{/Users/alexworland/autoBitrate/apollo/src/confighttp.h@{/Users/alexworland/autoBitrate/apollo/src/confighttp.h}}
+
+
+Declarations for the Web UI Config HTTP server.  
+
+
+{\ttfamily \#include $<$functional$>$}\newline
+{\ttfamily \#include $<$chrono$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include "{}thread\+\_\+safe.\+h"{}}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{confighttp_8h_afa7c6b9219a77fc0039dd3980baf1319}\label{confighttp_8h_afa7c6b9219a77fc0039dd3980baf1319} 
+\#define {\bfseries WEB\+\_\+\+DIR}~SUNSHINE\+\_\+\+ASSETS\+\_\+\+DIR "{}/web/"{}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{confighttp_8cpp_adb6c9baee595116b5e4bad25feb5d467}{confighttp\+::start}} ()
+\begin{DoxyCompactList}\small\item\em Start the HTTPS server. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{confighttp_8h_a887af3e3e4b61414651a4df28b4f0ac2}\label{confighttp_8h_a887af3e3e4b61414651a4df28b4f0ac2} 
+constexpr auto {\bfseries confighttp\+::\+PORT\+\_\+\+HTTPS} = 1
+\begin{DoxyCompactList}\small\item\em HTTPS port offset from base port. \end{DoxyCompactList}\item 
+\Hypertarget{confighttp_8h_ad6589538324e29c98c9874ed6027370f}\label{confighttp_8h_ad6589538324e29c98c9874ed6027370f} 
+constexpr auto {\bfseries confighttp\+::\+SESSION\+\_\+\+EXPIRE\+\_\+\+DURATION} = 24h \texorpdfstring{$\ast$}{*} 15
+\begin{DoxyCompactList}\small\item\em Session expiration duration (15 days). \end{DoxyCompactList}\item 
+const std\+::map$<$ std\+::string, std\+::string $>$ \mbox{\hyperlink{confighttp_8h_a3a8ba5f0b083e66af703d9a712c389b6}{mime\+\_\+types}}
+\begin{DoxyCompactList}\small\item\em Map of file extensions to MIME types. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Declarations for the Web UI Config HTTP server. 
+
+
+
+\label{doc-func-members}
+\Hypertarget{confighttp_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{confighttp_8cpp_adb6c9baee595116b5e4bad25feb5d467}\index{confighttp.h@{confighttp.h}!start@{start}}
+\index{start@{start}!confighttp.h@{confighttp.h}}
+\doxysubsubsection{\texorpdfstring{start()}{start()}}
+{\footnotesize\ttfamily \label{confighttp_8cpp_adb6c9baee595116b5e4bad25feb5d467} 
+void confighttp\+::start (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Start the HTTPS server. 
+
+Start the configuration HTTP server. @examples \doxylink{confighttp_8cpp_adb6c9baee595116b5e4bad25feb5d467}{confighttp\+::start()}; @examples\+\_\+end. 
+
+\label{doc-var-members}
+\Hypertarget{confighttp_8h_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{confighttp_8h_a3a8ba5f0b083e66af703d9a712c389b6}\index{confighttp.h@{confighttp.h}!mime\_types@{mime\_types}}
+\index{mime\_types@{mime\_types}!confighttp.h@{confighttp.h}}
+\doxysubsubsection{\texorpdfstring{mime\_types}{mime\_types}}
+{\footnotesize\ttfamily \label{confighttp_8h_a3a8ba5f0b083e66af703d9a712c389b6} 
+const std\+::map$<$std\+::string, std\+::string$>$ mime\+\_\+types}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \{\textcolor{stringliteral}{"{}css"{}},\ \textcolor{stringliteral}{"{}text/css"{}}\},}
+\DoxyCodeLine{\ \ \{\textcolor{stringliteral}{"{}gif"{}},\ \textcolor{stringliteral}{"{}image/gif"{}}\},}
+\DoxyCodeLine{\ \ \{\textcolor{stringliteral}{"{}htm"{}},\ \textcolor{stringliteral}{"{}text/html"{}}\},}
+\DoxyCodeLine{\ \ \{\textcolor{stringliteral}{"{}html"{}},\ \textcolor{stringliteral}{"{}text/html"{}}\},}
+\DoxyCodeLine{\ \ \{\textcolor{stringliteral}{"{}ico"{}},\ \textcolor{stringliteral}{"{}image/x-\/icon"{}}\},}
+\DoxyCodeLine{\ \ \{\textcolor{stringliteral}{"{}jpeg"{}},\ \textcolor{stringliteral}{"{}image/jpeg"{}}\},}
+\DoxyCodeLine{\ \ \{\textcolor{stringliteral}{"{}jpg"{}},\ \textcolor{stringliteral}{"{}image/jpeg"{}}\},}
+\DoxyCodeLine{\ \ \{\textcolor{stringliteral}{"{}js"{}},\ \textcolor{stringliteral}{"{}application/javascript"{}}\},}
+\DoxyCodeLine{\ \ \{\textcolor{stringliteral}{"{}json"{}},\ \textcolor{stringliteral}{"{}application/json"{}}\},}
+\DoxyCodeLine{\ \ \{\textcolor{stringliteral}{"{}png"{}},\ \textcolor{stringliteral}{"{}image/png"{}}\},}
+\DoxyCodeLine{\ \ \{\textcolor{stringliteral}{"{}svg"{}},\ \textcolor{stringliteral}{"{}image/svg+xml"{}}\},}
+\DoxyCodeLine{\ \ \{\textcolor{stringliteral}{"{}ttf"{}},\ \textcolor{stringliteral}{"{}font/ttf"{}}\},}
+\DoxyCodeLine{\ \ \{\textcolor{stringliteral}{"{}txt"{}},\ \textcolor{stringliteral}{"{}text/plain"{}}\},}
+\DoxyCodeLine{\ \ \{\textcolor{stringliteral}{"{}woff2"{}},\ \textcolor{stringliteral}{"{}font/woff2"{}}\},}
+\DoxyCodeLine{\ \ \{\textcolor{stringliteral}{"{}xml"{}},\ \textcolor{stringliteral}{"{}text/xml"{}}\},}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Map of file extensions to MIME types. 
+

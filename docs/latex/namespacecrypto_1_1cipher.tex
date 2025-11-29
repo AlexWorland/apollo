@@ -1,0 +1,55 @@
+\doxysection{crypto\+::cipher Namespace Reference}
+\hypertarget{namespacecrypto_1_1cipher}{}\label{namespacecrypto_1_1cipher}\index{crypto::cipher@{crypto::cipher}}
+
+
+Cipher namespace for encryption/decryption operations.  
+
+
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t}{cipher\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Base cipher class for encryption/decryption contexts. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classcrypto_1_1cipher_1_1ecb__t}{ecb\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em ECB (Electronic Codebook) mode cipher. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classcrypto_1_1cipher_1_1gcm__t}{gcm\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em AES-\/\+GCM cipher implementation. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classcrypto_1_1cipher_1_1cbc__t}{cbc\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em CBC (Cipher Block Chaining) mode cipher. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+constexpr std\+::size\+\_\+t \mbox{\hyperlink{namespacecrypto_1_1cipher_a83362cb085a6f14ef117cca84e07e8be}{round\+\_\+to\+\_\+pkcs7\+\_\+padded}} (std\+::size\+\_\+t size)
+\begin{DoxyCompactList}\small\item\em Round size up to PKCS\#7 padding boundary (16 bytes). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{namespacecrypto_1_1cipher_abbf07891ff1073d1d56598d882903ce9}\label{namespacecrypto_1_1cipher_abbf07891ff1073d1d56598d882903ce9} 
+constexpr std\+::size\+\_\+t {\bfseries tag\+\_\+size} = 16
+\begin{DoxyCompactList}\small\item\em GCM tag size in bytes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Cipher namespace for encryption/decryption operations. 
+
+\label{doc-func-members}
+\Hypertarget{namespacecrypto_1_1cipher_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{namespacecrypto_1_1cipher_a83362cb085a6f14ef117cca84e07e8be}\index{crypto::cipher@{crypto::cipher}!round\_to\_pkcs7\_padded@{round\_to\_pkcs7\_padded}}
+\index{round\_to\_pkcs7\_padded@{round\_to\_pkcs7\_padded}!crypto::cipher@{crypto::cipher}}
+\doxysubsubsection{\texorpdfstring{round\_to\_pkcs7\_padded()}{round\_to\_pkcs7\_padded()}}
+{\footnotesize\ttfamily \label{namespacecrypto_1_1cipher_a83362cb085a6f14ef117cca84e07e8be} 
+std\+::size\+\_\+t crypto\+::cipher\+::round\+\_\+to\+\_\+pkcs7\+\_\+padded (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{size}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Round size up to PKCS\#7 padding boundary (16 bytes). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em size} & The size to round up. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Size rounded up to nearest multiple of 16. 
+\end{DoxyReturn}

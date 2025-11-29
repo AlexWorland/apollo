@@ -26,6 +26,11 @@ using namespace std::literals;
 
 namespace upnp {
 
+  /**
+   * @brief UPnP port mapping structure.
+   * 
+   * Contains port mapping information for UPnP port forwarding.
+   */
   struct mapping_t {
     struct {
       std::string wan;
@@ -63,6 +68,11 @@ namespace upnp {
 #endif
   }
 
+  /**
+   * @brief RAII deinitialization helper for UPnP.
+   * 
+   * Automatically removes UPnP port mappings when destroyed.
+   */
   class deinit_t: public platf::deinit_t {
   public:
     deinit_t() {
@@ -74,14 +84,13 @@ namespace upnp {
       auto gs_https = std::to_string(net::map_port(nvhttp::PORT_HTTPS));
       auto wm_http = std::to_string(net::map_port(confighttp::PORT_HTTPS));
 
-      mappings.assign({
-        {{rtsp, rtsp, "TCP"s}, "Sunshine - RTSP"s},
-        {{video, video, "UDP"s}, "Sunshine - Video"s},
-        {{audio, audio, "UDP"s}, "Sunshine - Audio"s},
-        {{control, control, "UDP"s}, "Sunshine - Control"s},
-        {{gs_http, gs_http, "TCP"s}, "Sunshine - Client HTTP"s},
-        {{gs_https, gs_https, "TCP"s}, "Sunshine - Client HTTPS"s},
-      });
+      mappings.clear();
+      mappings.emplace_back(mapping_t {{rtsp, rtsp, "TCP"s}, "Sunshine - RTSP"s});
+      mappings.emplace_back(mapping_t {{video, video, "UDP"s}, "Sunshine - Video"s});
+      mappings.emplace_back(mapping_t {{audio, audio, "UDP"s}, "Sunshine - Audio"s});
+      mappings.emplace_back(mapping_t {{control, control, "UDP"s}, "Sunshine - Control"s});
+      mappings.emplace_back(mapping_t {{gs_http, gs_http, "TCP"s}, "Sunshine - Client HTTP"s});
+      mappings.emplace_back(mapping_t {{gs_https, gs_https, "TCP"s}, "Sunshine - Client HTTPS"s});
 
       // Only map port for the Web Manager if it is configured to accept connection from WAN
       if (net::from_enum_string(config::nvhttp.origin_web_ui_allowed) > net::LAN) {

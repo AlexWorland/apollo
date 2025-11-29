@@ -1,0 +1,227 @@
+\doxysection{system\+\_\+tray Namespace Reference}
+\hypertarget{namespacesystem__tray}{}\label{namespacesystem__tray}\index{system\_tray@{system\_tray}}
+
+
+Handles the system tray icon and notification system.  
+
+
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{namespacesystem__tray_aaeea87d5ac456656276238968470eeda}{tray\+\_\+open\+\_\+ui\+\_\+cb}} (struct tray\+\_\+menu \texorpdfstring{$\ast$}{*}item)
+\begin{DoxyCompactList}\small\item\em Callback for opening the UI from the system tray. \end{DoxyCompactList}\item 
+\Hypertarget{namespacesystem__tray_a7a7522751c8b386e41fa887a63e8c8b5}\label{namespacesystem__tray_a7a7522751c8b386e41fa887a63e8c8b5} 
+void {\bfseries tray\+\_\+force\+\_\+stop\+\_\+cb} (struct tray\+\_\+menu \texorpdfstring{$\ast$}{*}item)
+\item 
+void \mbox{\hyperlink{namespacesystem__tray_a640f7b26de86409292bd94aaba86219a}{tray\+\_\+reset\+\_\+display\+\_\+device\+\_\+config\+\_\+cb}} (struct tray\+\_\+menu \texorpdfstring{$\ast$}{*}item)
+\begin{DoxyCompactList}\small\item\em Callback for resetting display device configuration. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacesystem__tray_a7acbcf307976f68130ce30bc590e0db6}{tray\+\_\+restart\+\_\+cb}} (struct tray\+\_\+menu \texorpdfstring{$\ast$}{*}item)
+\begin{DoxyCompactList}\small\item\em Callback for restarting Sunshine from the system tray. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacesystem__tray_ab3be27da0db992dfeec074efe5cde7a9}{tray\+\_\+quit\+\_\+cb}} (struct tray\+\_\+menu \texorpdfstring{$\ast$}{*}item)
+\begin{DoxyCompactList}\small\item\em Callback for exiting Sunshine from the system tray. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{namespacesystem__tray_a067d4671b0e53ced02d69741084a59c0}{init\+\_\+tray}} ()
+\begin{DoxyCompactList}\small\item\em Initializes the system tray without starting a loop. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{namespacesystem__tray_a1061a8841823a339b60be88e5a6a03d1}{process\+\_\+tray\+\_\+events}} ()
+\begin{DoxyCompactList}\small\item\em Processes a single tray event iteration. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{namespacesystem__tray_ac9fe9a0b957cf5193a168c2ead8e4dd8}{end\+\_\+tray}} ()
+\begin{DoxyCompactList}\small\item\em Exit the system tray. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacesystem__tray_a4f6e8d48a63e9e8cbf9937f238e40ae4}{update\+\_\+tray\+\_\+playing}} (std\+::string app\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Sets the tray icon in playing mode and spawns the appropriate notification. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacesystem__tray_a5647efe54c7931f199d107a49a5d448e}{update\+\_\+tray\+\_\+pausing}} (std\+::string app\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Sets the tray icon in pausing mode (stream stopped but app running) and spawns the appropriate notification. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{namespacesystem__tray_ad8b842daccbe32f59a2850c1e9a98d32}{update\+\_\+tray\+\_\+stopped}} (std\+::string app\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Sets the tray icon in stopped mode (app and stream stopped) and spawns the appropriate notification. \end{DoxyCompactList}\item 
+\Hypertarget{namespacesystem__tray_a918a425d90c05204ce9e01ae0f5b5b29}\label{namespacesystem__tray_a918a425d90c05204ce9e01ae0f5b5b29} 
+void {\bfseries update\+\_\+tray\+\_\+launch\+\_\+error} (std\+::string app\+\_\+name, int exit\+\_\+code)
+\item 
+\Hypertarget{namespacesystem__tray_a1640355ea6fc75355d78435b3c536464}\label{namespacesystem__tray_a1640355ea6fc75355d78435b3c536464} 
+void {\bfseries update\+\_\+tray\+\_\+require\+\_\+pin} ()
+\begin{DoxyCompactList}\small\item\em Spawns a notification for PIN Pairing. Clicking it opens the PIN Web UI Page. \end{DoxyCompactList}\item 
+\Hypertarget{namespacesystem__tray_ae47c641a03993571b917462b3acb4439}\label{namespacesystem__tray_ae47c641a03993571b917462b3acb4439} 
+void {\bfseries update\+\_\+tray\+\_\+paired} (std\+::string device\+\_\+name)
+\item 
+\Hypertarget{namespacesystem__tray_a208f7cb9e7cc9096c329cc7c8f00a6e7}\label{namespacesystem__tray_a208f7cb9e7cc9096c329cc7c8f00a6e7} 
+void {\bfseries update\+\_\+tray\+\_\+client\+\_\+connected} (std\+::string client\+\_\+name)
+\item 
+int \mbox{\hyperlink{namespacesystem__tray_a09b8ab6476b442cabc95f0d9a9d1952c}{init\+\_\+tray\+\_\+threaded}} ()
+\begin{DoxyCompactList}\small\item\em Initializes and runs the system tray in a separate thread. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{namespacesystem__tray_a13834e6712700b245016e5f4ce15613a}{end\+\_\+tray\+\_\+threaded}} ()
+\begin{DoxyCompactList}\small\item\em Stops the threaded system tray and waits for the thread to finish. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Handles the system tray icon and notification system. 
+
+\label{doc-func-members}
+\Hypertarget{namespacesystem__tray_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{namespacesystem__tray_ac9fe9a0b957cf5193a168c2ead8e4dd8}\index{system\_tray@{system\_tray}!end\_tray@{end\_tray}}
+\index{end\_tray@{end\_tray}!system\_tray@{system\_tray}}
+\doxysubsubsection{\texorpdfstring{end\_tray()}{end\_tray()}}
+{\footnotesize\ttfamily \label{namespacesystem__tray_ac9fe9a0b957cf5193a168c2ead8e4dd8} 
+int system\+\_\+tray\+::end\+\_\+tray (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Exit the system tray. 
+
+\begin{DoxyReturn}{Returns}
+0 after exiting the system tray. 
+\end{DoxyReturn}
+\Hypertarget{namespacesystem__tray_a13834e6712700b245016e5f4ce15613a}\index{system\_tray@{system\_tray}!end\_tray\_threaded@{end\_tray\_threaded}}
+\index{end\_tray\_threaded@{end\_tray\_threaded}!system\_tray@{system\_tray}}
+\doxysubsubsection{\texorpdfstring{end\_tray\_threaded()}{end\_tray\_threaded()}}
+{\footnotesize\ttfamily \label{namespacesystem__tray_a13834e6712700b245016e5f4ce15613a} 
+int system\+\_\+tray\+::end\+\_\+tray\+\_\+threaded (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Stops the threaded system tray and waits for the thread to finish. 
+
+\begin{DoxyReturn}{Returns}
+0 after stopping the threaded tray. 
+\end{DoxyReturn}
+\Hypertarget{namespacesystem__tray_a067d4671b0e53ced02d69741084a59c0}\index{system\_tray@{system\_tray}!init\_tray@{init\_tray}}
+\index{init\_tray@{init\_tray}!system\_tray@{system\_tray}}
+\doxysubsubsection{\texorpdfstring{init\_tray()}{init\_tray()}}
+{\footnotesize\ttfamily \label{namespacesystem__tray_a067d4671b0e53ced02d69741084a59c0} 
+int system\+\_\+tray\+::init\+\_\+tray (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Initializes the system tray without starting a loop. 
+
+\begin{DoxyReturn}{Returns}
+0 if initialization was successful, non-\/zero otherwise. 
+\end{DoxyReturn}
+\Hypertarget{namespacesystem__tray_a09b8ab6476b442cabc95f0d9a9d1952c}\index{system\_tray@{system\_tray}!init\_tray\_threaded@{init\_tray\_threaded}}
+\index{init\_tray\_threaded@{init\_tray\_threaded}!system\_tray@{system\_tray}}
+\doxysubsubsection{\texorpdfstring{init\_tray\_threaded()}{init\_tray\_threaded()}}
+{\footnotesize\ttfamily \label{namespacesystem__tray_a09b8ab6476b442cabc95f0d9a9d1952c} 
+int system\+\_\+tray\+::init\+\_\+tray\+\_\+threaded (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Initializes and runs the system tray in a separate thread. 
+
+\begin{DoxyReturn}{Returns}
+0 if initialization was successful, non-\/zero otherwise. 
+\end{DoxyReturn}
+\Hypertarget{namespacesystem__tray_a1061a8841823a339b60be88e5a6a03d1}\index{system\_tray@{system\_tray}!process\_tray\_events@{process\_tray\_events}}
+\index{process\_tray\_events@{process\_tray\_events}!system\_tray@{system\_tray}}
+\doxysubsubsection{\texorpdfstring{process\_tray\_events()}{process\_tray\_events()}}
+{\footnotesize\ttfamily \label{namespacesystem__tray_a1061a8841823a339b60be88e5a6a03d1} 
+int system\+\_\+tray\+::process\+\_\+tray\+\_\+events (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Processes a single tray event iteration. 
+
+\begin{DoxyReturn}{Returns}
+0 if processing was successful, non-\/zero otherwise. 
+\end{DoxyReturn}
+\Hypertarget{namespacesystem__tray_aaeea87d5ac456656276238968470eeda}\index{system\_tray@{system\_tray}!tray\_open\_ui\_cb@{tray\_open\_ui\_cb}}
+\index{tray\_open\_ui\_cb@{tray\_open\_ui\_cb}!system\_tray@{system\_tray}}
+\doxysubsubsection{\texorpdfstring{tray\_open\_ui\_cb()}{tray\_open\_ui\_cb()}}
+{\footnotesize\ttfamily \label{namespacesystem__tray_aaeea87d5ac456656276238968470eeda} 
+void system\+\_\+tray\+::tray\+\_\+open\+\_\+ui\+\_\+cb (\begin{DoxyParamCaption}\item[{struct tray\+\_\+menu \texorpdfstring{$\ast$}{*}}]{item}{}\end{DoxyParamCaption})}
+
+
+
+Callback for opening the UI from the system tray. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em item} & The tray menu item. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{namespacesystem__tray_ab3be27da0db992dfeec074efe5cde7a9}\index{system\_tray@{system\_tray}!tray\_quit\_cb@{tray\_quit\_cb}}
+\index{tray\_quit\_cb@{tray\_quit\_cb}!system\_tray@{system\_tray}}
+\doxysubsubsection{\texorpdfstring{tray\_quit\_cb()}{tray\_quit\_cb()}}
+{\footnotesize\ttfamily \label{namespacesystem__tray_ab3be27da0db992dfeec074efe5cde7a9} 
+void system\+\_\+tray\+::tray\+\_\+quit\+\_\+cb (\begin{DoxyParamCaption}\item[{struct tray\+\_\+menu \texorpdfstring{$\ast$}{*}}]{item}{}\end{DoxyParamCaption})}
+
+
+
+Callback for exiting Sunshine from the system tray. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em item} & The tray menu item. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{namespacesystem__tray_a640f7b26de86409292bd94aaba86219a}\index{system\_tray@{system\_tray}!tray\_reset\_display\_device\_config\_cb@{tray\_reset\_display\_device\_config\_cb}}
+\index{tray\_reset\_display\_device\_config\_cb@{tray\_reset\_display\_device\_config\_cb}!system\_tray@{system\_tray}}
+\doxysubsubsection{\texorpdfstring{tray\_reset\_display\_device\_config\_cb()}{tray\_reset\_display\_device\_config\_cb()}}
+{\footnotesize\ttfamily \label{namespacesystem__tray_a640f7b26de86409292bd94aaba86219a} 
+void system\+\_\+tray\+::tray\+\_\+reset\+\_\+display\+\_\+device\+\_\+config\+\_\+cb (\begin{DoxyParamCaption}\item[{struct tray\+\_\+menu \texorpdfstring{$\ast$}{*}}]{item}{}\end{DoxyParamCaption})}
+
+
+
+Callback for resetting display device configuration. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em item} & The tray menu item. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{namespacesystem__tray_a7acbcf307976f68130ce30bc590e0db6}\index{system\_tray@{system\_tray}!tray\_restart\_cb@{tray\_restart\_cb}}
+\index{tray\_restart\_cb@{tray\_restart\_cb}!system\_tray@{system\_tray}}
+\doxysubsubsection{\texorpdfstring{tray\_restart\_cb()}{tray\_restart\_cb()}}
+{\footnotesize\ttfamily \label{namespacesystem__tray_a7acbcf307976f68130ce30bc590e0db6} 
+void system\+\_\+tray\+::tray\+\_\+restart\+\_\+cb (\begin{DoxyParamCaption}\item[{struct tray\+\_\+menu \texorpdfstring{$\ast$}{*}}]{item}{}\end{DoxyParamCaption})}
+
+
+
+Callback for restarting Sunshine from the system tray. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em item} & The tray menu item. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{namespacesystem__tray_a5647efe54c7931f199d107a49a5d448e}\index{system\_tray@{system\_tray}!update\_tray\_pausing@{update\_tray\_pausing}}
+\index{update\_tray\_pausing@{update\_tray\_pausing}!system\_tray@{system\_tray}}
+\doxysubsubsection{\texorpdfstring{update\_tray\_pausing()}{update\_tray\_pausing()}}
+{\footnotesize\ttfamily \label{namespacesystem__tray_a5647efe54c7931f199d107a49a5d448e} 
+void system\+\_\+tray\+::update\+\_\+tray\+\_\+pausing (\begin{DoxyParamCaption}\item[{std\+::string}]{app\+\_\+name}{}\end{DoxyParamCaption})}
+
+
+
+Sets the tray icon in pausing mode (stream stopped but app running) and spawns the appropriate notification. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em app\+\_\+name} & The paused application name \\
+\hline
+\end{DoxyParams}
+\Hypertarget{namespacesystem__tray_a4f6e8d48a63e9e8cbf9937f238e40ae4}\index{system\_tray@{system\_tray}!update\_tray\_playing@{update\_tray\_playing}}
+\index{update\_tray\_playing@{update\_tray\_playing}!system\_tray@{system\_tray}}
+\doxysubsubsection{\texorpdfstring{update\_tray\_playing()}{update\_tray\_playing()}}
+{\footnotesize\ttfamily \label{namespacesystem__tray_a4f6e8d48a63e9e8cbf9937f238e40ae4} 
+void system\+\_\+tray\+::update\+\_\+tray\+\_\+playing (\begin{DoxyParamCaption}\item[{std\+::string}]{app\+\_\+name}{}\end{DoxyParamCaption})}
+
+
+
+Sets the tray icon in playing mode and spawns the appropriate notification. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em app\+\_\+name} & The started application name \\
+\hline
+\end{DoxyParams}
+\Hypertarget{namespacesystem__tray_ad8b842daccbe32f59a2850c1e9a98d32}\index{system\_tray@{system\_tray}!update\_tray\_stopped@{update\_tray\_stopped}}
+\index{update\_tray\_stopped@{update\_tray\_stopped}!system\_tray@{system\_tray}}
+\doxysubsubsection{\texorpdfstring{update\_tray\_stopped()}{update\_tray\_stopped()}}
+{\footnotesize\ttfamily \label{namespacesystem__tray_ad8b842daccbe32f59a2850c1e9a98d32} 
+void system\+\_\+tray\+::update\+\_\+tray\+\_\+stopped (\begin{DoxyParamCaption}\item[{std\+::string}]{app\+\_\+name}{}\end{DoxyParamCaption})}
+
+
+
+Sets the tray icon in stopped mode (app and stream stopped) and spawns the appropriate notification. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em app\+\_\+name} & The started application name \\
+\hline
+\end{DoxyParams}

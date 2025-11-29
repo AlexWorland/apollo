@@ -98,30 +98,41 @@ namespace stream {
 
 #pragma pack(push, 1)
 
+  /**
+   * @brief Short frame header for video packets.
+   * 
+   * Compact header format for video frames with minimal overhead.
+   * Used for efficient transmission of video data with frame type and
+   * processing latency information.
+   */
   struct video_short_frame_header_t {
+    /**
+     * @brief Get pointer to payload data following this header.
+     * @return Pointer to payload data.
+     */
     uint8_t *payload() {
       return (uint8_t *) (this + 1);
     }
 
-    std::uint8_t headerType;  // Always 0x01 for short headers
+    std::uint8_t headerType;  ///< Always 0x01 for short headers.
 
     // Sunshine extension
     // Frame processing latency, in 1/10 ms units
     //     zero when the frame is repeated or there is no backend implementation
-    boost::endian::little_uint16_at frame_processing_latency;
+    boost::endian::little_uint16_at frame_processing_latency;  ///< Frame processing latency in 1/10 ms units (Sunshine extension).
 
     // Currently known values:
     // 1 = Normal P-frame
     // 2 = IDR-frame
     // 4 = P-frame with intra-refresh blocks
     // 5 = P-frame after reference frame invalidation
-    std::uint8_t frameType;
+    std::uint8_t frameType;  ///< Frame type (1=P-frame, 2=IDR, 4=intra-refresh P-frame, 5=P-frame after ref invalidation).
 
     // Length of the final packet payload for codecs that cannot handle
     // zero padding, such as AV1 (Sunshine extension).
-    boost::endian::little_uint16_at lastPayloadLen;
+    boost::endian::little_uint16_at lastPayloadLen;  ///< Length of final packet payload for codecs that cannot handle zero padding (Sunshine extension).
 
-    std::uint8_t unknown[2];
+    std::uint8_t unknown[2];  ///< Reserved/unknown bytes.
   };
 
   static_assert(
@@ -129,133 +140,226 @@ namespace stream {
     "Short frame header must be 8 bytes"
   );
 
+  /**
+   * @brief Raw video packet structure.
+   * 
+   * Contains RTP packet header and NVIDIA video packet structure
+   * for transmitting raw video data over the network.
+   */
   struct video_packet_raw_t {
+    /**
+     * @brief Get pointer to payload data following this packet.
+     * @return Pointer to payload data.
+     */
     uint8_t *payload() {
       return (uint8_t *) (this + 1);
     }
 
-    RTP_PACKET rtp;
-    char reserved[4];
+    RTP_PACKET rtp;  ///< RTP packet header.
+    char reserved[4];  ///< Reserved bytes for alignment.
 
-    NV_VIDEO_PACKET packet;
+    NV_VIDEO_PACKET packet;  ///< NVIDIA video packet structure.
   };
 
+  /**
+   * @brief Encrypted video packet prefix.
+   * 
+   * Contains initialization vector (IV), frame number, and authentication tag
+   * for AES-GCM encrypted video packets.
+   */
   struct video_packet_enc_prefix_t {
-    std::uint8_t iv[12];  // 12-byte IV is ideal for AES-GCM
-    std::uint32_t frameNumber;
-    std::uint8_t tag[16];
+    std::uint8_t iv[12];  ///< 12-byte initialization vector (ideal for AES-GCM).
+    std::uint32_t frameNumber;  ///< Frame number for encryption context.
+    std::uint8_t tag[16];  ///< 16-byte authentication tag for AES-GCM.
   };
 
+  /**
+   * @brief Audio packet structure.
+   * 
+   * Contains RTP packet header for transmitting audio data over the network.
+   */
   struct audio_packet_t {
     RTP_PACKET rtp;
   };
 
+  /**
+   * @brief Control message header (version 2).
+   * 
+   * Header structure for control stream messages, containing message type
+   * and payload length information.
+   */
   struct control_header_v2 {
-    std::uint16_t type;
-    std::uint16_t payloadLength;
+    std::uint16_t type;  ///< Control message type identifier.
+    std::uint16_t payloadLength;  ///< Length of payload data following this header.
 
+    /**
+     * @brief Get pointer to payload data following this header.
+     * @return Pointer to payload data.
+     */
     uint8_t *payload() {
       return (uint8_t *) (this + 1);
     }
   };
 
+  /**
+   * @brief Control message: terminate stream.
+   * 
+   * Sent to terminate the streaming session with an exit code.
+   */
   struct control_terminate_t {
-    control_header_v2 header;
+    control_header_v2 header;  ///< Control message header.
 
-    std::uint32_t ec;
+    std::uint32_t ec;  ///< Exit code for termination.
   };
 
+  /**
+   * @brief Control message: gamepad rumble.
+   * 
+   * Sent to trigger rumble/haptic feedback on a gamepad controller.
+   */
   struct control_rumble_t {
-    control_header_v2 header;
+    control_header_v2 header;  ///< Control message header.
 
-    std::uint32_t useless;
+    std::uint32_t useless;  ///< Unused field (legacy).
 
-    std::uint16_t id;
-    std::uint16_t lowfreq;
-    std::uint16_t highfreq;
+    std::uint16_t id;  ///< Gamepad ID.
+    std::uint16_t lowfreq;  ///< Low-frequency rumble intensity.
+    std::uint16_t highfreq;  ///< High-frequency rumble intensity.
   };
 
+  /**
+   * @brief Control message: trigger rumble.
+   * 
+   * Sent to trigger adaptive trigger rumble effects on gamepad controllers.
+   */
   struct control_rumble_triggers_t {
-    control_header_v2 header;
+    control_header_v2 header;  ///< Control message header.
 
-    std::uint16_t id;
-    std::uint16_t left;
-    std::uint16_t right;
+    std::uint16_t id;  ///< Gamepad ID.
+    std::uint16_t left;  ///< Left trigger rumble intensity.
+    std::uint16_t right;  ///< Right trigger rumble intensity.
   };
 
+  /**
+   * @brief Control message: set motion event.
+   * 
+   * Sent to configure motion sensor reporting for a gamepad controller.
+   */
   struct control_set_motion_event_t {
-    control_header_v2 header;
+    control_header_v2 header;  ///< Control message header.
 
-    std::uint16_t id;
-    std::uint16_t reportrate;
-    std::uint8_t type;
+    std::uint16_t id;  ///< Gamepad ID.
+    std::uint16_t reportrate;  ///< Motion sensor report rate.
+    std::uint8_t type;  ///< Motion event type.
   };
 
+  /**
+   * @brief Control message: set RGB LED.
+   * 
+   * Sent to set the RGB LED color on a gamepad controller.
+   */
   struct control_set_rgb_led_t {
-    control_header_v2 header;
+    control_header_v2 header;  ///< Control message header.
 
-    std::uint16_t id;
-    std::uint8_t r;
-    std::uint8_t g;
-    std::uint8_t b;
+    std::uint16_t id;  ///< Gamepad ID.
+    std::uint8_t r;  ///< Red component (0-255).
+    std::uint8_t g;  ///< Green component (0-255).
+    std::uint8_t b;  ///< Blue component (0-255).
   };
 
+  /**
+   * @brief Control message: adaptive triggers.
+   * 
+   * Sent to configure adaptive trigger effects on gamepad controllers
+   * (e.g., DualSense trigger resistance).
+   */
   struct control_adaptive_triggers_t {
-    control_header_v2 header;
+    control_header_v2 header;  ///< Control message header.
 
-    std::uint16_t id;
+    std::uint16_t id;  ///< Gamepad ID.
     /**
      * 0x04 - Right trigger
      * 0x08 - Left trigger
      */
-    std::uint8_t event_flags;
-    std::uint8_t type_left;
-    std::uint8_t type_right;
-    std::uint8_t left[DS_EFFECT_PAYLOAD_SIZE];
-    std::uint8_t right[DS_EFFECT_PAYLOAD_SIZE];
+    std::uint8_t event_flags;  ///< Event flags indicating which triggers to configure.
+    std::uint8_t type_left;  ///< Left trigger effect type.
+    std::uint8_t type_right;  ///< Right trigger effect type.
+    std::uint8_t left[DS_EFFECT_PAYLOAD_SIZE];  ///< Left trigger effect payload data.
+    std::uint8_t right[DS_EFFECT_PAYLOAD_SIZE];  ///< Right trigger effect payload data.
   };
 
+  /**
+   * @brief Control message: HDR mode.
+   * 
+   * Sent to enable or disable HDR mode, including HDR metadata
+   * (Sunshine protocol extension).
+   */
   struct control_hdr_mode_t {
-    control_header_v2 header;
+    control_header_v2 header;  ///< Control message header.
 
-    std::uint8_t enabled;
+    std::uint8_t enabled;  ///< HDR enabled flag (0 = disabled, non-zero = enabled).
 
-    // Sunshine protocol extension
-    SS_HDR_METADATA metadata;
+    SS_HDR_METADATA metadata;  ///< HDR metadata (Sunshine protocol extension).
   };
 
+  /**
+   * @brief Control message: bitrate statistics.
+   * 
+   * Contains statistics about current bitrate, adjustments, and packet loss.
+   */
   struct control_bitrate_stats_t {
-    control_header_v2 header;
+    control_header_v2 header;  ///< Control message header.
 
-    std::uint32_t current_bitrate_kbps;
-    std::uint64_t last_adjustment_time_ms;
-    std::uint32_t adjustment_count;
-    float loss_percentage;
+    std::uint32_t current_bitrate_kbps;  ///< Current bitrate in Kbps.
+    std::uint64_t last_adjustment_time_ms;  ///< Timestamp of last bitrate adjustment in milliseconds.
+    std::uint32_t adjustment_count;  ///< Total number of bitrate adjustments made.
+    float loss_percentage;  ///< Current packet loss percentage.
   };
 
+  /**
+   * @brief Control message: connection status.
+   * 
+   * Reports the current connection quality status (OKAY or POOR).
+   */
   struct control_connection_status_t {
-    control_header_v2 header;
-    std::uint8_t status;  // 0 = OKAY, 1 = POOR
+    control_header_v2 header;  ///< Control message header.
+    std::uint8_t status;  ///< Connection status (0 = OKAY, 1 = POOR).
   };
 
+  /**
+   * @brief Control message: auto bitrate statistics (version 2).
+   * 
+   * Enhanced statistics for auto bitrate adjustment, including loss metrics,
+   * timing information, and connection status hints.
+   */
   struct control_auto_bitrate_stats_v2_t {
-    control_header_v2 header;
-    std::uint32_t loss_pct_milli;
-    std::uint32_t loss_count;
-    std::uint32_t interval_ms;
-    std::uint64_t last_good_frame;
-    std::uint32_t client_max_bitrate_kbps;
-    std::uint8_t conn_status_hint;
-    std::uint8_t reserved[7];
+    control_header_v2 header;  ///< Control message header.
+    std::uint32_t loss_pct_milli;  ///< Packet loss percentage in milli-percent (e.g., 1000 = 1.0%).
+    std::uint32_t loss_count;  ///< Number of lost packets in the measurement interval.
+    std::uint32_t interval_ms;  ///< Measurement interval in milliseconds.
+    std::uint64_t last_good_frame;  ///< Timestamp of last successfully received frame.
+    std::uint32_t client_max_bitrate_kbps;  ///< Client's maximum bitrate in Kbps.
+    std::uint8_t conn_status_hint;  ///< Connection status hint (0 = OKAY, 1 = POOR).
+    std::uint8_t reserved[7];  ///< Reserved bytes for future use.
   };
 
+  /**
+   * @brief Encrypted control message wrapper.
+   * 
+   * Wraps control messages with encryption metadata including sequence number,
+   * initialization vector, and authentication tag for AES-GCM encryption.
+   */
   typedef struct control_encrypted_t {
-    std::uint16_t encryptedHeaderType;  // Always LE 0x0001
-    std::uint16_t length;  // sizeof(seq) + 16 byte tag + secondary header and data
+    std::uint16_t encryptedHeaderType;  ///< Always little-endian 0x0001.
+    std::uint16_t length;  ///< Length: sizeof(seq) + 16-byte tag + secondary header and data.
 
     // seq is accepted as an arbitrary value in Moonlight
-    std::uint32_t seq;  // Monotonically increasing sequence number (used as IV for AES-GCM)
+    std::uint32_t seq;  ///< Monotonically increasing sequence number (used as IV for AES-GCM).
 
+    /**
+     * @brief Get pointer to encrypted payload data following this header.
+     * @return Pointer to encrypted payload data.
+     */
     uint8_t *payload() {
       return (uint8_t *) (this + 1);
     }
@@ -265,17 +369,38 @@ namespace stream {
 
 #pragma pack(pop)
 
+  /**
+   * @brief Round size up to PKCS7 padding boundary (16 bytes).
+   * 
+   * @param size Original size.
+   * @return Size rounded up to next multiple of 16.
+   */
   constexpr std::size_t round_to_pkcs7_padded(std::size_t size) {
     return ((size + 15) / 16) * 16;
   }
 
-  constexpr std::size_t MAX_AUDIO_PACKET_SIZE = 1400;
+  constexpr std::size_t MAX_AUDIO_PACKET_SIZE = 1400;  ///< Maximum audio packet size in bytes.
 
+  /**
+   * @brief Audio packet buffer type with PKCS7 padding.
+   * 
+   * Array type for audio packets, padded to AES block size boundary.
+   */
   using audio_aes_t = std::array<char, round_to_pkcs7_padded(MAX_AUDIO_PACKET_SIZE)>;
 
 
-  // return bytes written on success
-  // return -1 on error
+  /**
+   * @brief Encode audio packet with optional encryption.
+   * 
+   * Encodes an audio packet, optionally encrypting it using AES-CBC.
+   * 
+   * @param encrypted Whether to encrypt the packet.
+   * @param plaintext Plaintext audio data.
+   * @param destination Output buffer for encoded/encrypted data.
+   * @param iv Initialization vector for encryption (incremented on use).
+   * @param cbc CBC cipher context for encryption.
+   * @return Bytes written on success, -1 on error.
+   */
   static inline int encode_audio(bool encrypted, const audio::buffer_t &plaintext, uint8_t *destination, crypto::aes_t &iv, crypto::cipher::cbc_t &cbc) {
     // If encryption isn't enabled
     if (!encrypted) {
@@ -286,6 +411,13 @@ namespace stream {
     return cbc.encrypt(std::string_view {(char *) std::begin(plaintext), plaintext.size()}, destination, &iv);
   }
 
+  /**
+   * @brief Wait while session is in STARTING state.
+   * 
+   * Busy-waits until the session state is no longer STARTING.
+   * 
+   * @param state Atomic session state reference.
+   */
   static inline void while_starting_do_nothing(std::atomic<session::state_e> &state) {
     while (state.load(std::memory_order_acquire) == session::state_e::STARTING) {
       std::this_thread::sleep_for(1ms);
@@ -293,16 +425,36 @@ namespace stream {
   }
 
   // control_server_t inline method implementations
+  /**
+   * @brief Bind control server to network address and port.
+   * 
+   * @param address_family Address family (IPv4 or IPv6).
+   * @param port Port number to bind to.
+   * @return 0 on success, non-zero on failure.
+   */
   int control_server_t::bind(net::af_e address_family, std::uint16_t port) {
     _host = net::host_create(address_family, _addr, port);
 
     return !(bool) _host;
   }
 
+  /**
+   * @brief Map control message type to handler callback.
+   * 
+   * @param type Control message type identifier.
+   * @param cb Callback function to handle messages of this type.
+   */
   void control_server_t::map(uint16_t type, std::function<void(session_t *, const std::string_view &)> cb) {
     _map_type_cb.emplace(type, std::move(cb));
   }
 
+  /**
+   * @brief Send control message to peer.
+   * 
+   * @param payload Message payload data.
+   * @param peer Network peer to send to.
+   * @return 0 on success, -1 on error.
+   */
   int control_server_t::send(const std::string_view &payload, net::peer_t peer) {
     auto packet = enet_packet_create(payload.data(), payload.size(), ENET_PACKET_FLAG_RELIABLE);
     if (enet_peer_send(peer, 0, packet)) {
@@ -314,16 +466,27 @@ namespace stream {
     return 0;
   }
 
+  /**
+   * @brief Flush pending network packets.
+   * 
+   * Forces immediate transmission of all queued packets.
+   */
   void control_server_t::flush() {
     enet_host_flush(_host.get());
   }
 
 
   /**
-   * First part of cipher must be struct of type control_encrypted_t
+   * @brief Encode control message with optional encryption.
+   * 
+   * Encodes a control message, optionally encrypting it using AES-GCM.
+   * First part of cipher must be struct of type control_encrypted_t.
    *
-   * returns empty string_view on failure
-   * returns string_view pointing to payload data
+   * @tparam max_payload_size Maximum payload size for the cipher buffer.
+   * @param session Streaming session.
+   * @param plaintext Plaintext control message.
+   * @param tagged_cipher Output buffer for encrypted message.
+   * @return String view pointing to payload data on success, empty string_view on failure.
    */
   template<std::size_t max_payload_size>
   static inline std::string_view encode_control(session_t *session, const std::string_view &plaintext, std::array<std::uint8_t, max_payload_size> &tagged_cipher) {
@@ -376,11 +539,43 @@ namespace stream {
     return std::string_view {(char *) tagged_cipher.data(), packet_length + sizeof(control_encrypted_t) - sizeof(control_encrypted_t::seq)};
   }
 
+  /**
+   * @brief Start broadcast server.
+   * 
+   * Initializes and starts the broadcast server for video, audio, and control streams.
+   * 
+   * @param ctx Broadcast context to initialize.
+   * @return 0 on success, -1 on failure.
+   */
   int start_broadcast(broadcast_ctx_t &ctx);
+
+  /**
+   * @brief End broadcast server.
+   * 
+   * Stops and cleans up the broadcast server.
+   * 
+   * @param ctx Broadcast context to clean up.
+   */
   void end_broadcast(broadcast_ctx_t &ctx);
 
+  /**
+   * @brief Shared reference to broadcast context.
+   * 
+   * Thread-safe shared resource for broadcast operations.
+   */
   static auto broadcast = safe::make_shared<broadcast_ctx_t>(start_broadcast, end_broadcast);
 
+  /**
+   * @brief Get or create a session for a control stream peer.
+   * 
+   * Looks up an existing session by peer, or matches a new peer to a waiting session
+   * based on connect data (for clients with session ID support) or IP address
+   * (for legacy clients).
+   * 
+   * @param peer The ENet peer connection.
+   * @param connect_data The connection data from the peer (session ID for v2 clients).
+   * @return Pointer to the session, or nullptr if no matching session found.
+   */
   session_t *control_server_t::get_session(const net::peer_t peer, uint32_t connect_data) {
     {
       // Fast path - look up existing session by peer
@@ -467,6 +662,14 @@ namespace stream {
     }
   }
 
+  /**
+   * @brief Process ENet events for the control server.
+   * 
+   * Handles incoming connections, disconnections, and control messages.
+   * Updates session ping timeouts and routes messages to registered handlers.
+   * 
+   * @param timeout Maximum time to wait for events.
+   */
   void control_server_t::iterate(std::chrono::milliseconds timeout) {
     ENetEvent event;
     auto res = enet_host_service(_host.get(), &event, timeout.count());
@@ -514,6 +717,12 @@ namespace stream {
       reed_solomon_release(rs);
     }>;
 
+    /**
+     * @brief Forward Error Correction (FEC) structure.
+     * 
+     * Manages FEC encoding for video packets, including data shards,
+     * parity shards, and buffer management for Reed-Solomon encoding.
+     */
     struct fec_t {
       size_t data_shards;
       size_t nr_shards;
@@ -633,6 +842,16 @@ namespace stream {
    * @param session The streaming session.
    * @param video_bitrate_kbps The video encoder bitrate in Kbps.
    * @return The total bitrate (video + FEC + audio + overhead) in Kbps.
+   */
+  /**
+   * @brief Calculate total bitrate from video encoder bitrate.
+   * 
+   * Reverses the bitrate subdivision process to compute the total configured bitrate
+   * (video + FEC + audio + overhead) from the video encoder bitrate.
+   * 
+   * @param session The streaming session.
+   * @param video_bitrate_kbps The video encoder bitrate in Kbps.
+   * @return The total bitrate in Kbps.
    */
   static uint32_t calculate_total_bitrate(session_t *session, uint32_t video_bitrate_kbps) {
     if (video_bitrate_kbps == 0) {
@@ -793,6 +1012,18 @@ namespace stream {
    * @param data1 The first data buffer.
    * @param data2 The second data buffer.
    */
+  /**
+   * @brief Concatenate two buffers and insert headers at slice boundaries.
+   * 
+   * Combines data1 and data2, then inserts a header of insert_size bytes
+   * every slice_size bytes in the result.
+   * 
+   * @param insert_size Number of bytes to insert at each boundary.
+   * @param slice_size Number of bytes between insertions.
+   * @param data1 First data buffer.
+   * @param data2 Second data buffer.
+   * @return Combined buffer with inserted headers.
+   */
   std::vector<uint8_t> concat_and_insert(uint64_t insert_size, uint64_t slice_size, const std::string_view &data1, const std::string_view &data2) {
     auto data_size = data1.size() + data2.size();
     auto pad = data_size % slice_size != 0;
@@ -831,6 +1062,14 @@ namespace stream {
     return result;
   }
 
+  /**
+   * @brief Replace first occurrence of a substring in a buffer.
+   * 
+   * @param original The original buffer.
+   * @param old The substring to replace.
+   * @param _new The replacement substring.
+   * @return New buffer with the replacement applied.
+   */
   std::vector<uint8_t> replace(const std::string_view &original, const std::string_view &old, const std::string_view &_new) {
     std::vector<uint8_t> replaced;
     replaced.reserve(original.size() + _new.size() - old.size());
@@ -959,6 +1198,13 @@ namespace stream {
     return 0;
   }
 
+  /**
+   * @brief Send HDR mode information to client.
+   * 
+   * @param session The streaming session.
+   * @param hdr_info HDR information to send.
+   * @return 0 on success, -1 on error.
+   */
   int send_hdr_mode(session_t *session, video::hdr_info_t hdr_info) {
     if (!session->control.peer) {
       BOOST_LOG(warning) << "Couldn't send HDR mode, still waiting for PING from Moonlight"sv;
@@ -988,6 +1234,14 @@ namespace stream {
     return 0;
   }
 
+  /**
+   * @brief Control stream broadcast thread.
+   * 
+   * Handles control stream messages, processes auto-bitrate adjustments,
+   * manages session timeouts, and routes control messages to handlers.
+   * 
+   * @param server The control server instance.
+   */
   void controlBroadcastThread(control_server_t *server) {
     auto process_auto_bitrate_tick = [&](session_t *session) {
       if (!session->auto_bitrate_enabled) {
@@ -1436,6 +1690,14 @@ namespace stream {
     server->flush();
   }
 
+  /**
+   * @brief Receive thread for UDP video and audio streams.
+   * 
+   * Handles incoming UDP packets (PING messages) from clients and routes
+   * them to the appropriate session message queues.
+   * 
+   * @param ctx The broadcast context.
+   */
   void recvThread(broadcast_ctx_t &ctx) {
     std::map<av_session_id_t, message_queue_t> peer_to_video_session;
     std::map<av_session_id_t, message_queue_t> peer_to_audio_session;
@@ -1529,6 +1791,14 @@ namespace stream {
     }
   }
 
+  /**
+   * @brief Video broadcast thread.
+   * 
+   * Processes video packets from the queue, applies FEC encoding,
+   * encrypts if needed, and sends them to clients with rate control.
+   * 
+   * @param sock The UDP socket for video transmission.
+   */
   void videoBroadcastThread(udp::socket &sock) {
     auto shutdown_event = mail::man->event<bool>(mail::broadcast_shutdown);
     auto packets = mail::man->queue<video::packet_t>(mail::video_packets);
@@ -1853,6 +2123,14 @@ namespace stream {
     shutdown_event->raise(true);
   }
 
+  /**
+   * @brief Audio broadcast thread.
+   * 
+   * Processes audio packets from the queue, applies FEC encoding,
+   * encrypts if needed, and sends them to clients.
+   * 
+   * @param sock The UDP socket for audio transmission.
+   */
   void audioBroadcastThread(udp::socket &sock) {
     auto shutdown_event = mail::man->event<bool>(mail::broadcast_shutdown);
     auto packets = mail::man->queue<audio::packet_t>(mail::audio_packets);
@@ -2051,6 +2329,21 @@ namespace stream {
     broadcast_shutdown_event->reset();
   }
 
+  /**
+   * @brief Receive initial PING from client to establish UDP connection.
+   * 
+   * Waits for a PING message from the client to establish the UDP connection
+   * and determine the client's endpoint. Supports both legacy fixed "PING"
+   * payloads and new session ID-based payloads.
+   * 
+   * @param session The streaming session.
+   * @param ref Reference to the broadcast context.
+   * @param type Socket type (video or audio).
+   * @param expected_payload Expected PING payload (session ID for v2 clients).
+   * @param peer Output parameter for the client's endpoint.
+   * @param timeout Maximum time to wait for PING.
+   * @return 0 on success, -1 on timeout.
+   */
   int recv_ping(session_t *session, decltype(broadcast)::ptr_t ref, socket_e type, std::string_view expected_payload, udp::endpoint &peer, std::chrono::milliseconds timeout) {
     auto messages = std::make_shared<message_queue_t::element_type>(30);
     av_session_id_t session_id = std::string {expected_payload};
@@ -2104,6 +2397,13 @@ namespace stream {
     return -1;
   }
 
+  /**
+   * @brief Video thread for a session.
+   * 
+   * Waits for initial PING from client, enables QoS, and starts video capture.
+   * 
+   * @param session The streaming session.
+   */
   void videoThread(session_t *session) {
     auto fg = util::fail_guard([&]() {
       session::stop(*session);
@@ -2125,6 +2425,13 @@ namespace stream {
     video::capture(session->mail, session->config.monitor, session);
   }
 
+  /**
+   * @brief Audio thread for a session.
+   * 
+   * Waits for initial PING from client, enables QoS, and starts audio capture.
+   * 
+   * @param session The streaming session.
+   */
   void audioThread(session_t *session) {
     auto fg = util::fail_guard([&]() {
       session::stop(*session);

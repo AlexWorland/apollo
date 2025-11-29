@@ -27,6 +27,11 @@ extern boost::log::sources::severity_logger<int> tests;
  * @brief Handles the initialization and deinitialization of the logging system.
  */
 namespace logging {
+  /**
+   * @brief RAII deinitialization helper for logging system.
+   * 
+   * Automatically restores the initial logging state when destroyed.
+   */
   class deinit_t {
   public:
     /**

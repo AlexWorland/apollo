@@ -1,0 +1,45 @@
+\doxysection{system\+\_\+tray.\+h}
+\hypertarget{system__tray_8h_source}{}\label{system__tray_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/system\_tray.h@{/Users/alexworland/autoBitrate/apollo/src/system\_tray.h}}
+\mbox{\hyperlink{system__tray_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacesystem__tray}{system\_tray}}\ \{}
+\DoxyCodeLine{00015\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacesystem__tray_aaeea87d5ac456656276238968470eeda}{tray\_open\_ui\_cb}}([[maybe\_unused]]\ \textcolor{keyword}{struct}\ tray\_menu\ *item);}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \ \ \textcolor{keywordtype}{void}\ tray\_force\_stop\_cb(\textcolor{keyword}{struct}\ tray\_menu\ *item);}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00024\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacesystem__tray_a640f7b26de86409292bd94aaba86219a}{tray\_reset\_display\_device\_config\_cb}}([[maybe\_unused]]\ \textcolor{keyword}{struct}\ tray\_menu\ *item);}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00030\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacesystem__tray_a7acbcf307976f68130ce30bc590e0db6}{tray\_restart\_cb}}([[maybe\_unused]]\ \textcolor{keyword}{struct}\ tray\_menu\ *item);}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacesystem__tray_ab3be27da0db992dfeec074efe5cde7a9}{tray\_quit\_cb}}([[maybe\_unused]]\ \textcolor{keyword}{struct}\ tray\_menu\ *item);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00042\ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespacesystem__tray_a067d4671b0e53ced02d69741084a59c0}{init\_tray}}();}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespacesystem__tray_a1061a8841823a339b60be88e5a6a03d1}{process\_tray\_events}}();}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespacesystem__tray_ac9fe9a0b957cf5193a168c2ead8e4dd8}{end\_tray}}();}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00060\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacesystem__tray_a4f6e8d48a63e9e8cbf9937f238e40ae4}{update\_tray\_playing}}(std::string\ app\_name);}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacesystem__tray_a5647efe54c7931f199d107a49a5d448e}{update\_tray\_pausing}}(std::string\ app\_name);}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00072\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacesystem__tray_ad8b842daccbe32f59a2850c1e9a98d32}{update\_tray\_stopped}}(std::string\ app\_name);}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \textcolor{keywordtype}{void}}
+\DoxyCodeLine{00075\ \ \ update\_tray\_launch\_error(std::string\ app\_name,\ \textcolor{keywordtype}{int}\ exit\_code);}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00080\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacesystem__tray_a1640355ea6fc75355d78435b3c536464}{update\_tray\_require\_pin}}();}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ \textcolor{keywordtype}{void}\ update\_tray\_paired(std::string\ device\_name);}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \textcolor{keywordtype}{void}\ update\_tray\_client\_connected(std::string\ client\_name);}
+\DoxyCodeLine{00089\ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespacesystem__tray_a09b8ab6476b442cabc95f0d9a9d1952c}{init\_tray\_threaded}}();}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00095\ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespacesystem__tray_a13834e6712700b245016e5f4ce15613a}{end\_tray\_threaded}}();}
+\DoxyCodeLine{00096\ \}\ \ \textcolor{comment}{//\ namespace\ system\_tray}}
+
+\end{DoxyCode}

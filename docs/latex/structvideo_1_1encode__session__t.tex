@@ -1,0 +1,45 @@
+\doxysection{video\+::encode\+\_\+session\+\_\+t Struct Reference}
+\hypertarget{structvideo_1_1encode__session__t}{}\label{structvideo_1_1encode__session__t}\index{video::encode\_session\_t@{video::encode\_session\_t}}
+
+
+Base class for video encoding sessions.  
+
+
+
+
+{\ttfamily \#include $<$video.\+h$>$}
+
+Inheritance diagram for video\+::encode\+\_\+session\+\_\+t\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structvideo_1_1encode__session__t}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structvideo_1_1encode__session__t_a4c7ed620c9f841d603f639a95c1caa14}\label{structvideo_1_1encode__session__t_a4c7ed620c9f841d603f639a95c1caa14} 
+virtual int {\bfseries convert} (platf\+::img\+\_\+t \&img)=0
+\item 
+\Hypertarget{structvideo_1_1encode__session__t_a533335e4b9c8fb47a8c2c3ed724dcfa1}\label{structvideo_1_1encode__session__t_a533335e4b9c8fb47a8c2c3ed724dcfa1} 
+virtual void {\bfseries request\+\_\+idr\+\_\+frame} ()=0
+\item 
+\Hypertarget{structvideo_1_1encode__session__t_a5c3c4f388c18e142bb1668f59f8d1f68}\label{structvideo_1_1encode__session__t_a5c3c4f388c18e142bb1668f59f8d1f68} 
+virtual void {\bfseries request\+\_\+normal\+\_\+frame} ()=0
+\item 
+\Hypertarget{structvideo_1_1encode__session__t_af141197d4165397789517657503ff42d}\label{structvideo_1_1encode__session__t_af141197d4165397789517657503ff42d} 
+virtual void {\bfseries invalidate\+\_\+ref\+\_\+frames} (int64\+\_\+t first\+\_\+frame, int64\+\_\+t last\+\_\+frame)=0
+\item 
+\Hypertarget{structvideo_1_1encode__session__t_ace988b72e48dd23be8acf7e71cb856ff}\label{structvideo_1_1encode__session__t_ace988b72e48dd23be8acf7e71cb856ff} 
+virtual bool {\bfseries reconfigure\+\_\+bitrate} (int new\+\_\+bitrate\+\_\+kbps)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Base class for video encoding sessions. 
+
+Provides the interface for video encoding operations including frame conversion, IDR frame requests, and reference frame invalidation. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{video_8h}{video.\+h}}\end{DoxyCompactItemize}

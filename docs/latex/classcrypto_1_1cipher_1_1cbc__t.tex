@@ -1,0 +1,103 @@
+\doxysection{crypto\+::cipher\+::cbc\+\_\+t Class Reference}
+\hypertarget{classcrypto_1_1cipher_1_1cbc__t}{}\label{classcrypto_1_1cipher_1_1cbc__t}\index{crypto::cipher::cbc\_t@{crypto::cipher::cbc\_t}}
+
+
+CBC (Cipher Block Chaining) mode cipher.  
+
+
+
+
+{\ttfamily \#include $<$crypto.\+h$>$}
+
+Inheritance diagram for crypto\+::cipher\+::cbc\+\_\+t\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcrypto_1_1cipher_1_1cbc__t}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcrypto_1_1cipher_1_1cbc__t_ac6c131aa426691e4bf01c32ab4ab6e22}\label{classcrypto_1_1cipher_1_1cbc__t_ac6c131aa426691e4bf01c32ab4ab6e22} 
+{\bfseries cbc\+\_\+t} (cbc\+\_\+t \&\&) noexcept=default
+\item 
+\Hypertarget{classcrypto_1_1cipher_1_1cbc__t_a55486eae1921c5a5aaf9a1c7087e779f}\label{classcrypto_1_1cipher_1_1cbc__t_a55486eae1921c5a5aaf9a1c7087e779f} 
+cbc\+\_\+t \& {\bfseries operator=} (cbc\+\_\+t \&\&) noexcept=default
+\item 
+\mbox{\hyperlink{classcrypto_1_1cipher_1_1cbc__t_a09a726a9be7b6a9100cd31fed4ada8c4}{cbc\+\_\+t}} (const \mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{crypto\+::aes\+\_\+t}} \&\mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t_addbb52889e36b3bb1b4dd8481f09e09d}{key}}, bool \mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t_aaf069d5288955df1b8ff9fea9d26084a}{padding}}=true)
+\begin{DoxyCompactList}\small\item\em Construct CBC cipher with key and padding option. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classcrypto_1_1cipher_1_1cbc__t_a0366f44853d4228d82822d25f8297be3}{encrypt}} (const std\+::string\+\_\+view \&plaintext, std\+::uint8\+\_\+t \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{namespacecrypto_1_1cipher}{cipher}}, \mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{aes\+\_\+t}} \texorpdfstring{$\ast$}{*}iv)
+\begin{DoxyCompactList}\small\item\em Encrypts the plaintext using AES CBC mode. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{classcrypto_1_1cipher_1_1cipher__t}{crypto\+::cipher\+::cipher\+\_\+t}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{crypto_8h_a95350377f46087f06a43f30b694ccd10}{cipher\+\_\+ctx\+\_\+t}} {\bfseries decrypt\+\_\+ctx}
+\begin{DoxyCompactList}\small\item\em Decryption context. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{crypto_8h_a95350377f46087f06a43f30b694ccd10}{cipher\+\_\+ctx\+\_\+t}} {\bfseries encrypt\+\_\+ctx}
+\begin{DoxyCompactList}\small\item\em Encryption context. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{aes\+\_\+t}} {\bfseries key}
+\begin{DoxyCompactList}\small\item\em AES key. \end{DoxyCompactList}\item 
+bool {\bfseries padding}
+\begin{DoxyCompactList}\small\item\em Whether to use PKCS\#7 padding. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+CBC (Cipher Block Chaining) mode cipher. 
+
+\label{doc-constructors}
+\Hypertarget{classcrypto_1_1cipher_1_1cbc__t_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classcrypto_1_1cipher_1_1cbc__t_a09a726a9be7b6a9100cd31fed4ada8c4}\index{crypto::cipher::cbc\_t@{crypto::cipher::cbc\_t}!cbc\_t@{cbc\_t}}
+\index{cbc\_t@{cbc\_t}!crypto::cipher::cbc\_t@{crypto::cipher::cbc\_t}}
+\doxysubsubsection{\texorpdfstring{cbc\_t()}{cbc\_t()}}
+{\footnotesize\ttfamily \label{classcrypto_1_1cipher_1_1cbc__t_a09a726a9be7b6a9100cd31fed4ada8c4} 
+crypto\+::cipher\+::cbc\+\_\+t\+::cbc\+\_\+t (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{crypto\+::aes\+\_\+t}} \&}]{key}{, }\item[{bool}]{padding}{ = {\ttfamily true}}\end{DoxyParamCaption})}
+
+
+
+Construct CBC cipher with key and padding option. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & The AES key. \\
+\hline
+{\em padding} & Whether to use PKCS\#7 padding (default\+: true). \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-func-members}
+\Hypertarget{classcrypto_1_1cipher_1_1cbc__t_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcrypto_1_1cipher_1_1cbc__t_a0366f44853d4228d82822d25f8297be3}\index{crypto::cipher::cbc\_t@{crypto::cipher::cbc\_t}!encrypt@{encrypt}}
+\index{encrypt@{encrypt}!crypto::cipher::cbc\_t@{crypto::cipher::cbc\_t}}
+\doxysubsubsection{\texorpdfstring{encrypt()}{encrypt()}}
+{\footnotesize\ttfamily \label{classcrypto_1_1cipher_1_1cbc__t_a0366f44853d4228d82822d25f8297be3} 
+int crypto\+::cipher\+::cbc\+\_\+t\+::encrypt (\begin{DoxyParamCaption}\item[{const std\+::string\+\_\+view \&}]{plaintext}{, }\item[{std\+::uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{cipher}{, }\item[{\mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{aes\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{iv}{}\end{DoxyParamCaption})}
+
+
+
+Encrypts the plaintext using AES CBC mode. 
+
+\begin{DoxyNote}{Note}
+Length of cipher must be at least\+: round\+\_\+to\+\_\+pkcs7\+\_\+padded(plaintext.\+size()) 
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em plaintext} & The plaintext data to be encrypted. \\
+\hline
+{\em cipher} & The buffer where the resulting ciphertext will be written. \\
+\hline
+{\em iv} & The initialization vector to be used for the encryption. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The total length of the ciphertext written into cipher. Returns -\/1 in case of an error.
+\end{DoxyReturn}
+This function encrypts the given plaintext using the AES key in CBC mode. The initialization vector (IV) is also provided. The function handles the creation and initialization of the encryption context, and manages the encryption process. The resulting ciphertext is written into the cipher buffer. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{crypto_8h}{crypto.\+h}}\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{crypto_8cpp}{crypto.\+cpp}}\end{DoxyCompactItemize}

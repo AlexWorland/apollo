@@ -1,0 +1,148 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/video\+\_\+colorspace.cpp File Reference}
+\hypertarget{video__colorspace_8cpp}{}\label{video__colorspace_8cpp}\index{/Users/alexworland/autoBitrate/apollo/src/video\_colorspace.cpp@{/Users/alexworland/autoBitrate/apollo/src/video\_colorspace.cpp}}
+
+
+Definitions for colorspace functions.  
+
+
+{\ttfamily \#include "{}video\+\_\+colorspace.\+h"{}}\newline
+{\ttfamily \#include "{}logging.\+h"{}}\newline
+{\ttfamily \#include "{}video.\+h"{}}\newline
+{\ttfamily \#include $<$libswscale/swscale.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{video__colorspace_8cpp_ad8402289ecee5a0b443b2bc6f43200d1}{video\+::colorspace\+\_\+is\+\_\+hdr}} (const \mbox{\hyperlink{structvideo_1_1sunshine__colorspace__t}{sunshine\+\_\+colorspace\+\_\+t}} \&colorspace)
+\begin{DoxyCompactList}\small\item\em Check if colorspace is HDR. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structvideo_1_1sunshine__colorspace__t}{sunshine\+\_\+colorspace\+\_\+t}} \mbox{\hyperlink{video__colorspace_8cpp_a0bbd39ff0cfee6f5ee2209add8301351}{video\+::colorspace\+\_\+from\+\_\+client\+\_\+config}} (const config\+\_\+t \&config, bool hdr\+\_\+display)
+\begin{DoxyCompactList}\small\item\em Get colorspace from client configuration. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structvideo_1_1avcodec__colorspace__t}{avcodec\+\_\+colorspace\+\_\+t}} \mbox{\hyperlink{video__colorspace_8cpp_a86d1ae2a1987ba4a96da242a1488eaf0}{video\+::avcodec\+\_\+colorspace\+\_\+from\+\_\+sunshine\+\_\+colorspace}} (const \mbox{\hyperlink{structvideo_1_1sunshine__colorspace__t}{sunshine\+\_\+colorspace\+\_\+t}} \&sunshine\+\_\+colorspace)
+\begin{DoxyCompactList}\small\item\em Convert Sunshine colorspace to AVCodec colorspace. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{structvideo_1_1color__t}{color\+\_\+t}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{video__colorspace_8cpp_ab7620dd6941dc18ae299c4863aadc6b1}{video\+::color\+\_\+vectors\+\_\+from\+\_\+colorspace}} (const \mbox{\hyperlink{structvideo_1_1sunshine__colorspace__t}{sunshine\+\_\+colorspace\+\_\+t}} \&colorspace)
+\begin{DoxyCompactList}\small\item\em Get color transformation vectors from colorspace. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{structvideo_1_1color__t}{color\+\_\+t}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{video__colorspace_8cpp_aaa0b84b886d5166f38727d48fdbad11a}{video\+::color\+\_\+vectors\+\_\+from\+\_\+colorspace}} (\mbox{\hyperlink{video__colorspace_8h_a63a3de9fcfeb81c803191b805dc8af63}{colorspace\+\_\+e}} colorspace, bool full\+\_\+range)
+\begin{DoxyCompactList}\small\item\em Get color transformation vectors from colorspace enum and range. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{structvideo_1_1color__t}{color\+\_\+t}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{video__colorspace_8cpp_a14ba19d2a3961e8db38babbd471681a1}{video\+::new\+\_\+color\+\_\+vectors\+\_\+from\+\_\+colorspace}} (const \mbox{\hyperlink{structvideo_1_1sunshine__colorspace__t}{sunshine\+\_\+colorspace\+\_\+t}} \&colorspace)
+\begin{DoxyCompactList}\small\item\em New version of {\ttfamily \doxylink{video__colorspace_8cpp_ab7620dd6941dc18ae299c4863aadc6b1}{color\+\_\+vectors\+\_\+from\+\_\+colorspace()}} function that better adheres to the standards. Returned vectors are used to perform RGB-\/\texorpdfstring{$>$}{>}YUV conversion. Unlike its predecessor, color vectors will produce output in {\ttfamily UINT} range, not {\ttfamily UNORM} range. Input is still in {\ttfamily UNORM} range. Returned vectors won\textquotesingle{}t modify color primaries and color transfer function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Definitions for colorspace functions. 
+
+
+
+\label{doc-func-members}
+\Hypertarget{video__colorspace_8cpp_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{video__colorspace_8cpp_a86d1ae2a1987ba4a96da242a1488eaf0}\index{video\_colorspace.cpp@{video\_colorspace.cpp}!avcodec\_colorspace\_from\_sunshine\_colorspace@{avcodec\_colorspace\_from\_sunshine\_colorspace}}
+\index{avcodec\_colorspace\_from\_sunshine\_colorspace@{avcodec\_colorspace\_from\_sunshine\_colorspace}!video\_colorspace.cpp@{video\_colorspace.cpp}}
+\doxysubsubsection{\texorpdfstring{avcodec\_colorspace\_from\_sunshine\_colorspace()}{avcodec\_colorspace\_from\_sunshine\_colorspace()}}
+{\footnotesize\ttfamily \label{video__colorspace_8cpp_a86d1ae2a1987ba4a96da242a1488eaf0} 
+avcodec\+\_\+colorspace\+\_\+t video\+::avcodec\+\_\+colorspace\+\_\+from\+\_\+sunshine\+\_\+colorspace (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structvideo_1_1sunshine__colorspace__t}{sunshine\+\_\+colorspace\+\_\+t}} \&}]{sunshine\+\_\+colorspace}{}\end{DoxyParamCaption})}
+
+
+
+Convert Sunshine colorspace to AVCodec colorspace. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sunshine\+\_\+colorspace} & The Sunshine colorspace configuration. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+AVCodec colorspace structure. 
+\end{DoxyReturn}
+\Hypertarget{video__colorspace_8cpp_aaa0b84b886d5166f38727d48fdbad11a}\index{video\_colorspace.cpp@{video\_colorspace.cpp}!color\_vectors\_from\_colorspace@{color\_vectors\_from\_colorspace}}
+\index{color\_vectors\_from\_colorspace@{color\_vectors\_from\_colorspace}!video\_colorspace.cpp@{video\_colorspace.cpp}}
+\doxysubsubsection{\texorpdfstring{color\_vectors\_from\_colorspace()}{color\_vectors\_from\_colorspace()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{video__colorspace_8cpp_aaa0b84b886d5166f38727d48fdbad11a} 
+const color\+\_\+t \texorpdfstring{$\ast$}{*} video\+::color\+\_\+vectors\+\_\+from\+\_\+colorspace (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{video__colorspace_8h_a63a3de9fcfeb81c803191b805dc8af63}{colorspace\+\_\+e}}}]{colorspace}{, }\item[{bool}]{full\+\_\+range}{}\end{DoxyParamCaption})}
+
+
+
+Get color transformation vectors from colorspace enum and range. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em colorspace} & The colorspace enum value. \\
+\hline
+{\em full\+\_\+range} & Whether to use full color range. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to color transformation vectors. 
+\end{DoxyReturn}
+\Hypertarget{video__colorspace_8cpp_ab7620dd6941dc18ae299c4863aadc6b1}\index{video\_colorspace.cpp@{video\_colorspace.cpp}!color\_vectors\_from\_colorspace@{color\_vectors\_from\_colorspace}}
+\index{color\_vectors\_from\_colorspace@{color\_vectors\_from\_colorspace}!video\_colorspace.cpp@{video\_colorspace.cpp}}
+\doxysubsubsection{\texorpdfstring{color\_vectors\_from\_colorspace()}{color\_vectors\_from\_colorspace()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{video__colorspace_8cpp_ab7620dd6941dc18ae299c4863aadc6b1} 
+const color\+\_\+t \texorpdfstring{$\ast$}{*} video\+::color\+\_\+vectors\+\_\+from\+\_\+colorspace (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structvideo_1_1sunshine__colorspace__t}{sunshine\+\_\+colorspace\+\_\+t}} \&}]{colorspace}{}\end{DoxyParamCaption})}
+
+
+
+Get color transformation vectors from colorspace. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em colorspace} & The colorspace configuration. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to color transformation vectors. 
+\end{DoxyReturn}
+\Hypertarget{video__colorspace_8cpp_a0bbd39ff0cfee6f5ee2209add8301351}\index{video\_colorspace.cpp@{video\_colorspace.cpp}!colorspace\_from\_client\_config@{colorspace\_from\_client\_config}}
+\index{colorspace\_from\_client\_config@{colorspace\_from\_client\_config}!video\_colorspace.cpp@{video\_colorspace.cpp}}
+\doxysubsubsection{\texorpdfstring{colorspace\_from\_client\_config()}{colorspace\_from\_client\_config()}}
+{\footnotesize\ttfamily \label{video__colorspace_8cpp_a0bbd39ff0cfee6f5ee2209add8301351} 
+sunshine\+\_\+colorspace\+\_\+t video\+::colorspace\+\_\+from\+\_\+client\+\_\+config (\begin{DoxyParamCaption}\item[{const config\+\_\+t \&}]{config}{, }\item[{bool}]{hdr\+\_\+display}{}\end{DoxyParamCaption})}
+
+
+
+Get colorspace from client configuration. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em config} & The client video configuration. \\
+\hline
+{\em hdr\+\_\+display} & Whether the display supports HDR. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Sunshine colorspace configuration. 
+\end{DoxyReturn}
+\Hypertarget{video__colorspace_8cpp_ad8402289ecee5a0b443b2bc6f43200d1}\index{video\_colorspace.cpp@{video\_colorspace.cpp}!colorspace\_is\_hdr@{colorspace\_is\_hdr}}
+\index{colorspace\_is\_hdr@{colorspace\_is\_hdr}!video\_colorspace.cpp@{video\_colorspace.cpp}}
+\doxysubsubsection{\texorpdfstring{colorspace\_is\_hdr()}{colorspace\_is\_hdr()}}
+{\footnotesize\ttfamily \label{video__colorspace_8cpp_ad8402289ecee5a0b443b2bc6f43200d1} 
+bool video\+::colorspace\+\_\+is\+\_\+hdr (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structvideo_1_1sunshine__colorspace__t}{sunshine\+\_\+colorspace\+\_\+t}} \&}]{colorspace}{}\end{DoxyParamCaption})}
+
+
+
+Check if colorspace is HDR. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em colorspace} & The colorspace to check. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if HDR, {\ttfamily false} if SDR. 
+\end{DoxyReturn}
+\Hypertarget{video__colorspace_8cpp_a14ba19d2a3961e8db38babbd471681a1}\index{video\_colorspace.cpp@{video\_colorspace.cpp}!new\_color\_vectors\_from\_colorspace@{new\_color\_vectors\_from\_colorspace}}
+\index{new\_color\_vectors\_from\_colorspace@{new\_color\_vectors\_from\_colorspace}!video\_colorspace.cpp@{video\_colorspace.cpp}}
+\doxysubsubsection{\texorpdfstring{new\_color\_vectors\_from\_colorspace()}{new\_color\_vectors\_from\_colorspace()}}
+{\footnotesize\ttfamily \label{video__colorspace_8cpp_a14ba19d2a3961e8db38babbd471681a1} 
+const color\+\_\+t \texorpdfstring{$\ast$}{*} video\+::new\+\_\+color\+\_\+vectors\+\_\+from\+\_\+colorspace (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structvideo_1_1sunshine__colorspace__t}{sunshine\+\_\+colorspace\+\_\+t}} \&}]{colorspace}{}\end{DoxyParamCaption})}
+
+
+
+New version of {\ttfamily color\+\_\+vectors\+\_\+from\+\_\+colorspace()} function that better adheres to the standards. Returned vectors are used to perform RGB-\/\texorpdfstring{$>$}{>}YUV conversion. Unlike its predecessor, color vectors will produce output in {\ttfamily UINT} range, not {\ttfamily UNORM} range. Input is still in {\ttfamily UNORM} range. Returned vectors won\textquotesingle{}t modify color primaries and color transfer function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em colorspace} & Targeted YUV colorspace. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily const color\+\_\+t\texorpdfstring{$\ast$}{*}} that contains RGB-\/\texorpdfstring{$>$}{>}YUV transformation vectors. Components {\ttfamily range\+\_\+y} and {\ttfamily range\+\_\+uv} are there for backwards compatibility and can be ignored in the computation. 
+\end{DoxyReturn}

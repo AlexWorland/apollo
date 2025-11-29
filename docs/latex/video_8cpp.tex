@@ -1,0 +1,461 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/video.cpp File Reference}
+\hypertarget{video_8cpp}{}\label{video_8cpp}\index{/Users/alexworland/autoBitrate/apollo/src/video.cpp@{/Users/alexworland/autoBitrate/apollo/src/video.cpp}}
+
+
+Definitions for video.  
+
+
+{\ttfamily \#include $<$atomic$>$}\newline
+{\ttfamily \#include $<$bitset$>$}\newline
+{\ttfamily \#include $<$list$>$}\newline
+{\ttfamily \#include $<$thread$>$}\newline
+{\ttfamily \#include $<$boost/pointer\+\_\+cast.\+hpp$>$}\newline
+{\ttfamily \#include $<$libavutil/imgutils.\+h$>$}\newline
+{\ttfamily \#include $<$libavutil/mastering\+\_\+display\+\_\+metadata.\+h$>$}\newline
+{\ttfamily \#include $<$libavutil/opt.\+h$>$}\newline
+{\ttfamily \#include $<$libavutil/pixdesc.\+h$>$}\newline
+{\ttfamily \#include "{}process.\+h"{}}\newline
+{\ttfamily \#include "{}cbs.\+h"{}}\newline
+{\ttfamily \#include "{}config.\+h"{}}\newline
+{\ttfamily \#include "{}display\+\_\+device.\+h"{}}\newline
+{\ttfamily \#include "{}globals.\+h"{}}\newline
+{\ttfamily \#include "{}input.\+h"{}}\newline
+{\ttfamily \#include "{}logging.\+h"{}}\newline
+{\ttfamily \#include "{}nvenc/nvenc\+\_\+base.\+h"{}}\newline
+{\ttfamily \#include "{}platform/common.\+h"{}}\newline
+{\ttfamily \#include "{}sync.\+h"{}}\newline
+{\ttfamily \#include "{}video.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classvideo_1_1avcodec__software__encode__device__t}{video\+::avcodec\+\_\+software\+\_\+encode\+\_\+device\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Software video encoding device using libavcodec. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classvideo_1_1avcodec__encode__session__t}{video\+::avcodec\+\_\+encode\+\_\+session\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Video encoding session using libavcodec. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classvideo_1_1nvenc__encode__session__t}{video\+::nvenc\+\_\+encode\+\_\+session\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Video encoding session using NVIDIA NVENC. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structvideo_1_1sync__session__ctx__t}{video\+::sync\+\_\+session\+\_\+ctx\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Synchronous encoding session context. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structvideo_1_1sync__session__t}{video\+::sync\+\_\+session\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Synchronous encoding session. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structvideo_1_1capture__ctx__t}{video\+::capture\+\_\+ctx\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Video capture context. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structvideo_1_1capture__thread__async__ctx__t}{video\+::capture\+\_\+thread\+\_\+async\+\_\+ctx\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Asynchronous video capture thread context. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structvideo_1_1capture__thread__sync__ctx__t}{video\+::capture\+\_\+thread\+\_\+sync\+\_\+ctx\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Synchronous video capture thread context. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{video_8cpp_a0bb8f891700204987b8a76d17fb4ab3d}\label{video_8cpp_a0bb8f891700204987b8a76d17fb4ab3d} 
+using {\bfseries video\+::encode\+\_\+session\+\_\+ctx\+\_\+queue\+\_\+t} = \mbox{\hyperlink{classsafe_1_1queue__t}{safe\+::queue\+\_\+t}}$<$\mbox{\hyperlink{structvideo_1_1sync__session__ctx__t}{sync\+\_\+session\+\_\+ctx\+\_\+t}}$>$
+\item 
+\Hypertarget{video_8cpp_ae34708de83ecc39e552e2ba976cbad0f}\label{video_8cpp_ae34708de83ecc39e552e2ba976cbad0f} 
+using {\bfseries video\+::encode\+\_\+e} = platf\+::capture\+\_\+e
+\item 
+\Hypertarget{video_8cpp_ae2878200512749bbe2273d226aeb3502}\label{video_8cpp_ae2878200512749bbe2273d226aeb3502} 
+typedef int(\texorpdfstring{$\ast$}{*} {\bfseries video\+::vaapi\+\_\+init\+\_\+avcodec\+\_\+hardware\+\_\+input\+\_\+buffer\+\_\+fn}) (platf\+::avcodec\+\_\+encode\+\_\+device\+\_\+t \texorpdfstring{$\ast$}{*}encode\+\_\+device, AVBuffer\+Ref \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}hw\+\_\+device\+\_\+buf)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{video_8cpp_a69c40676cd46a74fe1f2ecf354b738c3}{video\+::nv\+::profile\+\_\+h264\+\_\+e}} \+: int \{ \mbox{\hyperlink{video_8cpp_a69c40676cd46a74fe1f2ecf354b738c3a8d966b2253a917086c8604959e152243}{high}} = 2
+, \mbox{\hyperlink{video_8cpp_a69c40676cd46a74fe1f2ecf354b738c3af0e67986255b59d4422ae27005e93578}{high\+\_\+444p}} = 3
+ \}
+\item 
+enum class \mbox{\hyperlink{video_8cpp_a8206e43e03f8daa0984fa104304c1afe}{video\+::nv\+::profile\+\_\+hevc\+\_\+e}} \+: int \{ \mbox{\hyperlink{video_8cpp_a8206e43e03f8daa0984fa104304c1afeafad58de7366495db4650cfefac2fcd61}{main}} = 0
+, \mbox{\hyperlink{video_8cpp_a8206e43e03f8daa0984fa104304c1afea5d4395229383c2ca750c2971d3e725b9}{main\+\_\+10}} = 1
+, \mbox{\hyperlink{video_8cpp_a8206e43e03f8daa0984fa104304c1afea5f7a1c3e2dcd9a1b420ce94644033be7}{rext}} = 2
+ \}
+\item 
+enum class \mbox{\hyperlink{video_8cpp_ab2b469539a0f8fc3ab39bcef72a00300}{video\+::qsv\+::profile\+\_\+h264\+\_\+e}} \+: int \{ \mbox{\hyperlink{video_8cpp_ab2b469539a0f8fc3ab39bcef72a00300a8d966b2253a917086c8604959e152243}{high}} = 100
+, \mbox{\hyperlink{video_8cpp_ab2b469539a0f8fc3ab39bcef72a00300af0e67986255b59d4422ae27005e93578}{high\+\_\+444p}} = 244
+ \}
+\item 
+enum class \mbox{\hyperlink{video_8cpp_a57a539cccf50a6c5115c988a79f00319}{video\+::qsv\+::profile\+\_\+hevc\+\_\+e}} \+: int \{ \mbox{\hyperlink{video_8cpp_a57a539cccf50a6c5115c988a79f00319afad58de7366495db4650cfefac2fcd61}{main}} = 1
+, \mbox{\hyperlink{video_8cpp_a57a539cccf50a6c5115c988a79f00319a5d4395229383c2ca750c2971d3e725b9}{main\+\_\+10}} = 2
+, \mbox{\hyperlink{video_8cpp_a57a539cccf50a6c5115c988a79f00319a5f7a1c3e2dcd9a1b420ce94644033be7}{rext}} = 4
+ \}
+\item 
+enum class \mbox{\hyperlink{video_8cpp_a82e39de6474aaa9fece3fcd31b6e3e52}{video\+::qsv\+::profile\+\_\+av1\+\_\+e}} \+: int \{ \mbox{\hyperlink{video_8cpp_a82e39de6474aaa9fece3fcd31b6e3e52afad58de7366495db4650cfefac2fcd61}{main}} = 1
+, \mbox{\hyperlink{video_8cpp_a82e39de6474aaa9fece3fcd31b6e3e52a8d966b2253a917086c8604959e152243}{high}} = 2
+ \}
+\item 
+enum \mbox{\hyperlink{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9}{video\+::flag\+\_\+e}} \+: uint32\+\_\+t \{ \newline
+\mbox{\hyperlink{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a8a3831217fe50c028f050ac883875cba}{video\+::\+DEFAULT}} = 0
+, \mbox{\hyperlink{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a013cfa91bf32eb4b81a69bdbc04df89c}{video\+::\+PARALLEL\+\_\+\+ENCODING}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 1
+, \mbox{\hyperlink{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9ae4e862262baefba5686d42f709cc1d11}{video\+::\+H264\+\_\+\+ONLY}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 2
+, \mbox{\hyperlink{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a8c874e01d5d50aead09d7c3792a357b5}{video\+::\+LIMITED\+\_\+\+GOP\+\_\+\+SIZE}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 3
+, \newline
+\mbox{\hyperlink{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9ab4fe414eba92bf7ce306310f93c83ebf}{video\+::\+SINGLE\+\_\+\+SLICE\+\_\+\+ONLY}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 4
+, \mbox{\hyperlink{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a19a420c8cde46b89670f409196b06309}{video\+::\+CBR\+\_\+\+WITH\+\_\+\+VBR}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 5
+, \mbox{\hyperlink{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a5282dbacc19eb027f655c6e4df69da0f}{video\+::\+RELAXED\+\_\+\+COMPLIANCE}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 6
+, \mbox{\hyperlink{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9abc1a1476571cd553782737567599710e}{video\+::\+NO\+\_\+\+RC\+\_\+\+BUF\+\_\+\+LIMIT}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 7
+, \newline
+\mbox{\hyperlink{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a2a816cdf1e7346a98d62d09e0ba44747}{video\+::\+REF\+\_\+\+FRAMES\+\_\+\+INVALIDATION}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 8
+, \mbox{\hyperlink{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a4c88fead0868b1eb24d14bf296ebfd1a}{video\+::\+ALWAYS\+\_\+\+REPROBE}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 9
+, \mbox{\hyperlink{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a4c7652b3a17db2312a107ff86dc3385d}{video\+::\+YUV444\+\_\+\+SUPPORT}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 10
+, \mbox{\hyperlink{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a5f5d197199ab509f69575b866edc266d}{video\+::\+ASYNC\+\_\+\+TEARDOWN}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 11
+ \}
+\item 
+enum \mbox{\hyperlink{video_8cpp_a92cee4f35e5e0dacf79e406caa3b18a9}{video\+::validate\+\_\+flag\+\_\+e}} \{ \mbox{\hyperlink{video_8cpp_a92cee4f35e5e0dacf79e406caa3b18a9ac367b15393f43925b80315c8acb349ec}{video\+::\+VUI\+\_\+\+PARAMS}} = 0x01
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{video_8cpp_a101bc90e3ddc3a7938011182682d664b}{video\+::allow\+\_\+encoder\+\_\+probing}} ()
+\begin{DoxyCompactList}\small\item\em Check if we can allow probing for the encoders. \end{DoxyCompactList}\item 
+\Hypertarget{video_8cpp_a9893788d29fbb8ee4f00b4af5addd05c}\label{video_8cpp_a9893788d29fbb8ee4f00b4af5addd05c} 
+void {\bfseries video\+::free\+\_\+ctx} (AVCodec\+Context \texorpdfstring{$\ast$}{*}ctx)
+\item 
+\Hypertarget{video_8cpp_a6c7c7855cdb024feb704ae95eb74ca78}\label{video_8cpp_a6c7c7855cdb024feb704ae95eb74ca78} 
+void {\bfseries video\+::free\+\_\+frame} (AVFrame \texorpdfstring{$\ast$}{*}frame)
+\item 
+\Hypertarget{video_8cpp_a769cd6c99f4d0caedb81af6c293cf033}\label{video_8cpp_a769cd6c99f4d0caedb81af6c293cf033} 
+void {\bfseries video\+::free\+\_\+buffer} (AVBuffer\+Ref \texorpdfstring{$\ast$}{*}ref)
+\item 
+\Hypertarget{video_8cpp_ab56df31420347621aa9560ea49196c50}\label{video_8cpp_ab56df31420347621aa9560ea49196c50} 
+\mbox{\hyperlink{classutil_1_1_either}{util\+::\+Either}}$<$ avcodec\+\_\+buffer\+\_\+t, int $>$ {\bfseries video\+::dxgi\+\_\+init\+\_\+avcodec\+\_\+hardware\+\_\+input\+\_\+buffer} (platf\+::avcodec\+\_\+encode\+\_\+device\+\_\+t \texorpdfstring{$\ast$}{*})
+\item 
+\Hypertarget{video_8cpp_af10fefb73eb603c4865fde1e7bb32a54}\label{video_8cpp_af10fefb73eb603c4865fde1e7bb32a54} 
+\mbox{\hyperlink{classutil_1_1_either}{util\+::\+Either}}$<$ avcodec\+\_\+buffer\+\_\+t, int $>$ {\bfseries video\+::vaapi\+\_\+init\+\_\+avcodec\+\_\+hardware\+\_\+input\+\_\+buffer} (platf\+::avcodec\+\_\+encode\+\_\+device\+\_\+t \texorpdfstring{$\ast$}{*})
+\item 
+\Hypertarget{video_8cpp_ac55d3ac4eb8ab3992160a57ec4fddfe0}\label{video_8cpp_ac55d3ac4eb8ab3992160a57ec4fddfe0} 
+\mbox{\hyperlink{classutil_1_1_either}{util\+::\+Either}}$<$ avcodec\+\_\+buffer\+\_\+t, int $>$ {\bfseries video\+::cuda\+\_\+init\+\_\+avcodec\+\_\+hardware\+\_\+input\+\_\+buffer} (platf\+::avcodec\+\_\+encode\+\_\+device\+\_\+t \texorpdfstring{$\ast$}{*})
+\item 
+\Hypertarget{video_8cpp_ab73477ab7e13a0dd3b0d0a41635c4848}\label{video_8cpp_ab73477ab7e13a0dd3b0d0a41635c4848} 
+\mbox{\hyperlink{classutil_1_1_either}{util\+::\+Either}}$<$ avcodec\+\_\+buffer\+\_\+t, int $>$ {\bfseries video\+::vt\+\_\+init\+\_\+avcodec\+\_\+hardware\+\_\+input\+\_\+buffer} (platf\+::avcodec\+\_\+encode\+\_\+device\+\_\+t \texorpdfstring{$\ast$}{*})
+\item 
+\Hypertarget{video_8cpp_a526821c78cbed9cf99f0e5c84db70399}\label{video_8cpp_a526821c78cbed9cf99f0e5c84db70399} 
+int {\bfseries video\+::start\+\_\+capture\+\_\+sync} (\mbox{\hyperlink{structvideo_1_1capture__thread__sync__ctx__t}{capture\+\_\+thread\+\_\+sync\+\_\+ctx\+\_\+t}} \&ctx)
+\item 
+\Hypertarget{video_8cpp_a5dce7478642ce10551302d64a51718f4}\label{video_8cpp_a5dce7478642ce10551302d64a51718f4} 
+void {\bfseries video\+::end\+\_\+capture\+\_\+sync} (\mbox{\hyperlink{structvideo_1_1capture__thread__sync__ctx__t}{capture\+\_\+thread\+\_\+sync\+\_\+ctx\+\_\+t}} \&ctx)
+\item 
+\Hypertarget{video_8cpp_afbb61340d680ecf31ce7cd32e71023cc}\label{video_8cpp_afbb61340d680ecf31ce7cd32e71023cc} 
+int {\bfseries video\+::start\+\_\+capture\+\_\+async} (\mbox{\hyperlink{structvideo_1_1capture__thread__async__ctx__t}{capture\+\_\+thread\+\_\+async\+\_\+ctx\+\_\+t}} \&ctx)
+\item 
+\Hypertarget{video_8cpp_a7052944a36c30b00211ab63db5fc67de}\label{video_8cpp_a7052944a36c30b00211ab63db5fc67de} 
+void {\bfseries video\+::end\+\_\+capture\+\_\+async} (\mbox{\hyperlink{structvideo_1_1capture__thread__async__ctx__t}{capture\+\_\+thread\+\_\+async\+\_\+ctx\+\_\+t}} \&ctx)
+\item 
+\Hypertarget{video_8cpp_a5415b2addbd66ee9e1b54a0f5ad43848}\label{video_8cpp_a5415b2addbd66ee9e1b54a0f5ad43848} 
+void {\bfseries video\+::reset\+\_\+display} (std\+::shared\+\_\+ptr$<$ platf\+::display\+\_\+t $>$ \&disp, const platf\+::mem\+\_\+type\+\_\+e \&type, const std\+::string \&display\+\_\+name, const config\+\_\+t \&config)
+\item 
+void \mbox{\hyperlink{video_8cpp_a8bbbd38aa453bdccd9769c15377bc107}{video\+::refresh\+\_\+displays}} (platf\+::mem\+\_\+type\+\_\+e dev\+\_\+type, std\+::vector$<$ std\+::string $>$ \&display\+\_\+names, int \&current\+\_\+display\+\_\+index, std\+::string \&preferred\+\_\+display\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Update the list of display names before or during a stream. \end{DoxyCompactList}\item 
+\Hypertarget{video_8cpp_a199022d051a438753d31548ba296665e}\label{video_8cpp_a199022d051a438753d31548ba296665e} 
+void {\bfseries video\+::refresh\+\_\+displays} (platf\+::mem\+\_\+type\+\_\+e dev\+\_\+type, std\+::vector$<$ std\+::string $>$ \&display\+\_\+names, int \&current\+\_\+display\+\_\+index)
+\item 
+\Hypertarget{video_8cpp_af9c193fea8f04c45eebfee8729b96c4d}\label{video_8cpp_af9c193fea8f04c45eebfee8729b96c4d} 
+void {\bfseries video\+::capture\+Thread} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classsafe_1_1queue__t}{safe\+::queue\+\_\+t}}$<$ \mbox{\hyperlink{structvideo_1_1capture__ctx__t}{capture\+\_\+ctx\+\_\+t}} $>$ $>$ capture\+\_\+ctx\+\_\+queue, \mbox{\hyperlink{classsync__util_1_1sync__t}{sync\+\_\+util\+::sync\+\_\+t}}$<$ std\+::weak\+\_\+ptr$<$ platf\+::display\+\_\+t $>$ $>$ \&display\+\_\+wp, safe\+::signal\+\_\+t \&reinit\+\_\+event, const encoder\+\_\+t \&encoder)
+\item 
+\Hypertarget{video_8cpp_a585fdef9bcc7722cec843f4eeac11fb0}\label{video_8cpp_a585fdef9bcc7722cec843f4eeac11fb0} 
+int {\bfseries video\+::encode\+\_\+avcodec} (int64\+\_\+t frame\+\_\+nr, \mbox{\hyperlink{classvideo_1_1avcodec__encode__session__t}{avcodec\+\_\+encode\+\_\+session\+\_\+t}} \&session, safe\+::mail\+\_\+raw\+\_\+t\+::queue\+\_\+t$<$ packet\+\_\+t $>$ \&packets, void \texorpdfstring{$\ast$}{*}channel\+\_\+data, std\+::optional$<$ std\+::chrono\+::steady\+\_\+clock\+::time\+\_\+point $>$ frame\+\_\+timestamp)
+\item 
+\Hypertarget{video_8cpp_aea85c8a292f36c2eb0d95bd448eac050}\label{video_8cpp_aea85c8a292f36c2eb0d95bd448eac050} 
+int {\bfseries video\+::encode\+\_\+nvenc} (int64\+\_\+t frame\+\_\+nr, \mbox{\hyperlink{classvideo_1_1nvenc__encode__session__t}{nvenc\+\_\+encode\+\_\+session\+\_\+t}} \&session, safe\+::mail\+\_\+raw\+\_\+t\+::queue\+\_\+t$<$ packet\+\_\+t $>$ \&packets, void \texorpdfstring{$\ast$}{*}channel\+\_\+data, std\+::optional$<$ std\+::chrono\+::steady\+\_\+clock\+::time\+\_\+point $>$ frame\+\_\+timestamp)
+\item 
+\Hypertarget{video_8cpp_a56eef508c78116342c66f0ac76abaecf}\label{video_8cpp_a56eef508c78116342c66f0ac76abaecf} 
+int {\bfseries video\+::encode} (int64\+\_\+t frame\+\_\+nr, encode\+\_\+session\+\_\+t \&session, safe\+::mail\+\_\+raw\+\_\+t\+::queue\+\_\+t$<$ packet\+\_\+t $>$ \&packets, void \texorpdfstring{$\ast$}{*}channel\+\_\+data, std\+::optional$<$ std\+::chrono\+::steady\+\_\+clock\+::time\+\_\+point $>$ frame\+\_\+timestamp)
+\item 
+\Hypertarget{video_8cpp_a4ab6eabd5200e08794fe57f1903308d4}\label{video_8cpp_a4ab6eabd5200e08794fe57f1903308d4} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classvideo_1_1avcodec__encode__session__t}{avcodec\+\_\+encode\+\_\+session\+\_\+t}} $>$ {\bfseries video\+::make\+\_\+avcodec\+\_\+encode\+\_\+session} (platf\+::display\+\_\+t \texorpdfstring{$\ast$}{*}disp, const encoder\+\_\+t \&encoder, const config\+\_\+t \&config, int width, int height, std\+::unique\+\_\+ptr$<$ platf\+::avcodec\+\_\+encode\+\_\+device\+\_\+t $>$ encode\+\_\+device)
+\item 
+\Hypertarget{video_8cpp_a9689428309c137c36552aea002ceb0e1}\label{video_8cpp_a9689428309c137c36552aea002ceb0e1} 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{classvideo_1_1nvenc__encode__session__t}{nvenc\+\_\+encode\+\_\+session\+\_\+t}} $>$ {\bfseries video\+::make\+\_\+nvenc\+\_\+encode\+\_\+session} (const config\+\_\+t \&client\+\_\+config, std\+::unique\+\_\+ptr$<$ platf\+::nvenc\+\_\+encode\+\_\+device\+\_\+t $>$ encode\+\_\+device)
+\item 
+\Hypertarget{video_8cpp_a4fb7b1aa434b11851221767fc9aeee70}\label{video_8cpp_a4fb7b1aa434b11851221767fc9aeee70} 
+std\+::unique\+\_\+ptr$<$ encode\+\_\+session\+\_\+t $>$ {\bfseries video\+::make\+\_\+encode\+\_\+session} (platf\+::display\+\_\+t \texorpdfstring{$\ast$}{*}disp, const encoder\+\_\+t \&encoder, const config\+\_\+t \&config, int width, int height, std\+::unique\+\_\+ptr$<$ platf\+::encode\+\_\+device\+\_\+t $>$ encode\+\_\+device)
+\item 
+\Hypertarget{video_8cpp_a174e6eea83e25452bda9db23ef32afb9}\label{video_8cpp_a174e6eea83e25452bda9db23ef32afb9} 
+void {\bfseries video\+::encode\+\_\+run} (int \&frame\+\_\+nr, safe\+::mail\+\_\+t \mbox{\hyperlink{namespacemail}{mail}}, img\+\_\+event\+\_\+t images, config\+\_\+t config, std\+::shared\+\_\+ptr$<$ platf\+::display\+\_\+t $>$ disp, std\+::unique\+\_\+ptr$<$ platf\+::encode\+\_\+device\+\_\+t $>$ encode\+\_\+device, safe\+::signal\+\_\+t \&reinit\+\_\+event, const encoder\+\_\+t \&encoder, void \texorpdfstring{$\ast$}{*}channel\+\_\+data)
+\item 
+\Hypertarget{video_8cpp_ab5fc8af90e40a30096f66f4e34924cc7}\label{video_8cpp_ab5fc8af90e40a30096f66f4e34924cc7} 
+\mbox{\hyperlink{structinput_1_1touch__port__t}{input\+::touch\+\_\+port\+\_\+t}} {\bfseries video\+::make\+\_\+port} (platf\+::display\+\_\+t \texorpdfstring{$\ast$}{*}display, const config\+\_\+t \&config)
+\item 
+\Hypertarget{video_8cpp_a3926b22fd81b3fb453dc7db2b3a66117}\label{video_8cpp_a3926b22fd81b3fb453dc7db2b3a66117} 
+std\+::unique\+\_\+ptr$<$ platf\+::encode\+\_\+device\+\_\+t $>$ {\bfseries video\+::make\+\_\+encode\+\_\+device} (platf\+::display\+\_\+t \&disp, const encoder\+\_\+t \&encoder, const config\+\_\+t \&config)
+\item 
+\Hypertarget{video_8cpp_a28225dc73a938e150cbf9a2d50e32300}\label{video_8cpp_a28225dc73a938e150cbf9a2d50e32300} 
+std\+::optional$<$ \mbox{\hyperlink{structvideo_1_1sync__session__t}{sync\+\_\+session\+\_\+t}} $>$ {\bfseries video\+::make\+\_\+synced\+\_\+session} (platf\+::display\+\_\+t \texorpdfstring{$\ast$}{*}disp, const encoder\+\_\+t \&encoder, platf\+::img\+\_\+t \&img, \mbox{\hyperlink{structvideo_1_1sync__session__ctx__t}{sync\+\_\+session\+\_\+ctx\+\_\+t}} \&ctx)
+\item 
+\Hypertarget{video_8cpp_acd3bd7899d59c924bc384ff00c0646f7}\label{video_8cpp_acd3bd7899d59c924bc384ff00c0646f7} 
+encode\+\_\+e {\bfseries video\+::encode\+\_\+run\+\_\+sync} (std\+::vector$<$ std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{structvideo_1_1sync__session__ctx__t}{sync\+\_\+session\+\_\+ctx\+\_\+t}} $>$ $>$ \&synced\+\_\+session\+\_\+ctxs, encode\+\_\+session\+\_\+ctx\+\_\+queue\+\_\+t \&encode\+\_\+session\+\_\+ctx\+\_\+queue, std\+::vector$<$ std\+::string $>$ \&display\+\_\+names, int \&display\+\_\+p)
+\item 
+\Hypertarget{video_8cpp_aed4de7b5e0656cc53b78367ca382c4ef}\label{video_8cpp_aed4de7b5e0656cc53b78367ca382c4ef} 
+void {\bfseries video\+::capture\+Thread\+Sync} ()
+\item 
+\Hypertarget{video_8cpp_ab445e7bcb358dab403a7a33522607b27}\label{video_8cpp_ab445e7bcb358dab403a7a33522607b27} 
+void {\bfseries video\+::capture\+\_\+async} (safe\+::mail\+\_\+t \mbox{\hyperlink{namespacemail}{mail}}, config\+\_\+t \&config, void \texorpdfstring{$\ast$}{*}channel\+\_\+data)
+\item 
+\Hypertarget{video_8cpp_a24e5b741ab323f81443fe14048351b48}\label{video_8cpp_a24e5b741ab323f81443fe14048351b48} 
+void {\bfseries video\+::capture} (safe\+::mail\+\_\+t \mbox{\hyperlink{namespacemail}{mail}}, config\+\_\+t config, void \texorpdfstring{$\ast$}{*}channel\+\_\+data)
+\item 
+\Hypertarget{video_8cpp_ae4171934f1aaa0066cb16874c16be298}\label{video_8cpp_ae4171934f1aaa0066cb16874c16be298} 
+int {\bfseries video\+::validate\+\_\+config} (std\+::shared\+\_\+ptr$<$ platf\+::display\+\_\+t $>$ disp, const encoder\+\_\+t \&encoder, const config\+\_\+t \&config)
+\item 
+\Hypertarget{video_8cpp_a393587ca3905ae1c8a3be521cb06cfb6}\label{video_8cpp_a393587ca3905ae1c8a3be521cb06cfb6} 
+bool {\bfseries video\+::validate\+\_\+encoder} (encoder\+\_\+t \&encoder, bool expect\+\_\+failure)
+\item 
+\Hypertarget{video_8cpp_ad708de835d1a889edc812ef49cc1dccb}\label{video_8cpp_ad708de835d1a889edc812ef49cc1dccb} 
+int {\bfseries video\+::probe\+\_\+encoders} ()
+\item 
+\Hypertarget{video_8cpp_a349f46cb8c0a26cfe37134aad9087399}\label{video_8cpp_a349f46cb8c0a26cfe37134aad9087399} 
+platf\+::mem\+\_\+type\+\_\+e {\bfseries video\+::map\+\_\+base\+\_\+dev\+\_\+type} (AVHWDevice\+Type type)
+\item 
+\Hypertarget{video_8cpp_ae148cf1e4f9e24b026dff381d2013013}\label{video_8cpp_ae148cf1e4f9e24b026dff381d2013013} 
+platf\+::pix\+\_\+fmt\+\_\+e {\bfseries video\+::map\+\_\+pix\+\_\+fmt} (AVPixel\+Format fmt)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{video_8cpp_a95f413da818d9cb1824ac1f6117fe6d0}\label{video_8cpp_a95f413da818d9cb1824ac1f6117fe6d0} 
+auto {\bfseries video\+::capture\+\_\+thread\+\_\+async} = safe\+::make\+\_\+shared$<$\mbox{\hyperlink{structvideo_1_1capture__thread__async__ctx__t}{capture\+\_\+thread\+\_\+async\+\_\+ctx\+\_\+t}}$>$(start\+\_\+capture\+\_\+async, end\+\_\+capture\+\_\+async)
+\item 
+\Hypertarget{video_8cpp_abddf8ab4a39ff50b1889f27a4e55aa33}\label{video_8cpp_abddf8ab4a39ff50b1889f27a4e55aa33} 
+auto {\bfseries video\+::capture\+\_\+thread\+\_\+sync} = safe\+::make\+\_\+shared$<$\mbox{\hyperlink{structvideo_1_1capture__thread__sync__ctx__t}{capture\+\_\+thread\+\_\+sync\+\_\+ctx\+\_\+t}}$>$(start\+\_\+capture\+\_\+sync, end\+\_\+capture\+\_\+sync)
+\item 
+\Hypertarget{video_8cpp_a1ae3d574745f8c1eddf5f46a27664cf5}\label{video_8cpp_a1ae3d574745f8c1eddf5f46a27664cf5} 
+auto {\bfseries video\+::nvenc\+\_\+rate\+\_\+control\+\_\+mode} = \mbox{[}$\,$\mbox{]} \{ return config\+::video.\+nv.\+vbr\+\_\+rate\+\_\+control ? NV\+\_\+\+ENC\+\_\+\+PARAMS\+\_\+\+RC\+\_\+\+VBR \+: NV\+\_\+\+ENC\+\_\+\+PARAMS\+\_\+\+RC\+\_\+\+CBR; \}
+\item 
+\Hypertarget{video_8cpp_a5ec74ab50ea35dc0c474abfcfffb91d8}\label{video_8cpp_a5ec74ab50ea35dc0c474abfcfffb91d8} 
+encoder\+\_\+t {\bfseries video\+::nvenc}
+\item 
+\Hypertarget{video_8cpp_ae7f79c5a3b4bbac63c2c864f48cce101}\label{video_8cpp_ae7f79c5a3b4bbac63c2c864f48cce101} 
+encoder\+\_\+t {\bfseries video\+::software}
+\item 
+\Hypertarget{video_8cpp_a94dc873992edb5a7124000ece952376e}\label{video_8cpp_a94dc873992edb5a7124000ece952376e} 
+int {\bfseries video\+::active\+\_\+hevc\+\_\+mode}
+\item 
+\Hypertarget{video_8cpp_ab9c7c0256a369961b7089f447b309499}\label{video_8cpp_ab9c7c0256a369961b7089f447b309499} 
+int {\bfseries video\+::active\+\_\+av1\+\_\+mode}
+\item 
+\Hypertarget{video_8cpp_ad9b3aaae52cc86684a4d31a07b07c7e9}\label{video_8cpp_ad9b3aaae52cc86684a4d31a07b07c7e9} 
+bool {\bfseries video\+::last\+\_\+encoder\+\_\+probe\+\_\+supported\+\_\+ref\+\_\+frames\+\_\+invalidation} = false
+\item 
+std\+::array$<$ bool, 3 $>$ \mbox{\hyperlink{video_8cpp_a6356c23ef49d6c983e94f1b738b8bf5b}{video\+::last\+\_\+encoder\+\_\+probe\+\_\+supported\+\_\+yuv444\+\_\+for\+\_\+codec}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Definitions for video. 
+
+
+
+\label{doc-enum-members}
+\Hypertarget{video_8cpp_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9}\index{video.cpp@{video.cpp}!flag\_e@{flag\_e}}
+\index{flag\_e@{flag\_e}!video.cpp@{video.cpp}}
+\doxysubsubsection{\texorpdfstring{flag\_e}{flag\_e}}
+{\footnotesize\ttfamily \label{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9} 
+enum \mbox{\hyperlink{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9}{video\+::flag\+\_\+e}} \+: uint32\+\_\+t}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{DEFAULT@{DEFAULT}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!DEFAULT@{DEFAULT}}}\Hypertarget{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a8a3831217fe50c028f050ac883875cba}\label{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a8a3831217fe50c028f050ac883875cba} 
+DEFAULT&Default flags. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{PARALLEL\_ENCODING@{PARALLEL\_ENCODING}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!PARALLEL\_ENCODING@{PARALLEL\_ENCODING}}}\Hypertarget{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a013cfa91bf32eb4b81a69bdbc04df89c}\label{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a013cfa91bf32eb4b81a69bdbc04df89c} 
+PARALLEL\+\_\+\+ENCODING&Capture and encoding can run concurrently on separate threads. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{H264\_ONLY@{H264\_ONLY}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!H264\_ONLY@{H264\_ONLY}}}\Hypertarget{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9ae4e862262baefba5686d42f709cc1d11}\label{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9ae4e862262baefba5686d42f709cc1d11} 
+H264\+\_\+\+ONLY&When HEVC is too heavy. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LIMITED\_GOP\_SIZE@{LIMITED\_GOP\_SIZE}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!LIMITED\_GOP\_SIZE@{LIMITED\_GOP\_SIZE}}}\Hypertarget{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a8c874e01d5d50aead09d7c3792a357b5}\label{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a8c874e01d5d50aead09d7c3792a357b5} 
+LIMITED\+\_\+\+GOP\+\_\+\+SIZE&Some encoders don\textquotesingle{}t like it when you have an infinite GOP\+\_\+\+SIZE. e.\+g. VAAPI. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{SINGLE\_SLICE\_ONLY@{SINGLE\_SLICE\_ONLY}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!SINGLE\_SLICE\_ONLY@{SINGLE\_SLICE\_ONLY}}}\Hypertarget{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9ab4fe414eba92bf7ce306310f93c83ebf}\label{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9ab4fe414eba92bf7ce306310f93c83ebf} 
+SINGLE\+\_\+\+SLICE\+\_\+\+ONLY&Never use multiple slices. Older intel i\+GPU\textquotesingle{}s ruin it for everyone else. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CBR\_WITH\_VBR@{CBR\_WITH\_VBR}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!CBR\_WITH\_VBR@{CBR\_WITH\_VBR}}}\Hypertarget{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a19a420c8cde46b89670f409196b06309}\label{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a19a420c8cde46b89670f409196b06309} 
+CBR\+\_\+\+WITH\+\_\+\+VBR&Use a VBR rate control mode to simulate CBR. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{RELAXED\_COMPLIANCE@{RELAXED\_COMPLIANCE}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!RELAXED\_COMPLIANCE@{RELAXED\_COMPLIANCE}}}\Hypertarget{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a5282dbacc19eb027f655c6e4df69da0f}\label{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a5282dbacc19eb027f655c6e4df69da0f} 
+RELAXED\+\_\+\+COMPLIANCE&Use FF\+\_\+\+COMPLIANCE\+\_\+\+UNOFFICIAL compliance mode. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NO\_RC\_BUF\_LIMIT@{NO\_RC\_BUF\_LIMIT}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!NO\_RC\_BUF\_LIMIT@{NO\_RC\_BUF\_LIMIT}}}\Hypertarget{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9abc1a1476571cd553782737567599710e}\label{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9abc1a1476571cd553782737567599710e} 
+NO\+\_\+\+RC\+\_\+\+BUF\+\_\+\+LIMIT&Don\textquotesingle{}t set rc\+\_\+buffer\+\_\+size. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{REF\_FRAMES\_INVALIDATION@{REF\_FRAMES\_INVALIDATION}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!REF\_FRAMES\_INVALIDATION@{REF\_FRAMES\_INVALIDATION}}}\Hypertarget{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a2a816cdf1e7346a98d62d09e0ba44747}\label{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a2a816cdf1e7346a98d62d09e0ba44747} 
+REF\+\_\+\+FRAMES\+\_\+\+INVALIDATION&Support reference frames invalidation. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ALWAYS\_REPROBE@{ALWAYS\_REPROBE}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!ALWAYS\_REPROBE@{ALWAYS\_REPROBE}}}\Hypertarget{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a4c88fead0868b1eb24d14bf296ebfd1a}\label{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a4c88fead0868b1eb24d14bf296ebfd1a} 
+ALWAYS\+\_\+\+REPROBE&This is an encoder of last resort and we want to aggressively probe for a better one. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{YUV444\_SUPPORT@{YUV444\_SUPPORT}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!YUV444\_SUPPORT@{YUV444\_SUPPORT}}}\Hypertarget{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a4c7652b3a17db2312a107ff86dc3385d}\label{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a4c7652b3a17db2312a107ff86dc3385d} 
+YUV444\+\_\+\+SUPPORT&Encoder may support 4\+:4\+:4 chroma sampling depending on hardware. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ASYNC\_TEARDOWN@{ASYNC\_TEARDOWN}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!ASYNC\_TEARDOWN@{ASYNC\_TEARDOWN}}}\Hypertarget{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a5f5d197199ab509f69575b866edc266d}\label{video_8cpp_a5ba42ceefc6028d4a712c59f4c2d18e9a5f5d197199ab509f69575b866edc266d} 
+ASYNC\+\_\+\+TEARDOWN&Encoder supports async teardown on a different thread. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{video_8cpp_a82e39de6474aaa9fece3fcd31b6e3e52}\index{video.cpp@{video.cpp}!profile\_av1\_e@{profile\_av1\_e}}
+\index{profile\_av1\_e@{profile\_av1\_e}!video.cpp@{video.cpp}}
+\doxysubsubsection{\texorpdfstring{profile\_av1\_e}{profile\_av1\_e}}
+{\footnotesize\ttfamily \label{video_8cpp_a82e39de6474aaa9fece3fcd31b6e3e52} 
+enum class \mbox{\hyperlink{video_8cpp_a82e39de6474aaa9fece3fcd31b6e3e52}{video\+::qsv\+::profile\+\_\+av1\+\_\+e}} \+: int\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{main@{main}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!main@{main}}}\Hypertarget{video_8cpp_a82e39de6474aaa9fece3fcd31b6e3e52afad58de7366495db4650cfefac2fcd61}\label{video_8cpp_a82e39de6474aaa9fece3fcd31b6e3e52afad58de7366495db4650cfefac2fcd61} 
+main&Main profile. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{high@{high}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!high@{high}}}\Hypertarget{video_8cpp_a82e39de6474aaa9fece3fcd31b6e3e52a8d966b2253a917086c8604959e152243}\label{video_8cpp_a82e39de6474aaa9fece3fcd31b6e3e52a8d966b2253a917086c8604959e152243} 
+high&High profile. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{video_8cpp_a69c40676cd46a74fe1f2ecf354b738c3}\index{video.cpp@{video.cpp}!profile\_h264\_e@{profile\_h264\_e}}
+\index{profile\_h264\_e@{profile\_h264\_e}!video.cpp@{video.cpp}}
+\doxysubsubsection{\texorpdfstring{profile\_h264\_e}{profile\_h264\_e}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{video_8cpp_a69c40676cd46a74fe1f2ecf354b738c3} 
+enum class \mbox{\hyperlink{video_8cpp_a69c40676cd46a74fe1f2ecf354b738c3}{video\+::nv\+::profile\+\_\+h264\+\_\+e}} \+: int\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{high@{high}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!high@{high}}}\Hypertarget{video_8cpp_a69c40676cd46a74fe1f2ecf354b738c3a8d966b2253a917086c8604959e152243}\label{video_8cpp_a69c40676cd46a74fe1f2ecf354b738c3a8d966b2253a917086c8604959e152243} 
+high&High profile. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{high\_444p@{high\_444p}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!high\_444p@{high\_444p}}}\Hypertarget{video_8cpp_a69c40676cd46a74fe1f2ecf354b738c3af0e67986255b59d4422ae27005e93578}\label{video_8cpp_a69c40676cd46a74fe1f2ecf354b738c3af0e67986255b59d4422ae27005e93578} 
+high\+\_\+444p&High 4\+:4\+:4 Predictive profile. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{video_8cpp_ab2b469539a0f8fc3ab39bcef72a00300}\index{video.cpp@{video.cpp}!profile\_h264\_e@{profile\_h264\_e}}
+\index{profile\_h264\_e@{profile\_h264\_e}!video.cpp@{video.cpp}}
+\doxysubsubsection{\texorpdfstring{profile\_h264\_e}{profile\_h264\_e}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{video_8cpp_ab2b469539a0f8fc3ab39bcef72a00300} 
+enum class \mbox{\hyperlink{video_8cpp_ab2b469539a0f8fc3ab39bcef72a00300}{video\+::qsv\+::profile\+\_\+h264\+\_\+e}} \+: int\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{high@{high}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!high@{high}}}\Hypertarget{video_8cpp_ab2b469539a0f8fc3ab39bcef72a00300a8d966b2253a917086c8604959e152243}\label{video_8cpp_ab2b469539a0f8fc3ab39bcef72a00300a8d966b2253a917086c8604959e152243} 
+high&High profile. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{high\_444p@{high\_444p}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!high\_444p@{high\_444p}}}\Hypertarget{video_8cpp_ab2b469539a0f8fc3ab39bcef72a00300af0e67986255b59d4422ae27005e93578}\label{video_8cpp_ab2b469539a0f8fc3ab39bcef72a00300af0e67986255b59d4422ae27005e93578} 
+high\+\_\+444p&High 4\+:4\+:4 Predictive profile. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{video_8cpp_a8206e43e03f8daa0984fa104304c1afe}\index{video.cpp@{video.cpp}!profile\_hevc\_e@{profile\_hevc\_e}}
+\index{profile\_hevc\_e@{profile\_hevc\_e}!video.cpp@{video.cpp}}
+\doxysubsubsection{\texorpdfstring{profile\_hevc\_e}{profile\_hevc\_e}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{video_8cpp_a8206e43e03f8daa0984fa104304c1afe} 
+enum class \mbox{\hyperlink{video_8cpp_a8206e43e03f8daa0984fa104304c1afe}{video\+::nv\+::profile\+\_\+hevc\+\_\+e}} \+: int\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{main@{main}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!main@{main}}}\Hypertarget{video_8cpp_a8206e43e03f8daa0984fa104304c1afeafad58de7366495db4650cfefac2fcd61}\label{video_8cpp_a8206e43e03f8daa0984fa104304c1afeafad58de7366495db4650cfefac2fcd61} 
+main&Main profile. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{main\_10@{main\_10}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!main\_10@{main\_10}}}\Hypertarget{video_8cpp_a8206e43e03f8daa0984fa104304c1afea5d4395229383c2ca750c2971d3e725b9}\label{video_8cpp_a8206e43e03f8daa0984fa104304c1afea5d4395229383c2ca750c2971d3e725b9} 
+main\+\_\+10&Main 10 profile. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{rext@{rext}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!rext@{rext}}}\Hypertarget{video_8cpp_a8206e43e03f8daa0984fa104304c1afea5f7a1c3e2dcd9a1b420ce94644033be7}\label{video_8cpp_a8206e43e03f8daa0984fa104304c1afea5f7a1c3e2dcd9a1b420ce94644033be7} 
+rext&Rext profile. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{video_8cpp_a57a539cccf50a6c5115c988a79f00319}\index{video.cpp@{video.cpp}!profile\_hevc\_e@{profile\_hevc\_e}}
+\index{profile\_hevc\_e@{profile\_hevc\_e}!video.cpp@{video.cpp}}
+\doxysubsubsection{\texorpdfstring{profile\_hevc\_e}{profile\_hevc\_e}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{video_8cpp_a57a539cccf50a6c5115c988a79f00319} 
+enum class \mbox{\hyperlink{video_8cpp_a57a539cccf50a6c5115c988a79f00319}{video\+::qsv\+::profile\+\_\+hevc\+\_\+e}} \+: int\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{main@{main}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!main@{main}}}\Hypertarget{video_8cpp_a57a539cccf50a6c5115c988a79f00319afad58de7366495db4650cfefac2fcd61}\label{video_8cpp_a57a539cccf50a6c5115c988a79f00319afad58de7366495db4650cfefac2fcd61} 
+main&Main profile. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{main\_10@{main\_10}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!main\_10@{main\_10}}}\Hypertarget{video_8cpp_a57a539cccf50a6c5115c988a79f00319a5d4395229383c2ca750c2971d3e725b9}\label{video_8cpp_a57a539cccf50a6c5115c988a79f00319a5d4395229383c2ca750c2971d3e725b9} 
+main\+\_\+10&Main 10 profile. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{rext@{rext}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!rext@{rext}}}\Hypertarget{video_8cpp_a57a539cccf50a6c5115c988a79f00319a5f7a1c3e2dcd9a1b420ce94644033be7}\label{video_8cpp_a57a539cccf50a6c5115c988a79f00319a5f7a1c3e2dcd9a1b420ce94644033be7} 
+rext&RExt profile. \\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{video_8cpp_a92cee4f35e5e0dacf79e406caa3b18a9}\index{video.cpp@{video.cpp}!validate\_flag\_e@{validate\_flag\_e}}
+\index{validate\_flag\_e@{validate\_flag\_e}!video.cpp@{video.cpp}}
+\doxysubsubsection{\texorpdfstring{validate\_flag\_e}{validate\_flag\_e}}
+{\footnotesize\ttfamily \label{video_8cpp_a92cee4f35e5e0dacf79e406caa3b18a9} 
+enum \mbox{\hyperlink{video_8cpp_a92cee4f35e5e0dacf79e406caa3b18a9}{video\+::validate\+\_\+flag\+\_\+e}}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{VUI\_PARAMS@{VUI\_PARAMS}!video.cpp@{video.cpp}}\index{video.cpp@{video.cpp}!VUI\_PARAMS@{VUI\_PARAMS}}}\Hypertarget{video_8cpp_a92cee4f35e5e0dacf79e406caa3b18a9ac367b15393f43925b80315c8acb349ec}\label{video_8cpp_a92cee4f35e5e0dacf79e406caa3b18a9ac367b15393f43925b80315c8acb349ec} 
+VUI\+\_\+\+PARAMS&VUI parameters. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\label{doc-func-members}
+\Hypertarget{video_8cpp_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{video_8cpp_a101bc90e3ddc3a7938011182682d664b}\index{video.cpp@{video.cpp}!allow\_encoder\_probing@{allow\_encoder\_probing}}
+\index{allow\_encoder\_probing@{allow\_encoder\_probing}!video.cpp@{video.cpp}}
+\doxysubsubsection{\texorpdfstring{allow\_encoder\_probing()}{allow\_encoder\_probing()}}
+{\footnotesize\ttfamily \label{video_8cpp_a101bc90e3ddc3a7938011182682d664b} 
+bool video\+::allow\+\_\+encoder\+\_\+probing (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Check if we can allow probing for the encoders. 
+
+\begin{DoxyReturn}{Returns}
+True if there should be no issues with the probing, false if we should prevent it. 
+\end{DoxyReturn}
+\Hypertarget{video_8cpp_a8bbbd38aa453bdccd9769c15377bc107}\index{video.cpp@{video.cpp}!refresh\_displays@{refresh\_displays}}
+\index{refresh\_displays@{refresh\_displays}!video.cpp@{video.cpp}}
+\doxysubsubsection{\texorpdfstring{refresh\_displays()}{refresh\_displays()}}
+{\footnotesize\ttfamily \label{video_8cpp_a8bbbd38aa453bdccd9769c15377bc107} 
+void video\+::refresh\+\_\+displays (\begin{DoxyParamCaption}\item[{platf\+::mem\+\_\+type\+\_\+e}]{dev\+\_\+type}{, }\item[{std\+::vector$<$ std\+::string $>$ \&}]{display\+\_\+names}{, }\item[{int \&}]{current\+\_\+display\+\_\+index}{, }\item[{std\+::string \&}]{preferred\+\_\+display\+\_\+name}{}\end{DoxyParamCaption})}
+
+
+
+Update the list of display names before or during a stream. 
+
+This will attempt to keep {\ttfamily current\+\_\+display\+\_\+index} pointing at the same display. 
+\begin{DoxyParams}{Parameters}
+{\em dev\+\_\+type} & The encoder device type used for display lookup. \\
+\hline
+{\em display\+\_\+names} & The list of display names to repopulate. \\
+\hline
+{\em current\+\_\+display\+\_\+index} & The current display index or -\/1 if not yet known. \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-var-members}
+\Hypertarget{video_8cpp_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{video_8cpp_a6356c23ef49d6c983e94f1b738b8bf5b}\index{video.cpp@{video.cpp}!last\_encoder\_probe\_supported\_yuv444\_for\_codec@{last\_encoder\_probe\_supported\_yuv444\_for\_codec}}
+\index{last\_encoder\_probe\_supported\_yuv444\_for\_codec@{last\_encoder\_probe\_supported\_yuv444\_for\_codec}!video.cpp@{video.cpp}}
+\doxysubsubsection{\texorpdfstring{last\_encoder\_probe\_supported\_yuv444\_for\_codec}{last\_encoder\_probe\_supported\_yuv444\_for\_codec}}
+{\footnotesize\ttfamily \label{video_8cpp_a6356c23ef49d6c983e94f1b738b8bf5b} 
+std\+::array$<$bool, 3$>$ video\+::last\+\_\+encoder\+\_\+probe\+\_\+supported\+\_\+yuv444\+\_\+for\+\_\+codec}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{true},}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{true},}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{true}}
+\DoxyCodeLine{\ \ \}}
+
+\end{DoxyCode}

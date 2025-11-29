@@ -1,0 +1,114 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/main.cpp File Reference}
+\hypertarget{main_8cpp}{}\label{main_8cpp}\index{/Users/alexworland/autoBitrate/apollo/src/main.cpp@{/Users/alexworland/autoBitrate/apollo/src/main.cpp}}
+
+
+Definitions for the main entry point for Sunshine.  
+
+
+{\ttfamily \#include $<$codecvt$>$}\newline
+{\ttfamily \#include $<$csignal$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include "{}confighttp.\+h"{}}\newline
+{\ttfamily \#include "{}display\+\_\+device.\+h"{}}\newline
+{\ttfamily \#include "{}entry\+\_\+handler.\+h"{}}\newline
+{\ttfamily \#include "{}globals.\+h"{}}\newline
+{\ttfamily \#include "{}httpcommon.\+h"{}}\newline
+{\ttfamily \#include "{}logging.\+h"{}}\newline
+{\ttfamily \#include "{}main.\+h"{}}\newline
+{\ttfamily \#include "{}nvhttp.\+h"{}}\newline
+{\ttfamily \#include "{}process.\+h"{}}\newline
+{\ttfamily \#include "{}system\+\_\+tray.\+h"{}}\newline
+{\ttfamily \#include "{}upnp.\+h"{}}\newline
+{\ttfamily \#include "{}uuid.\+h"{}}\newline
+{\ttfamily \#include "{}video.\+h"{}}\newline
+{\ttfamily \#include "{}rswrapper.\+h"{}}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{main_8cpp_ac71e26b3c9c8e139f2c62e9902d456b0}\label{main_8cpp_ac71e26b3c9c8e139f2c62e9902d456b0} 
+\#define {\bfseries PROBE\+\_\+\+DISPLAY\+\_\+\+UUID}~"{}38F72\+B96-\/B00C-\/4F21-\/8B6C-\/E1\+BFF1602\+B0\+E"{}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{main_8cpp_afb039ae492ae804bc8a749c02e49b6c3}\label{main_8cpp_afb039ae492ae804bc8a749c02e49b6c3} 
+void {\bfseries on\+\_\+signal\+\_\+forwarder} (int sig)
+\item 
+\Hypertarget{main_8cpp_afb6ff03ddb9af055653f9e2db89095f6}\label{main_8cpp_afb6ff03ddb9af055653f9e2db89095f6} 
+{\footnotesize template$<$class FN$>$ }\\void {\bfseries on\+\_\+signal} (int sig, FN \&\&fn)
+\item 
+\Hypertarget{main_8cpp_a5929d289cb3c2ce0e345ddf72b8f860b}\label{main_8cpp_a5929d289cb3c2ce0e345ddf72b8f860b} 
+void {\bfseries main\+Thread\+Loop} (const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classsafe_1_1event__t}{safe\+::event\+\_\+t}}$<$ bool $>$ $>$ \&shutdown\+\_\+event)
+\item 
+int \mbox{\hyperlink{main_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main}} (int argc, char \texorpdfstring{$\ast$}{*}argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Main application entry point. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{main_8cpp_a00d1f9ae6f6d5fcad186a7c6ba1f54b8}\label{main_8cpp_a00d1f9ae6f6d5fcad186a7c6ba1f54b8} 
+std\+::map$<$ int, std\+::function$<$ void()$>$ $>$ {\bfseries signal\+\_\+handlers}
+\item 
+std\+::map$<$ std\+::string\+\_\+view, std\+::function$<$ int(const char \texorpdfstring{$\ast$}{*}name, int argc, char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}argv)$>$ $>$ \mbox{\hyperlink{main_8cpp_a8d64453a1a1e836dcc0577b944caa907}{cmd\+\_\+to\+\_\+func}}
+\item 
+\Hypertarget{main_8cpp_a5910a654272ecee5d3e073db5e5b56d2}\label{main_8cpp_a5910a654272ecee5d3e073db5e5b56d2} 
+constexpr bool {\bfseries tray\+\_\+is\+\_\+enabled} = true
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Definitions for the main entry point for Sunshine. 
+
+
+
+\label{doc-func-members}
+\Hypertarget{main_8cpp_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{main_8cpp_a0ddf1224851353fc92bfbff6f499fa97}\index{main.cpp@{main.cpp}!main@{main}}
+\index{main@{main}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily \label{main_8cpp_a0ddf1224851353fc92bfbff6f499fa97} 
+int main (\begin{DoxyParamCaption}\item[{int}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{argv}{\mbox{[}$\,$\mbox{]}}\end{DoxyParamCaption})}
+
+
+
+Main application entry point. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argc} & The number of arguments. \\
+\hline
+{\em argv} & The arguments. @examples main(1, const char\texorpdfstring{$\ast$}{*} args\mbox{[}\mbox{]} = \{"{}sunshine"{}, nullptr\}); @examples\+\_\+end \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-var-members}
+\Hypertarget{main_8cpp_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{main_8cpp_a8d64453a1a1e836dcc0577b944caa907}\index{main.cpp@{main.cpp}!cmd\_to\_func@{cmd\_to\_func}}
+\index{cmd\_to\_func@{cmd\_to\_func}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{cmd\_to\_func}{cmd\_to\_func}}
+{\footnotesize\ttfamily \label{main_8cpp_a8d64453a1a1e836dcc0577b944caa907} 
+std\+::map$<$std\+::string\+\_\+view, std\+::function$<$int(const char \texorpdfstring{$\ast$}{*}name, int argc, char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}argv)$>$ $>$ cmd\+\_\+to\+\_\+func}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ \{\textcolor{stringliteral}{"{}creds"{}}sv,\ [](\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *name,\ \textcolor{keywordtype}{int}\ argc,\ \textcolor{keywordtype}{char}\ **argv)\ \{}
+\DoxyCodeLine{\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{namespaceargs_a12f74871184d794069843ca2f73a33e9}{args::creds}}(name,\ argc,\ argv);}
+\DoxyCodeLine{\ \ \ \}\},}
+\DoxyCodeLine{\ \ \{\textcolor{stringliteral}{"{}help"{}}sv,\ [](\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *name,\ \textcolor{keywordtype}{int}\ argc,\ \textcolor{keywordtype}{char}\ **argv)\ \{}
+\DoxyCodeLine{\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{namespaceargs_afee3c375307ccb9b232d063f806f6ebb}{args::help}}(name);}
+\DoxyCodeLine{\ \ \ \}\},}
+\DoxyCodeLine{\ \ \{\textcolor{stringliteral}{"{}version"{}}sv,\ [](\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *name,\ \textcolor{keywordtype}{int}\ argc,\ \textcolor{keywordtype}{char}\ **argv)\ \{}
+\DoxyCodeLine{\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{namespaceargs_a473eb95d65f3fc47ce193c8cfcc631da}{args::version}}();}
+\DoxyCodeLine{\ \ \ \}\},}
+\DoxyCodeLine{}
+\DoxyCodeLine{}
+\DoxyCodeLine{}
+\DoxyCodeLine{}
+\DoxyCodeLine{}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}

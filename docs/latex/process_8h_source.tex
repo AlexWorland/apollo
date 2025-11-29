@@ -1,0 +1,171 @@
+\doxysection{process.\+h}
+\hypertarget{process_8h_source}{}\label{process_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/process.h@{/Users/alexworland/autoBitrate/apollo/src/process.h}}
+\mbox{\hyperlink{process_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#ifndef\ \_\_kernel\_entry}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\ \ \#define\ \_\_kernel\_entry}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ BOOST\_PROCESS\_VERSION}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\ \ \#define\ BOOST\_PROCESS\_VERSION\ 1}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ standard\ includes}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <optional>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ lib\ includes}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <boost/process/v1/child.hpp>}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <boost/process/v1/group.hpp>}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <boost/process/v1/environment.hpp>}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <boost/process/v1/search\_path.hpp>}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <boost/property\_tree/ptree.hpp>}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ <nlohmann/json.hpp>}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{comment}{//\ local\ includes}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{config_8h}{config.h}}"{}}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ "{}platform/common.h"{}}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{rtsp_8h}{rtsp.h}}"{}}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{utility_8h}{utility.h}}"{}}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#ifdef\ \_WIN32}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\ \ \#include\ "{}platform/windows/virtual\_display.h"{}}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#define\ VIRTUAL\_DISPLAY\_UUID\ "{}8902CB19-\/674A-\/403D-\/A587-\/41B092E900BA"{}}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#define\ FALLBACK\_DESKTOP\_UUID\ "{}EAAC6159-\/089A-\/46A9-\/9E24-\/6436885F6610"{}}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#define\ REMOTE\_INPUT\_UUID\ "{}8CB5C136-\/DA67-\/4F99-\/B4A1-\/F9CD35005CF4"{}}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#define\ TERMINATE\_APP\_UUID\ "{}E16CBE1B-\/295D-\/4632-\/9A76-\/EC4180C857D3"{}}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{keyword}{namespace\ }proc\ \{}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{using\ }file\_t\ =\ util::safe\_ptr\_v2<FILE,\ int,\ fclose>;}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#ifdef\ \_WIN32}}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{extern}\ VDISPLAY::DRIVER\_STATUS\ vDisplayDriverStatus;}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{structconfig_1_1prep__cmd__t}{config::prep\_cmd\_t}}\ \mbox{\hyperlink{process_8h_a459d7435936efc81780c07e6c4181dfe}{cmd\_t}};\ \ }
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structproc_1_1ctx__t}{ctx\_t}}\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ std::vector<cmd\_t>\ \mbox{\hyperlink{structproc_1_1ctx__t_a5e6abb29ab313dd71d2d23d8affc58de}{prep\_cmds}};\ \ }
+\DoxyCodeLine{00057\ \ \ \ \ std::vector<cmd\_t>\ \mbox{\hyperlink{structproc_1_1ctx__t_a7a5feab13daa62b315a3694b49aa1802}{state\_cmds}};\ \ }
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00066\ \ \ \ \ std::vector<std::string>\ \mbox{\hyperlink{structproc_1_1ctx__t_a9f64a975755e4a5566d0d50df3076076}{detached}};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ std::string\ \mbox{\hyperlink{structproc_1_1ctx__t_af0e8db01a5a167962923f8225bab21c8}{idx}};\ \ }
+\DoxyCodeLine{00069\ \ \ \ \ std::string\ \mbox{\hyperlink{structproc_1_1ctx__t_a2fad854a0ec6769f3781344dbb354834}{uuid}};\ \ }
+\DoxyCodeLine{00070\ \ \ \ \ std::string\ \mbox{\hyperlink{structproc_1_1ctx__t_aef2c1f8942ef07a20be6922dd3214adb}{name}};\ \ }
+\DoxyCodeLine{00071\ \ \ \ \ std::string\ \mbox{\hyperlink{structproc_1_1ctx__t_ad1ba625cb2326331d3ef84947aab325c}{cmd}};\ \ }
+\DoxyCodeLine{00072\ \ \ \ \ std::string\ \mbox{\hyperlink{structproc_1_1ctx__t_a0bc45018f2067378cfeb9e098044ec55}{working\_dir}};\ \ }
+\DoxyCodeLine{00073\ \ \ \ \ std::string\ \mbox{\hyperlink{structproc_1_1ctx__t_af8e9a81661328e1754ed7a657f8020c6}{output}};\ \ }
+\DoxyCodeLine{00074\ \ \ \ \ std::string\ \mbox{\hyperlink{structproc_1_1ctx__t_ae4ff5f4124072f035c15b2889529ae35}{image\_path}};\ \ }
+\DoxyCodeLine{00075\ \ \ \ \ std::string\ \mbox{\hyperlink{structproc_1_1ctx__t_a064458035af416787a04fb9765ba0c55}{id}};\ \ }
+\DoxyCodeLine{00076\ \ \ \ \ std::string\ \mbox{\hyperlink{structproc_1_1ctx__t_a246afbe072f33f424615f720f5979f36}{gamepad}};\ \ }
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structproc_1_1ctx__t_a1953c0ca009ebf710ad1e5cba4ff67ee}{elevated}};\ \ }
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structproc_1_1ctx__t_af200f178645a45689b617903006b1856}{auto\_detach}};\ \ }
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structproc_1_1ctx__t_a29ea67e3cdeff10a5c66c9f4fb2c52a7}{wait\_all}};\ \ }
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structproc_1_1ctx__t_a6f36fd47abd8225b55f46a17821f7424}{virtual\_display}};\ \ }
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structproc_1_1ctx__t_a5124b2f975dc2d3abaf14523c3cd7df0}{virtual\_display\_primary}};\ \ }
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structproc_1_1ctx__t_ad78b20241ab86e7ef57c2bf096145a85}{use\_app\_identity}};\ \ }
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structproc_1_1ctx__t_a795f093536c988e3b626c05463981283}{per\_client\_app\_identity}};\ \ }
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structproc_1_1ctx__t_a2da402bb05270ccba9ce866df9d13cbe}{allow\_client\_commands}};\ \ }
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structproc_1_1ctx__t_a31d9c24568b1d08f305169f7c4c5814a}{terminate\_on\_pause}};\ \ }
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordtype}{int}\ \ \mbox{\hyperlink{structproc_1_1ctx__t_aaf56b82372bcdbc7b080c78338ca41fe}{scale\_factor}};\ \ }
+\DoxyCodeLine{00087\ \ \ \ \ std::chrono::seconds\ \mbox{\hyperlink{structproc_1_1ctx__t_a81eab27eddcae97218601ec64a301e0a}{exit\_timeout}};\ \ }
+\DoxyCodeLine{00088\ \ \ \};}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classproc_1_1proc__t_aeea31c928aafbe42629ca2d086105a92}{proc\_t}}\ \{}
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00095\ \ \ \ \ KITTY\_DEFAULT\_CONSTR\_MOVE\_THROW(\mbox{\hyperlink{classproc_1_1proc__t_aeea31c928aafbe42629ca2d086105a92}{proc\_t}})}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \ \ std::\textcolor{keywordtype}{string}\ \mbox{\hyperlink{classproc_1_1proc__t_a0229cbaaaf2a59f83f9bd7ec940b8916}{display\_name}};\ \ }
+\DoxyCodeLine{00098\ \ \ \ \ std::\textcolor{keywordtype}{string}\ \mbox{\hyperlink{classproc_1_1proc__t_a35373b5d8d10998a239b8108a1f6a597}{initial\_display}};\ \ }
+\DoxyCodeLine{00099\ \ \ \ \ std::\textcolor{keywordtype}{string}\ \mbox{\hyperlink{classproc_1_1proc__t_adc61b8415e06e727982f0cc54727f4d3}{mode\_changed\_display}};\ \ }
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classproc_1_1proc__t_ac4a31e330400242298dd22781c727fb6}{initial\_hdr}}\ =\ false;\ \ }
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classproc_1_1proc__t_a200772a989fab1cabf61f1506e0e3da6}{virtual\_display}}\ =\ false;\ \ }
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classproc_1_1proc__t_a55a4ac10bacf7210f9289a7751fa3b88}{allow\_client\_commands}}\ =\ false;\ \ }
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00109\ \ \ \ \ \mbox{\hyperlink{classproc_1_1proc__t_aeea31c928aafbe42629ca2d086105a92}{proc\_t}}(}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ boost::process::v1::environment\ \&\&env,}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ std::vector<\mbox{\hyperlink{structproc_1_1ctx__t}{ctx\_t}}>\ \&\&apps}
+\DoxyCodeLine{00112\ \ \ \ \ ):}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \_env(std::move(env)),}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \_apps(std::move(apps))\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classproc_1_1proc__t_a9beb9a57d286ec07b62702bd20530ff9}{launch\_input\_only}}();}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classproc_1_1proc__t_a263d78c8d725e7750aa8191c74dcef23}{execute}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structproc_1_1ctx__t}{ctx\_t}}\&\ \_app,\ std::shared\_ptr<rtsp\_stream::launch\_session\_t>\ launch\_session);}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classproc_1_1proc__t_a3c524382f5450f61614271f7a0dfb130}{running}}();}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \ \ \ \ \mbox{\hyperlink{classproc_1_1proc__t}{\string~proc\_t}}();}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<ctx\_t>\ \&\mbox{\hyperlink{classproc_1_1proc__t_aa69e09cd849b7c3cb05542dca8665d4a}{get\_apps}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00148\ \ \ \ \ std::vector<ctx\_t>\ \&\mbox{\hyperlink{classproc_1_1proc__t_aa69e09cd849b7c3cb05542dca8665d4a}{get\_apps}}();}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00155\ \ \ \ \ std::string\ \mbox{\hyperlink{classproc_1_1proc__t_a1df0673c6cbcd276de51c2a9ab1a17ef}{get\_app\_image}}(\textcolor{keywordtype}{int}\ app\_id);}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00161\ \ \ \ \ std::string\ \mbox{\hyperlink{classproc_1_1proc__t_a5396a912e3fdb692bf4e885f25bbee25}{get\_last\_run\_app\_name}}();}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00167\ \ \ \ \ std::string\ \mbox{\hyperlink{classproc_1_1proc__t_a760d692844d117d9795fb91174ea16e7}{get\_running\_app\_uuid}}();}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00173\ \ \ \ \ boost::process::v1::environment\ \mbox{\hyperlink{classproc_1_1proc__t_aaa54a533679597ee0e4183a26a7d7989}{get\_env}}();}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classproc_1_1proc__t_aff681a1eec7ef5e3040f9e08c217c59a}{resume}}();}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classproc_1_1proc__t_abbfb8d1c947b043dc072b5534c2fa927}{pause}}();}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classproc_1_1proc__t_ad388bb7a8381e80fa709d973c3452b1a}{terminate}}(\textcolor{keywordtype}{bool}\ immediate\ =\ \textcolor{keyword}{false},\ \textcolor{keywordtype}{bool}\ needs\_refresh\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00192\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keywordtype}{int}\ \_app\_id\ =\ 0;\ \ }
+\DoxyCodeLine{00194\ \ \ \ \ std::string\ \_app\_name;\ \ }
+\DoxyCodeLine{00195\ \ \ \ \ boost::process::v1::environment\ \_env;\ \ }
+\DoxyCodeLine{00196\ \ \ \ \ std::shared\_ptr<rtsp\_stream::launch\_session\_t>\ \_launch\_session;\ \ }
+\DoxyCodeLine{00197\ \ \ \ \ std::shared\_ptr<config::input\_t>\ \_saved\_input\_config;\ \ }
+\DoxyCodeLine{00198\ \ \ \ \ std::vector<ctx\_t>\ \_apps;\ \ }
+\DoxyCodeLine{00199\ \ \ \ \ \mbox{\hyperlink{structproc_1_1ctx__t}{ctx\_t}}\ \_app;\ \ }
+\DoxyCodeLine{00200\ \ \ \ \ std::chrono::steady\_clock::time\_point\ \_app\_launch\_time;\ \ }
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keywordtype}{bool}\ placebo\ \{\};\ \ }
+\DoxyCodeLine{00202\ \ \ \ \ boost::process::v1::child\ \_process;\ \ }
+\DoxyCodeLine{00203\ \ \ \ \ boost::process::v1::group\ \_process\_group;\ \ }
+\DoxyCodeLine{00204\ \ \ \ \ file\_t\ \_pipe;\ \ }
+\DoxyCodeLine{00205\ \ \ \ \ std::vector<cmd\_t>::const\_iterator\ \_app\_prep\_it;\ \ }
+\DoxyCodeLine{00206\ \ \ \ \ std::vector<cmd\_t>::const\_iterator\ \_app\_prep\_begin;\ \ }
+\DoxyCodeLine{00207\ \ \ \};}
+\DoxyCodeLine{00208\ }
+\DoxyCodeLine{00215\ \ \ boost::filesystem::path}
+\DoxyCodeLine{00216\ \ \ \mbox{\hyperlink{process_8cpp_a1c4d556acf0d4e7183804f986a51f58f}{find\_working\_directory}}(\textcolor{keyword}{const}\ std::string\ \&cmd,\ \textcolor{keyword}{const}\ boost::process::v1::environment\ \&env);}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00225\ \ \ std::tuple<std::string,\ std::string>\ \mbox{\hyperlink{process_8cpp_a82dbe882ee92ae36926d9042bb167e75}{calculate\_app\_id}}(\textcolor{keyword}{const}\ std::string\ \&app\_name,\ std::string\ app\_image\_path,\ \textcolor{keywordtype}{int}\ index);}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00232\ \ \ std::string\ \mbox{\hyperlink{process_8cpp_acfb778773710796d3848766098852b0a}{validate\_app\_image\_path}}(std::string\ app\_image\_path);}
+\DoxyCodeLine{00233\ }
+\DoxyCodeLine{00239\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{process_8cpp_aeffa331a777625a3db3833971cf622e2}{refresh}}(\textcolor{keyword}{const}\ std::string\ \&file\_name,\ \textcolor{keywordtype}{bool}\ needs\_terminate\ =\ \textcolor{keyword}{true});}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00246\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{process_8cpp_a22151985330ce51c9b0822e2f254ad23}{migrate\_apps}}(nlohmann::json*\ fileTree\_p,\ nlohmann::json*\ inputTree\_p);}
+\DoxyCodeLine{00247\ }
+\DoxyCodeLine{00253\ \ \ std::optional<proc::proc\_t>\ \mbox{\hyperlink{process_8cpp_a844b9477513fa84d8ca37864c75fab34}{parse}}(\textcolor{keyword}{const}\ std::string\ \&file\_name);}
+\DoxyCodeLine{00254\ }
+\DoxyCodeLine{00259\ \ \ std::unique\_ptr<platf::deinit\_t>\ \mbox{\hyperlink{process_8cpp_a6af2e4ae5f5b8e92c9fca3649e2ad297}{init}}();}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00267\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{process_8cpp_a4781dfdbbf67ae6152c8fd51284a320d}{terminate\_process\_group}}(boost::process::v1::child\ \&proc,\ boost::process::v1::group\ \&group,\ std::chrono::seconds\ exit\_timeout);}
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00269\ \ \ \textcolor{keyword}{extern}\ \mbox{\hyperlink{classproc_1_1proc__t}{proc\_t}}\ proc;}
+\DoxyCodeLine{00270\ }
+\DoxyCodeLine{00271\ \ \ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{int}\ input\_only\_app\_id;}
+\DoxyCodeLine{00272\ \ \ \textcolor{keyword}{extern}\ std::string\ input\_only\_app\_id\_str;}
+\DoxyCodeLine{00273\ \ \ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{int}\ terminate\_app\_id;}
+\DoxyCodeLine{00274\ \ \ \textcolor{keyword}{extern}\ std::string\ terminate\_app\_id\_str;}
+\DoxyCodeLine{00275\ \}\ \ \textcolor{comment}{//\ namespace\ proc}}
+\DoxyCodeLine{00276\ }
+\DoxyCodeLine{00277\ \textcolor{preprocessor}{\#ifdef\ BOOST\_PROCESS\_VERSION}}
+\DoxyCodeLine{00278\ \textcolor{preprocessor}{\ \ \#undef\ BOOST\_PROCESS\_VERSION}}
+\DoxyCodeLine{00279\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

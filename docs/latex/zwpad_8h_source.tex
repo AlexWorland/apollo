@@ -1,0 +1,53 @@
+\doxysection{zwpad.\+h}
+\hypertarget{zwpad_8h_source}{}\label{zwpad_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/zwpad.h@{/Users/alexworland/autoBitrate/apollo/src/zwpad.h}}
+\mbox{\hyperlink{zwpad_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <bit>}\ \ \ \ \ \ \textcolor{comment}{//\ std::bit\_width\ –\ C++20}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <stdexcept>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }zwpad}
+\DoxyCodeLine{00012\ \{}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{comment}{//\ Two\ distinct\ zero-\/width\ characters.}}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{comment}{//\ U+200B\ \ ZERO\ WIDTH\ SPACE\ \ \ –\ “0”}}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{comment}{//\ U+200C\ \ ZERO\ WIDTH\ NON-\/JOINER\ –\ “1”}}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{char8\_t}\ ZW0[]\ =\ u8\textcolor{stringliteral}{"{}\(\backslash\)u200B"{}};}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{char8\_t}\ ZW1[]\ =\ u8\textcolor{stringliteral}{"{}\(\backslash\)u200C"{}};}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{inline}\ std::string}
+\DoxyCodeLine{00034\ \ \ \ \ \mbox{\hyperlink{zwpad_8h_aa924ce3eac2a45f685699694e0123a09}{pad\_for\_ordering}}(std::string\_view\ text,}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ \ \ \ \ \ padBits,}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ \ \ \ \ \ index)}
+\DoxyCodeLine{00037\ \ \ \ \ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (padBits\ ==\ 0)}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}padBits\ must\ be\ >\ 0"{}});}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (index\ >=\ (std::size\_t\{1\}\ <<\ padBits))}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::out\_of\_range(\textcolor{stringliteral}{"{}index\ does\ not\ fit\ into\ padBits"{}});}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ std::string\ out;}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ out.reserve(padBits\ *\ 3\ +\ text.size());\ \ \ \textcolor{comment}{//\ each\ ZW\ char\ is\ 3-\/byte\ UTF-\/8}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (std::size\_t\ bit\ =\ 0;\ bit\ <\ padBits;\ ++bit)}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Emit\ the\ *most*\ significant\ bit\ first.}}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ one\ =\ (index\ >>\ (padBits\ -\/\ 1\ -\/\ bit))\ \&\ 1;}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ out\ +=\ one\ ?\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const\ }\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(ZW1)}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const\ }\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(ZW0);}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ out.append(text);}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ out;}
+\DoxyCodeLine{00055\ \ \ \ \ \}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00058\ \ \ \ \ [[nodiscard]]}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{inline}\ std::size\_t\ \mbox{\hyperlink{zwpad_8h_a798da4c50c3abe2dc17826b866d64a95}{pad\_width\_for\_count}}(std::size\_t\ count)}
+\DoxyCodeLine{00060\ \ \ \ \ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (count\ ==\ 0)}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}count\ must\ be\ >\ 0"{}});}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::bit\_width(count\ -\/\ 1);\ \textcolor{comment}{//\ e.g.\ count==8\ →\ 3\ bits}}
+\DoxyCodeLine{00064\ \ \ \ \ \}}
+\DoxyCodeLine{00065\ \}\ \textcolor{comment}{//\ namespace\ zwpad}}
+
+\end{DoxyCode}

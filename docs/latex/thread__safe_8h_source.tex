@@ -1,0 +1,563 @@
+\doxysection{thread\+\_\+safe.\+h}
+\hypertarget{thread__safe_8h_source}{}\label{thread__safe_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/thread\_safe.h@{/Users/alexworland/autoBitrate/apollo/src/thread\_safe.h}}
+\mbox{\hyperlink{thread__safe_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ standard\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <array>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <atomic>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <condition\_variable>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <functional>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <map>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <mutex>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ local\ includes}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{utility_8h}{utility.h}}"{}}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{namespace\ }safe\ \{}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classsafe_1_1event__t}{event\_t}}\ \{}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{using\ }status\_t\ =\ util::optional\_t<T>;}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}...\ Args>}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ raise(Args\ \&\&...\mbox{\hyperlink{namespaceargs}{args}})\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ std::lock\_guard\ lg\ \{\_lock\};}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\_continue)\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_same\_v<std::optional<T>,\ status\_t>)\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \_status\ =\ std::make\_optional<T>(std::forward<Args>(\mbox{\hyperlink{namespaceargs}{args}})...);}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \_status\ =\ status\_t\ \{std::forward<Args>(\mbox{\hyperlink{namespaceargs}{args}})...\};}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \_cv.notify\_all();}
+\DoxyCodeLine{00048\ \ \ \ \ \}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{comment}{//\ pop\ and\ view\ should\ not\ be\ used\ interchangeably}}
+\DoxyCodeLine{00051\ \ \ \ \ status\_t\ pop()\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ std::unique\_lock\ ul\ \{\_lock\};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\_continue)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ util::false\_v<status\_t>;}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!\_status)\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \_cv.wait(ul);}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\_continue)\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ util::false\_v<status\_t>;}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ val\ =\ std::move(\_status);}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \_status\ =\ util::false\_v<status\_t>;}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ val;}
+\DoxyCodeLine{00069\ \ \ \ \ \}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{comment}{//\ pop\ and\ view\ should\ not\ be\ used\ interchangeably}}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Rep,\ \textcolor{keyword}{class}\ Period>}
+\DoxyCodeLine{00073\ \ \ \ \ status\_t\ pop(std::chrono::duration<Rep,\ Period>\ delay)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ std::unique\_lock\ ul\ \{\_lock\};}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\_continue)\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ util::false\_v<status\_t>;}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!\_status)\ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\_continue\ ||\ \_cv.wait\_for(ul,\ delay)\ ==\ std::cv\_status::timeout)\ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ util::false\_v<status\_t>;}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ val\ =\ std::move(\_status);}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \_status\ =\ util::false\_v<status\_t>;}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ val;}
+\DoxyCodeLine{00089\ \ \ \ \ \}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{comment}{//\ pop\ and\ view\ should\ not\ be\ used\ interchangeably}}
+\DoxyCodeLine{00092\ \ \ \ \ status\_t\ view()\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ std::unique\_lock\ ul\ \{\_lock\};}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\_continue)\ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ util::false\_v<status\_t>;}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!\_status)\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \_cv.wait(ul);}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\_continue)\ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ util::false\_v<status\_t>;}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_status;}
+\DoxyCodeLine{00108\ \ \ \ \ \}}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{comment}{//\ pop\ and\ view\ should\ not\ be\ used\ interchangeably}}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Rep,\ \textcolor{keyword}{class}\ Period>}
+\DoxyCodeLine{00112\ \ \ \ \ status\_t\ view(std::chrono::duration<Rep,\ Period>\ delay)\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ std::unique\_lock\ ul\ \{\_lock\};}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\_continue)\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ util::false\_v<status\_t>;}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!\_status)\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\_continue\ ||\ \_cv.wait\_for(ul,\ delay)\ ==\ std::cv\_status::timeout)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ util::false\_v<status\_t>;}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_status;}
+\DoxyCodeLine{00126\ \ \ \ \ \}}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordtype}{bool}\ peek()\ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_continue\ \&\&\ (bool)\ \_status;}
+\DoxyCodeLine{00130\ \ \ \ \ \}}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordtype}{void}\ stop()\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ std::lock\_guard\ lg\ \{\_lock\};}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \_continue\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \_cv.notify\_all();}
+\DoxyCodeLine{00138\ \ \ \ \ \}}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordtype}{void}\ reset()\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ std::lock\_guard\ lg\ \{\_lock\};}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \_continue\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \_status\ =\ util::false\_v<status\_t>;}
+\DoxyCodeLine{00146\ \ \ \ \ \}}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ running()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_continue;}
+\DoxyCodeLine{00150\ \ \ \ \ \}}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keywordtype}{bool}\ \_continue\ \{\textcolor{keyword}{true}\};}
+\DoxyCodeLine{00154\ \ \ \ \ status\_t\ \_status\ \{util::false\_v<status\_t>\};}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \ \ \ \ std::condition\_variable\ \_cv;}
+\DoxyCodeLine{00157\ \ \ \ \ std::mutex\ \_lock;}
+\DoxyCodeLine{00158\ \ \ \};}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00169\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00170\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classsafe_1_1alarm__raw__t}{alarm\_raw\_t}}\ \{}
+\DoxyCodeLine{00171\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keyword}{using\ }status\_t\ =\ util::optional\_t<T>;}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keywordtype}{void}\ ring(\textcolor{keyword}{const}\ status\_t\ \&status)\ \{}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ std::lock\_guard\ lg(\_lock);}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \_status\ =\ status;}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \_rang\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \_cv.notify\_one();}
+\DoxyCodeLine{00180\ \ \ \ \ \}}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keywordtype}{void}\ ring(status\_t\ \&\&status)\ \{}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ std::lock\_guard\ lg(\_lock);}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \_status\ =\ std::move(status);}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \_rang\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \_cv.notify\_one();}
+\DoxyCodeLine{00188\ \ \ \ \ \}}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Rep,\ \textcolor{keyword}{class}\ Period>}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keyword}{auto}\ wait\_for(\textcolor{keyword}{const}\ std::chrono::duration<Rep,\ Period>\ \&rel\_time)\ \{}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ std::unique\_lock\ ul(\_lock);}
+\DoxyCodeLine{00193\ }
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_cv.wait\_for(ul,\ rel\_time,\ [\textcolor{keyword}{this}]()\ \{}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_rang;}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \});}
+\DoxyCodeLine{00197\ \ \ \ \ \}}
+\DoxyCodeLine{00198\ }
+\DoxyCodeLine{00199\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Rep,\ \textcolor{keyword}{class}\ Period,\ \textcolor{keyword}{class}\ Pred>}
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keyword}{auto}\ wait\_for(\textcolor{keyword}{const}\ std::chrono::duration<Rep,\ Period>\ \&rel\_time,\ Pred\ \&\&pred)\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ std::unique\_lock\ ul(\_lock);}
+\DoxyCodeLine{00202\ }
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_cv.wait\_for(ul,\ rel\_time,\ [\textcolor{keyword}{this},\ \&pred]()\ \{}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_rang\ ||\ pred();}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \});}
+\DoxyCodeLine{00206\ \ \ \ \ \}}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Rep,\ \textcolor{keyword}{class}\ Period>}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keyword}{auto}\ wait\_until(\textcolor{keyword}{const}\ std::chrono::duration<Rep,\ Period>\ \&rel\_time)\ \{}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ std::unique\_lock\ ul(\_lock);}
+\DoxyCodeLine{00211\ }
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_cv.wait\_until(ul,\ rel\_time,\ [\textcolor{keyword}{this}]()\ \{}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_rang;}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \});}
+\DoxyCodeLine{00215\ \ \ \ \ \}}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Rep,\ \textcolor{keyword}{class}\ Period,\ \textcolor{keyword}{class}\ Pred>}
+\DoxyCodeLine{00218\ \ \ \ \ \textcolor{keyword}{auto}\ wait\_until(\textcolor{keyword}{const}\ std::chrono::duration<Rep,\ Period>\ \&rel\_time,\ Pred\ \&\&pred)\ \{}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ std::unique\_lock\ ul(\_lock);}
+\DoxyCodeLine{00220\ }
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_cv.wait\_until(ul,\ rel\_time,\ [\textcolor{keyword}{this},\ \&pred]()\ \{}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_rang\ ||\ pred();}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \});}
+\DoxyCodeLine{00224\ \ \ \ \ \}}
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keyword}{auto}\ wait()\ \{}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ std::unique\_lock\ ul(\_lock);}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \_cv.wait(ul,\ [\textcolor{keyword}{this}]()\ \{}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_rang;}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \});}
+\DoxyCodeLine{00231\ \ \ \ \ \}}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Pred>}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keyword}{auto}\ wait(Pred\ \&\&pred)\ \{}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ std::unique\_lock\ ul(\_lock);}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \_cv.wait(ul,\ [\textcolor{keyword}{this},\ \&pred]()\ \{}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_rang\ ||\ pred();}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \});}
+\DoxyCodeLine{00239\ \ \ \ \ \}}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00241\ \ \ \ \ \textcolor{keyword}{const}\ status\_t\ \&status()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_status;}
+\DoxyCodeLine{00243\ \ \ \ \ \}}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00245\ \ \ \ \ status\_t\ \&status()\ \{}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_status;}
+\DoxyCodeLine{00247\ \ \ \ \ \}}
+\DoxyCodeLine{00248\ }
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{keywordtype}{void}\ reset()\ \{}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \_status\ =\ status\_t\ \{\};}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \_rang\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00252\ \ \ \ \ \}}
+\DoxyCodeLine{00253\ }
+\DoxyCodeLine{00254\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00255\ \ \ \ \ std::mutex\ \_lock;}
+\DoxyCodeLine{00256\ \ \ \ \ std::condition\_variable\ \_cv;}
+\DoxyCodeLine{00257\ }
+\DoxyCodeLine{00258\ \ \ \ \ status\_t\ \_status\ \{util::false\_v<status\_t>\};}
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keywordtype}{bool}\ \_rang\ \{\textcolor{keyword}{false}\};}
+\DoxyCodeLine{00260\ \ \ \};}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00263\ \ \ \textcolor{keyword}{using\ }alarm\_t\ =\ std::shared\_ptr<alarm\_raw\_t<T>>;}
+\DoxyCodeLine{00264\ }
+\DoxyCodeLine{00265\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00266\ \ \ alarm\_t<T>\ make\_alarm()\ \{}
+\DoxyCodeLine{00267\ \ \ \ \ \textcolor{keywordflow}{return}\ std::make\_shared<alarm\_raw\_t<T>>();}
+\DoxyCodeLine{00268\ \ \ \}}
+\DoxyCodeLine{00269\ }
+\DoxyCodeLine{00279\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00280\ \ \ \textcolor{keyword}{class\ }queue\_t\ \{}
+\DoxyCodeLine{00281\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{keyword}{using\ }status\_t\ =\ util::optional\_t<T>;}
+\DoxyCodeLine{00283\ }
+\DoxyCodeLine{00284\ \ \ \ \ queue\_t(std::uint32\_t\ max\_elements\ =\ 32):}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \_max\_elements\ \{max\_elements\}\ \{}
+\DoxyCodeLine{00286\ \ \ \ \ \}}
+\DoxyCodeLine{00287\ }
+\DoxyCodeLine{00288\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}...\ Args>}
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{keywordtype}{void}\ raise(Args\ \&\&...\mbox{\hyperlink{namespaceargs}{args}})\ \{}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ std::lock\_guard\ ul\ \{\_lock\};}
+\DoxyCodeLine{00291\ }
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\_continue)\ \{}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00295\ }
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_queue.size()\ ==\ \_max\_elements)\ \{}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \_queue.clear();}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00299\ }
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \_queue.emplace\_back(std::forward<Args>(\mbox{\hyperlink{namespaceargs}{args}})...);}
+\DoxyCodeLine{00301\ }
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \_cv.notify\_all();}
+\DoxyCodeLine{00303\ \ \ \ \ \}}
+\DoxyCodeLine{00304\ }
+\DoxyCodeLine{00305\ \ \ \ \ \textcolor{keywordtype}{bool}\ peek()\ \{}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_continue\ \&\&\ !\_queue.empty();}
+\DoxyCodeLine{00307\ \ \ \ \ \}}
+\DoxyCodeLine{00308\ }
+\DoxyCodeLine{00309\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Rep,\ \textcolor{keyword}{class}\ Period>}
+\DoxyCodeLine{00310\ \ \ \ \ status\_t\ pop(std::chrono::duration<Rep,\ Period>\ delay)\ \{}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ std::unique\_lock\ ul\ \{\_lock\};}
+\DoxyCodeLine{00312\ }
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\_continue)\ \{}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ util::false\_v<status\_t>;}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\_queue.empty())\ \{}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\_continue\ ||\ \_cv.wait\_for(ul,\ delay)\ ==\ std::cv\_status::timeout)\ \{}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ util::false\_v<status\_t>;}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00322\ }
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ val\ =\ std::move(\_queue.front());}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \_queue.erase(std::begin(\_queue));}
+\DoxyCodeLine{00325\ }
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ val;}
+\DoxyCodeLine{00327\ \ \ \ \ \}}
+\DoxyCodeLine{00328\ }
+\DoxyCodeLine{00329\ \ \ \ \ status\_t\ pop()\ \{}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ std::unique\_lock\ ul\ \{\_lock\};}
+\DoxyCodeLine{00331\ }
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\_continue)\ \{}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ util::false\_v<status\_t>;}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00335\ }
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (\_queue.empty())\ \{}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ \_cv.wait(ul);}
+\DoxyCodeLine{00338\ }
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\_continue)\ \{}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ util::false\_v<status\_t>;}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00343\ }
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ val\ =\ std::move(\_queue.front());}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \_queue.erase(std::begin(\_queue));}
+\DoxyCodeLine{00346\ }
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ val;}
+\DoxyCodeLine{00348\ \ \ \ \ \}}
+\DoxyCodeLine{00349\ }
+\DoxyCodeLine{00350\ \ \ \ \ std::vector<T>\ \&unsafe()\ \{}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_queue;}
+\DoxyCodeLine{00352\ \ \ \ \ \}}
+\DoxyCodeLine{00353\ }
+\DoxyCodeLine{00354\ \ \ \ \ \textcolor{keywordtype}{void}\ stop()\ \{}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ std::lock\_guard\ lg\ \{\_lock\};}
+\DoxyCodeLine{00356\ }
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \_continue\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00358\ }
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \_cv.notify\_all();}
+\DoxyCodeLine{00360\ \ \ \ \ \}}
+\DoxyCodeLine{00361\ }
+\DoxyCodeLine{00362\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ running()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_continue;}
+\DoxyCodeLine{00364\ \ \ \ \ \}}
+\DoxyCodeLine{00365\ }
+\DoxyCodeLine{00366\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00367\ \ \ \ \ \textcolor{keywordtype}{bool}\ \_continue\ \{\textcolor{keyword}{true}\};}
+\DoxyCodeLine{00368\ \ \ \ \ std::uint32\_t\ \_max\_elements;}
+\DoxyCodeLine{00369\ }
+\DoxyCodeLine{00370\ \ \ \ \ std::mutex\ \_lock;}
+\DoxyCodeLine{00371\ \ \ \ \ std::condition\_variable\ \_cv;}
+\DoxyCodeLine{00372\ }
+\DoxyCodeLine{00373\ \ \ \ \ std::vector<T>\ \_queue;}
+\DoxyCodeLine{00374\ \ \ \};}
+\DoxyCodeLine{00375\ }
+\DoxyCodeLine{00385\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00386\ \ \ \textcolor{keyword}{class\ }shared\_t\ \{}
+\DoxyCodeLine{00387\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00388\ \ \ \ \ \textcolor{keyword}{using\ }element\_type\ =\ T;}
+\DoxyCodeLine{00389\ }
+\DoxyCodeLine{00390\ \ \ \ \ \textcolor{keyword}{using\ }construct\_f\ =\ std::function<int(element\_type\ \&)>;}
+\DoxyCodeLine{00391\ \ \ \ \ \textcolor{keyword}{using\ }destruct\_f\ =\ std::function<void(element\_type\ \&)>;}
+\DoxyCodeLine{00392\ }
+\DoxyCodeLine{00399\ \ \ \ \ \textcolor{keyword}{struct\ }ptr\_t\ \{}
+\DoxyCodeLine{00400\ \ \ \ \ \ \ shared\_t\ *owner;}
+\DoxyCodeLine{00401\ }
+\DoxyCodeLine{00402\ \ \ \ \ \ \ ptr\_t():}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \ \ \ \ owner\ \{\textcolor{keyword}{nullptr}\}\ \{}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00405\ }
+\DoxyCodeLine{00406\ \ \ \ \ \ \ \textcolor{keyword}{explicit}\ ptr\_t(shared\_t\ *owner):}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ \ \ \ \ owner\ \{owner\}\ \{}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00409\ }
+\DoxyCodeLine{00410\ \ \ \ \ \ \ ptr\_t(ptr\_t\ \&\&ptr)\ \textcolor{keyword}{noexcept}:}
+\DoxyCodeLine{00411\ \ \ \ \ \ \ \ \ \ \ owner\ \{ptr.owner\}\ \{}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ \ \ ptr.owner\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00413\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00414\ }
+\DoxyCodeLine{00415\ \ \ \ \ \ \ ptr\_t(\textcolor{keyword}{const}\ ptr\_t\ \&ptr)\ \textcolor{keyword}{noexcept}:}
+\DoxyCodeLine{00416\ \ \ \ \ \ \ \ \ \ \ owner\ \{ptr.owner\}\ \{}
+\DoxyCodeLine{00417\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!owner)\ \{}
+\DoxyCodeLine{00418\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00419\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00420\ }
+\DoxyCodeLine{00421\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ tmp\ =\ ptr.owner-\/>ref();}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ \ \ tmp.owner\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00423\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00424\ }
+\DoxyCodeLine{00425\ \ \ \ \ \ \ ptr\_t\ \&operator=(\textcolor{keyword}{const}\ ptr\_t\ \&ptr)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00426\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!ptr.owner)\ \{}
+\DoxyCodeLine{00427\ \ \ \ \ \ \ \ \ \ \ release();}
+\DoxyCodeLine{00428\ }
+\DoxyCodeLine{00429\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00430\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00431\ }
+\DoxyCodeLine{00432\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this}\ =\ std::move(*ptr.owner-\/>ref());}
+\DoxyCodeLine{00433\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00434\ }
+\DoxyCodeLine{00435\ \ \ \ \ \ \ ptr\_t\ \&operator=(ptr\_t\ \&\&ptr)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (owner)\ \{}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ \ \ \ \ release();}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00439\ }
+\DoxyCodeLine{00440\ \ \ \ \ \ \ \ \ std::swap(owner,\ ptr.owner);}
+\DoxyCodeLine{00441\ }
+\DoxyCodeLine{00442\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00443\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00444\ }
+\DoxyCodeLine{00445\ \ \ \ \ \ \ \string~ptr\_t()\ \{}
+\DoxyCodeLine{00446\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (owner)\ \{}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \ \ \ \ release();}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00449\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00450\ }
+\DoxyCodeLine{00451\ \ \ \ \ \ \ \textcolor{keyword}{operator}\ bool()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00452\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ owner\ !=\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00453\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00454\ }
+\DoxyCodeLine{00455\ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ release()\ \{}
+\DoxyCodeLine{00456\ \ \ \ \ \ \ \ \ std::lock\_guard\ lg\ \{owner-\/>\_lock\};}
+\DoxyCodeLine{00457\ }
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!-\/-\/owner-\/>\_count)\ \{}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \ \ \ \ owner-\/>\_destruct(*get());}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ \ \ \ \ (*this)-\/>\string~element\_type();}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00462\ }
+\DoxyCodeLine{00463\ \ \ \ \ \ \ \ \ owner\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00465\ }
+\DoxyCodeLine{00466\ \ \ \ \ \ \ element\_type\ *get()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00467\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}element\_type\ *\textcolor{keyword}{>}(owner-\/>\_object\_buf.data());}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00469\ }
+\DoxyCodeLine{00470\ \ \ \ \ \ \ element\_type\ *operator-\/>()\ \{}
+\DoxyCodeLine{00471\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}element\_type\ *\textcolor{keyword}{>}(owner-\/>\_object\_buf.data());}
+\DoxyCodeLine{00472\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00473\ \ \ \ \ \};}
+\DoxyCodeLine{00474\ }
+\DoxyCodeLine{00475\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ FC,\ \textcolor{keyword}{class}\ FD>}
+\DoxyCodeLine{00476\ \ \ \ \ shared\_t(FC\ \&\&fc,\ FD\ \&\&fd):}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ \ \ \_construct\ \{std::forward<FC>(fc)\},}
+\DoxyCodeLine{00478\ \ \ \ \ \ \ \ \ \_destruct\ \{std::forward<FD>(fd)\}\ \{}
+\DoxyCodeLine{00479\ \ \ \ \ \}}
+\DoxyCodeLine{00480\ }
+\DoxyCodeLine{00481\ \ \ \ \ [[nodiscard]]\ \mbox{\hyperlink{classsafe_1_1shared__t}{ptr\_t}}\ ref()\ \{}
+\DoxyCodeLine{00482\ \ \ \ \ \ \ std::lock\_guard\ lg\ \{\_lock\};}
+\DoxyCodeLine{00483\ }
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\_count)\ \{}
+\DoxyCodeLine{00485\ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ (\_object\_buf.data())\ element\_type;}
+\DoxyCodeLine{00486\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_construct(*\textcolor{keyword}{reinterpret\_cast<}element\_type\ *\textcolor{keyword}{>}(\_object\_buf.data())))\ \{}
+\DoxyCodeLine{00487\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ptr\_t\ \{\textcolor{keyword}{nullptr}\};}
+\DoxyCodeLine{00488\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00490\ }
+\DoxyCodeLine{00491\ \ \ \ \ \ \ ++\_count;}
+\DoxyCodeLine{00492\ }
+\DoxyCodeLine{00493\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structsafe_1_1shared__t_1_1ptr__t}{ptr\_t}}\ \{\textcolor{keyword}{this}\};}
+\DoxyCodeLine{00494\ \ \ \ \ \}}
+\DoxyCodeLine{00495\ }
+\DoxyCodeLine{00496\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00497\ \ \ \ \ construct\_f\ \_construct;}
+\DoxyCodeLine{00498\ \ \ \ \ destruct\_f\ \_destruct;}
+\DoxyCodeLine{00499\ }
+\DoxyCodeLine{00500\ \ \ \ \ std::array<std::uint8\_t,\ \textcolor{keyword}{sizeof}(element\_type)>\ \_object\_buf;}
+\DoxyCodeLine{00501\ }
+\DoxyCodeLine{00502\ \ \ \ \ std::uint32\_t\ \_count;}
+\DoxyCodeLine{00503\ \ \ \ \ std::mutex\ \_lock;}
+\DoxyCodeLine{00504\ \ \ \};}
+\DoxyCodeLine{00505\ }
+\DoxyCodeLine{00506\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ F\_Construct,\ \textcolor{keyword}{class}\ F\_Destruct>}
+\DoxyCodeLine{00507\ \ \ \textcolor{keyword}{auto}\ make\_shared(F\_Construct\ \&\&fc,\ F\_Destruct\ \&\&fd)\ \{}
+\DoxyCodeLine{00508\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classsafe_1_1shared__t}{shared\_t<T>}}\ \{}
+\DoxyCodeLine{00509\ \ \ \ \ \ \ std::forward<F\_Construct>(fc),}
+\DoxyCodeLine{00510\ \ \ \ \ \ \ std::forward<F\_Destruct>(fd)}
+\DoxyCodeLine{00511\ \ \ \ \ \};}
+\DoxyCodeLine{00512\ \ \ \}}
+\DoxyCodeLine{00513\ }
+\DoxyCodeLine{00514\ \ \ \textcolor{keyword}{using\ }signal\_t\ =\ \mbox{\hyperlink{classsafe_1_1event__t}{event\_t<bool>}};}
+\DoxyCodeLine{00515\ }
+\DoxyCodeLine{00516\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classsafe_1_1mail__raw__t}{mail\_raw\_t}};}
+\DoxyCodeLine{00517\ \ \ \textcolor{keyword}{using\ }mail\_t\ =\ std::shared\_ptr<mail\_raw\_t>;}
+\DoxyCodeLine{00518\ }
+\DoxyCodeLine{00519\ \ \ \textcolor{keywordtype}{void}\ cleanup(\mbox{\hyperlink{classsafe_1_1mail__raw__t}{mail\_raw\_t}}\ *);}
+\DoxyCodeLine{00520\ }
+\DoxyCodeLine{00529\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00530\ \ \ \textcolor{keyword}{class\ }post\_t:\ \textcolor{keyword}{public}\ T\ \{}
+\DoxyCodeLine{00531\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00532\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}...\ Args>}
+\DoxyCodeLine{00533\ \ \ \ \ post\_t(mail\_t\ \mbox{\hyperlink{namespacemail}{mail}},\ Args\ \&\&...\mbox{\hyperlink{namespaceargs}{args}}):}
+\DoxyCodeLine{00534\ \ \ \ \ \ \ \ \ T(std::forward<Args>(\mbox{\hyperlink{namespaceargs}{args}})...),}
+\DoxyCodeLine{00535\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacemail}{mail}}\ \{std::move(\mbox{\hyperlink{namespacemail}{mail}})\}\ \{}
+\DoxyCodeLine{00536\ \ \ \ \ \}}
+\DoxyCodeLine{00537\ }
+\DoxyCodeLine{00538\ \ \ \ \ mail\_t\ \mbox{\hyperlink{namespacemail}{mail}};}
+\DoxyCodeLine{00539\ }
+\DoxyCodeLine{00540\ \ \ \ \ \string~post\_t()\ \{}
+\DoxyCodeLine{00541\ \ \ \ \ \ \ cleanup(\mbox{\hyperlink{namespacemail}{mail}}.get());}
+\DoxyCodeLine{00542\ \ \ \ \ \}}
+\DoxyCodeLine{00543\ \ \ \};}
+\DoxyCodeLine{00544\ }
+\DoxyCodeLine{00545\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00546\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{auto}\ lock(\textcolor{keyword}{const}\ std::weak\_ptr<void>\ \&wp)\ \{}
+\DoxyCodeLine{00547\ \ \ \ \ \textcolor{keywordflow}{return}\ std::reinterpret\_pointer\_cast<typename\ T::element\_type>(wp.lock());}
+\DoxyCodeLine{00548\ \ \ \}}
+\DoxyCodeLine{00549\ }
+\DoxyCodeLine{00557\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classsafe_1_1mail__raw__t}{mail\_raw\_t}}:\ \textcolor{keyword}{public}\ std::enable\_shared\_from\_this<mail\_raw\_t>\ \{}
+\DoxyCodeLine{00558\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00559\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00560\ \ \ \ \ \textcolor{keyword}{using\ }event\_t\ =\ std::shared\_ptr<post\_t<event\_t<T>>>;}
+\DoxyCodeLine{00561\ }
+\DoxyCodeLine{00562\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00563\ \ \ \ \ \textcolor{keyword}{using\ }queue\_t\ =\ std::shared\_ptr<post\_t<queue\_t<T>>>;}
+\DoxyCodeLine{00564\ }
+\DoxyCodeLine{00565\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00566\ \ \ \ \ event\_t<T>\ event(\textcolor{keyword}{const}\ std::string\_view\ \&\textcolor{keywordtype}{id})\ \{}
+\DoxyCodeLine{00567\ \ \ \ \ \ \ std::lock\_guard\ lg\ \{mutex\};}
+\DoxyCodeLine{00568\ }
+\DoxyCodeLine{00569\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ id\_to\_post.find(\textcolor{keywordtype}{id});}
+\DoxyCodeLine{00570\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ !=\ std::end(id\_to\_post))\ \{}
+\DoxyCodeLine{00571\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ lock<event\_t<T>>(it-\/>second);}
+\DoxyCodeLine{00572\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00573\ }
+\DoxyCodeLine{00574\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ post\ =\ std::make\_shared<typename\ event\_t<T>::element\_type>(shared\_from\_this());}
+\DoxyCodeLine{00575\ \ \ \ \ \ \ id\_to\_post.emplace(std::pair<std::string,\ std::weak\_ptr<void>>\ \{std::string\ \{\textcolor{keywordtype}{id}\},\ post\});}
+\DoxyCodeLine{00576\ }
+\DoxyCodeLine{00577\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ post;}
+\DoxyCodeLine{00578\ \ \ \ \ \}}
+\DoxyCodeLine{00579\ }
+\DoxyCodeLine{00580\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00581\ \ \ \ \ queue\_t<T>\ queue(\textcolor{keyword}{const}\ std::string\_view\ \&\textcolor{keywordtype}{id})\ \{}
+\DoxyCodeLine{00582\ \ \ \ \ \ \ std::lock\_guard\ lg\ \{mutex\};}
+\DoxyCodeLine{00583\ }
+\DoxyCodeLine{00584\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ id\_to\_post.find(\textcolor{keywordtype}{id});}
+\DoxyCodeLine{00585\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ !=\ std::end(id\_to\_post))\ \{}
+\DoxyCodeLine{00586\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ lock<queue\_t<T>>(it-\/>second);}
+\DoxyCodeLine{00587\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00588\ }
+\DoxyCodeLine{00589\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ post\ =\ std::make\_shared<typename\ queue\_t<T>::element\_type>(shared\_from\_this(),\ 32);}
+\DoxyCodeLine{00590\ \ \ \ \ \ \ id\_to\_post.emplace(std::pair<std::string,\ std::weak\_ptr<void>>\ \{std::string\ \{\textcolor{keywordtype}{id}\},\ post\});}
+\DoxyCodeLine{00591\ }
+\DoxyCodeLine{00592\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ post;}
+\DoxyCodeLine{00593\ \ \ \ \ \}}
+\DoxyCodeLine{00594\ }
+\DoxyCodeLine{00595\ \ \ \ \ \textcolor{keywordtype}{void}\ cleanup()\ \{}
+\DoxyCodeLine{00596\ \ \ \ \ \ \ std::lock\_guard\ lg\ \{mutex\};}
+\DoxyCodeLine{00597\ }
+\DoxyCodeLine{00598\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ it\ =\ std::begin(id\_to\_post);\ it\ !=\ std::end(id\_to\_post);\ ++it)\ \{}
+\DoxyCodeLine{00599\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ \&weak\ =\ it-\/>second;}
+\DoxyCodeLine{00600\ }
+\DoxyCodeLine{00601\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (weak.expired())\ \{}
+\DoxyCodeLine{00602\ \ \ \ \ \ \ \ \ \ \ id\_to\_post.erase(it);}
+\DoxyCodeLine{00603\ }
+\DoxyCodeLine{00604\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00605\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00606\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00607\ \ \ \ \ \}}
+\DoxyCodeLine{00608\ }
+\DoxyCodeLine{00609\ \ \ \ \ std::mutex\ mutex;}
+\DoxyCodeLine{00610\ }
+\DoxyCodeLine{00611\ \ \ \ \ std::map<std::string,\ std::weak\_ptr<void>,\ std::less<>>\ id\_to\_post;}
+\DoxyCodeLine{00612\ \ \ \};}
+\DoxyCodeLine{00613\ }
+\DoxyCodeLine{00614\ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ cleanup(\mbox{\hyperlink{classsafe_1_1mail__raw__t}{mail\_raw\_t}}\ *\mbox{\hyperlink{namespacemail}{mail}})\ \{}
+\DoxyCodeLine{00615\ \ \ \ \ \mbox{\hyperlink{namespacemail}{mail}}-\/>cleanup();}
+\DoxyCodeLine{00616\ \ \ \}}
+\DoxyCodeLine{00617\ \}\ \ \textcolor{comment}{//\ namespace\ safe}}
+
+\end{DoxyCode}

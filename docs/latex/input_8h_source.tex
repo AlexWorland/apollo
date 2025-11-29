@@ -1,0 +1,46 @@
+\doxysection{input.\+h}
+\hypertarget{input_8h_source}{}\label{input_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/input.h@{/Users/alexworland/autoBitrate/apollo/src/input.h}}
+\mbox{\hyperlink{input_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ standard\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <functional>}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ local\ includes}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}platform/common.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{thread__safe_8h}{thread\_safe.h}}"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{crypto_8h}{crypto.h}}"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }input\ \{}
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structinput_1_1input__t}{input\_t}};\ \ }
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00022\ \ \ \textcolor{keywordtype}{void}\ print(\textcolor{keywordtype}{void}\ *input);}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00028\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{input_8cpp_a4270b6d9a8dc15d78d5ec88c28a472b3}{reset}}(std::shared\_ptr<input\_t>\ \&input);}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{void}\ passthrough(std::shared\_ptr<input\_t>\ \&input,\ std::vector<std::uint8\_t>\ \&\&input\_data,\ \textcolor{keyword}{const}\ crypto::PERM\&\ permission);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00042\ \ \ [[nodiscard]]\ std::unique\_ptr<platf::deinit\_t>\ \mbox{\hyperlink{input_8cpp_a43605f236cc9880b306a530c9040875c}{init}}();}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00048\ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{input_8cpp_a1b841c2efb01fdcfb17cc452dd394bdb}{probe\_gamepads}}();}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00055\ \ \ std::shared\_ptr<input\_t>\ \mbox{\hyperlink{input_8cpp_aafc5dea242b2ee32550394aab76b7cca}{alloc}}(safe::mail\_t\ mail);}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structinput_1_1touch__port__t}{touch\_port\_t}}:\ \textcolor{keyword}{public}\ platf::touch\_port\_t\ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structinput_1_1touch__port__t_a1f72b5f1961753a6715579372ca63f9f}{env\_width}};\ \ }
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structinput_1_1touch__port__t_afa7ad36eb9fb0c32369030326f0eee43}{env\_height}};\ \ }
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{structinput_1_1touch__port__t_a817214d39d67a7bdd7f1f9d2fa020b91}{client\_offsetX}};\ \ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{structinput_1_1touch__port__t_a26fdd7425b69609bb187f0eeff2b4c8e}{client\_offsetY}};\ \ }
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{structinput_1_1touch__port__t_ac44e416db10a3647a329d45ebe63728b}{scalar\_inv}};\ \ }
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keyword}{explicit}\ \textcolor{keyword}{operator}\ bool()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ width\ !=\ 0\ \&\&\ height\ !=\ 0\ \&\&\ \mbox{\hyperlink{structinput_1_1touch__port__t_a1f72b5f1961753a6715579372ca63f9f}{env\_width}}\ !=\ 0\ \&\&\ \mbox{\hyperlink{structinput_1_1touch__port__t_afa7ad36eb9fb0c32369030326f0eee43}{env\_height}}\ !=\ 0;}
+\DoxyCodeLine{00073\ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \};}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00083\ \ \ std::pair<float,\ float>\ scale\_client\_contact\_area(\textcolor{keyword}{const}\ std::pair<float,\ float>\ \&val,\ uint16\_t\ rotation,\ \textcolor{keyword}{const}\ std::pair<float,\ float>\ \&scalar);}
+\DoxyCodeLine{00084\ \}\ \ \textcolor{comment}{//\ namespace\ input}}
+
+\end{DoxyCode}

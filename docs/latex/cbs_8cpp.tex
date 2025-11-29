@@ -1,0 +1,194 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/cbs.cpp File Reference}
+\hypertarget{cbs_8cpp}{}\label{cbs_8cpp}\index{/Users/alexworland/autoBitrate/apollo/src/cbs.cpp@{/Users/alexworland/autoBitrate/apollo/src/cbs.cpp}}
+
+
+Definitions for FFmpeg Coded Bitstream API.  
+
+
+{\ttfamily \#include $<$libavcodec/avcodec.\+h$>$}\newline
+{\ttfamily \#include $<$libavcodec/cbs\+\_\+h264.\+h$>$}\newline
+{\ttfamily \#include $<$libavcodec/cbs\+\_\+h265.\+h$>$}\newline
+{\ttfamily \#include $<$libavcodec/h264\+\_\+levels.\+h$>$}\newline
+{\ttfamily \#include $<$libavutil/pixdesc.\+h$>$}\newline
+{\ttfamily \#include "{}cbs.\+h"{}}\newline
+{\ttfamily \#include "{}logging.\+h"{}}\newline
+{\ttfamily \#include "{}utility.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classcbs_1_1frag__t}{cbs\+::frag\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Coded bitstream fragment wrapper. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{cbs_8cpp_a1d9854c54967eea638b9043eebcfbfc8}{cbs\+::ctx\+\_\+t}} = util\+::safe\+\_\+ptr$<$Coded\+Bitstream\+Context, \mbox{\hyperlink{cbs_8cpp_a909b001ee2f27d2690296c9c8e8a9118}{close}}$>$
+\begin{DoxyCompactList}\small\item\em Coded bitstream context pointer type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{cbs_8cpp_a909b001ee2f27d2690296c9c8e8a9118}{cbs\+::close}} (Coded\+Bitstream\+Context \texorpdfstring{$\ast$}{*}c)
+\begin{DoxyCompactList}\small\item\em Close and free a Coded\+Bitstream\+Context. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classutil_1_1buffer__t}{util\+::buffer\+\_\+t}}$<$ std\+::uint8\+\_\+t $>$ \mbox{\hyperlink{cbs_8cpp_af50b16663651e9c4c78bd5837cd31dd5}{cbs\+::write}} (\mbox{\hyperlink{cbs_8cpp_a1d9854c54967eea638b9043eebcfbfc8}{cbs\+::ctx\+\_\+t}} \&cbs\+\_\+ctx, std\+::uint8\+\_\+t nal, void \texorpdfstring{$\ast$}{*}uh, AVCodec\+ID codec\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Write NAL unit to bitstream using existing context. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classutil_1_1buffer__t}{util\+::buffer\+\_\+t}}$<$ std\+::uint8\+\_\+t $>$ \mbox{\hyperlink{cbs_8cpp_a4e8e3615bdebcc39e6ee9f3e570cf943}{cbs\+::write}} (std\+::uint8\+\_\+t nal, void \texorpdfstring{$\ast$}{*}uh, AVCodec\+ID codec\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Write NAL unit to bitstream (creates temporary context). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structcbs_1_1h264__t}{h264\+\_\+t}} \mbox{\hyperlink{cbs_8cpp_ac408f4ef0aaacd29695429d20f8268c4}{cbs\+::make\+\_\+sps\+\_\+h264}} (const AVCodec\+Context \texorpdfstring{$\ast$}{*}ctx, const AVPacket \texorpdfstring{$\ast$}{*}packet)
+\begin{DoxyCompactList}\small\item\em Create H.\+264 Sequence Parameter Set from codec context and packet. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structcbs_1_1hevc__t}{hevc\+\_\+t}} \mbox{\hyperlink{cbs_8cpp_a3479e9b4b8233a0496c0e781ca264580}{cbs\+::make\+\_\+sps\+\_\+hevc}} (const AVCodec\+Context \texorpdfstring{$\ast$}{*}ctx, const AVPacket \texorpdfstring{$\ast$}{*}packet)
+\begin{DoxyCompactList}\small\item\em Create HEVC Sequence Parameter Set from codec context and packet. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{cbs_8cpp_a4982caca63442cb3e81cd22b713c2069}{cbs\+::validate\+\_\+sps}} (const AVPacket \texorpdfstring{$\ast$}{*}packet, int codec\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Validates the Sequence Parameter Set (SPS) of a given packet. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Definitions for FFmpeg Coded Bitstream API. 
+
+
+
+\label{doc-typedef-members}
+\Hypertarget{cbs_8cpp_doc-typedef-members}
+\doxysubsection{Typedef Documentation}
+\Hypertarget{cbs_8cpp_a1d9854c54967eea638b9043eebcfbfc8}\index{cbs.cpp@{cbs.cpp}!ctx\_t@{ctx\_t}}
+\index{ctx\_t@{ctx\_t}!cbs.cpp@{cbs.cpp}}
+\doxysubsubsection{\texorpdfstring{ctx\_t}{ctx\_t}}
+{\footnotesize\ttfamily \label{cbs_8cpp_a1d9854c54967eea638b9043eebcfbfc8} 
+using \mbox{\hyperlink{cbs_8cpp_a1d9854c54967eea638b9043eebcfbfc8}{cbs\+::ctx\+\_\+t}} = util\+::safe\+\_\+ptr$<$Coded\+Bitstream\+Context, close$>$}
+
+
+
+Coded bitstream context pointer type. 
+
+Smart pointer managing Coded\+Bitstream\+Context lifecycle with automatic cleanup. 
+
+\label{doc-func-members}
+\Hypertarget{cbs_8cpp_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{cbs_8cpp_a909b001ee2f27d2690296c9c8e8a9118}\index{cbs.cpp@{cbs.cpp}!close@{close}}
+\index{close@{close}!cbs.cpp@{cbs.cpp}}
+\doxysubsubsection{\texorpdfstring{close()}{close()}}
+{\footnotesize\ttfamily \label{cbs_8cpp_a909b001ee2f27d2690296c9c8e8a9118} 
+void cbs\+::close (\begin{DoxyParamCaption}\item[{Coded\+Bitstream\+Context \texorpdfstring{$\ast$}{*}}]{c}{}\end{DoxyParamCaption})}
+
+
+
+Close and free a Coded\+Bitstream\+Context. 
+
+Closes and frees resources associated with a Coded\+Bitstream\+Context. Used as a deleter for the ctx\+\_\+t smart pointer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & Pointer to the Coded\+Bitstream\+Context to close. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{cbs_8cpp_ac408f4ef0aaacd29695429d20f8268c4}\index{cbs.cpp@{cbs.cpp}!make\_sps\_h264@{make\_sps\_h264}}
+\index{make\_sps\_h264@{make\_sps\_h264}!cbs.cpp@{cbs.cpp}}
+\doxysubsubsection{\texorpdfstring{make\_sps\_h264()}{make\_sps\_h264()}}
+{\footnotesize\ttfamily \label{cbs_8cpp_ac408f4ef0aaacd29695429d20f8268c4} 
+h264\+\_\+t cbs\+::make\+\_\+sps\+\_\+h264 (\begin{DoxyParamCaption}\item[{const AVCodec\+Context \texorpdfstring{$\ast$}{*}}]{ctx}{, }\item[{const AVPacket \texorpdfstring{$\ast$}{*}}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+Create H.\+264 Sequence Parameter Set from codec context and packet. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ctx} & The AVCodec\+Context containing codec information. \\
+\hline
+{\em packet} & The AVPacket containing encoded data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+H.\+264 parameter set structure. 
+\end{DoxyReturn}
+\Hypertarget{cbs_8cpp_a3479e9b4b8233a0496c0e781ca264580}\index{cbs.cpp@{cbs.cpp}!make\_sps\_hevc@{make\_sps\_hevc}}
+\index{make\_sps\_hevc@{make\_sps\_hevc}!cbs.cpp@{cbs.cpp}}
+\doxysubsubsection{\texorpdfstring{make\_sps\_hevc()}{make\_sps\_hevc()}}
+{\footnotesize\ttfamily \label{cbs_8cpp_a3479e9b4b8233a0496c0e781ca264580} 
+hevc\+\_\+t cbs\+::make\+\_\+sps\+\_\+hevc (\begin{DoxyParamCaption}\item[{const AVCodec\+Context \texorpdfstring{$\ast$}{*}}]{ctx}{, }\item[{const AVPacket \texorpdfstring{$\ast$}{*}}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+Create HEVC Sequence Parameter Set from codec context and packet. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ctx} & The AVCodec\+Context containing codec information. \\
+\hline
+{\em packet} & The AVPacket containing encoded data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+HEVC parameter set structure. 
+\end{DoxyReturn}
+\Hypertarget{cbs_8cpp_a4982caca63442cb3e81cd22b713c2069}\index{cbs.cpp@{cbs.cpp}!validate\_sps@{validate\_sps}}
+\index{validate\_sps@{validate\_sps}!cbs.cpp@{cbs.cpp}}
+\doxysubsubsection{\texorpdfstring{validate\_sps()}{validate\_sps()}}
+{\footnotesize\ttfamily \label{cbs_8cpp_a4982caca63442cb3e81cd22b713c2069} 
+bool cbs\+::validate\+\_\+sps (\begin{DoxyParamCaption}\item[{const AVPacket \texorpdfstring{$\ast$}{*}}]{packet}{, }\item[{int}]{codec\+\_\+id}{}\end{DoxyParamCaption})}
+
+
+
+Validates the Sequence Parameter Set (SPS) of a given packet. 
+
+This function initializes a Coded Bitstream Context and reads the packet into a Coded Bitstream Fragment. It then checks if the SPS-\/\texorpdfstring{$>$}{>}VUI (Video Usability Information) is present in the active SPS of the packet. This is done for both H264 and H265 codecs.
+
+
+\begin{DoxyParams}{Parameters}
+{\em packet} & The packet to validate. \\
+\hline
+{\em codec\+\_\+id} & The ID of the codec used (either AV\+\_\+\+CODEC\+\_\+\+ID\+\_\+\+H264 or AV\+\_\+\+CODEC\+\_\+\+ID\+\_\+\+H265). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the SPS-\/\texorpdfstring{$>$}{>}VUI is present in the active SPS of the packet, false otherwise. 
+\end{DoxyReturn}
+\Hypertarget{cbs_8cpp_af50b16663651e9c4c78bd5837cd31dd5}\index{cbs.cpp@{cbs.cpp}!write@{write}}
+\index{write@{write}!cbs.cpp@{cbs.cpp}}
+\doxysubsubsection{\texorpdfstring{write()}{write()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{cbs_8cpp_af50b16663651e9c4c78bd5837cd31dd5} 
+\mbox{\hyperlink{classutil_1_1buffer__t}{util\+::buffer\+\_\+t}}$<$ std\+::uint8\+\_\+t $>$ cbs\+::write (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{cbs_8cpp_a1d9854c54967eea638b9043eebcfbfc8}{cbs\+::ctx\+\_\+t}} \&}]{cbs\+\_\+ctx}{, }\item[{std\+::uint8\+\_\+t}]{nal}{, }\item[{void \texorpdfstring{$\ast$}{*}}]{uh}{, }\item[{AVCodec\+ID}]{codec\+\_\+id}{}\end{DoxyParamCaption})}
+
+
+
+Write NAL unit to bitstream using existing context. 
+
+Inserts a NAL unit into a coded bitstream fragment and writes it to a buffer using the provided context.
+
+
+\begin{DoxyParams}{Parameters}
+{\em cbs\+\_\+ctx} & Coded bitstream context to use for writing. \\
+\hline
+{\em nal} & NAL unit type. \\
+\hline
+{\em uh} & NAL unit header structure (codec-\/specific). \\
+\hline
+{\em codec\+\_\+id} & Codec ID (H.\+264, H.\+265, AV1, etc.). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Buffer containing the written bitstream data, or empty buffer on error. 
+\end{DoxyReturn}
+\Hypertarget{cbs_8cpp_a4e8e3615bdebcc39e6ee9f3e570cf943}\index{cbs.cpp@{cbs.cpp}!write@{write}}
+\index{write@{write}!cbs.cpp@{cbs.cpp}}
+\doxysubsubsection{\texorpdfstring{write()}{write()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{cbs_8cpp_a4e8e3615bdebcc39e6ee9f3e570cf943} 
+\mbox{\hyperlink{classutil_1_1buffer__t}{util\+::buffer\+\_\+t}}$<$ std\+::uint8\+\_\+t $>$ cbs\+::write (\begin{DoxyParamCaption}\item[{std\+::uint8\+\_\+t}]{nal}{, }\item[{void \texorpdfstring{$\ast$}{*}}]{uh}{, }\item[{AVCodec\+ID}]{codec\+\_\+id}{}\end{DoxyParamCaption})}
+
+
+
+Write NAL unit to bitstream (creates temporary context). 
+
+Creates a temporary coded bitstream context and writes a NAL unit to a buffer. Convenience function for one-\/off operations.
+
+
+\begin{DoxyParams}{Parameters}
+{\em nal} & NAL unit type. \\
+\hline
+{\em uh} & NAL unit header structure (codec-\/specific). \\
+\hline
+{\em codec\+\_\+id} & Codec ID (H.\+264, H.\+265, AV1, etc.). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Buffer containing the written bitstream data, or empty buffer on error. 
+\end{DoxyReturn}

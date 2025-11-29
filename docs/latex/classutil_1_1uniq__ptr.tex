@@ -1,0 +1,122 @@
+\doxysection{util\+::uniq\+\_\+ptr\texorpdfstring{$<$}{<} T, D \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classutil_1_1uniq__ptr}{}\label{classutil_1_1uniq__ptr}\index{util::uniq\_ptr$<$ T, D $>$@{util::uniq\_ptr$<$ T, D $>$}}
+
+
+Unique pointer with addressable pointer storage.  
+
+
+
+
+{\ttfamily \#include $<$utility.\+h$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_ac06b4980a7932a4c00ded86a1618d124}\label{classutil_1_1uniq__ptr_ac06b4980a7932a4c00ded86a1618d124} 
+using {\bfseries element\+\_\+type} = T
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_a176a1973275f031d1258ab2d8290ec32}\label{classutil_1_1uniq__ptr_a176a1973275f031d1258ab2d8290ec32} 
+using {\bfseries pointer} = element\+\_\+type \texorpdfstring{$\ast$}{*}
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_a03b1bd2894b172dfeb25e95224c4073f}\label{classutil_1_1uniq__ptr_a03b1bd2894b172dfeb25e95224c4073f} 
+using {\bfseries const\+\_\+pointer} = element\+\_\+type const \texorpdfstring{$\ast$}{*}
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_aaf077f3abb989b4b150ee1935bbc8337}\label{classutil_1_1uniq__ptr_aaf077f3abb989b4b150ee1935bbc8337} 
+using {\bfseries deleter\+\_\+type} = D
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_add7e06e363bf816b0aec72d0fc70daae}\label{classutil_1_1uniq__ptr_add7e06e363bf816b0aec72d0fc70daae} 
+constexpr {\bfseries uniq\+\_\+ptr} (std\+::nullptr\+\_\+t) noexcept
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_a2298bf9f41455a6d7965ac98bb612083}\label{classutil_1_1uniq__ptr_a2298bf9f41455a6d7965ac98bb612083} 
+{\bfseries uniq\+\_\+ptr} (const uniq\+\_\+ptr \&other) noexcept=delete
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_a7a42604cb572ec47af179168c3c5d2a3}\label{classutil_1_1uniq__ptr_a7a42604cb572ec47af179168c3c5d2a3} 
+uniq\+\_\+ptr \& {\bfseries operator=} (const uniq\+\_\+ptr \&other) noexcept=delete
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_a3ee02d6676b356154f1d39735177d402}\label{classutil_1_1uniq__ptr_a3ee02d6676b356154f1d39735177d402} 
+{\footnotesize template$<$class V$>$ }\\{\bfseries uniq\+\_\+ptr} (V \texorpdfstring{$\ast$}{*}p) noexcept
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_a557cb0b75540a9c5c7482e75b2c93be0}\label{classutil_1_1uniq__ptr_a557cb0b75540a9c5c7482e75b2c93be0} 
+{\footnotesize template$<$class V$>$ }\\{\bfseries uniq\+\_\+ptr} (std\+::unique\+\_\+ptr$<$ V, deleter\+\_\+type $>$ \&\&uniq) noexcept
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_abd583bafe005e9a09f2144221256d8b2}\label{classutil_1_1uniq__ptr_abd583bafe005e9a09f2144221256d8b2} 
+{\footnotesize template$<$class V$>$ }\\{\bfseries uniq\+\_\+ptr} (uniq\+\_\+ptr$<$ V, deleter\+\_\+type $>$ \&\&other) noexcept
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_aa25b72c3186e879abd3a1e483b6c58d8}\label{classutil_1_1uniq__ptr_aa25b72c3186e879abd3a1e483b6c58d8} 
+{\footnotesize template$<$class V$>$ }\\uniq\+\_\+ptr \& {\bfseries operator=} (uniq\+\_\+ptr$<$ V, deleter\+\_\+type $>$ \&\&other) noexcept
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_ad65bcc53df6e215a250e0b9d77e888fc}\label{classutil_1_1uniq__ptr_ad65bcc53df6e215a250e0b9d77e888fc} 
+{\footnotesize template$<$class V$>$ }\\uniq\+\_\+ptr \& {\bfseries operator=} (std\+::unique\+\_\+ptr$<$ V, deleter\+\_\+type $>$ \&\&uniq) noexcept
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_a27cceeb7be5006e6dde8399424b050bf}\label{classutil_1_1uniq__ptr_a27cceeb7be5006e6dde8399424b050bf} 
+void {\bfseries reset} (pointer p=pointer())
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_a4244eb4b547fb2c2c6a7a87d5b217626}\label{classutil_1_1uniq__ptr_a4244eb4b547fb2c2c6a7a87d5b217626} 
+pointer {\bfseries release} ()
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_adab261966d3c7b432add2ce8204005e2}\label{classutil_1_1uniq__ptr_adab261966d3c7b432add2ce8204005e2} 
+pointer {\bfseries get} ()
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_ae9303e11c6c214917bcf3ea758e7a023}\label{classutil_1_1uniq__ptr_ae9303e11c6c214917bcf3ea758e7a023} 
+const\+\_\+pointer {\bfseries get} () const
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_a94d8291dd67e2a0e09c0b13cace366d7}\label{classutil_1_1uniq__ptr_a94d8291dd67e2a0e09c0b13cace366d7} 
+std\+::add\+\_\+lvalue\+\_\+reference\+\_\+t$<$ element\+\_\+type const $>$ {\bfseries operator\texorpdfstring{$\ast$}{*}} () const
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_a5d9ceb4a3d0a03e5d75ec9351f0cb7af}\label{classutil_1_1uniq__ptr_a5d9ceb4a3d0a03e5d75ec9351f0cb7af} 
+std\+::add\+\_\+lvalue\+\_\+reference\+\_\+t$<$ element\+\_\+type $>$ {\bfseries operator\texorpdfstring{$\ast$}{*}} ()
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_a194d07df30d440c8777ec59a0624f9fa}\label{classutil_1_1uniq__ptr_a194d07df30d440c8777ec59a0624f9fa} 
+const\+\_\+pointer {\bfseries operator-\/$>$} () const
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_a2883e84200918a06ed3e44d8c8d77258}\label{classutil_1_1uniq__ptr_a2883e84200918a06ed3e44d8c8d77258} 
+pointer {\bfseries operator-\/$>$} ()
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_ad9bec719b6d3c19a61eba9df2b297d8c}\label{classutil_1_1uniq__ptr_ad9bec719b6d3c19a61eba9df2b297d8c} 
+pointer \texorpdfstring{$\ast$}{*} {\bfseries operator\&} () const
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_a392ff8087fe1384389feb1a9614a76c3}\label{classutil_1_1uniq__ptr_a392ff8087fe1384389feb1a9614a76c3} 
+pointer \texorpdfstring{$\ast$}{*} {\bfseries operator\&} ()
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_a23e73f29df1c93e9b56c30f9c722623b}\label{classutil_1_1uniq__ptr_a23e73f29df1c93e9b56c30f9c722623b} 
+deleter\+\_\+type \& {\bfseries get\+\_\+deleter} ()
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_a174786b055e6f665763995c624469a0f}\label{classutil_1_1uniq__ptr_a174786b055e6f665763995c624469a0f} 
+const deleter\+\_\+type \& {\bfseries get\+\_\+deleter} () const
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_a856efd450aac634ab660ac62a1d4c0f9}\label{classutil_1_1uniq__ptr_a856efd450aac634ab660ac62a1d4c0f9} 
+{\bfseries operator bool} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_ad3c99bb3589aa2fc145cb6379dea1db7}\label{classutil_1_1uniq__ptr_ad3c99bb3589aa2fc145cb6379dea1db7} 
+pointer {\bfseries \+\_\+p}
+\item 
+\Hypertarget{classutil_1_1uniq__ptr_a9797fbe7d5afbec29155044e425446cc}\label{classutil_1_1uniq__ptr_a9797fbe7d5afbec29155044e425446cc} 
+deleter\+\_\+type {\bfseries \+\_\+deleter}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T, typename D = std\+::default\+\_\+delete$<$\+T$>$$>$\newline
+class util\+::uniq\+\_\+ptr$<$ T, D $>$}
+Unique pointer with addressable pointer storage. 
+
+Similar to std\+::unique\+\_\+ptr but allows getting the address of the pointer itself, which is useful for C APIs that require pointer-\/to-\/pointer arguments.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Element type. \\
+\hline
+{\em D} & Deleter type (defaults to std\+::default\+\_\+delete$<$\+T$>$). \\
+\hline
+\end{DoxyTemplParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{utility_8h}{utility.\+h}}\end{DoxyCompactItemize}

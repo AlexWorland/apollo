@@ -1,0 +1,107 @@
+\doxysection{proc\+::ctx\+\_\+t Struct Reference}
+\hypertarget{structproc_1_1ctx__t}{}\label{structproc_1_1ctx__t}\index{proc::ctx\_t@{proc::ctx\_t}}
+
+
+Application context structure.  
+
+
+
+
+{\ttfamily \#include $<$process.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structproc_1_1ctx__t_a5e6abb29ab313dd71d2d23d8affc58de}\label{structproc_1_1ctx__t_a5e6abb29ab313dd71d2d23d8affc58de} 
+std\+::vector$<$ \mbox{\hyperlink{process_8h_a459d7435936efc81780c07e6c4181dfe}{cmd\+\_\+t}} $>$ {\bfseries prep\+\_\+cmds}
+\begin{DoxyCompactList}\small\item\em Pre-\/commands\+: guaranteed to be executed unless any fail. \end{DoxyCompactList}\item 
+\Hypertarget{structproc_1_1ctx__t_a7a5feab13daa62b315a3694b49aa1802}\label{structproc_1_1ctx__t_a7a5feab13daa62b315a3694b49aa1802} 
+std\+::vector$<$ \mbox{\hyperlink{process_8h_a459d7435936efc81780c07e6c4181dfe}{cmd\+\_\+t}} $>$ {\bfseries state\+\_\+cmds}
+\begin{DoxyCompactList}\small\item\em State commands for display configuration. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{structproc_1_1ctx__t_a9f64a975755e4a5566d0d50df3076076}{detached}}
+\begin{DoxyCompactList}\small\item\em Detached commands that run independently of Sunshine. \end{DoxyCompactList}\item 
+\Hypertarget{structproc_1_1ctx__t_af0e8db01a5a167962923f8225bab21c8}\label{structproc_1_1ctx__t_af0e8db01a5a167962923f8225bab21c8} 
+std\+::string {\bfseries idx}
+\begin{DoxyCompactList}\small\item\em Application index. \end{DoxyCompactList}\item 
+\Hypertarget{structproc_1_1ctx__t_a2fad854a0ec6769f3781344dbb354834}\label{structproc_1_1ctx__t_a2fad854a0ec6769f3781344dbb354834} 
+std\+::string {\bfseries uuid}
+\begin{DoxyCompactList}\small\item\em Application UUID. \end{DoxyCompactList}\item 
+\Hypertarget{structproc_1_1ctx__t_aef2c1f8942ef07a20be6922dd3214adb}\label{structproc_1_1ctx__t_aef2c1f8942ef07a20be6922dd3214adb} 
+std\+::string {\bfseries name}
+\begin{DoxyCompactList}\small\item\em Application name. \end{DoxyCompactList}\item 
+\Hypertarget{structproc_1_1ctx__t_ad1ba625cb2326331d3ef84947aab325c}\label{structproc_1_1ctx__t_ad1ba625cb2326331d3ef84947aab325c} 
+std\+::string {\bfseries cmd}
+\begin{DoxyCompactList}\small\item\em Command to run (runs until session ends or command exits). \end{DoxyCompactList}\item 
+\Hypertarget{structproc_1_1ctx__t_a0bc45018f2067378cfeb9e098044ec55}\label{structproc_1_1ctx__t_a0bc45018f2067378cfeb9e098044ec55} 
+std\+::string {\bfseries working\+\_\+dir}
+\begin{DoxyCompactList}\small\item\em Process working directory (required for some games). \end{DoxyCompactList}\item 
+\Hypertarget{structproc_1_1ctx__t_af8e9a81661328e1754ed7a657f8020c6}\label{structproc_1_1ctx__t_af8e9a81661328e1754ed7a657f8020c6} 
+std\+::string {\bfseries output}
+\begin{DoxyCompactList}\small\item\em Output handling\+: empty = append to sunshine output, "{}null"{} = discard, filename = append to file. \end{DoxyCompactList}\item 
+\Hypertarget{structproc_1_1ctx__t_ae4ff5f4124072f035c15b2889529ae35}\label{structproc_1_1ctx__t_ae4ff5f4124072f035c15b2889529ae35} 
+std\+::string {\bfseries image\+\_\+path}
+\begin{DoxyCompactList}\small\item\em Application image/icon path. \end{DoxyCompactList}\item 
+\Hypertarget{structproc_1_1ctx__t_a064458035af416787a04fb9765ba0c55}\label{structproc_1_1ctx__t_a064458035af416787a04fb9765ba0c55} 
+std\+::string {\bfseries id}
+\begin{DoxyCompactList}\small\item\em Application ID. \end{DoxyCompactList}\item 
+\Hypertarget{structproc_1_1ctx__t_a246afbe072f33f424615f720f5979f36}\label{structproc_1_1ctx__t_a246afbe072f33f424615f720f5979f36} 
+std\+::string {\bfseries gamepad}
+\begin{DoxyCompactList}\small\item\em Gamepad configuration. \end{DoxyCompactList}\item 
+\Hypertarget{structproc_1_1ctx__t_a1953c0ca009ebf710ad1e5cba4ff67ee}\label{structproc_1_1ctx__t_a1953c0ca009ebf710ad1e5cba4ff67ee} 
+bool {\bfseries elevated}
+\begin{DoxyCompactList}\small\item\em Whether to run with elevated privileges. \end{DoxyCompactList}\item 
+\Hypertarget{structproc_1_1ctx__t_af200f178645a45689b617903006b1856}\label{structproc_1_1ctx__t_af200f178645a45689b617903006b1856} 
+bool {\bfseries auto\+\_\+detach}
+\begin{DoxyCompactList}\small\item\em Auto-\/detach if process exits quickly. \end{DoxyCompactList}\item 
+\Hypertarget{structproc_1_1ctx__t_a29ea67e3cdeff10a5c66c9f4fb2c52a7}\label{structproc_1_1ctx__t_a29ea67e3cdeff10a5c66c9f4fb2c52a7} 
+bool {\bfseries wait\+\_\+all}
+\begin{DoxyCompactList}\small\item\em Wait for all child processes. \end{DoxyCompactList}\item 
+\Hypertarget{structproc_1_1ctx__t_a6f36fd47abd8225b55f46a17821f7424}\label{structproc_1_1ctx__t_a6f36fd47abd8225b55f46a17821f7424} 
+bool {\bfseries virtual\+\_\+display}
+\begin{DoxyCompactList}\small\item\em Use virtual display. \end{DoxyCompactList}\item 
+\Hypertarget{structproc_1_1ctx__t_a5124b2f975dc2d3abaf14523c3cd7df0}\label{structproc_1_1ctx__t_a5124b2f975dc2d3abaf14523c3cd7df0} 
+bool {\bfseries virtual\+\_\+display\+\_\+primary}
+\begin{DoxyCompactList}\small\item\em Make virtual display primary. \end{DoxyCompactList}\item 
+\Hypertarget{structproc_1_1ctx__t_ad78b20241ab86e7ef57c2bf096145a85}\label{structproc_1_1ctx__t_ad78b20241ab86e7ef57c2bf096145a85} 
+bool {\bfseries use\+\_\+app\+\_\+identity}
+\begin{DoxyCompactList}\small\item\em Use application identity. \end{DoxyCompactList}\item 
+\Hypertarget{structproc_1_1ctx__t_a795f093536c988e3b626c05463981283}\label{structproc_1_1ctx__t_a795f093536c988e3b626c05463981283} 
+bool {\bfseries per\+\_\+client\+\_\+app\+\_\+identity}
+\begin{DoxyCompactList}\small\item\em Use per-\/client application identity. \end{DoxyCompactList}\item 
+\Hypertarget{structproc_1_1ctx__t_a2da402bb05270ccba9ce866df9d13cbe}\label{structproc_1_1ctx__t_a2da402bb05270ccba9ce866df9d13cbe} 
+bool {\bfseries allow\+\_\+client\+\_\+commands}
+\begin{DoxyCompactList}\small\item\em Allow client to send commands. \end{DoxyCompactList}\item 
+\Hypertarget{structproc_1_1ctx__t_a31d9c24568b1d08f305169f7c4c5814a}\label{structproc_1_1ctx__t_a31d9c24568b1d08f305169f7c4c5814a} 
+bool {\bfseries terminate\+\_\+on\+\_\+pause}
+\begin{DoxyCompactList}\small\item\em Terminate application when paused. \end{DoxyCompactList}\item 
+\Hypertarget{structproc_1_1ctx__t_aaf56b82372bcdbc7b080c78338ca41fe}\label{structproc_1_1ctx__t_aaf56b82372bcdbc7b080c78338ca41fe} 
+int {\bfseries scale\+\_\+factor}
+\begin{DoxyCompactList}\small\item\em Display scale factor. \end{DoxyCompactList}\item 
+\Hypertarget{structproc_1_1ctx__t_a81eab27eddcae97218601ec64a301e0a}\label{structproc_1_1ctx__t_a81eab27eddcae97218601ec64a301e0a} 
+std\+::chrono\+::seconds {\bfseries exit\+\_\+timeout}
+\begin{DoxyCompactList}\small\item\em Timeout for graceful exit. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Application context structure. 
+
+Contains configuration for launching and managing applications. 
+
+\label{doc-variable-members}
+\Hypertarget{structproc_1_1ctx__t_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structproc_1_1ctx__t_a9f64a975755e4a5566d0d50df3076076}\index{proc::ctx\_t@{proc::ctx\_t}!detached@{detached}}
+\index{detached@{detached}!proc::ctx\_t@{proc::ctx\_t}}
+\doxysubsubsection{\texorpdfstring{detached}{detached}}
+{\footnotesize\ttfamily \label{structproc_1_1ctx__t_a9f64a975755e4a5566d0d50df3076076} 
+std\+::vector$<$std\+::string$>$ proc\+::ctx\+\_\+t\+::detached}
+
+
+
+Detached commands that run independently of Sunshine. 
+
+Some applications (e.\+g., Steam) either exit quickly or run indefinitely. Apps with normal child processes are handled by process grouping (wait\+\_\+all). Apps with indirect child processes (e.\+g., UWP) use auto-\/detach heuristic. For background processes that shouldn\textquotesingle{}t be managed, use detached commands. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{process_8h}{process.\+h}}\end{DoxyCompactItemize}

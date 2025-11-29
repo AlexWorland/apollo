@@ -1,0 +1,103 @@
+\doxysection{upnp\+::deinit\+\_\+t Class Reference}
+\hypertarget{classupnp_1_1deinit__t}{}\label{classupnp_1_1deinit__t}\index{upnp::deinit\_t@{upnp::deinit\_t}}
+
+
+RAII deinitialization helper for UPnP.  
+
+
+Inheritance diagram for upnp\+::deinit\+\_\+t\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classupnp_1_1deinit__t}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classupnp_1_1deinit__t_ade488be5115c96286e012055c134a7e2}{create\+\_\+ipv6\+\_\+pinholes}} ()
+\begin{DoxyCompactList}\small\item\em Opens pinholes for IPv6 traffic if the IGD is capable. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classupnp_1_1deinit__t_a5d45866bd0f6253b7a08d8010c4bf4ac}{map\+\_\+upnp\+\_\+port}} (const IGDdatas \&data, const urls\+\_\+t \&urls, const std\+::string \&lan\+\_\+addr, const \mbox{\hyperlink{structupnp_1_1mapping__t}{mapping\+\_\+t}} \&mapping)
+\begin{DoxyCompactList}\small\item\em Maps a port via UPnP. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classupnp_1_1deinit__t_aea8dce30642c9142d9da82dc15c1ebeb}{unmap\+\_\+all\+\_\+upnp\+\_\+ports}} (const urls\+\_\+t \&urls, const IGDdatas \&data)
+\begin{DoxyCompactList}\small\item\em Unmaps all ports. \end{DoxyCompactList}\item 
+\Hypertarget{classupnp_1_1deinit__t_a1786cd31228965cdbbc93d3a956a3318}\label{classupnp_1_1deinit__t_a1786cd31228965cdbbc93d3a956a3318} 
+void {\bfseries upnp\+\_\+thread\+\_\+proc} ()
+\begin{DoxyCompactList}\small\item\em Maintains UPnP port forwarding rules. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classupnp_1_1deinit__t_a05b99bfa0fb90abd1903b9b1a7b23548}\label{classupnp_1_1deinit__t_a05b99bfa0fb90abd1903b9b1a7b23548} 
+std\+::vector$<$ \mbox{\hyperlink{structupnp_1_1mapping__t}{mapping\+\_\+t}} $>$ {\bfseries mappings}
+\item 
+\Hypertarget{classupnp_1_1deinit__t_a96a5427c5868ae967ed0842652702bf4}\label{classupnp_1_1deinit__t_a96a5427c5868ae967ed0842652702bf4} 
+std\+::thread {\bfseries upnp\+\_\+thread}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+RAII deinitialization helper for UPnP. 
+
+Automatically removes UPnP port mappings when destroyed. 
+
+\label{doc-func-members}
+\Hypertarget{classupnp_1_1deinit__t_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classupnp_1_1deinit__t_ade488be5115c96286e012055c134a7e2}\index{upnp::deinit\_t@{upnp::deinit\_t}!create\_ipv6\_pinholes@{create\_ipv6\_pinholes}}
+\index{create\_ipv6\_pinholes@{create\_ipv6\_pinholes}!upnp::deinit\_t@{upnp::deinit\_t}}
+\doxysubsubsection{\texorpdfstring{create\_ipv6\_pinholes()}{create\_ipv6\_pinholes()}}
+{\footnotesize\ttfamily \label{classupnp_1_1deinit__t_ade488be5115c96286e012055c134a7e2} 
+bool upnp\+::deinit\+\_\+t\+::create\+\_\+ipv6\+\_\+pinholes (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Opens pinholes for IPv6 traffic if the IGD is capable. 
+
+Not many IGDs support this feature, so we perform error logging with debug level. \begin{DoxyReturn}{Returns}
+{\ttfamily true} if the pinholes were opened successfully. 
+\end{DoxyReturn}
+\Hypertarget{classupnp_1_1deinit__t_a5d45866bd0f6253b7a08d8010c4bf4ac}\index{upnp::deinit\_t@{upnp::deinit\_t}!map\_upnp\_port@{map\_upnp\_port}}
+\index{map\_upnp\_port@{map\_upnp\_port}!upnp::deinit\_t@{upnp::deinit\_t}}
+\doxysubsubsection{\texorpdfstring{map\_upnp\_port()}{map\_upnp\_port()}}
+{\footnotesize\ttfamily \label{classupnp_1_1deinit__t_a5d45866bd0f6253b7a08d8010c4bf4ac} 
+bool upnp\+::deinit\+\_\+t\+::map\+\_\+upnp\+\_\+port (\begin{DoxyParamCaption}\item[{const IGDdatas \&}]{data}{, }\item[{const urls\+\_\+t \&}]{urls}{, }\item[{const std\+::string \&}]{lan\+\_\+addr}{, }\item[{const \mbox{\hyperlink{structupnp_1_1mapping__t}{mapping\+\_\+t}} \&}]{mapping}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Maps a port via UPnP. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & IGDdatas from UPNP\+\_\+\+Get\+Valid\+IGD() \\
+\hline
+{\em urls} & urls\+\_\+t from UPNP\+\_\+\+Get\+Valid\+IGD() \\
+\hline
+{\em lan\+\_\+addr} & Local IP address to map to \\
+\hline
+{\em mapping} & Information about port to map \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} on success. 
+\end{DoxyReturn}
+\Hypertarget{classupnp_1_1deinit__t_aea8dce30642c9142d9da82dc15c1ebeb}\index{upnp::deinit\_t@{upnp::deinit\_t}!unmap\_all\_upnp\_ports@{unmap\_all\_upnp\_ports}}
+\index{unmap\_all\_upnp\_ports@{unmap\_all\_upnp\_ports}!upnp::deinit\_t@{upnp::deinit\_t}}
+\doxysubsubsection{\texorpdfstring{unmap\_all\_upnp\_ports()}{unmap\_all\_upnp\_ports()}}
+{\footnotesize\ttfamily \label{classupnp_1_1deinit__t_aea8dce30642c9142d9da82dc15c1ebeb} 
+void upnp\+::deinit\+\_\+t\+::unmap\+\_\+all\+\_\+upnp\+\_\+ports (\begin{DoxyParamCaption}\item[{const urls\+\_\+t \&}]{urls}{, }\item[{const IGDdatas \&}]{data}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Unmaps all ports. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em urls} & urls\+\_\+t from UPNP\+\_\+\+Get\+Valid\+IGD() \\
+\hline
+{\em data} & IGDdatas from UPNP\+\_\+\+Get\+Valid\+IGD() \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{upnp_8cpp}{upnp.\+cpp}}\end{DoxyCompactItemize}

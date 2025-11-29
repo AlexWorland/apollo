@@ -1,0 +1,43 @@
+\doxysection{logging\+::time\+\_\+delta\+\_\+periodic\+\_\+logger Class Reference}
+\hypertarget{classlogging_1_1time__delta__periodic__logger}{}\label{classlogging_1_1time__delta__periodic__logger}\index{logging::time\_delta\_periodic\_logger@{logging::time\_delta\_periodic\_logger}}
+
+
+A helper class for tracking and logging short time intervals across a period of time @examples \doxylink{classlogging_1_1time__delta__periodic__logger}{time\+\_\+delta\+\_\+periodic\+\_\+logger} logger(debug, "{}\+Test duration"{}, 5s); logger.\+first\+\_\+point\+\_\+now(); // ... logger.\+second\+\_\+point\+\_\+now\+\_\+and\+\_\+log(); // after 5 seconds logger.\+first\+\_\+point\+\_\+now(); // ... logger.\+second\+\_\+point\+\_\+now\+\_\+and\+\_\+log(); // In the log\+: // \mbox{[}2024\+:01\+:01\+:12\+:00\+:00\mbox{]}\+: Debug\+: Test duration (min/max/avg)\+: 1.\+23ms/3.21ms/2.\+31ms @examples\+\_\+end.  
+
+
+
+
+{\ttfamily \#include $<$logging.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classlogging_1_1time__delta__periodic__logger_ada9d1387c9cb124bad1caf998aae35d7}\label{classlogging_1_1time__delta__periodic__logger_ada9d1387c9cb124bad1caf998aae35d7} 
+{\bfseries time\+\_\+delta\+\_\+periodic\+\_\+logger} (boost\+::log\+::sources\+::severity\+\_\+logger$<$ int $>$ \&severity, std\+::string\+\_\+view message, std\+::chrono\+::seconds interval\+\_\+in\+\_\+seconds=std\+::chrono\+::seconds(20))
+\item 
+\Hypertarget{classlogging_1_1time__delta__periodic__logger_ada0d20ccba75334a29764a82c511907c}\label{classlogging_1_1time__delta__periodic__logger_ada0d20ccba75334a29764a82c511907c} 
+void {\bfseries first\+\_\+point} (const std\+::chrono\+::steady\+\_\+clock\+::time\+\_\+point \&point)
+\item 
+\Hypertarget{classlogging_1_1time__delta__periodic__logger_a5a8fbe2cee16d83509e321b4f4838972}\label{classlogging_1_1time__delta__periodic__logger_a5a8fbe2cee16d83509e321b4f4838972} 
+void {\bfseries first\+\_\+point\+\_\+now} ()
+\item 
+\Hypertarget{classlogging_1_1time__delta__periodic__logger_ac9edf4940ef7e4c0d6aad571e1230157}\label{classlogging_1_1time__delta__periodic__logger_ac9edf4940ef7e4c0d6aad571e1230157} 
+void {\bfseries second\+\_\+point\+\_\+and\+\_\+log} (const std\+::chrono\+::steady\+\_\+clock\+::time\+\_\+point \&point)
+\item 
+\Hypertarget{classlogging_1_1time__delta__periodic__logger_a4cbb26170bd10ee1b3be0229e27bf88c}\label{classlogging_1_1time__delta__periodic__logger_a4cbb26170bd10ee1b3be0229e27bf88c} 
+void {\bfseries second\+\_\+point\+\_\+now\+\_\+and\+\_\+log} ()
+\item 
+\Hypertarget{classlogging_1_1time__delta__periodic__logger_a24d33b99bf68560bbd978cca78b9c48d}\label{classlogging_1_1time__delta__periodic__logger_a24d33b99bf68560bbd978cca78b9c48d} 
+void {\bfseries reset} ()
+\item 
+\Hypertarget{classlogging_1_1time__delta__periodic__logger_a43ab04dbe123b19b0582a6daff51fa74}\label{classlogging_1_1time__delta__periodic__logger_a43ab04dbe123b19b0582a6daff51fa74} 
+bool {\bfseries is\+\_\+enabled} () const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A helper class for tracking and logging short time intervals across a period of time @examples \doxylink{classlogging_1_1time__delta__periodic__logger}{time\+\_\+delta\+\_\+periodic\+\_\+logger} logger(debug, "{}\+Test duration"{}, 5s); logger.\+first\+\_\+point\+\_\+now(); // ... logger.\+second\+\_\+point\+\_\+now\+\_\+and\+\_\+log(); // after 5 seconds logger.\+first\+\_\+point\+\_\+now(); // ... logger.\+second\+\_\+point\+\_\+now\+\_\+and\+\_\+log(); // In the log\+: // \mbox{[}2024\+:01\+:01\+:12\+:00\+:00\mbox{]}\+: Debug\+: Test duration (min/max/avg)\+: 1.\+23ms/3.21ms/2.\+31ms @examples\+\_\+end. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{logging_8h}{logging.\+h}}\end{DoxyCompactItemize}

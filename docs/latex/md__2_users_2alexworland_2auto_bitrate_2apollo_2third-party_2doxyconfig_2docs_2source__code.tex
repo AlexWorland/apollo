@@ -1,0 +1,216 @@
+\chapter{Source Code }
+\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code}{}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code}\index{Source Code@{Source Code}}
+\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code_autotoc_md303}%
+\Hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code_autotoc_md303}%
+
+
+Code should be documented using Doxygen syntax.\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code_autotoc_md304}{}\doxysection{\texorpdfstring{Guidelines}{Guidelines}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code_autotoc_md304}
+\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code_autotoc_md305}{}\doxysubsection{\texorpdfstring{Doxygen Comments}{Doxygen Comments}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code_autotoc_md305}
+
+\begin{DoxyItemize}
+\item Use Doxygen comments to document all files, functions, classes, and variables.
+\item Inline documenation block should use the following format\+:
+
+\begin{DoxyVerb}///< A brief description of the member.
+\end{DoxyVerb}
+
+\item Multi-\/line comments, such as for a documentation block, should use the following format\+:
+
+\begin{DoxyVerb}/**
+ * @brief A brief description of the member.
+ * More detailed description of the member.
+ */
+\end{DoxyVerb}
+
+\end{DoxyItemize}\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code_autotoc_md306}{}\doxysubsection{\texorpdfstring{Documentation Blocks}{Documentation Blocks}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code_autotoc_md306}
+Documentation blocks should be placed above the declaration of the function, class, or variable. Below is an example of a documentation block for the main function.
+
+\begin{DoxyVerb}/**
+ * @brief Main application entry point.
+ * @param argc The number of arguments.
+ * @param argv The arguments.
+ * @return The exit code.
+ * @examples
+ * main(1, const char* args[] = {"hello", "markdown", nullptr});
+ * @examples_end
+ */
+int main(int argc, char *argv[]);
+\end{DoxyVerb}
+
+
+\begin{DoxyNote}{Note}
+The @examples and @examples\+\_\+end tags are not standard Doxygen tags. They are custom aliases we have specified to simplify documenting examples. Do not confuse this with the standard @example tag.
+\end{DoxyNote}
+In some cases, it could be valuable to have slightly different documentation for the definitions, especially when the definition may change depending on the platform or other factors. In such cases, you should put the documentation that is common in the declaration and the definition-\/specific documentation in the definition. Below is an example of how to document the declaration and definition of a function.
+
+\begin{DoxyVerb}// myFile.h
+/**
+ * @brief A brief description of the function.
+ * @param arg1 Describe the first argument.
+ * @param arg2 Describe the second argument.
+ * @return Describe the result.
+ */
+int myFunction(int arg1, int arg2);
+
+// myFile.cpp
+/**
+ * This describes anything which is specific to the implementation of the function.
+ */
+int myFunction(int arg1, int arg2)
+{
+    // Implementation
+}
+\end{DoxyVerb}
+\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code_autotoc_md307}{}\doxysubsection{\texorpdfstring{File Documentation}{File Documentation}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code_autotoc_md307}
+The file documentation block must be placed at the top of the file. If it is not present, Doxygen will ignore the file. Understandably, it is difficult to make a creative description for every file, although it is still required. Below is an example of a file documentation block.
+
+\begin{DoxyVerb}/**
+ * @file src/main.cpp
+ * @brief Main application entry point.
+ */
+\end{DoxyVerb}
+\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code_autotoc_md308}{}\doxysubsection{\texorpdfstring{Inline Documentation Blocks}{Inline Documentation Blocks}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code_autotoc_md308}
+Inline comments can be used to describe enum values, variables, and other code constructs. To document the members of a file, struct, union, class, or enum, it is sometimes desired to place the documentation block after the member instead of before. For this purpose you have to put an additional {\ttfamily \texorpdfstring{$<$}{<}} marker in the comment block. Below is an example of an inline comment for an enum value.
+
+\begin{DoxyVerb}enum class MyEnum
+{
+   FIRST_VALUE,  ///< A brief description of the FIRST_VALUE
+   SECOND_VALUE  ///< A brief description of the SECOND_VALUE
+};
+\end{DoxyVerb}
+\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code_autotoc_md309}{}\doxysubsection{\texorpdfstring{Admonitions}{Admonitions}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code_autotoc_md309}
+\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code_autotoc_md310}{}\doxysubsubsection{\texorpdfstring{Standard Admonitions}{Standard Admonitions}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code_autotoc_md310}
+
+\begin{DoxyItemize}
+\item \begin{DoxyVerb}@attention Attention needed.\end{DoxyVerb}
+ \begin{DoxyAttention}{Attention}
+Attention needed.
+\end{DoxyAttention}
+
+\item \begin{DoxyVerb}@important An important message.\end{DoxyVerb}
+ \begin{DoxyImportant}{Important}
+An important message.
+\end{DoxyImportant}
+
+\item \begin{DoxyVerb}@note A note.\end{DoxyVerb}
+ \begin{DoxyNote}{Note}
+A note.
+\end{DoxyNote}
+
+\item \begin{DoxyVerb}@pre A precondition.\end{DoxyVerb}
+ \begin{DoxyPrecond}{Precondition}
+A precondition.
+\end{DoxyPrecond}
+
+\item \begin{DoxyVerb}@remark Some remarks.\end{DoxyVerb}
+ \begin{DoxyRemark}{Remarks}
+Some remarks.
+\end{DoxyRemark}
+
+\item \begin{DoxyVerb}@warning - A warning.\end{DoxyVerb}
+ \begin{DoxyWarning}{Warning}
+A warning.
+\end{DoxyWarning}
+
+\end{DoxyItemize}\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code_autotoc_md311}{}\doxysubsubsection{\texorpdfstring{Git\+Hub Flavored Markdown Admonitions}{Git\+Hub Flavored Markdown Admonitions}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code_autotoc_md311}
+
+\begin{DoxyItemize}
+\item \begin{DoxyVerb}> [!CAUTION]
+> This is a caution.
+\end{DoxyVerb}
+ \begin{DoxyAttention}{Attention}
+This is a caution.
+\end{DoxyAttention}
+
+\item \begin{DoxyVerb}> [!IMPORTANT]
+> This is important.
+\end{DoxyVerb}
+ \begin{DoxyImportant}{Important}
+This is important.
+\end{DoxyImportant}
+
+\item \begin{DoxyVerb}> [!NOTE]
+> This is a note.
+\end{DoxyVerb}
+ \begin{DoxyNote}{Note}
+This is a note.
+\end{DoxyNote}
+
+\item \begin{DoxyVerb}> [!TIP]
+> This is a tip.
+\end{DoxyVerb}
+ \begin{DoxyRemark}{Remarks}
+This is a tip.
+\end{DoxyRemark}
+
+\item \begin{DoxyVerb}> [!WARNING]
+> This is a warning.
+\end{DoxyVerb}
+ \begin{DoxyWarning}{Warning}
+This is a warning.
+\end{DoxyWarning}
+
+\end{DoxyItemize}\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code_autotoc_md312}{}\doxysubsection{\texorpdfstring{Custom Aliases}{Custom Aliases}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2third-party_2doxyconfig_2docs_2source__code_autotoc_md312}
+We have defined some custom aliases to simplify documenting examples.
+
+
+\begin{DoxyItemize}
+\item @examples -\/ Start of an example block. This will format the following text as {\ttfamily cpp}.
+\item @examples\+\_\+end -\/ End of an example block.
+\item @fa\+\_\+icon\{font awsome definition\} -\/ Insert a Font Awesome icon. Give the icon style and name as arguments. e.\+g. @fa\+\_\+icon\{fa-\/solid fa-\/check\}.
+\item Admonitions
+\begin{DoxyItemize}
+\item @admonition\{Custom Title \texorpdfstring{$\vert$}{|} Content \} @admonition\{The one with the custom titles \texorpdfstring{$\vert$}{|} It’s got a certain charm to it.\}
+\item @attention\{Content\} \begin{DoxyAttention}{Attention}
+\{The sun causes global warming.\}
+\end{DoxyAttention}
+
+\item @caution\{Content\} @caution\{Cliff ahead\+: Don’t drive off it.\}
+\item @danger\{Content\} @danger\{Mad scientist at work!\}
+\item @error\{Content\} @error\{Does not compute.\}
+\item @hint\{Content\} @hint\{Insulators insulate, until they are subject to \+\_\+\+\_\+\+\_\+\+\_\+\+\_\+\+\_\+ voltage.\}
+\item @important\{Content\} \begin{DoxyImportant}{Important}
+\{Tech is not neutral, nor is it apolitical.\}
+\end{DoxyImportant}
+
+\item @note\{Content\} \begin{DoxyNote}{Note}
+\{This is a note.\}
+\end{DoxyNote}
+
+\item @seealso\{Content\} @seealso\{Other relevant information.\}
+\item @tip\{Content\} @tip\{25\% if the service is good.\}
+\item @todo\{Content\} \begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000001}{Todo}}]\end{DoxyRefDesc}
+\begin{DoxyWarning}{Warning}
+\{Reader discretion is strongly advised.\}
+\end{DoxyWarning}
+
+\end{DoxyItemize}
+\item Markers
+\begin{DoxyItemize}
+\item @red\{Content\}~\newline
+ @red\{This is red.\}
+\item @blue\{Content\}~\newline
+ @blue\{This is blue.\}
+\item @green\{Content\}~\newline
+ @green\{This is green.\}
+\item @yellow\{Content\}~\newline
+ @yellow\{This is yellow.\}
+\end{DoxyItemize}
+\item Expander \begin{DoxyVerb}  @expander{Expander Title | Expander Content}
+\end{DoxyVerb}
+ @expander\{Expander Title \texorpdfstring{$\vert$}{|} Expander Content\}
+\item Tabs \begin{DoxyVerb}@tabs{
+  @tab{ Tab 1 Title | Tab 1 Content }
+  @tab{ Tab 2 Title | Tab 2 Content }
+}
+\end{DoxyVerb}
+ @tabs\{ @tab\{ Tab 1 Title \texorpdfstring{$\vert$}{|} Tab 1 Content \} @tab\{ Tab 2 Title \texorpdfstring{$\vert$}{|} Tab 2 Content \} \}
+\end{DoxyItemize}
+
+
+
+{\bfseries{}}\begin{adjustwidth}{1em}{0em}
+
+
+\end{adjustwidth}

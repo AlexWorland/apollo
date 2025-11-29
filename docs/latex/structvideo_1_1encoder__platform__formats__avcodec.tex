@@ -1,0 +1,110 @@
+\doxysection{video\+::encoder\+\_\+platform\+\_\+formats\+\_\+avcodec Struct Reference}
+\hypertarget{structvideo_1_1encoder__platform__formats__avcodec}{}\label{structvideo_1_1encoder__platform__formats__avcodec}\index{video::encoder\_platform\_formats\_avcodec@{video::encoder\_platform\_formats\_avcodec}}
+
+
+AVCodec-\/based encoder platform formats structure.  
+
+
+
+
+{\ttfamily \#include $<$video.\+h$>$}
+
+Inheritance diagram for video\+::encoder\+\_\+platform\+\_\+formats\+\_\+avcodec\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structvideo_1_1encoder__platform__formats__avcodec}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structvideo_1_1encoder__platform__formats__avcodec_a84d57e113b8e47dfadb4ee2d921562fa}\label{structvideo_1_1encoder__platform__formats__avcodec_a84d57e113b8e47dfadb4ee2d921562fa} 
+using {\bfseries init\+\_\+buffer\+\_\+function\+\_\+t} = std\+::function$<$\mbox{\hyperlink{classutil_1_1_either}{util\+::\+Either}}$<$\mbox{\hyperlink{video_8h_ac46efdb111ccb55a8cff06bff36d4eda}{avcodec\+\_\+buffer\+\_\+t}}, int$>$(platf\+::avcodec\+\_\+encode\+\_\+device\+\_\+t \texorpdfstring{$\ast$}{*})$>$
+\begin{DoxyCompactList}\small\item\em Buffer initialization function type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structvideo_1_1encoder__platform__formats__avcodec_a429e82f037d8ea4da6fadfd23c3d9b5b}{encoder\+\_\+platform\+\_\+formats\+\_\+avcodec}} (const AVHWDevice\+Type \&\mbox{\hyperlink{structvideo_1_1encoder__platform__formats__avcodec_aff4316de5aead3d1592ba38fa341b218}{avcodec\+\_\+base\+\_\+dev\+\_\+type}}, const AVHWDevice\+Type \&\mbox{\hyperlink{structvideo_1_1encoder__platform__formats__avcodec_a48cb066882a6bcc6fc977db3c33dc548}{avcodec\+\_\+derived\+\_\+dev\+\_\+type}}, const AVPixel\+Format \&\mbox{\hyperlink{structvideo_1_1encoder__platform__formats__avcodec_aba601cd2cfbd66354f383aa3dabdbccb}{avcodec\+\_\+dev\+\_\+pix\+\_\+fmt}}, const AVPixel\+Format \&\mbox{\hyperlink{structvideo_1_1encoder__platform__formats__avcodec_a0103a91503f69671b29ecff09ffbfcd2}{avcodec\+\_\+pix\+\_\+fmt\+\_\+8bit}}, const AVPixel\+Format \&\mbox{\hyperlink{structvideo_1_1encoder__platform__formats__avcodec_a479e25376ae6cac32e4d5d26e4d3d29d}{avcodec\+\_\+pix\+\_\+fmt\+\_\+10bit}}, const AVPixel\+Format \&\mbox{\hyperlink{structvideo_1_1encoder__platform__formats__avcodec_a78205e5d0fde73dfe4eca92f67a2e8c7}{avcodec\+\_\+pix\+\_\+fmt\+\_\+yuv444\+\_\+8bit}}, const AVPixel\+Format \&\mbox{\hyperlink{structvideo_1_1encoder__platform__formats__avcodec_a9018f615fceccf28fda305e973b3b8d2}{avcodec\+\_\+pix\+\_\+fmt\+\_\+yuv444\+\_\+10bit}}, const \mbox{\hyperlink{structvideo_1_1encoder__platform__formats__avcodec_a84d57e113b8e47dfadb4ee2d921562fa}{init\+\_\+buffer\+\_\+function\+\_\+t}} \&init\+\_\+avcodec\+\_\+hardware\+\_\+input\+\_\+buffer\+\_\+function)
+\begin{DoxyCompactList}\small\item\em Construct AVCodec encoder platform formats. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structvideo_1_1encoder__platform__formats__avcodec_aff4316de5aead3d1592ba38fa341b218}\label{structvideo_1_1encoder__platform__formats__avcodec_aff4316de5aead3d1592ba38fa341b218} 
+AVHWDevice\+Type {\bfseries avcodec\+\_\+base\+\_\+dev\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Base AVCodec hardware device type. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1encoder__platform__formats__avcodec_a48cb066882a6bcc6fc977db3c33dc548}\label{structvideo_1_1encoder__platform__formats__avcodec_a48cb066882a6bcc6fc977db3c33dc548} 
+AVHWDevice\+Type {\bfseries avcodec\+\_\+derived\+\_\+dev\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Derived AVCodec hardware device type. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1encoder__platform__formats__avcodec_aba601cd2cfbd66354f383aa3dabdbccb}\label{structvideo_1_1encoder__platform__formats__avcodec_aba601cd2cfbd66354f383aa3dabdbccb} 
+AVPixel\+Format {\bfseries avcodec\+\_\+dev\+\_\+pix\+\_\+fmt}
+\begin{DoxyCompactList}\small\item\em Device pixel format. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1encoder__platform__formats__avcodec_a0103a91503f69671b29ecff09ffbfcd2}\label{structvideo_1_1encoder__platform__formats__avcodec_a0103a91503f69671b29ecff09ffbfcd2} 
+AVPixel\+Format {\bfseries avcodec\+\_\+pix\+\_\+fmt\+\_\+8bit}
+\begin{DoxyCompactList}\small\item\em 8-\/bit pixel format \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1encoder__platform__formats__avcodec_a479e25376ae6cac32e4d5d26e4d3d29d}\label{structvideo_1_1encoder__platform__formats__avcodec_a479e25376ae6cac32e4d5d26e4d3d29d} 
+AVPixel\+Format {\bfseries avcodec\+\_\+pix\+\_\+fmt\+\_\+10bit}
+\begin{DoxyCompactList}\small\item\em 10-\/bit pixel format \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1encoder__platform__formats__avcodec_a78205e5d0fde73dfe4eca92f67a2e8c7}\label{structvideo_1_1encoder__platform__formats__avcodec_a78205e5d0fde73dfe4eca92f67a2e8c7} 
+AVPixel\+Format {\bfseries avcodec\+\_\+pix\+\_\+fmt\+\_\+yuv444\+\_\+8bit}
+\begin{DoxyCompactList}\small\item\em YUV 4\+:4\+:4 8-\/bit pixel format. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1encoder__platform__formats__avcodec_a9018f615fceccf28fda305e973b3b8d2}\label{structvideo_1_1encoder__platform__formats__avcodec_a9018f615fceccf28fda305e973b3b8d2} 
+AVPixel\+Format {\bfseries avcodec\+\_\+pix\+\_\+fmt\+\_\+yuv444\+\_\+10bit}
+\begin{DoxyCompactList}\small\item\em YUV 4\+:4\+:4 10-\/bit pixel format. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1encoder__platform__formats__avcodec_aa5461ca037187d4d4130602f7d994542}\label{structvideo_1_1encoder__platform__formats__avcodec_aa5461ca037187d4d4130602f7d994542} 
+\mbox{\hyperlink{structvideo_1_1encoder__platform__formats__avcodec_a84d57e113b8e47dfadb4ee2d921562fa}{init\+\_\+buffer\+\_\+function\+\_\+t}} {\bfseries init\+\_\+avcodec\+\_\+hardware\+\_\+input\+\_\+buffer}
+\begin{DoxyCompactList}\small\item\em Hardware input buffer initialization function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{structvideo_1_1encoder__platform__formats__t}{video\+::encoder\+\_\+platform\+\_\+formats\+\_\+t}}}
+\begin{DoxyCompactItemize}
+\item 
+platf\+::mem\+\_\+type\+\_\+e {\bfseries dev\+\_\+type}
+\begin{DoxyCompactList}\small\item\em Device memory type. \end{DoxyCompactList}\item 
+platf\+::pix\+\_\+fmt\+\_\+e {\bfseries pix\+\_\+fmt\+\_\+8bit}
+\begin{DoxyCompactList}\small\item\em 8-\/bit pixel format \end{DoxyCompactList}\item 
+platf\+::pix\+\_\+fmt\+\_\+e {\bfseries pix\+\_\+fmt\+\_\+10bit}
+\begin{DoxyCompactList}\small\item\em 10-\/bit pixel format \end{DoxyCompactList}\item 
+platf\+::pix\+\_\+fmt\+\_\+e {\bfseries pix\+\_\+fmt\+\_\+yuv444\+\_\+8bit}
+\begin{DoxyCompactList}\small\item\em YUV 4\+:4\+:4 8-\/bit pixel format. \end{DoxyCompactList}\item 
+platf\+::pix\+\_\+fmt\+\_\+e {\bfseries pix\+\_\+fmt\+\_\+yuv444\+\_\+10bit}
+\begin{DoxyCompactList}\small\item\em YUV 4\+:4\+:4 10-\/bit pixel format. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+AVCodec-\/based encoder platform formats structure. 
+
+\label{doc-constructors}
+\Hypertarget{structvideo_1_1encoder__platform__formats__avcodec_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{structvideo_1_1encoder__platform__formats__avcodec_a429e82f037d8ea4da6fadfd23c3d9b5b}\index{video::encoder\_platform\_formats\_avcodec@{video::encoder\_platform\_formats\_avcodec}!encoder\_platform\_formats\_avcodec@{encoder\_platform\_formats\_avcodec}}
+\index{encoder\_platform\_formats\_avcodec@{encoder\_platform\_formats\_avcodec}!video::encoder\_platform\_formats\_avcodec@{video::encoder\_platform\_formats\_avcodec}}
+\doxysubsubsection{\texorpdfstring{encoder\_platform\_formats\_avcodec()}{encoder\_platform\_formats\_avcodec()}}
+{\footnotesize\ttfamily \label{structvideo_1_1encoder__platform__formats__avcodec_a429e82f037d8ea4da6fadfd23c3d9b5b} 
+video\+::encoder\+\_\+platform\+\_\+formats\+\_\+avcodec\+::encoder\+\_\+platform\+\_\+formats\+\_\+avcodec (\begin{DoxyParamCaption}\item[{const AVHWDevice\+Type \&}]{avcodec\+\_\+base\+\_\+dev\+\_\+type}{, }\item[{const AVHWDevice\+Type \&}]{avcodec\+\_\+derived\+\_\+dev\+\_\+type}{, }\item[{const AVPixel\+Format \&}]{avcodec\+\_\+dev\+\_\+pix\+\_\+fmt}{, }\item[{const AVPixel\+Format \&}]{avcodec\+\_\+pix\+\_\+fmt\+\_\+8bit}{, }\item[{const AVPixel\+Format \&}]{avcodec\+\_\+pix\+\_\+fmt\+\_\+10bit}{, }\item[{const AVPixel\+Format \&}]{avcodec\+\_\+pix\+\_\+fmt\+\_\+yuv444\+\_\+8bit}{, }\item[{const AVPixel\+Format \&}]{avcodec\+\_\+pix\+\_\+fmt\+\_\+yuv444\+\_\+10bit}{, }\item[{const \mbox{\hyperlink{structvideo_1_1encoder__platform__formats__avcodec_a84d57e113b8e47dfadb4ee2d921562fa}{init\+\_\+buffer\+\_\+function\+\_\+t}} \&}]{init\+\_\+avcodec\+\_\+hardware\+\_\+input\+\_\+buffer\+\_\+function}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct AVCodec encoder platform formats. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em avcodec\+\_\+base\+\_\+dev\+\_\+type} & Base AVCodec hardware device type. \\
+\hline
+{\em avcodec\+\_\+derived\+\_\+dev\+\_\+type} & Derived AVCodec hardware device type. \\
+\hline
+{\em avcodec\+\_\+dev\+\_\+pix\+\_\+fmt} & Device pixel format. \\
+\hline
+{\em avcodec\+\_\+pix\+\_\+fmt\+\_\+8bit} & 8-\/bit pixel format. \\
+\hline
+{\em avcodec\+\_\+pix\+\_\+fmt\+\_\+10bit} & 10-\/bit pixel format. \\
+\hline
+{\em avcodec\+\_\+pix\+\_\+fmt\+\_\+yuv444\+\_\+8bit} & YUV 4\+:4\+:4 8-\/bit pixel format. \\
+\hline
+{\em avcodec\+\_\+pix\+\_\+fmt\+\_\+yuv444\+\_\+10bit} & YUV 4\+:4\+:4 10-\/bit pixel format. \\
+\hline
+{\em init\+\_\+avcodec\+\_\+hardware\+\_\+input\+\_\+buffer\+\_\+function} & Function to initialize hardware input buffer. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{video_8h}{video.\+h}}\end{DoxyCompactItemize}

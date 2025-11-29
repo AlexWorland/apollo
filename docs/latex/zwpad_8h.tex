@@ -1,0 +1,60 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/zwpad.h File Reference}
+\hypertarget{zwpad_8h}{}\label{zwpad_8h}\index{/Users/alexworland/autoBitrate/apollo/src/zwpad.h@{/Users/alexworland/autoBitrate/apollo/src/zwpad.h}}
+
+
+Zero-\/width padding utilities for string ordering.  
+
+
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$bit$>$}\newline
+{\ttfamily \#include $<$stdexcept$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{zwpad_8h_aa924ce3eac2a45f685699694e0123a09}{zwpad\+::pad\+\_\+for\+\_\+ordering}} (std\+::string\+\_\+view text, std\+::size\+\_\+t pad\+Bits, std\+::size\+\_\+t index)
+\begin{DoxyCompactList}\small\item\em Encode {\ttfamily index} with a fixed-\/width binary prefix made of zero-\/width code-\/points and append the original text. \end{DoxyCompactList}\item 
+\Hypertarget{zwpad_8h_a798da4c50c3abe2dc17826b866d64a95}\label{zwpad_8h_a798da4c50c3abe2dc17826b866d64a95} 
+std\+::size\+\_\+t {\bfseries zwpad\+::pad\+\_\+width\+\_\+for\+\_\+count} (std\+::size\+\_\+t count)
+\begin{DoxyCompactList}\small\item\em Convenience\+: compute the minimal pad width from the total count. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{zwpad_8h_a9a31b608ca17b374886523bebc0f49be}\label{zwpad_8h_a9a31b608ca17b374886523bebc0f49be} 
+constexpr char8\+\_\+t {\bfseries zwpad\+::\+ZW0} \mbox{[}$\,$\mbox{]} = u8"{}\textbackslash{}u200\+B"{}
+\item 
+\Hypertarget{zwpad_8h_abba03e974e01235f61f964020cdfe930}\label{zwpad_8h_abba03e974e01235f61f964020cdfe930} 
+constexpr char8\+\_\+t {\bfseries zwpad\+::\+ZW1} \mbox{[}$\,$\mbox{]} = u8"{}\textbackslash{}u200\+C"{}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Zero-\/width padding utilities for string ordering. 
+
+
+
+\label{doc-func-members}
+\Hypertarget{zwpad_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{zwpad_8h_aa924ce3eac2a45f685699694e0123a09}\index{zwpad.h@{zwpad.h}!pad\_for\_ordering@{pad\_for\_ordering}}
+\index{pad\_for\_ordering@{pad\_for\_ordering}!zwpad.h@{zwpad.h}}
+\doxysubsubsection{\texorpdfstring{pad\_for\_ordering()}{pad\_for\_ordering()}}
+{\footnotesize\ttfamily \label{zwpad_8h_aa924ce3eac2a45f685699694e0123a09} 
+std\+::string zwpad\+::pad\+\_\+for\+\_\+ordering (\begin{DoxyParamCaption}\item[{std\+::string\+\_\+view}]{text}{, }\item[{std\+::size\+\_\+t}]{pad\+Bits}{, }\item[{std\+::size\+\_\+t}]{index}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Encode {\ttfamily index} with a fixed-\/width binary prefix made of zero-\/width code-\/points and append the original text. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em text} & The payload you actually want to keep visible. \\
+\hline
+{\em pad\+Bits} & How many zero-\/width {\itshape digits} to prepend. (Usually\+: std\+::bit\+\_\+width(count-\/1).) \\
+\hline
+{\em index} & Position in the ordered set, {\bfseries{0-\/based}}.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A UTF-\/8 std\+::string whose first {\ttfamily pad\+Bits} characters are either U+200B or U+200C, followed by {\ttfamily text}.
+\end{DoxyReturn}
+The lexical order of the resulting strings corresponds to the numerical order of {\itshape index} because U+200B \texorpdfstring{$<$}{<} U+200C. 

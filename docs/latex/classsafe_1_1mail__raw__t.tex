@@ -1,0 +1,57 @@
+\doxysection{safe\+::mail\+\_\+raw\+\_\+t Class Reference}
+\hypertarget{classsafe_1_1mail__raw__t}{}\label{classsafe_1_1mail__raw__t}\index{safe::mail\_raw\_t@{safe::mail\_raw\_t}}
+
+
+Mail container for named events and queues.  
+
+
+
+
+{\ttfamily \#include $<$thread\+\_\+safe.\+h$>$}
+
+Inheritance diagram for safe\+::mail\+\_\+raw\+\_\+t\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classsafe_1_1mail__raw__t}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classsafe_1_1mail__raw__t_a9340e7a6ff0d758ecbfa1188fb12c4ff}\label{classsafe_1_1mail__raw__t_a9340e7a6ff0d758ecbfa1188fb12c4ff} 
+{\footnotesize template$<$class T$>$ }\\using {\bfseries event\+\_\+t} = std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{classsafe_1_1post__t}{post\+\_\+t}}$<$event\+\_\+t$<$T$>$$>$$>$
+\item 
+\Hypertarget{classsafe_1_1mail__raw__t_a8c7c72a25b96ffdcd8580cef5da1708d}\label{classsafe_1_1mail__raw__t_a8c7c72a25b96ffdcd8580cef5da1708d} 
+{\footnotesize template$<$class T$>$ }\\using {\bfseries queue\+\_\+t} = std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{classsafe_1_1post__t}{post\+\_\+t}}$<$queue\+\_\+t$<$T$>$$>$$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classsafe_1_1mail__raw__t_a9299033a6e8ad8694450e04ede1efe81}\label{classsafe_1_1mail__raw__t_a9299033a6e8ad8694450e04ede1efe81} 
+{\footnotesize template$<$class T$>$ }\\event\+\_\+t$<$ T $>$ {\bfseries event} (const std\+::string\+\_\+view \&id)
+\item 
+\Hypertarget{classsafe_1_1mail__raw__t_a0b902220dccd5fccda5bf5a6d1ea27c4}\label{classsafe_1_1mail__raw__t_a0b902220dccd5fccda5bf5a6d1ea27c4} 
+{\footnotesize template$<$class T$>$ }\\queue\+\_\+t$<$ T $>$ {\bfseries queue} (const std\+::string\+\_\+view \&id)
+\item 
+\Hypertarget{classsafe_1_1mail__raw__t_a73a2098e898cb834d2bf3f4b436bf6ad}\label{classsafe_1_1mail__raw__t_a73a2098e898cb834d2bf3f4b436bf6ad} 
+void {\bfseries cleanup} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classsafe_1_1mail__raw__t_a8250cd402ebff75d5fb08dcf55dad977}\label{classsafe_1_1mail__raw__t_a8250cd402ebff75d5fb08dcf55dad977} 
+std\+::mutex {\bfseries mutex}
+\item 
+\Hypertarget{classsafe_1_1mail__raw__t_a1260855402e329fd31e12907d4f5b622}\label{classsafe_1_1mail__raw__t_a1260855402e329fd31e12907d4f5b622} 
+std\+::map$<$ std\+::string, std\+::weak\+\_\+ptr$<$ void $>$, std\+::less$<$$>$ $>$ {\bfseries id\+\_\+to\+\_\+post}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Mail container for named events and queues. 
+
+Provides a registry for named thread-\/safe events and queues. Allows multiple components to access the same event/queue by name. Automatically cleans up expired references. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{thread__safe_8h}{thread\+\_\+safe.\+h}}\end{DoxyCompactItemize}

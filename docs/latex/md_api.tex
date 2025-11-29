@@ -1,0 +1,257 @@
+\chapter{API }
+\hypertarget{md_api}{}\label{md_api}\index{API@{API}}
+\label{md_api_autotoc_md233}%
+\Hypertarget{md_api_autotoc_md233}%
+
+
+Sunshine has a RESTful API which can be used to interact with the service.
+
+Unless otherwise specified, authentication is required for all API calls. You can authenticate using basic authentication with the admin username and password.
+
+\hypertarget{md_api_autotoc_md234}{}\doxysection{\texorpdfstring{GET /api/apps}{GET /api/apps}}\label{md_api_autotoc_md234}
+Get the list of available applications.   
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+   \hypertarget{md_api_autotoc_md235}{}\doxysection{\texorpdfstring{POST /api/apps}{POST /api/apps}}\label{md_api_autotoc_md235}
+Save an application. To save a new application the UUID must be empty. To update an existing application, you must provide the current UUID of the application.   
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. The body for the post request should be JSON serialized in the following format\+: 
+\begin{DoxyCode}{1}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ "{}name"{}:\ "{}Application\ Name"{},}
+\DoxyCodeLine{\ \ "{}output"{}:\ "{}Log\ Output\ Path"{},}
+\DoxyCodeLine{\ \ "{}cmd"{}:\ "{}Command\ to\ run\ the\ application"{},}
+\DoxyCodeLine{\ \ "{}exclude-\/global-\/prep-\/cmd"{}:\ false,}
+\DoxyCodeLine{\ \ "{}elevated"{}:\ false,}
+\DoxyCodeLine{\ \ "{}auto-\/detach"{}:\ true,}
+\DoxyCodeLine{\ \ "{}wait-\/all"{}:\ true,}
+\DoxyCodeLine{\ \ "{}exit-\/timeout"{}:\ 5,}
+\DoxyCodeLine{\ \ "{}prep-\/cmd"{}:\ [}
+\DoxyCodeLine{\ \ \ \ \{}
+\DoxyCodeLine{\ \ \ \ \ \ "{}do"{}:\ "{}Command\ to\ prepare"{},}
+\DoxyCodeLine{\ \ \ \ \ \ "{}undo"{}:\ "{}Command\ to\ undo\ preparation"{},}
+\DoxyCodeLine{\ \ \ \ \ \ "{}elevated"{}:\ false}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\ \ ],}
+\DoxyCodeLine{\ \ "{}detached"{}:\ [}
+\DoxyCodeLine{\ \ \ \ "{}Detached\ command"{}}
+\DoxyCodeLine{\ \ ],}
+\DoxyCodeLine{\ \ "{}image-\/path"{}:\ "{}Full\ path\ to\ the\ application\ image.\ Must\ be\ a\ png\ file."{},}
+\DoxyCodeLine{\ \ "{}uuid"{}:\ "{}aaaa-\/bbbb"{}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\\
+\hline
+\end{DoxyParams}
+   \hypertarget{md_api_autotoc_md236}{}\doxysection{\texorpdfstring{POST /api/apps/close}{POST /api/apps/close}}\label{md_api_autotoc_md236}
+Close the currently running application.   
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+   \hypertarget{md_api_autotoc_md237}{}\doxysection{\texorpdfstring{DELETE /api/apps/\{index\}}{DELETE /api/apps/\{index\}}}\label{md_api_autotoc_md237}
+Delete an application.   
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+   \hypertarget{md_api_autotoc_md238}{}\doxysection{\texorpdfstring{GET /api/clients/list}{GET /api/clients/list}}\label{md_api_autotoc_md238}
+Get the list of paired clients.   
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+   \hypertarget{md_api_autotoc_md239}{}\doxysection{\texorpdfstring{POST /api/clients/unpair}{POST /api/clients/unpair}}\label{md_api_autotoc_md239}
+Unpair a client.   
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+The body for the POST request should be JSON serialized in the following format\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ "{}uuid"{}:\ "{}<uuid>"{}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+   \hypertarget{md_api_autotoc_md240}{}\doxysection{\texorpdfstring{POST /api/clients/unpair-\/all}{POST /api/clients/unpair-\/all}}\label{md_api_autotoc_md240}
+Unpair all clients.   
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+   \hypertarget{md_api_autotoc_md241}{}\doxysection{\texorpdfstring{GET /api/config}{GET /api/config}}\label{md_api_autotoc_md241}
+Get the configuration settings.   
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.   \\
+\hline
+\end{DoxyParams}
+\hypertarget{md_api_autotoc_md242}{}\doxysection{\texorpdfstring{GET /api/config\+Locale}{GET /api/config\+Locale}}\label{md_api_autotoc_md242}
+Get the locale setting.   
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+   \hypertarget{md_api_autotoc_md243}{}\doxysection{\texorpdfstring{POST /api/config}{POST /api/config}}\label{md_api_autotoc_md243}
+Save the configuration settings.   
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object. The body for the post request should be JSON serialized in the following format\+: 
+\begin{DoxyCode}{1}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ "{}key"{}:\ "{}value"{}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\\
+\hline
+\end{DoxyParams}
+\begin{DoxyAttention}{Attention}
+\{It is recommended to ONLY save the config settings that differ from the default behavior.\}
+\end{DoxyAttention}
+   \hypertarget{md_api_autotoc_md244}{}\doxysection{\texorpdfstring{POST /api/covers/upload}{POST /api/covers/upload}}\label{md_api_autotoc_md244}
+Upload a cover image.   
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+   \hypertarget{md_api_autotoc_md245}{}\doxysection{\texorpdfstring{GET /api/logs}{GET /api/logs}}\label{md_api_autotoc_md245}
+Get the logs from the log file.   
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+   \hypertarget{md_api_autotoc_md246}{}\doxysection{\texorpdfstring{POST /api/password}{POST /api/password}}\label{md_api_autotoc_md246}
+Update existing credentials.   
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+The body for the POST request should be JSON serialized in the following format\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ "{}currentUsername"{}:\ "{}Current\ Username"{},}
+\DoxyCodeLine{\ \ "{}currentPassword"{}:\ "{}Current\ Password"{},}
+\DoxyCodeLine{\ \ "{}newUsername"{}:\ "{}New\ Username"{},}
+\DoxyCodeLine{\ \ "{}newPassword"{}:\ "{}New\ Password"{},}
+\DoxyCodeLine{\ \ "{}confirmNewPassword"{}:\ "{}Confirm\ New\ Password"{}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+   \hypertarget{md_api_autotoc_md247}{}\doxysection{\texorpdfstring{POST /api/pin}{POST /api/pin}}\label{md_api_autotoc_md247}
+Send a PIN code to the host.   
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+The body for the POST request should be JSON serialized in the following format\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ "{}pin"{}:\ "{}<pin>"{},}
+\DoxyCodeLine{\ \ "{}name"{}:\ "{}Friendly\ Client\ Name"{}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+   \hypertarget{md_api_autotoc_md248}{}\doxysection{\texorpdfstring{POST /api/reset-\/display-\/device-\/persistence}{POST /api/reset-\/display-\/device-\/persistence}}\label{md_api_autotoc_md248}
+Reset the display device persistence.   
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+   \hypertarget{md_api_autotoc_md249}{}\doxysection{\texorpdfstring{POST /api/restart}{POST /api/restart}}\label{md_api_autotoc_md249}
+Restart Apollo.   
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The HTTP response object. \\
+\hline
+{\em request} & The HTTP request object.\\
+\hline
+\end{DoxyParams}
+   
+
+
+
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{bg=\tableheadbgcolor,font=\bfseries}Previous  &\SetCell{r,bg=\tableheadbgcolor,font=\bfseries}Next  \\
+\doxysectlink{md_performance__tuning}{Performance Tuning}{0}  &\SetCell{r}\doxysectlink{md_troubleshooting}{Troubleshooting}{0}  \\
+\end{DoxyTable}
+
+
+
+
+
+
+{\bfseries{}}\begin{adjustwidth}{1em}{0em}
+
+
+\end{adjustwidth}

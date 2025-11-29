@@ -1,0 +1,80 @@
+\doxysection{sync\+\_\+util\+::sync\+\_\+t\texorpdfstring{$<$}{<} T, M \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classsync__util_1_1sync__t}{}\label{classsync__util_1_1sync__t}\index{sync\_util::sync\_t$<$ T, M $>$@{sync\_util::sync\_t$<$ T, M $>$}}
+
+
+Synchronized value wrapper.  
+
+
+
+
+{\ttfamily \#include $<$sync.\+h$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classsync__util_1_1sync__t_a6801b800d6a5d250ce820644df900b0a}\label{classsync__util_1_1sync__t_a6801b800d6a5d250ce820644df900b0a} 
+using {\bfseries value\+\_\+t} = T
+\item 
+\Hypertarget{classsync__util_1_1sync__t_a8824977335c16d4f2a6e38aecebd1140}\label{classsync__util_1_1sync__t_a8824977335c16d4f2a6e38aecebd1140} 
+using {\bfseries mutex\+\_\+t} = M
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classsync__util_1_1sync__t_ab6d4b64026325394ac0c5828865db8e6}\label{classsync__util_1_1sync__t_ab6d4b64026325394ac0c5828865db8e6} 
+std\+::lock\+\_\+guard$<$ mutex\+\_\+t $>$ {\bfseries lock} ()
+\item 
+\Hypertarget{classsync__util_1_1sync__t_abc62523c2fd6ec38ebd730066a4c363b}\label{classsync__util_1_1sync__t_abc62523c2fd6ec38ebd730066a4c363b} 
+{\footnotesize template$<$class... Args$>$ }\\{\bfseries sync\+\_\+t} (Args \&\&...\mbox{\hyperlink{namespaceargs}{args}})
+\item 
+\Hypertarget{classsync__util_1_1sync__t_a2e81ae0c1ddd0c70415844495e8d37b5}\label{classsync__util_1_1sync__t_a2e81ae0c1ddd0c70415844495e8d37b5} 
+sync\+\_\+t \& {\bfseries operator=} (sync\+\_\+t \&\&other) noexcept
+\item 
+\Hypertarget{classsync__util_1_1sync__t_a0d409496bdbaa0eac8d87d7433dcaf24}\label{classsync__util_1_1sync__t_a0d409496bdbaa0eac8d87d7433dcaf24} 
+sync\+\_\+t \& {\bfseries operator=} (sync\+\_\+t \&other) noexcept
+\item 
+\Hypertarget{classsync__util_1_1sync__t_ad4eb2761789cf1c74db3d56dc42301d3}\label{classsync__util_1_1sync__t_ad4eb2761789cf1c74db3d56dc42301d3} 
+{\footnotesize template$<$class V$>$ }\\sync\+\_\+t \& {\bfseries operator=} (V \&\&val)
+\item 
+\Hypertarget{classsync__util_1_1sync__t_aeb1ec88c51f3153c2b1dc72453c5ea51}\label{classsync__util_1_1sync__t_aeb1ec88c51f3153c2b1dc72453c5ea51} 
+sync\+\_\+t \& {\bfseries operator=} (const value\+\_\+t \&val) noexcept
+\item 
+\Hypertarget{classsync__util_1_1sync__t_a4fba96843412409df94c7c424088204d}\label{classsync__util_1_1sync__t_a4fba96843412409df94c7c424088204d} 
+sync\+\_\+t \& {\bfseries operator=} (value\+\_\+t \&\&val) noexcept
+\item 
+\Hypertarget{classsync__util_1_1sync__t_ae10423a26dea8611aa3b0928566ceebc}\label{classsync__util_1_1sync__t_ae10423a26dea8611aa3b0928566ceebc} 
+value\+\_\+t \texorpdfstring{$\ast$}{*} {\bfseries operator-\/$>$} ()
+\item 
+\Hypertarget{classsync__util_1_1sync__t_ab5d317a433572f1086fd348379d3f1eb}\label{classsync__util_1_1sync__t_ab5d317a433572f1086fd348379d3f1eb} 
+value\+\_\+t \& {\bfseries operator\texorpdfstring{$\ast$}{*}} ()
+\item 
+\Hypertarget{classsync__util_1_1sync__t_a821ecb1cfaaf8fbbd773a525e850ce0a}\label{classsync__util_1_1sync__t_a821ecb1cfaaf8fbbd773a525e850ce0a} 
+const value\+\_\+t \& {\bfseries operator\texorpdfstring{$\ast$}{*}} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classsync__util_1_1sync__t_a8a687041cfa48b8de6d5f9076d679a0a}\label{classsync__util_1_1sync__t_a8a687041cfa48b8de6d5f9076d679a0a} 
+value\+\_\+t {\bfseries raw}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T, class M = std\+::mutex$>$\newline
+class sync\+\_\+util\+::sync\+\_\+t$<$ T, M $>$}
+Synchronized value wrapper. 
+
+Wraps a value with a mutex to provide thread-\/safe access.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Value type to synchronize. \\
+\hline
+{\em M} & Mutex type (defaults to std\+::mutex). \\
+\hline
+\end{DoxyTemplParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{sync_8h}{sync.\+h}}\end{DoxyCompactItemize}

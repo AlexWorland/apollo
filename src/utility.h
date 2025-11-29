@@ -25,6 +25,15 @@
     while (y) z \
   }
 
+/**
+ * @brief Template helper to extract argument type from function signature.
+ * 
+ * Extracts the argument type U from a function type T(U).
+ * Used internally for template metaprogramming.
+ * 
+ * @tparam T Function type in the form ReturnType(ArgType)
+ * @tparam U Argument type (deduced)
+ */
 template<typename T>
 struct argument_type;
 
@@ -126,23 +135,58 @@ struct argument_type<T(U)> {
 
 namespace util {
 
+  /**
+   * @brief Check if type is an instantiation of a template.
+   * 
+   * @internal Implementation detail for instantiation_of_v.
+   * 
+   * @tparam X Template to check.
+   * @tparam Y Template parameters (unused in base case).
+   */
   template<template<typename...> class X, class... Y>
   struct __instantiation_of: public std::false_type {};
 
+  /**
+   * @brief Specialization when T is an instantiation of X.
+   * 
+   * @internal Implementation detail for instantiation_of_v.
+   * 
+   * @tparam X Template to check.
+   * @tparam Y Template parameters.
+   */
   template<template<typename...> class X, class... Y>
   struct __instantiation_of<X, X<Y...>>: public std::true_type {};
 
+  /**
+   * @brief Check if type T is an instantiation of template X.
+   * 
+   * @tparam X Template to check.
+   * @tparam T Type to check.
+   * @tparam Y Additional template parameters (unused).
+   */
   template<template<typename...> class X, class T, class... Y>
   static constexpr auto instantiation_of_v = __instantiation_of<X, T, Y...>::value;
 
   template<bool V, class X, class Y>
   struct __either;
 
+  /**
+   * @brief Internal template helper for conditional type selection.
+   * 
+   * Selects type X when condition is true.
+   * @internal Implementation detail for either_t.
+   */
   template<class X, class Y>
   struct __either<true, X, Y> {
     using type = X;
   };
 
+  /**
+   * @brief Internal template helper for conditional type selection.
+   * 
+   * Selects type Y when condition is false.
+   * @internal Implementation detail for either_t.
+   */
   template<class X, class Y>
   struct __either<false, X, Y> {
     using type = Y;
@@ -151,13 +195,35 @@ namespace util {
   template<bool V, class X, class Y>
   using either_t = typename __either<V, X, Y>::type;
 
+  /**
+   * @brief Overloaded callable wrapper.
+   * 
+   * Combines multiple callables into a single overloaded callable object.
+   * Useful for std::visit with variant types.
+   * 
+   * @tparam Ts Callable types to combine.
+   */
   template<class... Ts>
   struct overloaded: Ts... {
     using Ts::operator()...;
   };
+  
+  /**
+   * @brief Deduction guide for overloaded.
+   * 
+   * @tparam Ts Callable types.
+   */
   template<class... Ts>
   overloaded(Ts...) -> overloaded<Ts...>;
 
+  /**
+   * @brief RAII guard that executes a function on failure.
+   * 
+   * Executes a cleanup function when the guard is destroyed if failure is true.
+   * Useful for ensuring cleanup code runs when an operation fails.
+   * 
+   * @tparam T Function or callable type to execute on failure.
+   */
   template<class T>
   class FailGuard {
   public:
@@ -185,21 +251,49 @@ namespace util {
       }
     }
 
+    /**
+     * @brief Disable failure guard execution.
+     * 
+     * Prevents the cleanup function from executing on destruction.
+     */
     void disable() {
       failure = false;
     }
 
+    /**
+     * @brief Failure flag.
+     * 
+     * If true, the cleanup function will execute on destruction.
+     */
     bool failure {true};
 
   private:
     T _func;
   };
 
+  /**
+   * @brief Create a failure guard.
+   * 
+   * Factory function to create a FailGuard that executes a function on failure.
+   * 
+   * @tparam T Function or callable type.
+   * @param f Function to execute on failure.
+   * @return FailGuard instance.
+   */
   template<class T>
   [[nodiscard]] auto fail_guard(T &&f) {
     return FailGuard<T> {std::forward<T>(f)};
   }
 
+  /**
+   * @brief Append struct to byte buffer.
+   * 
+   * Appends the raw bytes of a struct to a byte vector.
+   * 
+   * @tparam T Struct type.
+   * @param buf Target buffer.
+   * @param _struct Struct to append.
+   */
   template<class T>
   void append_struct(std::vector<uint8_t> &buf, const T &_struct) {
     constexpr size_t data_len = sizeof(_struct);
@@ -213,10 +307,17 @@ namespace util {
     }
   }
 
+  /**
+   * @brief Hexadecimal string conversion utility.
+   * 
+   * Converts binary data to hexadecimal string representation.
+   * 
+   * @tparam T Container or data type to convert.
+   */
   template<class T>
   class Hex {
   public:
-    typedef T elem_type;
+    typedef T elem_type;  ///< Element type being converted to hex.
 
   private:
     const char _bits[16] {
@@ -241,6 +342,12 @@ namespace util {
     char _hex[sizeof(elem_type) * 2];
 
   public:
+    /**
+     * @brief Construct hex representation from element.
+     * 
+     * @param elem Element to convert to hex.
+     * @param rev If true, process bytes in reverse order.
+     */
     Hex(const elem_type &elem, bool rev) {
       if (!rev) {
         const uint8_t *data = reinterpret_cast<const uint8_t *>(&elem) + sizeof(elem_type) - 1;
@@ -257,49 +364,105 @@ namespace util {
       }
     }
 
+    /**
+     * @brief Get iterator to beginning of hex string.
+     * @return Pointer to first character.
+     */
     char *begin() {
       return _hex;
     }
 
+    /**
+     * @brief Get iterator to end of hex string.
+     * @return Pointer past last character.
+     */
     char *end() {
       return _hex + sizeof(elem_type) * 2;
     }
 
+    /**
+     * @brief Get const iterator to beginning of hex string.
+     * @return Pointer to first character.
+     */
     const char *begin() const {
       return _hex;
     }
 
+    /**
+     * @brief Get const iterator to end of hex string.
+     * @return Pointer past last character.
+     */
     const char *end() const {
       return _hex + sizeof(elem_type) * 2;
     }
 
+    /**
+     * @brief Get const iterator to beginning of hex string.
+     * @return Pointer to first character.
+     */
     const char *cbegin() const {
       return _hex;
     }
 
+    /**
+     * @brief Get const iterator to end of hex string.
+     * @return Pointer past last character.
+     */
     const char *cend() const {
       return _hex + sizeof(elem_type) * 2;
     }
 
+    /**
+     * @brief Convert hex representation to string.
+     * @return String containing hex representation.
+     */
     std::string to_string() const {
       return {begin(), end()};
     }
 
+    /**
+     * @brief Get hex representation as string view.
+     * @return String view of hex representation.
+     */
     std::string_view to_string_view() const {
       return {begin(), sizeof(elem_type) * 2};
     }
   };
 
+  /**
+   * @brief Create hex representation of an element.
+   * 
+   * @tparam T Element type.
+   * @param elem Element to convert.
+   * @param rev If true, process bytes in reverse order.
+   * @return Hex object containing the representation.
+   */
   template<class T>
   Hex<T> hex(const T &elem, bool rev = false) {
     return Hex<T>(elem, rev);
   }
 
+  /**
+   * @brief Convert value to hex string for logging.
+   * 
+   * @tparam T Value type.
+   * @param value Value to convert.
+   * @return Hex string with "0x" prefix.
+   */
   template<typename T>
   std::string log_hex(const T &value) {
     return "0x" + Hex<T>(value, false).to_string();
   }
 
+  /**
+   * @brief Convert iterator range to hex string.
+   * 
+   * @tparam It Iterator type.
+   * @param begin Start iterator.
+   * @param end End iterator.
+   * @param rev If true, process bytes in reverse order.
+   * @return Hex string representation.
+   */
   template<class It>
   std::string hex_vec(It begin, It end, bool rev = false) {
     auto str_size = 2 * std::distance(begin, end);
@@ -342,11 +505,27 @@ namespace util {
     return hex;
   }
 
+  /**
+   * @brief Convert container to hex string.
+   * 
+   * @tparam C Container type.
+   * @param c Container to convert.
+   * @param rev If true, process bytes in reverse order.
+   * @return Hex string representation.
+   */
   template<class C>
   std::string hex_vec(C &&c, bool rev = false) {
     return hex_vec(std::begin(c), std::end(c), rev);
   }
 
+  /**
+   * @brief Convert hex string to value.
+   * 
+   * @tparam T Target type.
+   * @param hex Hex string to parse.
+   * @param rev If true, process bytes in reverse order.
+   * @return Parsed value.
+   */
   template<class T>
   T from_hex(const std::string_view &hex, bool rev = false) {
     std::uint8_t buf[sizeof(T)];
@@ -403,6 +582,13 @@ namespace util {
     return *reinterpret_cast<T *>(buf);
   }
 
+  /**
+   * @brief Convert hex string to byte vector.
+   * 
+   * @param hex Hex string to parse.
+   * @param rev If true, process bytes in reverse order.
+   * @return Parsed byte string.
+   */
   inline std::string from_hex_vec(const std::string &hex, bool rev = false) {
     std::string buf;
 
@@ -455,6 +641,17 @@ namespace util {
     return buf;
   }
 
+  /**
+   * @brief Get non-string JSON value with type conversion.
+   * 
+   * Extracts a value from JSON, converting string representations to numeric/boolean types if needed.
+   * 
+   * @tparam T Target type.
+   * @param j JSON object.
+   * @param key Key to look up.
+   * @param default_value Default value if key not found or conversion fails.
+   * @return Extracted value or default.
+   */
   template<typename T>
   T get_non_string_json_value(const nlohmann::json& j, const std::string& key, const T& default_value = T{}) {
     if (!j.contains(key))
@@ -479,6 +676,13 @@ namespace util {
     return default_value;
   }
 
+  /**
+   * @brief Hash function for arbitrary types.
+   * 
+   * Provides a hash implementation that hashes the raw bytes of a type.
+   * 
+   * @tparam T Type to hash.
+   */
   template<class T>
   class hash {
   public:
@@ -491,16 +695,37 @@ namespace util {
     }
   };
 
+  /**
+   * @brief Get underlying integer value of enum (const).
+   * 
+   * @tparam T Enum type.
+   * @param val Enum value.
+   * @return Const reference to underlying integer.
+   */
   template<class T>
   auto enm(const T &val) -> const std::underlying_type_t<T> & {
     return *reinterpret_cast<const std::underlying_type_t<T> *>(&val);
   }
 
+  /**
+   * @brief Get underlying integer value of enum (non-const).
+   * 
+   * @tparam T Enum type.
+   * @param val Enum value.
+   * @return Reference to underlying integer.
+   */
   template<class T>
   auto enm(T &val) -> std::underlying_type_t<T> & {
     return *reinterpret_cast<std::underlying_type_t<T> *>(&val);
   }
 
+  /**
+   * @brief Parse integer from character range.
+   * 
+   * @param begin Start of character range.
+   * @param end End of character range.
+   * @return Parsed integer value.
+   */
   inline std::int64_t from_chars(const char *begin, const char *end) {
     if (begin == end) {
       return 0;
@@ -517,41 +742,92 @@ namespace util {
     return *begin != '-' ? res + (std::int64_t) (*begin - '0') * mul : -res;
   }
 
+  /**
+   * @brief Parse integer from string view.
+   * 
+   * @param number String view containing number.
+   * @return Parsed integer value.
+   */
   inline std::int64_t from_view(const std::string_view &number) {
     return from_chars(std::begin(number), std::end(number));
   }
 
+  /**
+   * @brief Either type for representing one of two possible values.
+   * 
+   * Similar to Haskell's Either type, holds either an X or Y value.
+   * Provides convenient accessors for left (X) and right (Y) values.
+   * 
+   * @tparam X Left value type.
+   * @tparam Y Right value type.
+   */
   template<class X, class Y>
   class Either: public std::variant<std::monostate, X, Y> {
   public:
     using std::variant<std::monostate, X, Y>::variant;
 
+    /**
+     * @brief Check if left value (X) is present.
+     * @return True if left value is present.
+     */
     constexpr bool has_left() const {
       return std::holds_alternative<X>(*this);
     }
 
+    /**
+     * @brief Check if right value (Y) is present.
+     * @return True if right value is present.
+     */
     constexpr bool has_right() const {
       return std::holds_alternative<Y>(*this);
     }
 
+    /**
+     * @brief Get left value (X).
+     * @return Reference to left value.
+     * @pre has_left() must be true.
+     */
     X &left() {
       return std::get<X>(*this);
     }
 
+    /**
+     * @brief Get right value (Y).
+     * @return Reference to right value.
+     * @pre has_right() must be true.
+     */
     Y &right() {
       return std::get<Y>(*this);
     }
 
+    /**
+     * @brief Get left value (X) const.
+     * @return Const reference to left value.
+     * @pre has_left() must be true.
+     */
     const X &left() const {
       return std::get<X>(*this);
     }
 
+    /**
+     * @brief Get right value (Y) const.
+     * @return Const reference to right value.
+     * @pre has_right() must be true.
+     */
     const Y &right() const {
       return std::get<Y>(*this);
     }
   };
 
-  // Compared to std::unique_ptr, it adds the ability to get the address of the pointer itself
+  /**
+   * @brief Unique pointer with addressable pointer storage.
+   * 
+   * Similar to std::unique_ptr but allows getting the address of the pointer itself,
+   * which is useful for C APIs that require pointer-to-pointer arguments.
+   * 
+   * @tparam T Element type.
+   * @tparam D Deleter type (defaults to std::default_delete<T>).
+   */
   template<typename T, typename D = std::default_delete<T>>
   class uniq_ptr {
   public:
@@ -610,6 +886,13 @@ namespace util {
       reset();
     }
 
+    /**
+     * @brief Reset pointer to new value.
+     * 
+     * Deletes current pointer if non-null, then sets to new value.
+     * 
+     * @param p New pointer value (defaults to nullptr).
+     */
     void reset(pointer p = pointer()) {
       if (_p) {
         _deleter(_p);
@@ -618,52 +901,110 @@ namespace util {
       _p = p;
     }
 
+    /**
+     * @brief Release ownership of pointer.
+     * 
+     * Returns the pointer and sets internal pointer to nullptr.
+     * Caller is responsible for deletion.
+     * 
+     * @return Released pointer.
+     */
     pointer release() {
       auto tmp = _p;
       _p = nullptr;
       return tmp;
     }
 
+    /**
+     * @brief Get raw pointer.
+     * @return Raw pointer (non-const).
+     */
     pointer get() {
       return _p;
     }
 
+    /**
+     * @brief Get raw pointer.
+     * @return Raw pointer (const).
+     */
     const_pointer get() const {
       return _p;
     }
 
+    /**
+     * @brief Dereference operator (const).
+     * @return Const reference to pointed-to object.
+     */
     std::add_lvalue_reference_t<element_type const> operator*() const {
       return *_p;
     }
 
+    /**
+     * @brief Dereference operator.
+     * @return Reference to pointed-to object.
+     */
     std::add_lvalue_reference_t<element_type> operator*() {
       return *_p;
     }
 
+    /**
+     * @brief Member access operator (const).
+     * @return Const pointer for member access.
+     */
     const_pointer operator->() const {
       return _p;
     }
 
+    /**
+     * @brief Member access operator.
+     * @return Pointer for member access.
+     */
     pointer operator->() {
       return _p;
     }
 
+    /**
+     * @brief Address-of operator (const).
+     * 
+     * Returns address of internal pointer, useful for C APIs requiring pointer-to-pointer.
+     * 
+     * @return Pointer to internal pointer.
+     */
     pointer *operator&() const {
       return &_p;
     }
 
+    /**
+     * @brief Address-of operator.
+     * 
+     * Returns address of internal pointer, useful for C APIs requiring pointer-to-pointer.
+     * 
+     * @return Pointer to internal pointer.
+     */
     pointer *operator&() {
       return &_p;
     }
 
+    /**
+     * @brief Get deleter (non-const).
+     * @return Reference to deleter.
+     */
     deleter_type &get_deleter() {
       return _deleter;
     }
 
+    /**
+     * @brief Get deleter (const).
+     * @return Const reference to deleter.
+     */
     const deleter_type &get_deleter() const {
       return _deleter;
     }
 
+    /**
+     * @brief Boolean conversion operator.
+     * @return True if pointer is non-null.
+     */
     explicit operator bool() const {
       return _p != nullptr;
     }
@@ -673,64 +1014,125 @@ namespace util {
     deleter_type _deleter;
   };
 
+  /**
+   * @brief Equality comparison for uniq_ptr.
+   * @return True if both pointers are equal.
+   */
   template<class T1, class D1, class T2, class D2>
   bool operator==(const uniq_ptr<T1, D1> &x, const uniq_ptr<T2, D2> &y) {
     return x.get() == y.get();
   }
 
+  /**
+   * @brief Inequality comparison for uniq_ptr.
+   * @return True if pointers are not equal.
+   */
   template<class T1, class D1, class T2, class D2>
   bool operator!=(const uniq_ptr<T1, D1> &x, const uniq_ptr<T2, D2> &y) {
     return x.get() != y.get();
   }
 
+  /**
+   * @brief Equality comparison between std::unique_ptr and uniq_ptr.
+   * @return True if both pointers are equal.
+   */
   template<class T1, class D1, class T2, class D2>
   bool operator==(const std::unique_ptr<T1, D1> &x, const uniq_ptr<T2, D2> &y) {
     return x.get() == y.get();
   }
 
+  /**
+   * @brief Inequality comparison between std::unique_ptr and uniq_ptr.
+   * @return True if pointers are not equal.
+   */
   template<class T1, class D1, class T2, class D2>
   bool operator!=(const std::unique_ptr<T1, D1> &x, const uniq_ptr<T2, D2> &y) {
     return x.get() != y.get();
   }
 
+  /**
+   * @brief Equality comparison between uniq_ptr and std::unique_ptr.
+   * @return True if both pointers are equal.
+   */
   template<class T1, class D1, class T2, class D2>
   bool operator==(const uniq_ptr<T1, D1> &x, const std::unique_ptr<T1, D1> &y) {
     return x.get() == y.get();
   }
 
+  /**
+   * @brief Inequality comparison between uniq_ptr and std::unique_ptr.
+   * @return True if pointers are not equal.
+   */
   template<class T1, class D1, class T2, class D2>
   bool operator!=(const uniq_ptr<T1, D1> &x, const std::unique_ptr<T1, D1> &y) {
     return x.get() != y.get();
   }
 
+  /**
+   * @brief Equality comparison with nullptr.
+   * @return True if pointer is null.
+   */
   template<class T, class D>
   bool operator==(const uniq_ptr<T, D> &x, std::nullptr_t) {
     return !(bool) x;
   }
 
+  /**
+   * @brief Inequality comparison with nullptr.
+   * @return True if pointer is non-null.
+   */
   template<class T, class D>
   bool operator!=(const uniq_ptr<T, D> &x, std::nullptr_t) {
     return (bool) x;
   }
 
+  /**
+   * @brief Equality comparison with nullptr (reversed).
+   * @return True if pointer is null.
+   */
   template<class T, class D>
   bool operator==(std::nullptr_t, const uniq_ptr<T, D> &y) {
     return !(bool) y;
   }
 
+  /**
+   * @brief Inequality comparison with nullptr (reversed).
+   * @return True if pointer is non-null.
+   */
   template<class T, class D>
   bool operator!=(std::nullptr_t, const uniq_ptr<T, D> &y) {
     return (bool) y;
   }
 
+  /**
+   * @brief Shared pointer type alias from pointer type.
+   * 
+   * @tparam P Pointer type with element_type member.
+   */
   template<class P>
   using shared_t = std::shared_ptr<typename P::element_type>;
 
+  /**
+   * @brief Create shared pointer from raw pointer with deleter.
+   * 
+   * @tparam P Pointer type.
+   * @tparam T Raw pointer type.
+   * @param pointer Raw pointer to wrap.
+   * @return Shared pointer with appropriate deleter.
+   */
   template<class P, class T>
   shared_t<P> make_shared(T *pointer) {
     return shared_t<P>(reinterpret_cast<typename P::pointer>(pointer), typename P::deleter_type());
   }
 
+  /**
+   * @brief Wrapper pointer that can own or reference memory.
+   * 
+   * Can either own memory (like unique_ptr) or just reference it (like raw pointer).
+   * Useful for APIs that may or may not transfer ownership.
+   * 
+   * @tparam T Element type.
+   */
   template<class T>
   class wrap_ptr {
   public:
@@ -823,6 +1225,13 @@ namespace util {
     pointer _p;
   };
 
+  /**
+   * @brief Check if type is a pointer-like type.
+   * 
+   * True for std::unique_ptr, std::shared_ptr, uniq_ptr, or raw pointers.
+   * 
+   * @tparam T Type to check.
+   */
   template<class T>
   constexpr bool is_pointer_v =
     instantiation_of_v<std::unique_ptr, T> ||
@@ -831,26 +1240,66 @@ namespace util {
     std::is_pointer_v<T>;
 
   template<class T, class V = void>
+  /**
+   * @brief Internal template helper for false value selection.
+   * 
+   * Provides appropriate "false" value for different types.
+   * @internal Implementation detail for false_v.
+   */
   struct __false_v;
 
+  /**
+   * @brief Specialization for optional types.
+   * 
+   * Returns std::nullopt as the false value.
+   * @internal
+   */
   template<class T>
   struct __false_v<T, std::enable_if_t<instantiation_of_v<std::optional, T>>> {
     static constexpr std::nullopt_t value = std::nullopt;
   };
 
+  /**
+   * @brief Specialization for pointer types.
+   * 
+   * Returns nullptr as the false value.
+   * @internal
+   */
   template<class T>
   struct __false_v<T, std::enable_if_t<is_pointer_v<T>>> {
     static constexpr std::nullptr_t value = nullptr;
   };
 
+  /**
+   * @brief Specialization for bool type.
+   * 
+   * Returns false as the false value.
+   * @internal
+   */
   template<class T>
   struct __false_v<T, std::enable_if_t<std::is_same_v<T, bool>>> {
     static constexpr bool value = false;
   };
 
+  /**
+   * @brief Get false value for type T.
+   * 
+   * Returns appropriate "false" value: std::nullopt for optionals,
+   * nullptr for pointers, false for bool, or std::optional<T>{} otherwise.
+   * 
+   * @tparam T Type to get false value for.
+   */
   template<class T>
   static constexpr auto false_v = __false_v<T>::value;
 
+  /**
+   * @brief Optional type helper.
+   * 
+   * For bool and pointer types, returns T directly.
+   * For other types, returns std::optional<T>.
+   * 
+   * @tparam T Base type.
+   */
   template<class T>
   using optional_t = either_t<
     (std::is_same_v<T, bool> || is_pointer_v<T>),
@@ -858,6 +1307,13 @@ namespace util {
     std::optional<T>>;
 
   template<class T>
+  /**
+   * @brief Buffer container for binary data.
+   * 
+   * Provides a resizable buffer for storing binary data with convenient access methods.
+   * 
+   * @tparam T Element type (typically char or uint8_t).
+   */
   class buffer_t {
   public:
     buffer_t():
@@ -893,34 +1349,72 @@ namespace util {
       std::fill_n(_buf.get(), elements, t);
     }
 
+    /**
+     * @brief Subscript operator.
+     * @param el Element index.
+     * @return Reference to element.
+     */
     T &operator[](size_t el) {
       return _buf[el];
     }
 
+    /**
+     * @brief Subscript operator (const).
+     * @param el Element index.
+     * @return Const reference to element.
+     */
     const T &operator[](size_t el) const {
       return _buf[el];
     }
 
+    /**
+     * @brief Get buffer size.
+     * @return Number of elements.
+     */
     size_t size() const {
       return _els;
     }
 
+    /**
+     * @brief Fake resize (changes size without reallocating).
+     * 
+     * Changes the reported size without actually reallocating memory.
+     * Use with caution - ensure the new size doesn't exceed allocated capacity.
+     * 
+     * @param els New size.
+     */
     void fake_resize(std::size_t els) {
       _els = els;
     }
 
+    /**
+     * @brief Get iterator to beginning.
+     * @return Pointer to first element.
+     */
     T *begin() {
       return _buf.get();
     }
 
+    /**
+     * @brief Get const iterator to beginning.
+     * @return Const pointer to first element.
+     */
     const T *begin() const {
       return _buf.get();
     }
 
+    /**
+     * @brief Get iterator to end.
+     * @return Pointer past last element.
+     */
     T *end() {
       return _buf.get() + _els;
     }
 
+    /**
+     * @brief Get const iterator to end.
+     * @return Const pointer past last element.
+     */
     const T *end() const {
       return _buf.get() + _els;
     }
@@ -930,6 +1424,14 @@ namespace util {
     std::unique_ptr<T[]> _buf;
   };
 
+  /**
+   * @brief Return left value if present, otherwise right value.
+   * 
+   * @tparam T Value type.
+   * @param l Optional left value.
+   * @param r Right value (fallback).
+   * @return Left value if present, otherwise right value.
+   */
   template<class T>
   T either(std::optional<T> &&l, T &&r) {
     if (l) {
@@ -939,11 +1441,28 @@ namespace util {
     return std::forward<T>(r);
   }
 
+  /**
+   * @brief Function pointer type helper.
+   * 
+   * Helper template to extract function pointer types.
+   * 
+   * @tparam ReturnType Return type of the function.
+   * @tparam Args Argument types of the function.
+   */
   template<class ReturnType, class... Args>
   struct Function {
     typedef ReturnType (*type)(Args...);
   };
 
+  /**
+   * @brief Deleter wrapper for function pointers.
+   * 
+   * Wraps a function pointer to be used as a deleter for smart pointers.
+   * 
+   * @tparam T Pointer type.
+   * @tparam ReturnType Return type of the destroy function.
+   * @tparam function Function pointer to call for destruction.
+   */
   template<class T, class ReturnType, typename Function<ReturnType, T>::type function>
   struct Destroy {
     typedef T pointer;
@@ -953,52 +1472,142 @@ namespace util {
     }
   };
 
+  /**
+   * @brief Safe pointer with function deleter.
+   * 
+   * Unique pointer that uses a function pointer as deleter.
+   * 
+   * @tparam T Element type.
+   * @tparam function Function pointer to call for deletion.
+   */
   template<class T, typename Function<void, T *>::type function>
   using safe_ptr = uniq_ptr<T, Destroy<T *, void, function>>;
 
-  // You cannot specialize an alias
+  /**
+   * @brief Safe pointer with function deleter (version 2).
+   * 
+   * Unique pointer that uses a function pointer with return type as deleter.
+   * 
+   * @tparam T Element type.
+   * @tparam ReturnType Return type of deleter function.
+   * @tparam function Function pointer to call for deletion.
+   */
   template<class T, class ReturnType, typename Function<ReturnType, T *>::type function>
   using safe_ptr_v2 = uniq_ptr<T, Destroy<T *, ReturnType, function>>;
 
+  /**
+   * @brief Free C-allocated memory.
+   * 
+   * Wrapper around std::free for use with smart pointers.
+   * 
+   * @tparam T Pointer type.
+   * @param p Pointer to free.
+   */
   template<class T>
   void c_free(T *p) {
     free(p);
   }
 
+  /**
+   * @brief Call function through function pointer pointer.
+   * 
+   * @tparam T Pointer type.
+   * @tparam ReturnType Return type of function.
+   * @tparam function Function pointer pointer.
+   * @param p Pointer to pass to function.
+   */
   template<class T, class ReturnType, ReturnType (**function)(T *)>
   void dynamic(T *p) {
     (*function)(p);
   }
 
+  /**
+   * @brief Safe pointer with dynamic function pointer deleter.
+   * 
+   * Unique pointer that uses a function pointer pointer as deleter.
+   * 
+   * @tparam T Element type.
+   * @tparam function Function pointer pointer to call for deletion.
+   */
   template<class T, void (**function)(T *)>
   using dyn_safe_ptr = safe_ptr<T, dynamic<T, void, function>>;
 
+  /**
+   * @brief Safe pointer with dynamic function pointer deleter (version 2).
+   * 
+   * Unique pointer that uses a function pointer pointer with return type as deleter.
+   * 
+   * @tparam T Element type.
+   * @tparam ReturnType Return type of deleter function.
+   * @tparam function Function pointer pointer to call for deletion.
+   */
   template<class T, class ReturnType, ReturnType (**function)(T *)>
   using dyn_safe_ptr_v2 = safe_ptr<T, dynamic<T, ReturnType, function>>;
 
+  /**
+   * @brief C-style allocated pointer.
+   * 
+   * Unique pointer that uses std::free as deleter.
+   * 
+   * @tparam T Element type.
+   */
   template<class T>
   using c_ptr = safe_ptr<T, c_free<T>>;
 
+  /**
+   * @brief Create string view from iterator range.
+   * 
+   * @tparam It Iterator type.
+   * @param begin Start iterator.
+   * @param end End iterator.
+   * @return String view of the range.
+   */
   template<class It>
   std::string_view view(It begin, It end) {
     return std::string_view {(const char *) begin, (std::size_t) (end - begin)};
   }
 
+  /**
+   * @brief Create string view from object.
+   * 
+   * @tparam T Object type.
+   * @param data Object to view.
+   * @return String view of object's bytes.
+   */
   template<class T>
   std::string_view view(const T &data) {
     return std::string_view((const char *) &data, sizeof(T));
   }
 
+  /**
+   * @brief 2D point structure.
+   * 
+   * Represents a point in 2D space with x and y coordinates.
+   */
   struct point_t {
-    double x;
-    double y;
+    double x;  ///< X coordinate.
+    double y;  ///< Y coordinate.
 
+    /**
+     * @brief Stream output operator.
+     * 
+     * @param os Output stream.
+     * @param p Point to output.
+     * @return Reference to output stream.
+     */
     friend std::ostream &operator<<(std::ostream &os, const point_t &p) {
       return (os << "Point(x: " << p.x << ", y: " << p.y << ")");
     }
   };
 
   namespace endian {
+    /**
+     * @brief Endianness detection helper.
+     * 
+     * Provides compile-time endianness detection for the target architecture.
+     * 
+     * @tparam T Unused (for consistency with other templates).
+     */
     template<class T = void>
     struct endianness {
       enum : bool {
@@ -1025,9 +1634,23 @@ namespace util {
       };
     };
 
+    /**
+     * @brief Endianness conversion helper.
+     * 
+     * Provides functions to convert between big-endian and little-endian byte orders.
+     * 
+     * @tparam T Type to convert.
+     * @tparam S SFINAE helper type (void for non-optional types).
+     */
     template<class T, class S = void>
     struct endian_helper {};
 
+    /**
+     * @brief Endian conversion helper for non-optional types.
+     * 
+     * Provides endian conversion functions for types that are not std::optional.
+     * @internal Implementation detail for endian conversion utilities.
+     */
     template<class T>
     struct endian_helper<T, std::enable_if_t<!(instantiation_of_v<std::optional, T>)>> {
       static inline T big(T x) {
@@ -1051,6 +1674,12 @@ namespace util {
       }
     };
 
+    /**
+     * @brief Endian conversion helper for optional types.
+     * 
+     * Provides endian conversion functions for std::optional types.
+     * @internal Implementation detail for endian conversion utilities.
+     */
     template<class T>
     struct endian_helper<T, std::enable_if_t<instantiation_of_v<std::optional, T>>> {
       static inline T little(T x) {

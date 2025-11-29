@@ -1,0 +1,255 @@
+\doxysection{task\+\_\+pool.\+h}
+\hypertarget{task__pool_8h_source}{}\label{task__pool_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/task\_pool.h@{/Users/alexworland/autoBitrate/apollo/src/task\_pool.h}}
+\mbox{\hyperlink{task__pool_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ standard\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <chrono>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <deque>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <functional>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <future>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <mutex>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <optional>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ local\ includes}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{move__by__copy_8h}{move\_by\_copy.h}}"{}}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{utility_8h}{utility.h}}"{}}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{namespace\ }task\_pool\_util\ \{}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classtask__pool__util_1_1___impl_base}{\_ImplBase}}\ \{}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{comment}{//\ \_unique\_base\_type\ \_this\_ptr;}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classtask__pool__util_1_1___impl_base}{\string~\_ImplBase}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ run()\ =\ 0;}
+\DoxyCodeLine{00036\ \ \ \};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Function>}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{class\ }\_Impl:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classtask__pool__util_1_1___impl_base}{\_ImplBase}}\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ Function\ \_func;}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00050\ \ \ \ \ \_Impl(Function\ \&\&f):}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \_func(std::forward<Function>(f))\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}\ run()\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \_func();}
+\DoxyCodeLine{00056\ \ \ \ \ \}}
+\DoxyCodeLine{00057\ \ \ \};}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{class\ }TaskPool\ \{}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keyword}{typedef}\ std::unique\_ptr<\_ImplBase>\ \_\_task;}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{classtask__pool__util_1_1___impl_base}{\_ImplBase}}\ *task\_id\_t;}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keyword}{typedef}\ std::chrono::steady\_clock::time\_point\ \_\_time\_point;}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ R>}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keyword}{class\ }timer\_task\_t\ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ task\_id\_t\ task\_id;}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ std::future<R>\ future;}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \ \ \ \ timer\_task\_t(task\_id\_t\ task\_id,\ std::future<R>\ \&future):}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ task\_id\ \{task\_id\},}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ future\ \{std::move(future)\}\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00089\ \ \ \ \ \};}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00092\ \ \ \ \ std::deque<\_\_task>\ \_tasks;}
+\DoxyCodeLine{00093\ \ \ \ \ std::vector<std::pair<\_\_time\_point,\ \_\_task>>\ \_timer\_tasks;}
+\DoxyCodeLine{00094\ \ \ \ \ std::mutex\ \_task\_mutex;}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00097\ \ \ \ \ TaskPool()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \ \ \ \ TaskPool(TaskPool\ \&\&other)\ \textcolor{keyword}{noexcept}:}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \_tasks\ \{std::move(other.\_tasks)\},}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \_timer\_tasks\ \{std::move(other.\_timer\_tasks)\}\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \ \ TaskPool\ \&operator=(TaskPool\ \&\&other)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ std::swap(\_tasks,\ other.\_tasks);}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ std::swap(\_timer\_tasks,\ other.\_timer\_tasks);}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00109\ \ \ \ \ \}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class\ }Function,\ \textcolor{keyword}{class}...\ Args>}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keyword}{auto}\ push(Function\ \&\&newTask,\ Args\ \&\&...args)\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \textcolor{keyword}{static\_assert}(std::is\_invocable\_v<Function,\ Args\ \&\&...>,\ \textcolor{stringliteral}{"{}arguments\ don't\ match\ the\ function"{}});}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \textcolor{keyword}{using\ }\_\_return\ =\ std::invoke\_result\_t<Function,\ Args\ \&\&...>;}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \textcolor{keyword}{using\ }task\_t\ =\ std::packaged\_task<\_\_return()>;}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ bind\ =\ [task\ =\ std::forward<Function>(newTask),\ tuple\_args\ =\ std::make\_tuple(std::forward<Args>(args)...)]()\ \textcolor{keyword}{mutable}\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::apply(task,\ std::move(tuple\_args));}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \ \ \ \ \ \ task\_t\ task(std::move(bind));}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ future\ =\ task.get\_future();}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \ \ \ \ \ \ std::lock\_guard<std::mutex>\ lg(\_task\_mutex);}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \_tasks.emplace\_back(toRunnable(std::move(task)));}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ future;}
+\DoxyCodeLine{00130\ \ \ \ \ \}}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordtype}{void}\ pushDelayed(std::pair<\_\_time\_point,\ \_\_task>\ \&\&task)\ \{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ std::lock\_guard\ lg(\_task\_mutex);}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ \_timer\_tasks.cbegin();}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ it\ <\ \_timer\_tasks.cend();\ ++it)\ \{}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (std::get<0>(*it)\ <\ task.first)\ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \_timer\_tasks.emplace(it,\ task.first,\ std::move(task.second));}
+\DoxyCodeLine{00143\ \ \ \ \ \}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class\ }Function,\ \textcolor{keyword}{class\ }X,\ \textcolor{keyword}{class\ }Y,\ \textcolor{keyword}{class}...\ Args>}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classtask__pool__util_1_1_task_pool_acf403ca5189c02ac12a0540de29f7280}{pushDelayed}}(Function\ \&\&newTask,\ std::chrono::duration<X,\ Y>\ duration,\ Args\ \&\&...\mbox{\hyperlink{namespaceargs}{args}})\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \textcolor{keyword}{static\_assert}(std::is\_invocable\_v<Function,\ Args\ \&\&...>,\ \textcolor{stringliteral}{"{}arguments\ don't\ match\ the\ function"{}});}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \textcolor{keyword}{using\ }\_\_return\ =\ std::invoke\_result\_t<Function,\ Args\ \&\&...>;}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \textcolor{keyword}{using\ }task\_t\ =\ std::packaged\_task<\_\_return()>;}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \_\_time\_point\ time\_point;}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (std::is\_floating\_point\_v<X>)\ \{}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ time\_point\ =\ std::chrono::steady\_clock::now()\ +\ std::chrono::duration\_cast<std::chrono::nanoseconds>(duration);}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ time\_point\ =\ std::chrono::steady\_clock::now()\ +\ duration;}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ bind\ =\ [task\ =\ std::forward<Function>(newTask),\ tuple\_args\ =\ std::make\_tuple(std::forward<Args>(\mbox{\hyperlink{namespaceargs}{args}})...)]()\ \textcolor{keyword}{mutable}\ \{}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::apply(task,\ std::move(tuple\_args));}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00166\ \ \ \ \ \ \ task\_t\ task(std::move(bind));}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ future\ =\ task.get\_future();}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ runnable\ =\ toRunnable(std::move(task));}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \ \ \ \ \ \ task\_id\_t\ task\_id\ =\ \&*runnable;}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \ \ \ \ \ \ pushDelayed(std::pair\ \{time\_point,\ std::move(runnable)\});}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classtask__pool__util_1_1_task_pool_1_1timer__task__t}{timer\_task\_t<\_\_return>}}\ \{task\_id,\ future\};}
+\DoxyCodeLine{00176\ \ \ \ \ \}}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ X,\ \textcolor{keyword}{class}\ Y>}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classtask__pool__util_1_1_task_pool_acd005004e051dbb33466768b2defa9b8}{delay}}(task\_id\_t\ task\_id,\ std::chrono::duration<X,\ Y>\ duration)\ \{}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ std::lock\_guard<std::mutex>\ lg(\_task\_mutex);}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ \_timer\_tasks.begin();}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ it\ <\ \_timer\_tasks.cend();\ ++it)\ \{}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \_\_task\ \&task\ =\ std::get<1>(*it);}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\&*task\ ==\ task\_id)\ \{}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ std::get<0>(*it)\ =\ std::chrono::steady\_clock::now()\ +\ duration;}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ ==\ \_timer\_tasks.cend())\ \{}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \textcolor{comment}{//\ smaller\ time\ goes\ to\ the\ back}}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ prev\ =\ it\ -\/\ 1;}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (it\ >\ \_timer\_tasks.cbegin())\ \{}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (std::get<0>(*it)\ >\ std::get<0>(*prev))\ \{}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ std::swap(*it,\ *prev);}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ -\/-\/prev;}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ -\/-\/it;}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00211\ \ \ \ \ \}}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \ \ \ \ \textcolor{keywordtype}{bool}\ cancel(task\_id\_t\ task\_id)\ \{}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ std::lock\_guard\ lg(\_task\_mutex);}
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ \_timer\_tasks.begin();}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ it\ <\ \_timer\_tasks.cend();\ ++it)\ \{}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \_\_task\ \&task\ =\ std::get<1>(*it);}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\&*task\ ==\ task\_id)\ \{}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ \_timer\_tasks.erase(it);}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00228\ \ \ \ \ \}}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00230\ \ \ \ \ std::optional<std::pair<\_\_time\_point,\ \_\_task>>\ pop(task\_id\_t\ task\_id)\ \{}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ std::lock\_guard\ lg(\_task\_mutex);}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ pos\ =\ std::find\_if(std::begin(\_timer\_tasks),\ std::end(\_timer\_tasks),\ [\&task\_id](\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ \&t)\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ t.second.get()\ ==\ task\_id;}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \});}
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pos\ ==\ std::end(\_timer\_tasks))\ \{}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::nullopt;}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::move(*pos);}
+\DoxyCodeLine{00242\ \ \ \ \ \}}
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ \ \ \ \ std::optional<\_\_task>\ pop()\ \{}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ std::lock\_guard\ lg(\_task\_mutex);}
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\_tasks.empty())\ \{}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \_\_task\ task\ =\ std::move(\_tasks.front());}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \_tasks.pop\_front();}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ task;}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\_timer\_tasks.empty()\ \&\&\ std::get<0>(\_timer\_tasks.back())\ <=\ std::chrono::steady\_clock::now())\ \{}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \_\_task\ task\ =\ std::move(std::get<1>(\_timer\_tasks.back()));}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \_timer\_tasks.pop\_back();}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ task;}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00258\ }
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::nullopt;}
+\DoxyCodeLine{00260\ \ \ \ \ \}}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \ \ \ \ \textcolor{keywordtype}{bool}\ ready()\ \{}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ std::lock\_guard<std::mutex>\ lg(\_task\_mutex);}
+\DoxyCodeLine{00264\ }
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !\_tasks.empty()\ ||\ (!\_timer\_tasks.empty()\ \&\&\ std::get<0>(\_timer\_tasks.back())\ <=\ std::chrono::steady\_clock::now());}
+\DoxyCodeLine{00266\ \ \ \ \ \}}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00268\ \ \ \ \ std::optional<\_\_time\_point>\ next()\ \{}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ std::lock\_guard<std::mutex>\ lg(\_task\_mutex);}
+\DoxyCodeLine{00270\ }
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\_timer\_tasks.empty())\ \{}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::nullopt;}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00274\ }
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::get<0>(\_timer\_tasks.back());}
+\DoxyCodeLine{00276\ \ \ \ \ \}}
+\DoxyCodeLine{00277\ }
+\DoxyCodeLine{00278\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00279\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Function>}
+\DoxyCodeLine{00280\ \ \ \ \ std::unique\_ptr<\_ImplBase>\ toRunnable(Function\ \&\&f)\ \{}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::make\_unique<\_Impl<Function>>(std::forward<Function\ \&\&>(f));}
+\DoxyCodeLine{00282\ \ \ \ \ \}}
+\DoxyCodeLine{00283\ \ \ \};}
+\DoxyCodeLine{00284\ \}\ \ \textcolor{comment}{//\ namespace\ task\_pool\_util}}
+
+\end{DoxyCode}

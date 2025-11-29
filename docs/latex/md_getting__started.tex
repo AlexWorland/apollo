@@ -1,0 +1,554 @@
+\chapter{Getting Started }
+\hypertarget{md_getting__started}{}\label{md_getting__started}\index{Getting Started@{Getting Started}}
+\label{md_getting__started_autotoc_md19}%
+\Hypertarget{md_getting__started_autotoc_md19}%
+
+
+The recommended method for running Sunshine is to use the binaries included in the \href{https://github.com/LizardByte/Sunshine/releases/latest}{\texttt{latest release}}, unless otherwise specified.
+
+\href{https://github.com/LizardByte/Sunshine/releases}{\texttt{Pre-\/releases}} are also available. These should be considered beta, and release artifacts may be missing when merging changes on a faster cadence.\hypertarget{md_getting__started_autotoc_md20}{}\doxysection{\texorpdfstring{Binaries}{Binaries}}\label{md_getting__started_autotoc_md20}
+Binaries of Sunshine are created for each release. They are available for Linux, mac\+OS, and Windows. Binaries can be found in the \href{https://github.com/LizardByte/Sunshine/releases/latest}{\texttt{latest release}}.
+
+\begin{DoxyNote}{Note}
+Some third party packages also exist. See \doxysectlink{md_third__party__packages}{Third Party Packages}{0} for more information. No support will be provided for third party packages!
+\end{DoxyNote}
+\hypertarget{md_getting__started_autotoc_md21}{}\doxysection{\texorpdfstring{Install}{Install}}\label{md_getting__started_autotoc_md21}
+\hypertarget{md_getting__started_autotoc_md22}{}\doxysubsection{\texorpdfstring{Docker}{Docker}}\label{md_getting__started_autotoc_md22}
+\begin{DoxyWarning}{Warning}
+The Docker images are not recommended for most users.
+\end{DoxyWarning}
+Docker images are available on \href{https://hub.docker.com/repository/docker/lizardbyte/sunshine}{\texttt{Dockerhub.\+io}} and \href{https://github.com/orgs/LizardByte/packages?repo_name=sunshine}{\texttt{ghcr.\+io}}.
+
+See \doxysectlink{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e}{Docker}{0} for more information.\hypertarget{md_getting__started_autotoc_md23}{}\doxysubsection{\texorpdfstring{Linux}{Linux}}\label{md_getting__started_autotoc_md23}
+{\bfseries{CUDA Compatibility}}
+
+CUDA is used for NVFBC capture.
+
+\begin{DoxyNote}{Note}
+See \href{https://developer.nvidia.com/cuda-gpus}{\texttt{CUDA GPUS}} to cross-\/reference Compute Capability to your GPU. The table below applies to packages provided by Lizard\+Byte. If you use an official Lizard\+Byte package, then you do not need to install CUDA.
+\end{DoxyNote}
+
+
+\begin{DoxyTable}{4}{CUDA Compatibility}{}{1}
+\SetCell{bg=\tableheadbgcolor,font=\bfseries}CUDA Version&\SetCell{bg=\tableheadbgcolor,font=\bfseries}Min Driver&\SetCell{bg=\tableheadbgcolor,font=\bfseries}CUDA Compute Capabilities&\SetCell{bg=\tableheadbgcolor,font=\bfseries}Package\\
+\SetCell[r=8]{}12.\+9.\+1&\SetCell[r=8]{}575.\+57.\+08&\SetCell[r=8]{}50;52;60;61;62;70;72;75;80;86;87;89;90;100;101;103;120;121&sunshine.\+App\+Image\\
+&&&sunshine-\/ubuntu-\/22.\+04-\/\{arch\}.deb\\
+&&&sunshine-\/ubuntu-\/24.\+04-\/\{arch\}.deb\\
+&&&sunshine-\/debian-\/trixie-\/\{arch\}.deb\\
+&&&sunshine\+\_\+\{arch\}.flatpak\\
+&&&Sunshine (copr -\/ Fedora 41)\\
+&&&Sunshine (copr -\/ Fedora 42)\\
+&&&sunshine.\+pkg.\+tar.\+zst\\
+\end{DoxyTable}
+\hypertarget{md_getting__started_autotoc_md24}{}\doxysubsubsection{\texorpdfstring{App\+Image}{App\+Image}}\label{md_getting__started_autotoc_md24}
+\begin{DoxyAttention}{Attention}
+Use distro-\/specific packages instead of the App\+Image if they are available.
+\end{DoxyAttention}
+According to App\+Image\+Lint the supported distro matrix of the App\+Image is below.
+
+
+\begin{DoxyItemize}
+\item ✖ Debian bullseye
+\item ✔ Debian bookworm
+\item ✔ Debian trixie
+\item ✔ Debian sid
+\item ✔ Ubuntu plucky
+\item ✔ Ubuntu noble
+\item ✔ Ubuntu jammy
+\item ✖ Ubuntu focal
+\item ✖ Ubuntu bionic
+\item ✖ Ubuntu xenial
+\item ✖ Ubuntu trusty
+\item ✖ Rocky Linux 8
+\item ✖ Rocky Linux 9
+\end{DoxyItemize}\hypertarget{md_getting__started_autotoc_md25}{}\doxysubsubsubsection{\texorpdfstring{Install}{Install}}\label{md_getting__started_autotoc_md25}
+
+\begin{DoxyEnumerate}
+\item Download \href{https://github.com/LizardByte/Sunshine/releases/latest/download/sunshine.AppImage}{\texttt{sunshine.\+App\+Image}} into your home directory. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cd\ \string~}
+\DoxyCodeLine{wget\ https://github.com/LizardByte/Sunshine/releases/latest/download/sunshine.AppImage}
+
+\end{DoxyCode}
+
+\item Open terminal and run the following command. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{./sunshine.AppImage\ -\/-\/install}
+
+\end{DoxyCode}
+
+\end{DoxyEnumerate}\hypertarget{md_getting__started_autotoc_md26}{}\doxysubsubsubsection{\texorpdfstring{Run}{Run}}\label{md_getting__started_autotoc_md26}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{./sunshine.AppImage\ -\/-\/install\ \&\&\ ./sunshine.AppImage}
+
+\end{DoxyCode}
+\hypertarget{md_getting__started_autotoc_md27}{}\doxysubsubsubsection{\texorpdfstring{Uninstall}{Uninstall}}\label{md_getting__started_autotoc_md27}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{./sunshine.AppImage\ -\/-\/remove}
+
+\end{DoxyCode}
+\hypertarget{md_getting__started_autotoc_md28}{}\doxysubsubsection{\texorpdfstring{Arch\+Linux}{Arch\+Linux}}\label{md_getting__started_autotoc_md28}
+\begin{DoxyAttention}{Attention}
+Use AUR packages at your own risk.
+\end{DoxyAttention}
+\hypertarget{md_getting__started_autotoc_md29}{}\doxysubsubsubsection{\texorpdfstring{Install Prebuilt Packages}{Install Prebuilt Packages}}\label{md_getting__started_autotoc_md29}
+Follow the instructions at Lizard\+Byte\textquotesingle{}s \href{https://github.com/LizardByte/pacman-repo}{\texttt{pacman-\/repo}} to add the repository. Then run the following command. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{pacman\ -\/S\ sunshine}
+
+\end{DoxyCode}
+\hypertarget{md_getting__started_autotoc_md30}{}\doxysubsubsubsection{\texorpdfstring{Install PKGBUILD Archive}{Install PKGBUILD Archive}}\label{md_getting__started_autotoc_md30}
+Open terminal and run the following command. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{wget\ https://github.com/LizardByte/Sunshine/releases/latest/download/sunshine.pkg.tar.gz}
+\DoxyCodeLine{tar\ -\/xvf\ sunshine.pkg.tar.gz}
+\DoxyCodeLine{cd\ sunshine}
+\DoxyCodeLine{}
+\DoxyCodeLine{\#\ install\ optional\ dependencies}
+\DoxyCodeLine{pacman\ -\/S\ cuda\ \ \#\ Nvidia\ GPU\ encoding\ support}
+\DoxyCodeLine{pacman\ -\/S\ libva-\/mesa-\/driver\ \ \#\ AMD\ GPU\ encoding\ support}
+\DoxyCodeLine{}
+\DoxyCodeLine{makepkg\ -\/si}
+
+\end{DoxyCode}
+\hypertarget{md_getting__started_autotoc_md31}{}\doxysubsubsubsection{\texorpdfstring{Uninstall}{Uninstall}}\label{md_getting__started_autotoc_md31}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{pacman\ -\/R\ sunshine}
+
+\end{DoxyCode}
+\hypertarget{md_getting__started_autotoc_md32}{}\doxysubsubsection{\texorpdfstring{Debian/\+Ubuntu}{Debian/\+Ubuntu}}\label{md_getting__started_autotoc_md32}
+\hypertarget{md_getting__started_autotoc_md33}{}\doxysubsubsubsection{\texorpdfstring{Install}{Install}}\label{md_getting__started_autotoc_md33}
+Download {\ttfamily sunshine-\/\{distro\}-\/\{distro-\/version\}-\/\{arch\}.deb} and run the following command. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sudo\ dpkg\ -\/i\ ./sunshine-\/\{distro\}-\/\{distro-\/version\}-\/\{arch\}.deb}
+
+\end{DoxyCode}
+
+
+\begin{DoxyNote}{Note}
+The {\ttfamily \{distro-\/version\}} is the version of the distro we built the package on. The {\ttfamily \{arch\}} is the architecture of your operating system.
+\end{DoxyNote}
+\begin{DoxyRemark}{Remarks}
+You can double-\/click the deb file to see details about the package and begin installation.
+\end{DoxyRemark}
+\hypertarget{md_getting__started_autotoc_md34}{}\doxysubsubsubsection{\texorpdfstring{Uninstall}{Uninstall}}\label{md_getting__started_autotoc_md34}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sudo\ apt\ remove\ sunshine}
+
+\end{DoxyCode}
+\hypertarget{md_getting__started_autotoc_md35}{}\doxysubsubsection{\texorpdfstring{Fedora}{Fedora}}\label{md_getting__started_autotoc_md35}
+\begin{DoxyRemark}{Remarks}
+The package name is case-\/sensitive.
+\end{DoxyRemark}
+\hypertarget{md_getting__started_autotoc_md36}{}\doxysubsubsubsection{\texorpdfstring{Install}{Install}}\label{md_getting__started_autotoc_md36}
+
+\begin{DoxyEnumerate}
+\item Enable copr repository. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sudo\ dnf\ copr\ enable\ lizardbyte/stable}
+
+\end{DoxyCode}
+
+
+or 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sudo\ dnf\ copr\ enable\ lizardbyte/beta}
+
+\end{DoxyCode}
+
+\item Install the package. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sudo\ dnf\ install\ Sunshine}
+
+\end{DoxyCode}
+
+\end{DoxyEnumerate}\hypertarget{md_getting__started_autotoc_md37}{}\doxysubsubsubsection{\texorpdfstring{Uninstall}{Uninstall}}\label{md_getting__started_autotoc_md37}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sudo\ dnf\ remove\ Sunshine}
+
+\end{DoxyCode}
+\hypertarget{md_getting__started_autotoc_md38}{}\doxysubsubsection{\texorpdfstring{Flatpak}{Flatpak}}\label{md_getting__started_autotoc_md38}
+\begin{DoxyAttention}{Attention}
+Use distro-\/specific packages instead of the Flatpak if they are available.
+\end{DoxyAttention}
+Using this package requires that you have \href{https://flatpak.org/setup}{\texttt{Flatpak}} installed.\hypertarget{md_getting__started_autotoc_md39}{}\doxysubsubsubsection{\texorpdfstring{Download (local option)}{Download (local option)}}\label{md_getting__started_autotoc_md39}
+
+\begin{DoxyEnumerate}
+\item Download {\ttfamily sunshine\+\_\+\{arch\}.flatpak} and run the following command.
+\end{DoxyEnumerate}
+
+\begin{DoxyNote}{Note}
+Replace {\ttfamily \{arch\}} with your system architecture.
+\end{DoxyNote}
+\hypertarget{md_getting__started_autotoc_md40}{}\doxysubsubsubsection{\texorpdfstring{Install (system level)}{Install (system level)}}\label{md_getting__started_autotoc_md40}
+{\bfseries{Flathub}} 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{flatpak\ install\ -\/-\/system\ flathub\ dev.lizardbyte.app.Sunshine}
+
+\end{DoxyCode}
+
+
+{\bfseries{Local}} 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{flatpak\ install\ -\/-\/system\ ./sunshine\_\{arch\}.flatpak}
+
+\end{DoxyCode}
+\hypertarget{md_getting__started_autotoc_md41}{}\doxysubsubsubsection{\texorpdfstring{Install (user level)}{Install (user level)}}\label{md_getting__started_autotoc_md41}
+{\bfseries{Flathub}} 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{flatpak\ install\ -\/-\/user\ flathub\ dev.lizardbyte.app.Sunshine}
+
+\end{DoxyCode}
+
+
+{\bfseries{Local}} 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{flatpak\ install\ -\/-\/user\ ./sunshine\_\{arch\}.flatpak}
+
+\end{DoxyCode}
+\hypertarget{md_getting__started_autotoc_md42}{}\doxysubsubsubsection{\texorpdfstring{Additional installation (required)}{Additional installation (required)}}\label{md_getting__started_autotoc_md42}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{flatpak\ run\ -\/-\/command=additional-\/install.sh\ dev.lizardbyte.app.Sunshine}
+
+\end{DoxyCode}
+\hypertarget{md_getting__started_autotoc_md43}{}\doxysubsubsubsection{\texorpdfstring{Run with NVFBC capture (X11 Only)}{Run with NVFBC capture (X11 Only)}}\label{md_getting__started_autotoc_md43}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{flatpak\ run\ dev.lizardbyte.app.Sunshine}
+
+\end{DoxyCode}
+\hypertarget{md_getting__started_autotoc_md44}{}\doxysubsubsubsection{\texorpdfstring{Run with KMS capture (Wayland \& X11)}{Run with KMS capture (Wayland \& X11)}}\label{md_getting__started_autotoc_md44}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sudo\ -\/i\ PULSE\_SERVER=unix:/run/user/\$(id\ -\/u\ \$whoami)/pulse/native\ flatpak\ run\ dev.lizardbyte.app.Sunshine}
+
+\end{DoxyCode}
+\hypertarget{md_getting__started_autotoc_md45}{}\doxysubsubsubsection{\texorpdfstring{Uninstall}{Uninstall}}\label{md_getting__started_autotoc_md45}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{flatpak\ run\ -\/-\/command=remove-\/additional-\/install.sh\ dev.lizardbyte.app.Sunshine}
+\DoxyCodeLine{flatpak\ uninstall\ -\/-\/delete-\/data\ dev.lizardbyte.app.Sunshine}
+
+\end{DoxyCode}
+\hypertarget{md_getting__started_autotoc_md46}{}\doxysubsubsection{\texorpdfstring{Homebrew}{Homebrew}}\label{md_getting__started_autotoc_md46}
+\begin{DoxyImportant}{Important}
+The Homebrew package is experimental on Linux.
+\end{DoxyImportant}
+This package requires that you have \href{https://docs.brew.sh/Installation}{\texttt{Homebrew}} installed.\hypertarget{md_getting__started_autotoc_md47}{}\doxysubsubsubsection{\texorpdfstring{Install}{Install}}\label{md_getting__started_autotoc_md47}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{brew\ update}
+\DoxyCodeLine{brew\ upgrade}
+\DoxyCodeLine{brew\ tap\ LizardByte/homebrew}
+\DoxyCodeLine{brew\ install\ sunshine}
+
+\end{DoxyCode}
+\hypertarget{md_getting__started_autotoc_md48}{}\doxysubsubsubsection{\texorpdfstring{Uninstall}{Uninstall}}\label{md_getting__started_autotoc_md48}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{brew\ uninstall\ sunshine}
+
+\end{DoxyCode}
+\hypertarget{md_getting__started_autotoc_md49}{}\doxysubsection{\texorpdfstring{mac\+OS}{mac\+OS}}\label{md_getting__started_autotoc_md49}
+\begin{DoxyImportant}{Important}
+Sunshine on mac\+OS is experimental. Gamepads do not work.
+\end{DoxyImportant}
+\hypertarget{md_getting__started_autotoc_md50}{}\doxysubsubsection{\texorpdfstring{Homebrew}{Homebrew}}\label{md_getting__started_autotoc_md50}
+This package requires that you have \href{https://docs.brew.sh/Installation}{\texttt{Homebrew}} installed.\hypertarget{md_getting__started_autotoc_md51}{}\doxysubsubsubsection{\texorpdfstring{Install}{Install}}\label{md_getting__started_autotoc_md51}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{brew\ tap\ LizardByte/homebrew}
+\DoxyCodeLine{brew\ install\ sunshine}
+
+\end{DoxyCode}
+\hypertarget{md_getting__started_autotoc_md52}{}\doxysubsubsubsection{\texorpdfstring{Uninstall}{Uninstall}}\label{md_getting__started_autotoc_md52}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{brew\ uninstall\ sunshine}
+
+\end{DoxyCode}
+
+
+\begin{DoxyRemark}{Remarks}
+For beta you can replace {\ttfamily sunshine} with {\ttfamily sunshine-\/beta} in the above commands.
+\end{DoxyRemark}
+\hypertarget{md_getting__started_autotoc_md53}{}\doxysubsection{\texorpdfstring{Windows}{Windows}}\label{md_getting__started_autotoc_md53}
+\hypertarget{md_getting__started_autotoc_md54}{}\doxysubsubsection{\texorpdfstring{Installer (recommended)}{Installer (recommended)}}\label{md_getting__started_autotoc_md54}
+
+\begin{DoxyEnumerate}
+\item Download and install \href{https://github.com/LizardByte/Sunshine/releases/latest/download/Sunshine-Windows-AMD64-installer.exe}{\texttt{Sunshine-\/\+Windows-\/\+AMD64-\/installer.\+exe}}
+\end{DoxyEnumerate}
+
+\begin{DoxyAttention}{Attention}
+You should carefully select or unselect the options you want to install. Do not blindly install or enable features.
+\end{DoxyAttention}
+To uninstall, find Sunshine in the list \href{ms-settings:installed-apps}{\texttt{here}} and select "{}\+Uninstall"{} from the overflow menu. Different versions of Windows may provide slightly different steps for uninstall.\hypertarget{md_getting__started_autotoc_md55}{}\doxysubsubsection{\texorpdfstring{Standalone (lite version)}{Standalone (lite version)}}\label{md_getting__started_autotoc_md55}
+\begin{DoxyWarning}{Warning}
+By using this package instead of the installer, performance will be reduced. This package is not recommended for most users. No support will be provided!
+\end{DoxyWarning}
+
+\begin{DoxyEnumerate}
+\item Download and extract \href{https://github.com/LizardByte/Sunshine/releases/latest/download/Sunshine-Windows-AMD64-portable.zip}{\texttt{Sunshine-\/\+Windows-\/\+AMD64-\/portable.\+zip}}
+\item Open command prompt as administrator
+\item Firewall rules
+
+Install\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cd\ /d\ \{path\ to\ extracted\ directory\}}
+\DoxyCodeLine{scripts/add-\/firewall-\/rule.bat}
+
+\end{DoxyCode}
+
+
+Uninstall\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cd\ /d\ \{path\ to\ extracted\ directory\}}
+\DoxyCodeLine{scripts/delete-\/firewall-\/rule.bat}
+
+\end{DoxyCode}
+
+\item Virtual Gamepad Support
+
+Install\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cd\ /d\ \{path\ to\ extracted\ directory\}}
+\DoxyCodeLine{scripts/install-\/gamepad.bat}
+
+\end{DoxyCode}
+
+
+Uninstall\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cd\ /d\ \{path\ to\ extracted\ directory\}}
+\DoxyCodeLine{scripts/uninstall-\/gamepad.bat}
+
+\end{DoxyCode}
+
+\item Windows service
+
+Install\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cd\ /d\ \{path\ to\ extracted\ directory\}}
+\DoxyCodeLine{scripts/install-\/service.bat}
+\DoxyCodeLine{scripts/autostart-\/service.bat}
+
+\end{DoxyCode}
+
+
+Uninstall\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cd\ /d\ \{path\ to\ extracted\ directory\}}
+\DoxyCodeLine{scripts/uninstall-\/service.bat}
+
+\end{DoxyCode}
+
+\end{DoxyEnumerate}\hypertarget{md_getting__started_autotoc_md56}{}\doxysection{\texorpdfstring{Initial Setup}{Initial Setup}}\label{md_getting__started_autotoc_md56}
+After installation, some initial setup is required.\hypertarget{md_getting__started_autotoc_md57}{}\doxysubsection{\texorpdfstring{Linux}{Linux}}\label{md_getting__started_autotoc_md57}
+\hypertarget{md_getting__started_autotoc_md58}{}\doxysubsubsection{\texorpdfstring{KMS Capture}{KMS Capture}}\label{md_getting__started_autotoc_md58}
+\begin{DoxyWarning}{Warning}
+Capture of most Wayland-\/based desktop environments will fail unless this step is performed.
+\end{DoxyWarning}
+\begin{DoxyNote}{Note}
+{\ttfamily cap\+\_\+sys\+\_\+admin} may as well be root, except you don\textquotesingle{}t need to be root to run the program. This is necessary to allow Sunshine to use KMS capture.
+\end{DoxyNote}
+\hypertarget{md_getting__started_autotoc_md59}{}\doxysubsubsubsection{\texorpdfstring{Enable}{Enable}}\label{md_getting__started_autotoc_md59}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sudo\ setcap\ cap\_sys\_admin+p\ \$(readlink\ -\/f\ \$(which\ sunshine))}
+
+\end{DoxyCode}
+\hypertarget{md_getting__started_autotoc_md60}{}\doxysubsubsection{\texorpdfstring{X11 Capture}{X11 Capture}}\label{md_getting__started_autotoc_md60}
+For X11 capture to work, you may need to disable the capabilities that were set for KMS capture.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sudo\ setcap\ -\/r\ \$(readlink\ -\/f\ \$(which\ sunshine))}
+
+\end{DoxyCode}
+\hypertarget{md_getting__started_autotoc_md61}{}\doxysubsubsection{\texorpdfstring{Service}{Service}}\label{md_getting__started_autotoc_md61}
+{\bfseries{Start once}} 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{systemctl\ -\/-\/user\ start\ sunshine}
+
+\end{DoxyCode}
+
+
+{\bfseries{Start on boot}} 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{systemctl\ -\/-\/user\ enable\ sunshine}
+
+\end{DoxyCode}
+\hypertarget{md_getting__started_autotoc_md62}{}\doxysubsection{\texorpdfstring{mac\+OS}{mac\+OS}}\label{md_getting__started_autotoc_md62}
+The first time you start Sunshine, you will be asked to grant access to screen recording and your microphone.
+
+Sunshine can only access microphones on mac\+OS due to system limitations. To stream system audio use \href{https://github.com/mattingalls/Soundflower}{\texttt{Soundflower}} or \href{https://github.com/ExistentialAudio/BlackHole}{\texttt{Black\+Hole}}.
+
+\begin{DoxyNote}{Note}
+Command Keys are not forwarded by Moonlight. Right Option-\/\+Key is mapped to CMD-\/\+Key.
+\end{DoxyNote}
+\begin{DoxyAttention}{Attention}
+Gamepads are not currently supported.
+\end{DoxyAttention}
+\hypertarget{md_getting__started_autotoc_md63}{}\doxysection{\texorpdfstring{Usage}{Usage}}\label{md_getting__started_autotoc_md63}
+\hypertarget{md_getting__started_autotoc_md64}{}\doxysubsection{\texorpdfstring{Basic usage}{Basic usage}}\label{md_getting__started_autotoc_md64}
+If Sunshine is not installed/running as a service, then start Sunshine with the following command, unless a start command is listed in the specified package install instructions above.
+
+\begin{DoxyNote}{Note}
+A service is a process that runs in the background. This is the default when installing Sunshine from the Windows installer. Running multiple instances of Sunshine is not advised.
+\end{DoxyNote}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sunshine}
+
+\end{DoxyCode}
+\hypertarget{md_getting__started_autotoc_md65}{}\doxysubsection{\texorpdfstring{Specify config file}{Specify config file}}\label{md_getting__started_autotoc_md65}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sunshine\ <directory\ of\ conf\ file>/sunshine.conf}
+
+\end{DoxyCode}
+
+
+\begin{DoxyNote}{Note}
+You do not need to specify a config file. If no config file is entered, the default location will be used.
+\end{DoxyNote}
+\begin{DoxyRemark}{Remarks}
+The configuration file specified will be created if it doesn\textquotesingle{}t exist.
+\end{DoxyRemark}
+\hypertarget{md_getting__started_autotoc_md66}{}\doxysubsection{\texorpdfstring{Start Sunshine over SSH (Linux/\+X11)}{Start Sunshine over SSH (Linux/\+X11)}}\label{md_getting__started_autotoc_md66}
+Assuming you are already logged into the host, you can use this command
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ssh\ <user>@<ip\_address>\ 'export\ DISPLAY=:0;\ sunshine'}
+
+\end{DoxyCode}
+
+
+If you are logged into the host with only a tty (teletypewriter), you can use {\ttfamily startx} to start the X server prior to executing Sunshine. You nay need to add {\ttfamily sleep} between {\ttfamily startx} and {\ttfamily sunshine} to allow more time for the display to be ready.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ssh\ <user>@<ip\_address>\ 'startx\ \&;\ export\ DISPLAY=:0;\ sunshine'}
+
+\end{DoxyCode}
+
+
+\begin{DoxyRemark}{Remarks}
+You could also use the {\ttfamily \texorpdfstring{$\sim$}{\string~}/.bash\+\_\+profile} or {\ttfamily \texorpdfstring{$\sim$}{\string~}/.bashrc} files to set up the {\ttfamily DISPLAY} variable.
+\end{DoxyRemark}
+@seealso\{See \href{https://app.lizardbyte.dev/2023-09-14-remote-ssh-headless-sunshine-setup}{\texttt{Remote SSH Headless Setup}} on how to set up a headless streaming server without autologin and dummy plugs (X11 + NVidia GPUs)\}\hypertarget{md_getting__started_autotoc_md67}{}\doxysubsection{\texorpdfstring{Configuration}{Configuration}}\label{md_getting__started_autotoc_md67}
+Sunshine is configured via the web ui, which is available on \href{https://localhost:47990}{\texttt{https\+://localhost\+:47990}} by default. You may replace {\itshape localhost} with your internal ip address.
+
+\begin{DoxyNote}{Note}
+Ignore any warning given by your browser about "{}insecure website"{}. This is due to the SSL certificate being self-\/signed.
+\end{DoxyNote}
+\begin{DoxyAttention}{Attention}
+If running for the first time, make sure to note the username and password that you created.
+\end{DoxyAttention}
+
+\begin{DoxyEnumerate}
+\item Add games and applications.
+\item Adjust any configuration settings as needed.
+\item In Moonlight, you may need to add the PC manually.
+\item When Moonlight requests for you insert the pin\+:
+\begin{DoxyItemize}
+\item Login to the web ui
+\item Go to "{}\+PIN"{} in the Navbar
+\item Type in your PIN and press Enter, you should get a Success Message
+\item In Moonlight, select one of the Applications listed
+\end{DoxyItemize}
+\end{DoxyEnumerate}\hypertarget{md_getting__started_autotoc_md68}{}\doxysubsection{\texorpdfstring{Arguments}{Arguments}}\label{md_getting__started_autotoc_md68}
+To get a list of available arguments, run the following command.
+
+@tabs\{ @tab\{ General \texorpdfstring{$\vert$}{|} {\ttfamily bash sunshine -\/-\/help }\} @tab\{ App\+Image \texorpdfstring{$\vert$}{|} {\ttfamily bash ./sunshine.App\+Image -\/-\/help }\} @tab\{ Flatpak \texorpdfstring{$\vert$}{|} {\ttfamily bash flatpak run -\/-\/command=sunshine dev.\+lizardbyte.\+app.\+Sunshine -\/-\/help }\} \}\hypertarget{md_getting__started_autotoc_md69}{}\doxysubsection{\texorpdfstring{Shortcuts}{Shortcuts}}\label{md_getting__started_autotoc_md69}
+All shortcuts start with {\ttfamily Ctrl+\+Alt+\+Shift}, just like Moonlight.
+
+
+\begin{DoxyItemize}
+\item {\ttfamily Ctrl+\+Alt+\+Shift+N}\+: Hide/\+Unhide the cursor (This may be useful for Remote Desktop Mode for Moonlight)
+\item {\ttfamily Ctrl+\+Alt+\+Shift+\+F1/\+F12}\+: Switch to different monitor for Streaming
+\end{DoxyItemize}\hypertarget{md_getting__started_autotoc_md70}{}\doxysubsection{\texorpdfstring{Application List}{Application List}}\label{md_getting__started_autotoc_md70}
+
+\begin{DoxyItemize}
+\item Applications should be configured via the web UI
+\item A basic understanding of working directories and commands is required
+\item You can use Environment variables in place of values
+\item {\ttfamily \$(HOME)} will be replaced by the value of {\ttfamily \$HOME}
+\item {\ttfamily \$\$} will be replaced by {\ttfamily \$}, e.\+g. {\ttfamily \$\$(HOME)} will be become {\ttfamily \$(HOME)}
+\item {\ttfamily env} -\/ Adds or overwrites Environment variables for the commands/applications run by Sunshine. This can only be changed by modifying the {\ttfamily apps.\+json} file directly.
+\end{DoxyItemize}\hypertarget{md_getting__started_autotoc_md71}{}\doxysubsection{\texorpdfstring{Considerations}{Considerations}}\label{md_getting__started_autotoc_md71}
+
+\begin{DoxyItemize}
+\item On Windows, Sunshine uses the Desktop Duplication API which only supports capturing from the GPU used for display. If you want to capture and encode on the e\+GPU, connect a display or HDMI dummy display dongle to it and run the games on that display.
+\item When an application is started, if there is an application already running, it will be terminated.
+\item If any of the prep-\/commands fail, starting the application is aborted.
+\item When the application has been shutdown, the stream shuts down as well.
+\begin{DoxyItemize}
+\item For example, if you attempt to run {\ttfamily steam} as a {\ttfamily cmd} instead of {\ttfamily detached} the stream will immediately fail. This is due to the method in which the steam process is executed. Other applications may behave similarly.
+\item This does not apply to {\ttfamily detached} applications.
+\end{DoxyItemize}
+\item The "{}\+Desktop"{} app works the same as any other application except it has no commands. It does not start an application, instead it simply starts a stream. If you removed it and would like to get it back, just add a new application with the name "{}\+Desktop"{} and "{}desktop.\+png"{} as the image path.
+\item For the Linux flatpak you must prepend commands with {\ttfamily flatpak-\/spawn -\/-\/host}.
+\item If inputs (mouse, keyboard, gamepads...) aren\textquotesingle{}t working after connecting, add the user running sunshine to the {\ttfamily input} group.
+\end{DoxyItemize}\hypertarget{md_getting__started_autotoc_md72}{}\doxysubsection{\texorpdfstring{HDR Support}{HDR Support}}\label{md_getting__started_autotoc_md72}
+Streaming HDR content is officially supported on Windows hosts and experimentally supported for Linux hosts.
+
+
+\begin{DoxyItemize}
+\item General HDR support information and requirements\+:
+\begin{DoxyItemize}
+\item HDR must be activated in the host OS, which may require an HDR-\/capable display or EDID emulator dongle connected to your host PC.
+\item You must also enable the HDR option in your Moonlight client settings, otherwise the stream will be SDR (and probably overexposed if your host is HDR).
+\item A good HDR experience relies on proper HDR display calibration both in the OS and in game. HDR calibration can differ significantly between client and host displays.
+\item You may also need to tune the brightness slider or HDR calibration options in game to the different HDR brightness capabilities of your client\textquotesingle{}s display.
+\item Some GPUs video encoders can produce lower image quality or encoding performance when streaming in HDR compared to SDR.
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+Additional information\+:
+
+@tabs\{ @tab\{ Windows \texorpdfstring{$\vert$}{|}
+\begin{DoxyItemize}
+\item HDR streaming is supported for Intel, AMD, and NVIDIA GPUs that support encoding HEVC Main 10 or AV1 10-\/bit profiles.
+\item We recommend calibrating the display by streaming the Windows HDR Calibration app to your client device and saving an HDR calibration profile to use while streaming.
+\item Older games that use NVIDIA-\/specific NVAPI HDR rather than native Windows HDR support may not display properly in HDR. \}
+\end{DoxyItemize}
+
+@tab\{ Linux \texorpdfstring{$\vert$}{|}
+\begin{DoxyItemize}
+\item HDR streaming is supported for Intel and AMD GPUs that support encoding HEVC Main 10 or AV1 10-\/bit profiles using VAAPI.
+\item The KMS capture backend is required for HDR capture. Other capture methods, like Nv\+FBC or X11, do not support HDR.
+\item You will need a desktop environment with a compositor that supports HDR rendering, such as Gamescope or KDE Plasma 6.
+\end{DoxyItemize}
+
+@seealso\{\href{https://wiki.archlinux.org/title/HDR_monitor_support}{\texttt{Arch wiki on HDR Support for Linux}} and \href{https://www.reddit.com/r/linux_gaming/comments/10m2gyx/guide_alpha_test_hdr_on_linux}{\texttt{Reddit Guide for HDR Support for AMD GPUs}}\} \} \}\hypertarget{md_getting__started_autotoc_md73}{}\doxysubsection{\texorpdfstring{Tutorials and Guides}{Tutorials and Guides}}\label{md_getting__started_autotoc_md73}
+Tutorial videos are available \href{https://www.youtube.com/playlist?list=PLMYr5_xSeuXAbhxYHz86hA1eCDugoxXY0}{\texttt{here}}.
+
+Guides are available \doxysectlink{md_guides}{here}{0}.
+
+@admonition\{Community! \texorpdfstring{$\vert$}{|} Tutorials and Guides are community generated. Want to contribute? Reach out to us on our discord server.\}
+
+
+
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{bg=\tableheadbgcolor,font=\bfseries}Previous  &\SetCell{r,bg=\tableheadbgcolor,font=\bfseries}Next  \\
+\doxylink{index_md__2_users_2alexworland_2auto_bitrate_2apollo_2_r_e_a_d_m_e}{Overview}  &\SetCell{r}\doxysectlink{md_changelog}{Changelog}{0}  \\
+\end{DoxyTable}
+
+
+
+
+
+
+{\bfseries{}}\begin{adjustwidth}{1em}{0em}
+
+
+\end{adjustwidth}

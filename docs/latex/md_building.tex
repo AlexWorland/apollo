@@ -1,0 +1,154 @@
+\chapter{Building }
+\hypertarget{md_building}{}\label{md_building}\index{Building@{Building}}
+\label{md_building_autotoc_md272}%
+\Hypertarget{md_building_autotoc_md272}%
+
+
+Sunshine binaries are built using \href{https://cmake.org}{\texttt{CMake}} and requires {\ttfamily cmake} \texorpdfstring{$>$}{>} 3.\+25.\hypertarget{md_building_autotoc_md273}{}\doxysection{\texorpdfstring{Building Locally}{Building Locally}}\label{md_building_autotoc_md273}
+\hypertarget{md_building_autotoc_md274}{}\doxysubsection{\texorpdfstring{Compiler}{Compiler}}\label{md_building_autotoc_md274}
+It is recommended to use one of the following compilers\+:
+
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{bg=\tableheadbgcolor,font=\bfseries}Compiler  &\SetCell{bg=\tableheadbgcolor,font=\bfseries}Version  \\
+GCC  &13+  \\
+Clang  &17+  \\
+Apple Clang  &15+  \\
+\end{DoxyTable}
+\hypertarget{md_building_autotoc_md275}{}\doxysubsection{\texorpdfstring{Dependencies}{Dependencies}}\label{md_building_autotoc_md275}
+\hypertarget{md_building_autotoc_md276}{}\doxysubsubsection{\texorpdfstring{Linux}{Linux}}\label{md_building_autotoc_md276}
+Dependencies vary depending on the distribution. You can reference our \href{https://github.com/LizardByte/Sunshine/blob/master/scripts/linux_build.sh}{\texttt{linux\+\_\+build.\+sh}} script for a list of dependencies we use in Debian-\/based and Fedora-\/based distributions. Please submit a PR if you would like to extend the script to support other distributions.\hypertarget{md_building_autotoc_md277}{}\doxysubsubsubsection{\texorpdfstring{CUDA Toolkit}{CUDA Toolkit}}\label{md_building_autotoc_md277}
+Sunshine requires CUDA Toolkit for NVFBC capture. There are two caveats to CUDA\+:
+
+
+\begin{DoxyEnumerate}
+\item The version installed depends on the version of GCC.
+\item The version of CUDA you use will determine compatibility with various GPU generations. At the time of writing, the recommended version to use is CUDA \texorpdfstring{$\sim$}{\string~}12.9. See \href{https://docs.nvidia.com/deploy/cuda-compatibility/index.html}{\texttt{CUDA compatibility}} for more info.
+\end{DoxyEnumerate}
+
+\begin{DoxyNote}{Note}
+To install older versions, select the appropriate run file based on your desired CUDA version and architecture according to \href{https://developer.nvidia.com/cuda-toolkit-archive}{\texttt{CUDA Toolkit Archive}}
+\end{DoxyNote}
+\hypertarget{md_building_autotoc_md278}{}\doxysubsubsection{\texorpdfstring{mac\+OS}{mac\+OS}}\label{md_building_autotoc_md278}
+You can either use \href{https://brew.sh}{\texttt{Homebrew}} or \href{https://www.macports.org}{\texttt{Mac\+Ports}} to install dependencies.\hypertarget{md_building_autotoc_md279}{}\doxysubsubsubsection{\texorpdfstring{Homebrew}{Homebrew}}\label{md_building_autotoc_md279}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{dependencies=(}
+\DoxyCodeLine{\ \ "{}boost"{}\ \ \#\ Optional}
+\DoxyCodeLine{\ \ "{}cmake"{}}
+\DoxyCodeLine{\ \ "{}doxygen"{}\ \ \#\ Optional,\ for\ docs}
+\DoxyCodeLine{\ \ "{}graphviz"{}\ \ \#\ Optional,\ for\ docs}
+\DoxyCodeLine{\ \ "{}icu4c"{}\ \ \#\ Optional,\ if\ boost\ is\ not\ installed}
+\DoxyCodeLine{\ \ "{}miniupnpc"{}}
+\DoxyCodeLine{\ \ "{}ninja"{}}
+\DoxyCodeLine{\ \ "{}node"{}}
+\DoxyCodeLine{\ \ "{}openssl@3"{}}
+\DoxyCodeLine{\ \ "{}opus"{}}
+\DoxyCodeLine{\ \ "{}pkg-\/config"{}}
+\DoxyCodeLine{)}
+\DoxyCodeLine{brew\ install\ "{}\$\{dependencies[@]\}"{}}
+
+\end{DoxyCode}
+
+
+If there are issues with an SSL header that is not found\+:
+
+@tabs\{ @tab\{ Intel \texorpdfstring{$\vert$}{|} {\ttfamily bash ln -\/s /usr/local/opt/openssl/include/openssl /usr/local/include/openssl }\} @tab\{ Apple Silicon \texorpdfstring{$\vert$}{|} {\ttfamily bash ln -\/s /opt/homebrew/opt/openssl/include/openssl /opt/homebrew/include/openssl } \} \}\hypertarget{md_building_autotoc_md280}{}\doxysubsubsubsection{\texorpdfstring{Mac\+Ports}{Mac\+Ports}}\label{md_building_autotoc_md280}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{dependencies=(}
+\DoxyCodeLine{\ \ "{}cmake"{}}
+\DoxyCodeLine{\ \ "{}curl"{}}
+\DoxyCodeLine{\ \ "{}doxygen"{}\ \ \#\ Optional,\ for\ docs}
+\DoxyCodeLine{\ \ "{}graphviz"{}\ \ \#\ Optional,\ for\ docs}
+\DoxyCodeLine{\ \ "{}libopus"{}}
+\DoxyCodeLine{\ \ "{}miniupnpc"{}}
+\DoxyCodeLine{\ \ "{}ninja"{}}
+\DoxyCodeLine{\ \ "{}npm9"{}}
+\DoxyCodeLine{\ \ "{}pkgconfig"{}}
+\DoxyCodeLine{)}
+\DoxyCodeLine{sudo\ port\ install\ "{}\$\{dependencies[@]\}"{}}
+
+\end{DoxyCode}
+\hypertarget{md_building_autotoc_md281}{}\doxysubsubsection{\texorpdfstring{Windows}{Windows}}\label{md_building_autotoc_md281}
+First you need to install \href{https://www.msys2.org}{\texttt{MSYS2}}, then startup "{}\+MSYS2 UCRT64"{} and execute the following commands.\hypertarget{md_building_autotoc_md282}{}\doxysubsubsubsection{\texorpdfstring{Update all packages}{Update all packages}}\label{md_building_autotoc_md282}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{pacman\ -\/Syu}
+
+\end{DoxyCode}
+\hypertarget{md_building_autotoc_md283}{}\doxysubsubsubsection{\texorpdfstring{Install dependencies}{Install dependencies}}\label{md_building_autotoc_md283}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{dependencies=(}
+\DoxyCodeLine{\ \ "{}git"{}}
+\DoxyCodeLine{\ \ "{}mingw-\/w64-\/ucrt-\/x86\_64-\/boost"{}\ \ \#\ Optional}
+\DoxyCodeLine{\ \ "{}mingw-\/w64-\/ucrt-\/x86\_64-\/cmake"{}}
+\DoxyCodeLine{\ \ "{}mingw-\/w64-\/ucrt-\/x86\_64-\/cppwinrt"{}}
+\DoxyCodeLine{\ \ "{}mingw-\/w64-\/ucrt-\/x86\_64-\/curl-\/winssl"{}}
+\DoxyCodeLine{\ \ "{}mingw-\/w64-\/ucrt-\/x86\_64-\/doxygen"{}\ \ \#\ Optional,\ for\ docs...\ better\ to\ install\ official\ Doxygen}
+\DoxyCodeLine{\ \ "{}mingw-\/w64-\/ucrt-\/x86\_64-\/graphviz"{}\ \ \#\ Optional,\ for\ docs}
+\DoxyCodeLine{\ \ "{}mingw-\/w64-\/ucrt-\/x86\_64-\/MinHook"{}}
+\DoxyCodeLine{\ \ "{}mingw-\/w64-\/ucrt-\/x86\_64-\/miniupnpc"{}}
+\DoxyCodeLine{\ \ "{}mingw-\/w64-\/ucrt-\/x86\_64-\/nodejs"{}}
+\DoxyCodeLine{\ \ "{}mingw-\/w64-\/ucrt-\/x86\_64-\/nsis"{}}
+\DoxyCodeLine{\ \ "{}mingw-\/w64-\/ucrt-\/x86\_64-\/onevpl"{}}
+\DoxyCodeLine{\ \ "{}mingw-\/w64-\/ucrt-\/x86\_64-\/openssl"{}}
+\DoxyCodeLine{\ \ "{}mingw-\/w64-\/ucrt-\/x86\_64-\/opus"{}}
+\DoxyCodeLine{\ \ "{}mingw-\/w64-\/ucrt-\/x86\_64-\/toolchain"{}}
+\DoxyCodeLine{\ \ "{}mingw-\/w64-\/ucrt-\/x86\_64-\/nlohmann\_json"{}}
+\DoxyCodeLine{)}
+\DoxyCodeLine{pacman\ -\/S\ "{}\$\{dependencies[@]\}"{}}
+
+\end{DoxyCode}
+\hypertarget{md_building_autotoc_md284}{}\doxysubsection{\texorpdfstring{Clone}{Clone}}\label{md_building_autotoc_md284}
+Ensure \href{https://git-scm.com}{\texttt{git}} is installed on your system, then clone the repository using the following command\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{git\ clone\ https://github.com/ClassicOldSong/Apollo.git\ -\/-\/recurse-\/submodules}
+\DoxyCodeLine{cd\ Apollo}
+\DoxyCodeLine{mkdir\ build}
+
+\end{DoxyCode}
+\hypertarget{md_building_autotoc_md285}{}\doxysubsection{\texorpdfstring{Build}{Build}}\label{md_building_autotoc_md285}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cmake\ -\/B\ build\ -\/G\ Ninja\ -\/S\ .}
+\DoxyCodeLine{ninja\ -\/C\ build}
+
+\end{DoxyCode}
+
+
+\begin{DoxyRemark}{Remarks}
+Available build options can be found in \href{https://github.com/LizardByte/Sunshine/blob/master/cmake/prep/options.cmake}{\texttt{options.\+cmake}}.
+\end{DoxyRemark}
+\hypertarget{md_building_autotoc_md286}{}\doxysubsection{\texorpdfstring{Package}{Package}}\label{md_building_autotoc_md286}
+@tabs\{ @tab\{Linux \texorpdfstring{$\vert$}{|} @tabs\{ @tab\{deb \texorpdfstring{$\vert$}{|} {\ttfamily bash cpack -\/G DEB -\/-\/config ./build/\+CPack\+Config.cmake }\} @tab\{rpm \texorpdfstring{$\vert$}{|} {\ttfamily bash cpack -\/G RPM -\/-\/config ./build/\+CPack\+Config.cmake }\} \}\} @tab\{mac\+OS \texorpdfstring{$\vert$}{|} @tabs\{ @tab\{Drag\+NDrop \texorpdfstring{$\vert$}{|} {\ttfamily bash cpack -\/G Drag\+NDrop -\/-\/config ./build/\+CPack\+Config.cmake }\} \}\} @tab\{Windows \texorpdfstring{$\vert$}{|} @tabs\{ @tab\{Installer \texorpdfstring{$\vert$}{|} {\ttfamily bash cpack -\/G NSIS -\/-\/config ./build/\+CPack\+Config.cmake }\} @tab\{Portable \texorpdfstring{$\vert$}{|} {\ttfamily bash cpack -\/G ZIP -\/-\/config ./build/\+CPack\+Config.cmake }\} \}\} \}\hypertarget{md_building_autotoc_md287}{}\doxysubsection{\texorpdfstring{Remote Build}{Remote Build}}\label{md_building_autotoc_md287}
+It may be beneficial to build remotely in some cases. This will enable easier building on different operating systems.
+
+
+\begin{DoxyEnumerate}
+\item Fork the project
+\item Activate workflows
+\item Trigger the {\itshape CI} workflow manually
+\item Download the artifacts/binaries from the workflow run summary
+\end{DoxyEnumerate}
+
+
+
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{bg=\tableheadbgcolor,font=\bfseries}Previous  &\SetCell{r,bg=\tableheadbgcolor,font=\bfseries}Next  \\
+\doxysectlink{md_troubleshooting}{Troubleshooting}{0}  &\SetCell{r}\doxysectlink{md_contributing}{Contributing}{0}  \\
+\end{DoxyTable}
+
+
+
+
+
+
+{\bfseries{}}\begin{adjustwidth}{1em}{0em}
+
+
+\end{adjustwidth}

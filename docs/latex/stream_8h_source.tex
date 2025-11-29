@@ -1,0 +1,253 @@
+\doxysection{stream.\+h}
+\hypertarget{stream_8h_source}{}\label{stream_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/stream.h@{/Users/alexworland/autoBitrate/apollo/src/stream.h}}
+\mbox{\hyperlink{stream_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ standard\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <atomic>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <chrono>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <functional>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <list>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <map>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <optional>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <thread>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <tuple>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#include\ <variant>}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ lib\ includes}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <boost/asio.hpp>}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{00027\ \ \ \textcolor{comment}{//\ clang-\/format\ off}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ <moonlight-\/common-\/c/src/Limelight-\/internal.h>}}
+\DoxyCodeLine{00029\ \ \ \textcolor{comment}{//\ clang-\/format\ on}}
+\DoxyCodeLine{00030\ \}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ local\ includes}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{audio_8h}{audio.h}}"{}}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{crypto_8h}{crypto.h}}"{}}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{input_8h}{input.h}}"{}}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{network_8h}{network.h}}"{}}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#include\ "{}platform/common.h"{}}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{sync_8h}{sync.h}}"{}}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{thread__safe_8h}{thread\_safe.h}}"{}}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{utility_8h}{utility.h}}"{}}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{video_8h}{video.h}}"{}}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \textcolor{keyword}{namespace\ }stream\ \{}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ VIDEO\_STREAM\_PORT\ =\ 9;}
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ CONTROL\_PORT\ =\ 10;}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ AUDIO\_STREAM\_PORT\ =\ 11;}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \textcolor{comment}{//\ Forward\ declarations}}
+\DoxyCodeLine{00049\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classstream_1_1control__server__t}{control\_server\_t}};}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structstream_1_1session__t}{session\_t}};}
+\DoxyCodeLine{00051\ \ \ }
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacestream_1_1session}{session}}\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188de}{state\_e}}\ :\ int;}
+\DoxyCodeLine{00054\ \ \ \}}
+\DoxyCodeLine{00055\ \}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \textcolor{comment}{//\ Forward\ declaration\ for\ rtsp\_stream\ namespace}}
+\DoxyCodeLine{00058\ \textcolor{keyword}{namespace\ }rtsp\_stream\ \{}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\_session\_t}};}
+\DoxyCodeLine{00060\ \}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \textcolor{keyword}{namespace\ }stream\ \{}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{stream_8h_a1427e256cc01c127e100b0a903cacc5f}{socket\_e}}\ :\ \textcolor{keywordtype}{int}\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ video,\ \ }
+\DoxyCodeLine{00069\ \ \ \ \ audio\ \ }
+\DoxyCodeLine{00070\ \ \ \};}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{namespace\ }asio\ =\ boost::asio;}
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{using\ }asio::ip::udp;}
+\DoxyCodeLine{00074\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{stream_8h_aeb916fe2b6a6f7924ee9d51fdeeb7a3e}{av\_session\_id\_t}}\ =\ std::variant<asio::ip::address,\ std::string>;\ \ }
+\DoxyCodeLine{00075\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{stream_8h_ad76d227821b568b5ef9086b8b6173aaf}{message\_queue\_t}}\ =\ std::shared\_ptr<safe::queue\_t<std::pair<udp::endpoint,\ std::string>>>;\ \ }
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{stream_8h_a6c43be23082f69bc7d8b9920e279e4fc}{message\_queue\_queue\_t}}\ =\ std::shared\_ptr<safe::queue\_t<std::tuple<socket\_e,\ av\_session\_id\_t,\ message\_queue\_t>>>;\ \ }
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00081\ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classstream_1_1control__server__t}{control\_server\_t}}\ \{}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordtype}{int}\ bind(\mbox{\hyperlink{network_8h_a1ed5da07a6d5b35033bd4de7bca12dab}{net::af\_e}}\ address\_family,\ std::uint16\_t\ port);}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00093\ \ \ \ \ \mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\ *\mbox{\hyperlink{classstream_1_1control__server__t_aff72c7a34ce0cca315250f288b9ce2cf}{get\_session}}(\textcolor{keyword}{const}\ net::peer\_t\ peer,\ uint32\_t\ connect\_data);}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classstream_1_1control__server__t_a7de30674d72502ee5724e3c60f333586}{iterate}}(std::chrono::milliseconds\ timeout);}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classstream_1_1control__server__t_ae5a7e8f715d43010dbcd0307ceb56c45}{call}}(std::uint16\_t\ type,\ \mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\ *\mbox{\hyperlink{namespacestream_1_1session}{session}},\ \textcolor{keyword}{const}\ std::string\_view\ \&payload,\ \textcolor{keywordtype}{bool}\ reinjected);}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classstream_1_1control__server__t_a646a0ad725dfe4b98ac8b0f5c1233ab6}{map}}(uint16\_t\ type,\ std::function<\textcolor{keywordtype}{void}(\mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\ *,\ \textcolor{keyword}{const}\ std::string\_view\ \&)>\ cb);}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classstream_1_1control__server__t_ac90d905b81022ab28988e665511069d7}{send}}(\textcolor{keyword}{const}\ std::string\_view\ \&payload,\ net::peer\_t\ peer);}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classstream_1_1control__server__t_a4dc00456eb5b2712176117c1937e7e2a}{flush}}();}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \ \ std::unordered\_map<std::uint16\_t,\ std::function<void(\mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\ *,\ \textcolor{keyword}{const}\ std::string\_view\ \&)>>\ \mbox{\hyperlink{classstream_1_1control__server__t_a43f6fa9a17d5facd04d460984e9dffd3}{\_map\_type\_cb}};\ \ }
+\DoxyCodeLine{00134\ \ \ \ \ \mbox{\hyperlink{classsync__util_1_1sync__t}{sync\_util::sync\_t<std::vector<session\_t\ *>}}>\ \mbox{\hyperlink{classstream_1_1control__server__t_abcc6fe2a0a80155f482de661f6d332cb}{\_sessions}};\ \ }
+\DoxyCodeLine{00135\ \ \ \ \ \mbox{\hyperlink{classsync__util_1_1sync__t}{sync\_util::sync\_t<std::map<net::peer\_t,\ session\_t\ *>}}>\ \mbox{\hyperlink{classstream_1_1control__server__t_a5649626f9247d3eb5b9a998f218cbe7b}{\_peer\_to\_session}};\ \ }
+\DoxyCodeLine{00136\ \ \ \ \ ENetAddress\ \mbox{\hyperlink{classstream_1_1control__server__t_a3aeef0e7db1604d2c3d2a77c2b98b304}{\_addr}};\ \ }
+\DoxyCodeLine{00137\ \ \ \ \ net::host\_t\ \mbox{\hyperlink{classstream_1_1control__server__t_a4918c0ecfd56e2a9ec53ae0cab31f453}{\_host}};\ \ }
+\DoxyCodeLine{00138\ \ \ \};}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00143\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structstream_1_1broadcast__ctx__t}{broadcast\_ctx\_t}}\ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \mbox{\hyperlink{stream_8h_a6c43be23082f69bc7d8b9920e279e4fc}{message\_queue\_queue\_t}}\ \mbox{\hyperlink{structstream_1_1broadcast__ctx__t_af124759e15b04b82d031b413fb29a4b5}{message\_queue\_queue}};\ \ }
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \ \ \ \ std::thread\ \mbox{\hyperlink{structstream_1_1broadcast__ctx__t_ac7330df6cc1fc3b8b03375231ca155f1}{recv\_thread}};\ \ }
+\DoxyCodeLine{00147\ \ \ \ \ std::thread\ \mbox{\hyperlink{structstream_1_1broadcast__ctx__t_abcbdd9c833a675f75b7c266917652673}{video\_thread}};\ \ }
+\DoxyCodeLine{00148\ \ \ \ \ std::thread\ \mbox{\hyperlink{structstream_1_1broadcast__ctx__t_a53db7806fdb2487cde45f954de196789}{audio\_thread}};\ \ }
+\DoxyCodeLine{00149\ \ \ \ \ std::thread\ \mbox{\hyperlink{structstream_1_1broadcast__ctx__t_a36e55d1bcafaa28f016bdea70f283f70}{control\_thread}};\ \ }
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \ \ \ \ asio::io\_context\ \mbox{\hyperlink{structstream_1_1broadcast__ctx__t_a22889e934c46794681f81da2c64d122c}{io\_context}};\ \ }
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \ \ \ \ udp::socket\ \mbox{\hyperlink{structstream_1_1broadcast__ctx__t_a397cb755aea512d7fa58c949d0d0c841}{video\_sock}}\ \{\mbox{\hyperlink{structstream_1_1broadcast__ctx__t_a22889e934c46794681f81da2c64d122c}{io\_context}}\};\ \ }
+\DoxyCodeLine{00154\ \ \ \ \ udp::socket\ \mbox{\hyperlink{structstream_1_1broadcast__ctx__t_ad79a088c89babd04326e7e960f424a6e}{audio\_sock}}\ \{\mbox{\hyperlink{structstream_1_1broadcast__ctx__t_a22889e934c46794681f81da2c64d122c}{io\_context}}\};\ \ }
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \ \ \ \ \mbox{\hyperlink{classstream_1_1control__server__t}{control\_server\_t}}\ \mbox{\hyperlink{structstream_1_1broadcast__ctx__t_ac0ab0f147d2c75e9dc0fef1e83b322e4}{control\_server}};\ \ }
+\DoxyCodeLine{00157\ \ \ \};}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00162\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structstream_1_1config__t}{config\_t}}\ \{}
+\DoxyCodeLine{00163\ \ \ \ \ \mbox{\hyperlink{structaudio_1_1config__t}{audio::config\_t}}\ \mbox{\hyperlink{structstream_1_1config__t_ad9c054e13cc1728432a4d13b65f2b073}{audio}};\ \ }
+\DoxyCodeLine{00164\ \ \ \ \ video::config\_t\ \mbox{\hyperlink{structstream_1_1config__t_ace54817298bd0322a68dfaea993152b7}{monitor}};\ \ }
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structstream_1_1config__t_a8611dbec24de45f13b872885b7592996}{packetsize}};\ \ }
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structstream_1_1config__t_ac8d6ba1de8577be962cdf53a806ca266}{minRequiredFecPackets}};\ \ }
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structstream_1_1config__t_aecce40f87591106ee010a7d9f99d8ce2}{mlFeatureFlags}};\ \ }
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structstream_1_1config__t_a9011eab4f52362ff30d0097c0acacfdb}{controlProtocolType}};\ \ }
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structstream_1_1config__t_ae112975c3039eb9dbda634954873cddd}{audioQosType}};\ \ }
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structstream_1_1config__t_ab91e0c8da91d68dec34f61e53a0af3bf}{videoQosType}};\ \ }
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structstream_1_1config__t_a65d611c24321cbad4eb78c24013f99df}{encryptionFlagsEnabled}};\ \ }
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00175\ \ \ \ \ std::optional<int>\ \mbox{\hyperlink{structstream_1_1config__t_a91abb27d829f7b63bb0dd92a6e6be396}{gcmap}};\ \ }
+\DoxyCodeLine{00176\ \ \ \};}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00178\ \textcolor{preprocessor}{\#pragma\ pack(push,\ 1)}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00182\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structstream_1_1audio__fec__packet__t}{audio\_fec\_packet\_t}}\ \{}
+\DoxyCodeLine{00183\ \ \ \ \ RTP\_PACKET\ \mbox{\hyperlink{structstream_1_1audio__fec__packet__t_a163d91f10ffebd1610fa57f9e3befa64}{rtp}};\ \ }
+\DoxyCodeLine{00184\ \ \ \ \ AUDIO\_FEC\_HEADER\ \mbox{\hyperlink{structstream_1_1audio__fec__packet__t_a07d35878fa5e867261b454c7987e6544}{fecHeader}};\ \ }
+\DoxyCodeLine{00185\ \ \ \};}
+\DoxyCodeLine{00186\ \textcolor{preprocessor}{\#pragma\ pack(pop)}}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00191\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\ \{}
+\DoxyCodeLine{00192\ \ \ \ \ \mbox{\hyperlink{structstream_1_1config__t}{config\_t}}\ config;}
+\DoxyCodeLine{00193\ }
+\DoxyCodeLine{00194\ \ \ \ \ safe::mail\_t\ \mbox{\hyperlink{namespacemail}{mail}};}
+\DoxyCodeLine{00195\ }
+\DoxyCodeLine{00196\ \ \ \ \ std::shared\_ptr<input::input\_t>\ input;}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ \ \ std::thread\ audioThread;}
+\DoxyCodeLine{00199\ \ \ \ \ std::thread\ videoThread;}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \ \ \ \ std::chrono::steady\_clock::time\_point\ pingTimeout;}
+\DoxyCodeLine{00202\ }
+\DoxyCodeLine{00203\ \ \ \ \ \mbox{\hyperlink{structsafe_1_1shared__t_1_1ptr__t}{safe::shared\_t<broadcast\_ctx\_t>::ptr\_t}}\ broadcast\_ref;}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00205\ \ \ \ \ boost::asio::ip::address\ localAddress;}
+\DoxyCodeLine{00206\ }
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{structstream_1_1session__t_ab22de7930d4b56b7a9b8b60be072bf7e}{ping\_payload}};\ \ }
+\DoxyCodeLine{00209\ }
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structstream_1_1session__t_a6135c9624d0936a9beaa7d3528a34fd3}{lowseq}};\ \ }
+\DoxyCodeLine{00211\ \ \ \ \ \ \ boost::asio::ip::udp::endpoint\ \mbox{\hyperlink{structstream_1_1session__t_aca11a74cb8976a2c3339e0f06b6fe363}{peer}};\ \ }
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \ \ \ \ \ \ std::optional<crypto::cipher::gcm\_t>\ \mbox{\hyperlink{structstream_1_1session__t_a8ed852cc2e34f6bebc3dc88a2f804245}{cipher}};\ \ }
+\DoxyCodeLine{00214\ \ \ \ \ \ \ std::uint64\_t\ \mbox{\hyperlink{structstream_1_1session__t_ad75e91ca1c89c00038094256a9205d0d}{gcm\_iv\_counter}};\ \ }
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00216\ \ \ \ \ \ \ safe::mail\_raw\_t::event\_t<bool>\ \mbox{\hyperlink{structstream_1_1session__t_a8c162081d2c9f4cd4fc1076d5f1e792a}{idr\_events}};\ \ }
+\DoxyCodeLine{00217\ \ \ \ \ \ \ safe::mail\_raw\_t::event\_t<std::pair<int64\_t,\ int64\_t>>\ \mbox{\hyperlink{structstream_1_1session__t_a7ca20f430866e9bcd683ae5a3221a781}{invalidate\_ref\_frames\_events}};\ \ }
+\DoxyCodeLine{00218\ }
+\DoxyCodeLine{00219\ \ \ \ \ \ \ std::unique\_ptr<platf::deinit\_t>\ \mbox{\hyperlink{structstream_1_1session__t_a4a270caf4fa28df19a828eef810efb2e}{qos}};\ \ }
+\DoxyCodeLine{00220\ \ \ \ \ \}\ video;}
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \mbox{\hyperlink{classcrypto_1_1cipher_1_1cbc__t}{crypto::cipher::cbc\_t}}\ \mbox{\hyperlink{structstream_1_1session__t_a8ed852cc2e34f6bebc3dc88a2f804245}{cipher}};\ \ }
+\DoxyCodeLine{00224\ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{structstream_1_1session__t_ab22de7930d4b56b7a9b8b60be072bf7e}{ping\_payload}};\ \ }
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00226\ \ \ \ \ \ \ std::uint16\_t\ \mbox{\hyperlink{structstream_1_1session__t_a4767c2ad61f9d8b1452d264fe2152120}{sequenceNumber}};\ \ }
+\DoxyCodeLine{00227\ \ \ \ \ \ \ std::uint32\_t\ \mbox{\hyperlink{structstream_1_1session__t_a1274c07b051342cbf0b98b3d7ea9ee3f}{avRiKeyId}};\ \ }
+\DoxyCodeLine{00228\ \ \ \ \ \ \ std::uint32\_t\ \mbox{\hyperlink{structstream_1_1session__t_a8eb2c32063c9885e4569a4fbc02af1ca}{timestamp}};\ \ }
+\DoxyCodeLine{00229\ \ \ \ \ \ \ boost::asio::ip::udp::endpoint\ \mbox{\hyperlink{structstream_1_1session__t_aca11a74cb8976a2c3339e0f06b6fe363}{peer}};\ \ }
+\DoxyCodeLine{00230\ }
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \mbox{\hyperlink{classutil_1_1buffer__t}{util::buffer\_t<char>}}\ \mbox{\hyperlink{structstream_1_1session__t_a84fc585a70ebeb38484645805ccd5859}{shards}};\ \ }
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \mbox{\hyperlink{classutil_1_1buffer__t}{util::buffer\_t<uint8\_t\ *>}}\ \mbox{\hyperlink{structstream_1_1session__t_a8bead0036a4eff8bb0f412aa83bead38}{shards\_p}};\ \ }
+\DoxyCodeLine{00233\ }
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \mbox{\hyperlink{structstream_1_1audio__fec__packet__t}{audio\_fec\_packet\_t}}\ \mbox{\hyperlink{structstream_1_1session__t_a8c0d944d7901aa18262adb4295a68faf}{fec\_packet}};\ \ }
+\DoxyCodeLine{00235\ \ \ \ \ \ \ std::unique\_ptr<platf::deinit\_t>\ \mbox{\hyperlink{structstream_1_1session__t_a4a270caf4fa28df19a828eef810efb2e}{qos}};\ \ }
+\DoxyCodeLine{00236\ \ \ \ \ \}\ audio;}
+\DoxyCodeLine{00237\ }
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \mbox{\hyperlink{classcrypto_1_1cipher_1_1gcm__t}{crypto::cipher::gcm\_t}}\ \mbox{\hyperlink{structstream_1_1session__t_a8ed852cc2e34f6bebc3dc88a2f804245}{cipher}};\ \ }
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{crypto::aes\_t}}\ \mbox{\hyperlink{structstream_1_1session__t_a767eb2a57ee2f943e8b3f3091b7d86a8}{legacy\_input\_enc\_iv}};\ \ }
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{crypto::aes\_t}}\ \mbox{\hyperlink{structstream_1_1session__t_a53d47d7b03ec03d7c0fd08d73a1a497a}{incoming\_iv}};\ \ }
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \mbox{\hyperlink{crypto_8h_a13b3f3467f98fb2b2106f909d952fe60}{crypto::aes\_t}}\ \mbox{\hyperlink{structstream_1_1session__t_acd44bf34f9dae75b314334a4c40bae0e}{outgoing\_iv}};\ \ }
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ \ \ \ \ \ \ std::uint32\_t\ \mbox{\hyperlink{structstream_1_1session__t_a0e55d6530bc5802a5ca08a077e63592d}{connect\_data}};\ \ }
+\DoxyCodeLine{00245\ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{structstream_1_1session__t_a48733512780afada8ff9e1a05ec25589}{expected\_peer\_address}};\ \ }
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00247\ \ \ \ \ \ \ net::peer\_t\ \mbox{\hyperlink{structstream_1_1session__t_aca11a74cb8976a2c3339e0f06b6fe363}{peer}};\ \ }
+\DoxyCodeLine{00248\ \ \ \ \ \ \ std::uint32\_t\ \mbox{\hyperlink{structstream_1_1session__t_abc7f7c47dd428acaedd638e7c9043976}{seq}};\ \ }
+\DoxyCodeLine{00249\ }
+\DoxyCodeLine{00250\ \ \ \ \ \ \ platf::feedback\_queue\_t\ \mbox{\hyperlink{structstream_1_1session__t_a679459aded980590e5abd78f9e4ca808}{feedback\_queue}};\ \ }
+\DoxyCodeLine{00251\ \ \ \ \ \ \ safe::mail\_raw\_t::event\_t<video::hdr\_info\_t>\ \mbox{\hyperlink{structstream_1_1session__t_aadeb8c30ebac0e06f7c264ea43debca4}{hdr\_queue}};\ \ }
+\DoxyCodeLine{00252\ \ \ \ \ \}\ control;}
+\DoxyCodeLine{00253\ }
+\DoxyCodeLine{00254\ \ \ \ \ std::uint32\_t\ \mbox{\hyperlink{structstream_1_1session__t_a48bdf4e4b03d71a8a4c269c4874757b3}{launch\_session\_id}};\ \ }
+\DoxyCodeLine{00255\ \ \ \ \ std::string\ \mbox{\hyperlink{structstream_1_1session__t_a3fc6980a67ad4c4c8d285cc36bd01e43}{device\_name}};\ \ }
+\DoxyCodeLine{00256\ \ \ \ \ std::string\ \mbox{\hyperlink{structstream_1_1session__t_aac2c0a2bd32a495811a00f79ca77927c}{device\_uuid}};\ \ }
+\DoxyCodeLine{00257\ \ \ \ \ \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{crypto::PERM}}\ \mbox{\hyperlink{structstream_1_1session__t_ac7e48ff94aac127e2c4897e5a045bdf0}{permission}};\ \ }
+\DoxyCodeLine{00258\ }
+\DoxyCodeLine{00259\ \ \ \ \ std::list<crypto::command\_entry\_t>\ \mbox{\hyperlink{structstream_1_1session__t_af63db61460dbd7c18bb080e98edb95d3}{do\_cmds}};\ \ }
+\DoxyCodeLine{00260\ \ \ \ \ std::list<crypto::command\_entry\_t>\ \mbox{\hyperlink{structstream_1_1session__t_ab1467498a58baab0db69eabea32d56f4}{undo\_cmds}};\ \ }
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \ \ \ \ safe::mail\_raw\_t::event\_t<bool>\ \mbox{\hyperlink{structstream_1_1session__t_afecfac8d2c2c95c8b5bd6a21c3585e4c}{shutdown\_event}};\ \ }
+\DoxyCodeLine{00263\ \ \ \ \ safe::signal\_t\ \mbox{\hyperlink{structstream_1_1session__t_a976d3665784ded8aa0af8e3a2ac3c58d}{controlEnd}};\ \ }
+\DoxyCodeLine{00264\ }
+\DoxyCodeLine{00265\ \ \ \ \ std::atomic<session::state\_e>\ \mbox{\hyperlink{structstream_1_1session__t_ab91ecb5d69a5ff43ff5eda6d672899a9}{state}};\ \ }
+\DoxyCodeLine{00266\ }
+\DoxyCodeLine{00267\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structstream_1_1session__t_af9aa0edcd393b49ef75888a8fa5fa9e8}{auto\_bitrate\_enabled}}\ =\ \textcolor{keyword}{false};\ \ }
+\DoxyCodeLine{00268\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structstream_1_1session__t_ad646f662ac20182ca885fdf9be3ee71c}{auto\_bitrate\_min\_kbps}}\ =\ 0;\ \ }
+\DoxyCodeLine{00269\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structstream_1_1session__t_a55367c36ec630c1283c9aa20608b112d}{auto\_bitrate\_max\_kbps}}\ =\ 0;\ \ }
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structstream_1_1session__t_a01e9a4aef9d69a683fa2f62675b65743}{auto\_bitrate\_v2\_active}}\ =\ \textcolor{keyword}{false};\ \ }
+\DoxyCodeLine{00271\ \ \ \ \ }
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structstream_1_1session__t_a2a891ce2d8c65868eaeb45a199af5571}{bitrate\_stats\_send\_counter}}\ =\ 0;\ \ }
+\DoxyCodeLine{00273\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structstream_1_1session__t_ac78bc35f82d9e5a4a1f0fe700570e0ef}{last\_sent\_connection\_status}}\ =\ -\/1;\ \ }
+\DoxyCodeLine{00274\ \ \ \};}
+\DoxyCodeLine{00275\ }
+\DoxyCodeLine{00279\ \ \ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacestream_1_1session}{session}}\ \{}
+\DoxyCodeLine{00283\ \ \ \ \ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188de}{state\_e}}\ :\ \textcolor{keywordtype}{int}\ \{}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188dea09d4d696b4e935115b9313e3c412509a}{STOPPED}},\ \ }
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188deaf6cdb3c6710b50ec65ee07f740847e10}{STOPPING}},\ \ }
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188dea034312d8adc8099c1c6f53aaff745e26}{STARTING}},\ \ }
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188dea43491564ebcfd38568918efbd6e840fd}{RUNNING}},\ \ }
+\DoxyCodeLine{00288\ \ \ \ \ \};}
+\DoxyCodeLine{00289\ }
+\DoxyCodeLine{00296\ \ \ \ \ std::shared\_ptr<session\_t>\ \mbox{\hyperlink{namespacestream_1_1session_a3a968bef60291eac635060c406580646}{alloc}}(\mbox{\hyperlink{structstream_1_1config__t}{config\_t}}\ \&config,\ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{rtsp\_stream::launch\_session\_t}}\ \&launch\_session);}
+\DoxyCodeLine{00297\ }
+\DoxyCodeLine{00303\ \ \ \ \ std::string\ \mbox{\hyperlink{namespacestream_1_1session_a6e6dba8ca4221d0c94d0a4dc0a14c01f}{uuid}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\&\ \mbox{\hyperlink{namespacestream_1_1session}{session}});}
+\DoxyCodeLine{00304\ }
+\DoxyCodeLine{00311\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacestream_1_1session_a47437a61c2e2db084f5d802595540d1f}{uuid\_match}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\&\ \mbox{\hyperlink{namespacestream_1_1session}{session}},\ \textcolor{keyword}{const}\ std::string\_view\&\ \mbox{\hyperlink{namespacestream_1_1session_a6e6dba8ca4221d0c94d0a4dc0a14c01f}{uuid}});}
+\DoxyCodeLine{00312\ }
+\DoxyCodeLine{00320\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacestream_1_1session_ab76bf145c19c75d056a26522e591b919}{update\_device\_info}}(\mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\&\ \mbox{\hyperlink{namespacestream_1_1session}{session}},\ \textcolor{keyword}{const}\ std::string\&\ name,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{crypto_8h_a94c13146c12a7cb3dee5590eb995347e}{crypto::PERM}}\&\ newPerm);}
+\DoxyCodeLine{00321\ }
+\DoxyCodeLine{00328\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{namespacestream_1_1session_a57687f4eec57d53f2839dffb564e1f42}{start}}(\mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\ \&\mbox{\hyperlink{namespacestream_1_1session}{session}},\ \textcolor{keyword}{const}\ std::string\ \&addr\_string);}
+\DoxyCodeLine{00329\ }
+\DoxyCodeLine{00334\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacestream_1_1session_a6d3e111379cfb5b644a8cc9652b6523a}{stop}}(\mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\ \&\mbox{\hyperlink{namespacestream_1_1session}{session}});}
+\DoxyCodeLine{00335\ }
+\DoxyCodeLine{00340\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacestream_1_1session_af9e804bb3827272a5afc7669a6100a75}{graceful\_stop}}(\mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\&\ \mbox{\hyperlink{namespacestream_1_1session}{session}});}
+\DoxyCodeLine{00341\ }
+\DoxyCodeLine{00346\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{namespacestream_1_1session_ad6441df13e4c115de4047ea8f3074ec2}{join}}(\mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\ \&\mbox{\hyperlink{namespacestream_1_1session}{session}});}
+\DoxyCodeLine{00347\ }
+\DoxyCodeLine{00353\ \ \ \ \ \mbox{\hyperlink{namespacestream_1_1session_ac3803ee60e6f07138932b4254a9188de}{state\_e}}\ \mbox{\hyperlink{namespacestream_1_1session_a7aae2685f26ac3d991ae41861530fd07}{state}}(\mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\ \&\mbox{\hyperlink{namespacestream_1_1session}{session}});}
+\DoxyCodeLine{00354\ }
+\DoxyCodeLine{00361\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{namespacestream_1_1session_a9d466943738a6a0365da4f54c990ba5e}{send}}(\mbox{\hyperlink{structstream_1_1session__t}{session\_t}}\&\ \mbox{\hyperlink{namespacestream_1_1session}{session}},\ \textcolor{keyword}{const}\ std::string\_view\ \&payload);}
+\DoxyCodeLine{00362\ \ \ \}\ \ \textcolor{comment}{//\ namespace\ session}}
+\DoxyCodeLine{00363\ \}\ \ \textcolor{comment}{//\ namespace\ stream}}
+
+\end{DoxyCode}

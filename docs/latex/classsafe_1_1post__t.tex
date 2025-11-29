@@ -1,0 +1,48 @@
+\doxysection{safe\+::post\+\_\+t\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classsafe_1_1post__t}{}\label{classsafe_1_1post__t}\index{safe::post\_t$<$ T $>$@{safe::post\_t$<$ T $>$}}
+
+
+Post wrapper for mail-\/based communication.  
+
+
+
+
+{\ttfamily \#include $<$thread\+\_\+safe.\+h$>$}
+
+Inheritance diagram for safe\+::post\+\_\+t\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classsafe_1_1post__t}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classsafe_1_1post__t_ad8427599d5f40fc1d64201ef70cfc279}\label{classsafe_1_1post__t_ad8427599d5f40fc1d64201ef70cfc279} 
+{\footnotesize template$<$class... Args$>$ }\\{\bfseries post\+\_\+t} (mail\+\_\+t mail, Args \&\&...\mbox{\hyperlink{namespaceargs}{args}})
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classsafe_1_1post__t_a4183805477d929e4777dcd83b063e642}\label{classsafe_1_1post__t_a4183805477d929e4777dcd83b063e642} 
+mail\+\_\+t {\bfseries mail}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T$>$\newline
+class safe\+::post\+\_\+t$<$ T $>$}
+Post wrapper for mail-\/based communication. 
+
+Wraps an event or queue with automatic cleanup when destroyed. Ensures proper cleanup of mail resources when the post goes out of scope.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The type being wrapped (typically \doxylink{classsafe_1_1event__t}{event\+\_\+t} or \doxylink{classsafe_1_1queue__t}{queue\+\_\+t}). \\
+\hline
+\end{DoxyTemplParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{thread__safe_8h}{thread\+\_\+safe.\+h}}\end{DoxyCompactItemize}

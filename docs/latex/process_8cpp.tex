@@ -1,0 +1,273 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/process.cpp File Reference}
+\hypertarget{process_8cpp}{}\label{process_8cpp}\index{/Users/alexworland/autoBitrate/apollo/src/process.cpp@{/Users/alexworland/autoBitrate/apollo/src/process.cpp}}
+
+
+Definitions for the startup and shutdown of the apps started by a streaming Session.  
+
+
+{\ttfamily \#include $<$filesystem$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$thread$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$boost/algorithm/string.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/crc.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/filesystem.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/program\+\_\+options/parsers.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/property\+\_\+tree/json\+\_\+parser.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/property\+\_\+tree/ptree.\+hpp$>$}\newline
+{\ttfamily \#include $<$openssl/evp.\+h$>$}\newline
+{\ttfamily \#include $<$openssl/sha.\+h$>$}\newline
+{\ttfamily \#include "{}config.\+h"{}}\newline
+{\ttfamily \#include "{}crypto.\+h"{}}\newline
+{\ttfamily \#include "{}display\+\_\+device.\+h"{}}\newline
+{\ttfamily \#include "{}file\+\_\+handler.\+h"{}}\newline
+{\ttfamily \#include "{}logging.\+h"{}}\newline
+{\ttfamily \#include "{}platform/common.\+h"{}}\newline
+{\ttfamily \#include "{}process.\+h"{}}\newline
+{\ttfamily \#include "{}httpcommon.\+h"{}}\newline
+{\ttfamily \#include "{}system\+\_\+tray.\+h"{}}\newline
+{\ttfamily \#include "{}utility.\+h"{}}\newline
+{\ttfamily \#include "{}video.\+h"{}}\newline
+{\ttfamily \#include "{}uuid.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classproc_1_1deinit__t}{proc\+::deinit\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em RAII deinitialization helper for process management. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{process_8cpp_ae32d133147b9dd7a9b1bfe370a71b72e}\label{process_8cpp_ae32d133147b9dd7a9b1bfe370a71b72e} 
+\#define {\bfseries BOOST\+\_\+\+BIND\+\_\+\+GLOBAL\+\_\+\+PLACEHOLDERS}
+\item 
+\Hypertarget{process_8cpp_a4582e3fb10967d81bd6d2f32c09676fd}\label{process_8cpp_a4582e3fb10967d81bd6d2f32c09676fd} 
+\#define {\bfseries BOOST\+\_\+\+PROCESS\+\_\+\+VERSION}~1
+\item 
+\Hypertarget{process_8cpp_ae9f00e642ce3daff94965f1ae2a40dd1}\label{process_8cpp_ae9f00e642ce3daff94965f1ae2a40dd1} 
+\#define {\bfseries DEFAULT\+\_\+\+APP\+\_\+\+IMAGE\+\_\+\+PATH}~SUNSHINE\+\_\+\+ASSETS\+\_\+\+DIR "{}/box.\+png"{}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::unique\+\_\+ptr$<$ platf\+::deinit\+\_\+t $>$ \mbox{\hyperlink{process_8cpp_a6af2e4ae5f5b8e92c9fca3649e2ad297}{proc\+::init}} ()
+\begin{DoxyCompactList}\small\item\em Initialize proc functions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{process_8cpp_a4781dfdbbf67ae6152c8fd51284a320d}{proc\+::terminate\+\_\+process\+\_\+group}} (boost\+::process\+::v1\+::child \&proc, boost\+::process\+::v1\+::group \&group, std\+::chrono\+::seconds exit\+\_\+timeout)
+\begin{DoxyCompactList}\small\item\em Terminates all child processes in a process group. \end{DoxyCompactList}\item 
+boost\+::filesystem\+::path \mbox{\hyperlink{process_8cpp_a1c4d556acf0d4e7183804f986a51f58f}{proc\+::find\+\_\+working\+\_\+directory}} (const std\+::string \&cmd, const boost\+::process\+::v1\+::environment \&env)
+\begin{DoxyCompactList}\small\item\em Find the working directory for a command. \end{DoxyCompactList}\item 
+\Hypertarget{process_8cpp_a305ffb17f6d9d5e54df878a7327e7bf6}\label{process_8cpp_a305ffb17f6d9d5e54df878a7327e7bf6} 
+std\+::string\+\_\+view\+::iterator {\bfseries proc\+::find\+\_\+match} (std\+::string\+\_\+view\+::iterator begin, std\+::string\+\_\+view\+::iterator end)
+\item 
+\Hypertarget{process_8cpp_a193b98f0404841a0ef0ed4b28c4ca8bb}\label{process_8cpp_a193b98f0404841a0ef0ed4b28c4ca8bb} 
+std\+::string {\bfseries proc\+::parse\+\_\+env\+\_\+val} (boost\+::process\+::v1\+::native\+\_\+environment \&env, const std\+::string\+\_\+view \&val\+\_\+raw)
+\item 
+std\+::string \mbox{\hyperlink{process_8cpp_acfb778773710796d3848766098852b0a}{proc\+::validate\+\_\+app\+\_\+image\+\_\+path}} (std\+::string app\+\_\+image\+\_\+path)
+\begin{DoxyCompactList}\small\item\em Validate and normalize application image path. \end{DoxyCompactList}\item 
+\Hypertarget{process_8cpp_a2584b0e70e1acd38762b7b9b86f1d6ec}\label{process_8cpp_a2584b0e70e1acd38762b7b9b86f1d6ec} 
+std\+::optional$<$ std\+::string $>$ {\bfseries proc\+::calculate\+\_\+sha256} (const std\+::string \&filename)
+\item 
+\Hypertarget{process_8cpp_a1da76251db69150d49a0844be925cc13}\label{process_8cpp_a1da76251db69150d49a0844be925cc13} 
+uint32\+\_\+t {\bfseries proc\+::calculate\+\_\+crc32} (const std\+::string \&input)
+\item 
+std\+::tuple$<$ std\+::string, std\+::string $>$ \mbox{\hyperlink{process_8cpp_a82dbe882ee92ae36926d9042bb167e75}{proc\+::calculate\+\_\+app\+\_\+id}} (const std\+::string \&app\+\_\+name, std\+::string app\+\_\+image\+\_\+path, int index)
+\begin{DoxyCompactList}\small\item\em Calculate a stable application ID based on name and image data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{process_8cpp_a22151985330ce51c9b0822e2f254ad23}{proc\+::migrate\+\_\+apps}} (nlohmann\+::json \texorpdfstring{$\ast$}{*}file\+Tree\+\_\+p, nlohmann\+::json \texorpdfstring{$\ast$}{*}input\+Tree\+\_\+p)
+\begin{DoxyCompactList}\small\item\em Migrate the applications stored in the file tree by merging in a new app. \end{DoxyCompactList}\item 
+\Hypertarget{process_8cpp_a22f87e58d4649a12489a6a04ad7a4926}\label{process_8cpp_a22f87e58d4649a12489a6a04ad7a4926} 
+void {\bfseries proc\+::migration\+\_\+v2} (nlohmann\+::json \&file\+Tree)
+\item 
+\Hypertarget{process_8cpp_a28315821c97d376ccfd0eecdf0dec649}\label{process_8cpp_a28315821c97d376ccfd0eecdf0dec649} 
+void {\bfseries proc\+::migrate} (nlohmann\+::json \&file\+Tree, const std\+::string \&file\+Name)
+\item 
+std\+::optional$<$ \mbox{\hyperlink{classproc_1_1proc__t}{proc\+::proc\+\_\+t}} $>$ \mbox{\hyperlink{process_8cpp_a844b9477513fa84d8ca37864c75fab34}{proc\+::parse}} (const std\+::string \&file\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Parse applications from file. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{process_8cpp_aeffa331a777625a3db3833971cf622e2}{proc\+::refresh}} (const std\+::string \&file\+\_\+name, bool needs\+\_\+terminate=true)
+\begin{DoxyCompactList}\small\item\em Refresh applications from file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{process_8cpp_a7fa61051e5c4d2f9c44cce5e2a0f54ec}\label{process_8cpp_a7fa61051e5c4d2f9c44cce5e2a0f54ec} 
+\mbox{\hyperlink{classproc_1_1proc__t}{proc\+\_\+t}} {\bfseries proc\+::proc}
+\item 
+\Hypertarget{process_8cpp_a95701a6500790545d79ab810d7e761d3}\label{process_8cpp_a95701a6500790545d79ab810d7e761d3} 
+int {\bfseries proc\+::input\+\_\+only\+\_\+app\+\_\+id} = -\/1
+\item 
+\Hypertarget{process_8cpp_a7a1ff60b30173925bb8bd28a1fdd74e8}\label{process_8cpp_a7a1ff60b30173925bb8bd28a1fdd74e8} 
+std\+::string {\bfseries proc\+::input\+\_\+only\+\_\+app\+\_\+id\+\_\+str}
+\item 
+\Hypertarget{process_8cpp_a8cc286228094fd4fc0b8fbfd378bd29d}\label{process_8cpp_a8cc286228094fd4fc0b8fbfd378bd29d} 
+int {\bfseries proc\+::terminate\+\_\+app\+\_\+id} = -\/1
+\item 
+\Hypertarget{process_8cpp_a6974bab6c58ce10b4f621e9c12dff786}\label{process_8cpp_a6974bab6c58ce10b4f621e9c12dff786} 
+std\+::string {\bfseries proc\+::terminate\+\_\+app\+\_\+id\+\_\+str}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Definitions for the startup and shutdown of the apps started by a streaming Session. 
+
+
+
+\label{doc-func-members}
+\Hypertarget{process_8cpp_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{process_8cpp_a82dbe882ee92ae36926d9042bb167e75}\index{process.cpp@{process.cpp}!calculate\_app\_id@{calculate\_app\_id}}
+\index{calculate\_app\_id@{calculate\_app\_id}!process.cpp@{process.cpp}}
+\doxysubsubsection{\texorpdfstring{calculate\_app\_id()}{calculate\_app\_id()}}
+{\footnotesize\ttfamily \label{process_8cpp_a82dbe882ee92ae36926d9042bb167e75} 
+std\+::tuple$<$ std\+::string, std\+::string $>$ proc\+::calculate\+\_\+app\+\_\+id (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{app\+\_\+name}{, }\item[{std\+::string}]{app\+\_\+image\+\_\+path}{, }\item[{int}]{index}{}\end{DoxyParamCaption})}
+
+
+
+Calculate a stable application ID based on name and image data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em app\+\_\+name} & The application name. \\
+\hline
+{\em app\+\_\+image\+\_\+path} & The application image path. \\
+\hline
+{\em index} & The application index. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Tuple of ID without index and ID with index. 
+\end{DoxyReturn}
+\Hypertarget{process_8cpp_a1c4d556acf0d4e7183804f986a51f58f}\index{process.cpp@{process.cpp}!find\_working\_directory@{find\_working\_directory}}
+\index{find\_working\_directory@{find\_working\_directory}!process.cpp@{process.cpp}}
+\doxysubsubsection{\texorpdfstring{find\_working\_directory()}{find\_working\_directory()}}
+{\footnotesize\ttfamily \label{process_8cpp_a1c4d556acf0d4e7183804f986a51f58f} 
+boost\+::filesystem\+::path proc\+::find\+\_\+working\+\_\+directory (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{cmd}{, }\item[{const boost\+::process\+::v1\+::environment \&}]{env}{}\end{DoxyParamCaption})}
+
+
+
+Find the working directory for a command. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cmd} & The command string. \\
+\hline
+{\em env} & The process environment. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Working directory path. 
+\end{DoxyReturn}
+\Hypertarget{process_8cpp_a6af2e4ae5f5b8e92c9fca3649e2ad297}\index{process.cpp@{process.cpp}!init@{init}}
+\index{init@{init}!process.cpp@{process.cpp}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily \label{process_8cpp_a6af2e4ae5f5b8e92c9fca3649e2ad297} 
+std\+::unique\+\_\+ptr$<$ platf\+::deinit\+\_\+t $>$ proc\+::init (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Initialize proc functions. 
+
+\begin{DoxyReturn}{Returns}
+Unique pointer to {\ttfamily deinit\+\_\+t} to manage cleanup 
+\end{DoxyReturn}
+\Hypertarget{process_8cpp_a22151985330ce51c9b0822e2f254ad23}\index{process.cpp@{process.cpp}!migrate\_apps@{migrate\_apps}}
+\index{migrate\_apps@{migrate\_apps}!process.cpp@{process.cpp}}
+\doxysubsubsection{\texorpdfstring{migrate\_apps()}{migrate\_apps()}}
+{\footnotesize\ttfamily \label{process_8cpp_a22151985330ce51c9b0822e2f254ad23} 
+void proc\+::migrate\+\_\+apps (\begin{DoxyParamCaption}\item[{nlohmann\+::json \texorpdfstring{$\ast$}{*}}]{file\+Tree\+\_\+p}{, }\item[{nlohmann\+::json \texorpdfstring{$\ast$}{*}}]{input\+Tree\+\_\+p}{}\end{DoxyParamCaption})}
+
+
+
+Migrate the applications stored in the file tree by merging in a new app. 
+
+Migrate applications from old format to new format.
+
+This function updates the application entries in {\itshape file\+Tree\+\_\+p} using the data in {\itshape input\+Tree\+\_\+p}. If an app in the file tree does not have a UUID, one is generated and inserted. If an app with the same UUID as the new app is found, it is replaced. Additionally, empty keys (such as "{}prep-\/cmd"{} or "{}detached"{}) and keys no longer needed ("{}launching"{}, "{}index"{}) are removed from the input.
+
+Legacy versions of Sunshine/\+Apollo stored boolean and integer values as strings. The following keys are converted\+:
+\begin{DoxyItemize}
+\item Boolean keys\+: "{}exclude-\/global-\/prep-\/cmd"{}, "{}elevated"{}, "{}auto-\/detach"{}, "{}wait-\/all"{}, "{}use-\/app-\/identity"{}, "{}per-\/client-\/app-\/identity"{}, "{}virtual-\/display"{}
+\item Integer keys\+: "{}exit-\/timeout"{}
+\end{DoxyItemize}
+
+A migration version is stored in the file tree (under "{}version"{}) so that future changes can be applied.
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Tree\+\_\+p} & Pointer to the JSON object representing the file tree. \\
+\hline
+{\em input\+Tree\+\_\+p} & Pointer to the JSON object representing the new app.\\
+\hline
+{\em file\+Tree\+\_\+p} & Pointer to file tree JSON. \\
+\hline
+{\em input\+Tree\+\_\+p} & Pointer to input tree JSON. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{process_8cpp_a844b9477513fa84d8ca37864c75fab34}\index{process.cpp@{process.cpp}!parse@{parse}}
+\index{parse@{parse}!process.cpp@{process.cpp}}
+\doxysubsubsection{\texorpdfstring{parse()}{parse()}}
+{\footnotesize\ttfamily \label{process_8cpp_a844b9477513fa84d8ca37864c75fab34} 
+std\+::optional$<$ \mbox{\hyperlink{classproc_1_1proc__t}{proc\+::proc\+\_\+t}} $>$ proc\+::parse (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{file\+\_\+name}{}\end{DoxyParamCaption})}
+
+
+
+Parse applications from file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+\_\+name} & The applications file name. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Optional process manager instance. 
+\end{DoxyReturn}
+\Hypertarget{process_8cpp_aeffa331a777625a3db3833971cf622e2}\index{process.cpp@{process.cpp}!refresh@{refresh}}
+\index{refresh@{refresh}!process.cpp@{process.cpp}}
+\doxysubsubsection{\texorpdfstring{refresh()}{refresh()}}
+{\footnotesize\ttfamily \label{process_8cpp_aeffa331a777625a3db3833971cf622e2} 
+void proc\+::refresh (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{file\+\_\+name}{, }\item[{bool}]{needs\+\_\+terminate}{ = {\ttfamily true}}\end{DoxyParamCaption})}
+
+
+
+Refresh applications from file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+\_\+name} & The applications file name. \\
+\hline
+{\em needs\+\_\+terminate} & Whether to terminate running apps (default\+: true). \\
+\hline
+\end{DoxyParams}
+\Hypertarget{process_8cpp_a4781dfdbbf67ae6152c8fd51284a320d}\index{process.cpp@{process.cpp}!terminate\_process\_group@{terminate\_process\_group}}
+\index{terminate\_process\_group@{terminate\_process\_group}!process.cpp@{process.cpp}}
+\doxysubsubsection{\texorpdfstring{terminate\_process\_group()}{terminate\_process\_group()}}
+{\footnotesize\ttfamily \label{process_8cpp_a4781dfdbbf67ae6152c8fd51284a320d} 
+void proc\+::terminate\+\_\+process\+\_\+group (\begin{DoxyParamCaption}\item[{boost\+::process\+::v1\+::child \&}]{proc}{, }\item[{boost\+::process\+::v1\+::group \&}]{group}{, }\item[{std\+::chrono\+::seconds}]{exit\+\_\+timeout}{}\end{DoxyParamCaption})}
+
+
+
+Terminates all child processes in a process group. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em proc} & The child process itself. \\
+\hline
+{\em group} & The group of all children in the process tree. \\
+\hline
+{\em exit\+\_\+timeout} & The timeout to wait for the process group to gracefully exit. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{process_8cpp_acfb778773710796d3848766098852b0a}\index{process.cpp@{process.cpp}!validate\_app\_image\_path@{validate\_app\_image\_path}}
+\index{validate\_app\_image\_path@{validate\_app\_image\_path}!process.cpp@{process.cpp}}
+\doxysubsubsection{\texorpdfstring{validate\_app\_image\_path()}{validate\_app\_image\_path()}}
+{\footnotesize\ttfamily \label{process_8cpp_acfb778773710796d3848766098852b0a} 
+std\+::string proc\+::validate\+\_\+app\+\_\+image\+\_\+path (\begin{DoxyParamCaption}\item[{std\+::string}]{app\+\_\+image\+\_\+path}{}\end{DoxyParamCaption})}
+
+
+
+Validate and normalize application image path. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em app\+\_\+image\+\_\+path} & The image path to validate. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Validated image path. 
+\end{DoxyReturn}

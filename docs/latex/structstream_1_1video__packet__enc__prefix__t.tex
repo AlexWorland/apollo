@@ -1,0 +1,29 @@
+\doxysection{stream\+::video\+\_\+packet\+\_\+enc\+\_\+prefix\+\_\+t Struct Reference}
+\hypertarget{structstream_1_1video__packet__enc__prefix__t}{}\label{structstream_1_1video__packet__enc__prefix__t}\index{stream::video\_packet\_enc\_prefix\_t@{stream::video\_packet\_enc\_prefix\_t}}
+
+
+Encrypted video packet prefix.  
+
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structstream_1_1video__packet__enc__prefix__t_aeb5e011ac4617305eb025cd4a6dec41a}\label{structstream_1_1video__packet__enc__prefix__t_aeb5e011ac4617305eb025cd4a6dec41a} 
+std\+::uint8\+\_\+t {\bfseries iv} \mbox{[}12\mbox{]}
+\item 
+\Hypertarget{structstream_1_1video__packet__enc__prefix__t_a4ef360afcc0a764ec21143f361f46480}\label{structstream_1_1video__packet__enc__prefix__t_a4ef360afcc0a764ec21143f361f46480} 
+std\+::uint32\+\_\+t {\bfseries frame\+Number}
+\item 
+\Hypertarget{structstream_1_1video__packet__enc__prefix__t_a8ac0f34046650ab8e9cf692e679fc2c9}\label{structstream_1_1video__packet__enc__prefix__t_a8ac0f34046650ab8e9cf692e679fc2c9} 
+std\+::uint8\+\_\+t {\bfseries tag} \mbox{[}16\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Encrypted video packet prefix. 
+
+Contains initialization vector (IV), frame number, and authentication tag for AES-\/\+GCM encrypted video packets. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{stream_8cpp}{stream.\+cpp}}\end{DoxyCompactItemize}

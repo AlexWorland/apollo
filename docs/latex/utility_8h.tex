@@ -1,0 +1,419 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/utility.h File Reference}
+\hypertarget{utility_8h}{}\label{utility_8h}\index{/Users/alexworland/autoBitrate/apollo/src/utility.h@{/Users/alexworland/autoBitrate/apollo/src/utility.h}}
+
+
+Declarations for utility functions.  
+
+
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$condition\+\_\+variable$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$mutex$>$}\newline
+{\ttfamily \#include $<$optional$>$}\newline
+{\ttfamily \#include $<$ostream$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$string\+\_\+view$>$}\newline
+{\ttfamily \#include $<$type\+\_\+traits$>$}\newline
+{\ttfamily \#include $<$variant$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$nlohmann/json.\+hpp$>$}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structargument__type_3_01_t_07_u_08_4}{argument\+\_\+type$<$ T(\+U)$>$}}
+\item 
+struct \mbox{\hyperlink{structutil_1_1____instantiation__of}{util\+::\+\_\+\+\_\+instantiation\+\_\+of$<$ X, Y $>$}}
+\item 
+struct \mbox{\hyperlink{structutil_1_1____instantiation__of_3_01_x_00_01_x_3_01_y_8_8_8_01_4_01_4}{util\+::\+\_\+\+\_\+instantiation\+\_\+of$<$ X, X$<$ Y... $>$ $>$}}
+\item 
+struct \mbox{\hyperlink{structutil_1_1____either_3_01true_00_01_x_00_01_y_01_4}{util\+::\+\_\+\+\_\+either$<$ true, X, Y $>$}}
+\begin{DoxyCompactList}\small\item\em Internal template helper for conditional type selection. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structutil_1_1____either_3_01false_00_01_x_00_01_y_01_4}{util\+::\+\_\+\+\_\+either$<$ false, X, Y $>$}}
+\begin{DoxyCompactList}\small\item\em Internal template helper for conditional type selection. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structutil_1_1overloaded}{util\+::overloaded$<$ Ts $>$}}
+\item 
+class \mbox{\hyperlink{classutil_1_1_fail_guard}{util\+::\+Fail\+Guard$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em RAII guard that executes a function on failure. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classutil_1_1_hex}{util\+::\+Hex$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Hexadecimal string conversion utility. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classutil_1_1hash}{util\+::hash$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Hash function for arbitrary types. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classutil_1_1_either}{util\+::\+Either$<$ X, Y $>$}}
+\begin{DoxyCompactList}\small\item\em \doxylink{classutil_1_1_either}{Either} type for representing one of two possible values. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classutil_1_1uniq__ptr}{util\+::uniq\+\_\+ptr$<$ T, D $>$}}
+\begin{DoxyCompactList}\small\item\em Unique pointer with addressable pointer storage. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classutil_1_1wrap__ptr}{util\+::wrap\+\_\+ptr$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Wrapper pointer that can own or reference memory. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structutil_1_1____false__v_3_01_t_00_01std_1_1enable__if__t_3_01instantiation__of__v_3_01std_1_1optional_00_01_t_01_4_01_4_01_4}{util\+::\+\_\+\+\_\+false\+\_\+v$<$ T, std\+::enable\+\_\+if\+\_\+t$<$ instantiation\+\_\+of\+\_\+v$<$ std\+::optional, T $>$ $>$ $>$}}
+\begin{DoxyCompactList}\small\item\em Specialization for optional types. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structutil_1_1____false__v_3_01_t_00_01std_1_1enable__if__t_3_01is__pointer__v_3_01_t_01_4_01_4_01_4}{util\+::\+\_\+\+\_\+false\+\_\+v$<$ T, std\+::enable\+\_\+if\+\_\+t$<$ is\+\_\+pointer\+\_\+v$<$ T $>$ $>$ $>$}}
+\begin{DoxyCompactList}\small\item\em Specialization for pointer types. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structutil_1_1____false__v_3_01_t_00_01std_1_1enable__if__t_3_01std_1_1is__same__v_3_01_t_00_01bool_01_4_01_4_01_4}{util\+::\+\_\+\+\_\+false\+\_\+v$<$ T, std\+::enable\+\_\+if\+\_\+t$<$ std\+::is\+\_\+same\+\_\+v$<$ T, bool $>$ $>$ $>$}}
+\begin{DoxyCompactList}\small\item\em Specialization for bool type. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classutil_1_1buffer__t}{util\+::buffer\+\_\+t$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Buffer container for binary data. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structutil_1_1_function}{util\+::\+Function$<$ Return\+Type, Args $>$}}
+\begin{DoxyCompactList}\small\item\em \doxylink{structutil_1_1_function}{Function} pointer type helper. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structutil_1_1_destroy}{util\+::\+Destroy$<$ T, Return\+Type, function $>$}}
+\begin{DoxyCompactList}\small\item\em Deleter wrapper for function pointers. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structutil_1_1point__t}{util\+::point\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em 2D point structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structutil_1_1endian_1_1endianness}{util\+::endian\+::endianness$<$ T $>$}}
+\begin{DoxyCompactList}\small\item\em Endianness detection helper. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structutil_1_1endian_1_1endian__helper}{util\+::endian\+::endian\+\_\+helper$<$ T, S $>$}}
+\begin{DoxyCompactList}\small\item\em Endianness conversion helper. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structutil_1_1endian_1_1endian__helper_3_01_t_00_01std_1_1enable__if__t_3_9_07instantiation__of_6620c20dac452071433f476d6da059dd}{util\+::endian\+::endian\+\_\+helper$<$ T, std\+::enable\+\_\+if\+\_\+t$<$!(instantiation\+\_\+of\+\_\+v$<$ std\+::optional, T $>$)$>$ $>$}}
+\begin{DoxyCompactList}\small\item\em Endian conversion helper for non-\/optional types. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structutil_1_1endian_1_1endian__helper_3_01_t_00_01std_1_1enable__if__t_3_01instantiation__of__v3ad7fecb94feab47e90809b6e459226c}{util\+::endian\+::endian\+\_\+helper$<$ T, std\+::enable\+\_\+if\+\_\+t$<$ instantiation\+\_\+of\+\_\+v$<$ std\+::optional, T $>$ $>$ $>$}}
+\begin{DoxyCompactList}\small\item\em Endian conversion helper for optional types. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{utility_8h_a58635bb32230035d7c3014460fee150a}{KITTY\+\_\+\+WHILE\+\_\+\+LOOP}}(x,  y,  z)
+\item 
+\Hypertarget{utility_8h_a70b8d393827822ed22a3545bd60e6c97}\label{utility_8h_a70b8d393827822ed22a3545bd60e6c97} 
+\#define {\bfseries KITTY\+\_\+\+USING\+\_\+\+MOVE\+\_\+T}(move\+\_\+t,  t,  init\+\_\+val,  z)
+\item 
+\#define \mbox{\hyperlink{utility_8h_a3e1d1c806d4ae4fcd71fd22e23863e9e}{KITTY\+\_\+\+DECL\+\_\+\+CONSTR}}(x)
+\item 
+\#define \mbox{\hyperlink{utility_8h_a66233fcfcc7474a23138ba1f50beaba3}{KITTY\+\_\+\+DEFAULT\+\_\+\+CONSTR\+\_\+\+MOVE}}(x)
+\item 
+\#define \mbox{\hyperlink{utility_8h_af953f5495bd2edf6ad754fc2f99bf6fb}{KITTY\+\_\+\+DEFAULT\+\_\+\+CONSTR\+\_\+\+MOVE\+\_\+\+THROW}}(x)
+\item 
+\#define \mbox{\hyperlink{utility_8h_a8d455448d1a500de1f9469ba17cddd97}{KITTY\+\_\+\+DEFAULT\+\_\+\+CONSTR}}(x)
+\item 
+\#define \mbox{\hyperlink{utility_8h_ab8277a72c77b2bbe1841dda7a84035cc}{TUPLE\+\_\+2D}}(a,  b,  expr)
+\item 
+\#define \mbox{\hyperlink{utility_8h_a0d4bb3c508de705c51b2ddf573b9596b}{TUPLE\+\_\+2\+D\+\_\+\+REF}}(a,  b,  expr)
+\item 
+\#define \mbox{\hyperlink{utility_8h_ad52d8286a156b4cedd47344c9efefac1}{TUPLE\+\_\+3D}}(a,  b,  c,  expr)
+\item 
+\#define \mbox{\hyperlink{utility_8h_a9c6e6cf34a9faec1596a6a9423521ad2}{TUPLE\+\_\+3\+D\+\_\+\+REF}}(a,  b,  c,  expr)
+\item 
+\#define \mbox{\hyperlink{utility_8h_a46ce4c783c4fe56865e4c95aad270479}{TUPLE\+\_\+\+EL}}(a,  b,  expr)
+\item 
+\#define \mbox{\hyperlink{utility_8h_a838ada6fb23c49f50b130a81592dca50}{TUPLE\+\_\+\+EL\+\_\+\+REF}}(a,  b,  expr)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{utility_8h_a25407830a4c535ae0a1faffe3dbacad0}\label{utility_8h_a25407830a4c535ae0a1faffe3dbacad0} 
+{\footnotesize template$<$bool V, class X, class Y$>$ }\\using {\bfseries util\+::either\+\_\+t} = typename \mbox{\hyperlink{structutil_1_1____either}{\+\_\+\+\_\+either}}$<$V, X, Y$>$\+::type
+\item 
+\Hypertarget{utility_8h_a07b67de8a42a058d4bba556b561762bb}\label{utility_8h_a07b67de8a42a058d4bba556b561762bb} 
+{\footnotesize template$<$class P$>$ }\\using {\bfseries util\+::shared\+\_\+t} = std\+::shared\+\_\+ptr$<$typename P\+::element\+\_\+type$>$
+\item 
+{\footnotesize template$<$class T$>$ }\\using \mbox{\hyperlink{utility_8h_a66b2cb91837698c0f69297f557a6137a}{util\+::optional\+\_\+t}}
+\item 
+\Hypertarget{utility_8h_a2d0e9ccaa3b9af2648fe701dd453a8f4}\label{utility_8h_a2d0e9ccaa3b9af2648fe701dd453a8f4} 
+{\footnotesize template$<$class T, typename \mbox{\hyperlink{structutil_1_1_function}{Function}}$<$ void, T \texorpdfstring{$\ast$}{*} $>$\+::type function$>$ }\\using {\bfseries util\+::safe\+\_\+ptr} = \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\+\_\+ptr}}$<$T, \mbox{\hyperlink{structutil_1_1_destroy}{Destroy}}$<$T \texorpdfstring{$\ast$}{*}, void, function$>$$>$
+\item 
+\Hypertarget{utility_8h_a1d426a8aa4615d630e915b7c45729f9b}\label{utility_8h_a1d426a8aa4615d630e915b7c45729f9b} 
+{\footnotesize template$<$class T, class Return\+Type, typename \mbox{\hyperlink{structutil_1_1_function}{Function}}$<$ Return\+Type, T \texorpdfstring{$\ast$}{*} $>$\+::type function$>$ }\\using {\bfseries util\+::safe\+\_\+ptr\+\_\+v2} = \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\+\_\+ptr}}$<$T, \mbox{\hyperlink{structutil_1_1_destroy}{Destroy}}$<$T \texorpdfstring{$\ast$}{*}, Return\+Type, function$>$$>$
+\item 
+\Hypertarget{utility_8h_af5dc615f1dbc8a7d5ff5a01a40cc0c70}\label{utility_8h_af5dc615f1dbc8a7d5ff5a01a40cc0c70} 
+{\footnotesize template$<$class T, void(\texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*})(T \texorpdfstring{$\ast$}{*}) function$>$ }\\using {\bfseries util\+::dyn\+\_\+safe\+\_\+ptr} = safe\+\_\+ptr$<$T, dynamic$<$T, void, function$>$$>$
+\item 
+\Hypertarget{utility_8h_a0548ef846c5928453ba10c689c42a425}\label{utility_8h_a0548ef846c5928453ba10c689c42a425} 
+{\footnotesize template$<$class T, class Return\+Type, Return\+Type(\texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*})(T \texorpdfstring{$\ast$}{*}) function$>$ }\\using {\bfseries util\+::dyn\+\_\+safe\+\_\+ptr\+\_\+v2} = safe\+\_\+ptr$<$T, dynamic$<$T, Return\+Type, function$>$$>$
+\item 
+\Hypertarget{utility_8h_ae19083968d397d5239832c232fd3df34}\label{utility_8h_ae19083968d397d5239832c232fd3df34} 
+{\footnotesize template$<$class T$>$ }\\using {\bfseries util\+::c\+\_\+ptr} = safe\+\_\+ptr$<$T, c\+\_\+free$<$T$>$$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{utility_8h_addfd55c03039ca8158e80a71b451eecd}\label{utility_8h_addfd55c03039ca8158e80a71b451eecd} 
+{\footnotesize template$<$class... Ts$>$ }\\{\bfseries util\+::overloaded} (Ts...) -\/$>$ overloaded$<$ Ts... $>$
+\item 
+\Hypertarget{utility_8h_a38d16344f453be9eea3005a08a92a304}\label{utility_8h_a38d16344f453be9eea3005a08a92a304} 
+{\footnotesize template$<$class T$>$ }\\auto {\bfseries util\+::fail\+\_\+guard} (T \&\&f)
+\item 
+\Hypertarget{utility_8h_a3ed7679a00e8cd02a956d5c4adcf2855}\label{utility_8h_a3ed7679a00e8cd02a956d5c4adcf2855} 
+{\footnotesize template$<$class T$>$ }\\void {\bfseries util\+::append\+\_\+struct} (std\+::vector$<$ uint8\+\_\+t $>$ \&buf, const T \&\+\_\+struct)
+\item 
+\Hypertarget{utility_8h_adddf8238dfc3518ef566c2e0e2f60ce3}\label{utility_8h_adddf8238dfc3518ef566c2e0e2f60ce3} 
+{\footnotesize template$<$class T$>$ }\\\mbox{\hyperlink{classutil_1_1_hex}{Hex}}$<$ T $>$ {\bfseries util\+::hex} (const T \&elem, bool rev=false)
+\item 
+\Hypertarget{utility_8h_a754ece310f3b4b1c24f3902a8eb697f8}\label{utility_8h_a754ece310f3b4b1c24f3902a8eb697f8} 
+{\footnotesize template$<$typename T$>$ }\\std\+::string {\bfseries util\+::log\+\_\+hex} (const T \&value)
+\item 
+\Hypertarget{utility_8h_a0c690f9c92e8e9252b0b74bb51bf210a}\label{utility_8h_a0c690f9c92e8e9252b0b74bb51bf210a} 
+{\footnotesize template$<$class It$>$ }\\std\+::string {\bfseries util\+::hex\+\_\+vec} (It begin, It end, bool rev=false)
+\item 
+\Hypertarget{utility_8h_a32799049921eb52048edf81ad4699937}\label{utility_8h_a32799049921eb52048edf81ad4699937} 
+{\footnotesize template$<$class C$>$ }\\std\+::string {\bfseries util\+::hex\+\_\+vec} (C \&\&c, bool rev=false)
+\item 
+\Hypertarget{utility_8h_aa8163de57d21c52f8371dc825d53a5ac}\label{utility_8h_aa8163de57d21c52f8371dc825d53a5ac} 
+{\footnotesize template$<$class T$>$ }\\T {\bfseries util\+::from\+\_\+hex} (const std\+::string\+\_\+view \&hex, bool rev=false)
+\item 
+\Hypertarget{utility_8h_a85a537fb5ebd0d87ba2eab0a0738ab9c}\label{utility_8h_a85a537fb5ebd0d87ba2eab0a0738ab9c} 
+std\+::string {\bfseries util\+::from\+\_\+hex\+\_\+vec} (const std\+::string \&hex, bool rev=false)
+\item 
+\Hypertarget{utility_8h_a06ea80c68a355c78a3ea51255d176dea}\label{utility_8h_a06ea80c68a355c78a3ea51255d176dea} 
+{\footnotesize template$<$typename T$>$ }\\T {\bfseries util\+::get\+\_\+non\+\_\+string\+\_\+json\+\_\+value} (const nlohmann\+::json \&j, const std\+::string \&key, const T \&default\+\_\+value=T\{\})
+\item 
+\Hypertarget{utility_8h_a97d635b4ced0d7d65da95d7aba6ca90b}\label{utility_8h_a97d635b4ced0d7d65da95d7aba6ca90b} 
+{\footnotesize template$<$class T$>$ }\\auto {\bfseries util\+::enm} (const T \&val) -\/$>$ const std\+::underlying\+\_\+type\+\_\+t$<$ T $>$ \&
+\item 
+\Hypertarget{utility_8h_a457c87cd7e692662dd14e97f49b239d1}\label{utility_8h_a457c87cd7e692662dd14e97f49b239d1} 
+{\footnotesize template$<$class T$>$ }\\auto {\bfseries util\+::enm} (T \&val) -\/$>$ std\+::underlying\+\_\+type\+\_\+t$<$ T $>$ \&
+\item 
+\Hypertarget{utility_8h_a7654157de336a4eedae7579459c224ba}\label{utility_8h_a7654157de336a4eedae7579459c224ba} 
+std\+::int64\+\_\+t {\bfseries util\+::from\+\_\+chars} (const char \texorpdfstring{$\ast$}{*}begin, const char \texorpdfstring{$\ast$}{*}end)
+\item 
+\Hypertarget{utility_8h_a63b2b8f733cf06e48d42e7b16294a220}\label{utility_8h_a63b2b8f733cf06e48d42e7b16294a220} 
+std\+::int64\+\_\+t {\bfseries util\+::from\+\_\+view} (const std\+::string\+\_\+view \&number)
+\item 
+\Hypertarget{utility_8h_a32ceea7a497f2daa2d16292340cf5ad2}\label{utility_8h_a32ceea7a497f2daa2d16292340cf5ad2} 
+{\footnotesize template$<$class T1, class D1, class T2, class D2$>$ }\\bool {\bfseries util\+::operator==} (const \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\+\_\+ptr}}$<$ T1, D1 $>$ \&x, const \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\+\_\+ptr}}$<$ T2, D2 $>$ \&y)
+\item 
+\Hypertarget{utility_8h_a165b0cc8e21ee50b3dfe409c233f3d51}\label{utility_8h_a165b0cc8e21ee50b3dfe409c233f3d51} 
+{\footnotesize template$<$class T1, class D1, class T2, class D2$>$ }\\bool {\bfseries util\+::operator!=} (const \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\+\_\+ptr}}$<$ T1, D1 $>$ \&x, const \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\+\_\+ptr}}$<$ T2, D2 $>$ \&y)
+\item 
+\Hypertarget{utility_8h_ab5c47eace1e1e8c7700cbe1465cdf4df}\label{utility_8h_ab5c47eace1e1e8c7700cbe1465cdf4df} 
+{\footnotesize template$<$class T1, class D1, class T2, class D2$>$ }\\bool {\bfseries util\+::operator==} (const std\+::unique\+\_\+ptr$<$ T1, D1 $>$ \&x, const \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\+\_\+ptr}}$<$ T2, D2 $>$ \&y)
+\item 
+\Hypertarget{utility_8h_a01e5e7f7591ae23fe227f769e20ecea8}\label{utility_8h_a01e5e7f7591ae23fe227f769e20ecea8} 
+{\footnotesize template$<$class T1, class D1, class T2, class D2$>$ }\\bool {\bfseries util\+::operator!=} (const std\+::unique\+\_\+ptr$<$ T1, D1 $>$ \&x, const \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\+\_\+ptr}}$<$ T2, D2 $>$ \&y)
+\item 
+\Hypertarget{utility_8h_ab3f0a27e8f07b006416cf8827689370e}\label{utility_8h_ab3f0a27e8f07b006416cf8827689370e} 
+{\footnotesize template$<$class T1, class D1, class T2, class D2$>$ }\\bool {\bfseries util\+::operator==} (const \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\+\_\+ptr}}$<$ T1, D1 $>$ \&x, const std\+::unique\+\_\+ptr$<$ T1, D1 $>$ \&y)
+\item 
+\Hypertarget{utility_8h_a3cdaa90c28b313abfa4f48102412b6f2}\label{utility_8h_a3cdaa90c28b313abfa4f48102412b6f2} 
+{\footnotesize template$<$class T1, class D1, class T2, class D2$>$ }\\bool {\bfseries util\+::operator!=} (const \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\+\_\+ptr}}$<$ T1, D1 $>$ \&x, const std\+::unique\+\_\+ptr$<$ T1, D1 $>$ \&y)
+\item 
+\Hypertarget{utility_8h_acdd963623ac3d28c7dff9da49b730da8}\label{utility_8h_acdd963623ac3d28c7dff9da49b730da8} 
+{\footnotesize template$<$class T, class D$>$ }\\bool {\bfseries util\+::operator==} (const \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\+\_\+ptr}}$<$ T, D $>$ \&x, std\+::nullptr\+\_\+t)
+\item 
+\Hypertarget{utility_8h_a4ca75f274c3bb24dfa0548698ed3cb76}\label{utility_8h_a4ca75f274c3bb24dfa0548698ed3cb76} 
+{\footnotesize template$<$class T, class D$>$ }\\bool {\bfseries util\+::operator!=} (const \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\+\_\+ptr}}$<$ T, D $>$ \&x, std\+::nullptr\+\_\+t)
+\item 
+\Hypertarget{utility_8h_aa230131d6cc42ed5aaeffe766167cb35}\label{utility_8h_aa230131d6cc42ed5aaeffe766167cb35} 
+{\footnotesize template$<$class T, class D$>$ }\\bool {\bfseries util\+::operator==} (std\+::nullptr\+\_\+t, const \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\+\_\+ptr}}$<$ T, D $>$ \&y)
+\item 
+\Hypertarget{utility_8h_a305a22349a3ce73b299bab0d29d87d99}\label{utility_8h_a305a22349a3ce73b299bab0d29d87d99} 
+{\footnotesize template$<$class T, class D$>$ }\\bool {\bfseries util\+::operator!=} (std\+::nullptr\+\_\+t, const \mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\+\_\+ptr}}$<$ T, D $>$ \&y)
+\item 
+\Hypertarget{utility_8h_ada437a19801e6523148053d59f651ab7}\label{utility_8h_ada437a19801e6523148053d59f651ab7} 
+{\footnotesize template$<$class P, class T$>$ }\\shared\+\_\+t$<$ P $>$ {\bfseries util\+::make\+\_\+shared} (T \texorpdfstring{$\ast$}{*}pointer)
+\item 
+\Hypertarget{utility_8h_a916685b4a70c31c272d7e0d96b68013b}\label{utility_8h_a916685b4a70c31c272d7e0d96b68013b} 
+{\footnotesize template$<$class T$>$ }\\T {\bfseries util\+::either} (std\+::optional$<$ T $>$ \&\&l, T \&\&r)
+\item 
+\Hypertarget{utility_8h_a213c0f50cf7b99ac311a64e7de58d50a}\label{utility_8h_a213c0f50cf7b99ac311a64e7de58d50a} 
+{\footnotesize template$<$class T$>$ }\\void {\bfseries util\+::c\+\_\+free} (T \texorpdfstring{$\ast$}{*}p)
+\item 
+\Hypertarget{utility_8h_aac41e0081e78c44d0b1aabbaa08f70a1}\label{utility_8h_aac41e0081e78c44d0b1aabbaa08f70a1} 
+{\footnotesize template$<$class T, class Return\+Type, Return\+Type(\texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*})(T \texorpdfstring{$\ast$}{*}) function$>$ }\\void {\bfseries util\+::dynamic} (T \texorpdfstring{$\ast$}{*}p)
+\item 
+\Hypertarget{utility_8h_ae2d54aed0c91b95c034d80d28657c55b}\label{utility_8h_ae2d54aed0c91b95c034d80d28657c55b} 
+{\footnotesize template$<$class It$>$ }\\std\+::string\+\_\+view {\bfseries util\+::view} (It begin, It end)
+\item 
+\Hypertarget{utility_8h_a9a19ad776f8af999e6f2d51154eac8ec}\label{utility_8h_a9a19ad776f8af999e6f2d51154eac8ec} 
+{\footnotesize template$<$class T$>$ }\\std\+::string\+\_\+view {\bfseries util\+::view} (const T \&data)
+\item 
+\Hypertarget{utility_8h_a771fb4c8dfccb1fe09991fc9e09d5213}\label{utility_8h_a771fb4c8dfccb1fe09991fc9e09d5213} 
+{\footnotesize template$<$class T$>$ }\\auto {\bfseries util\+::endian\+::little} (T x)
+\item 
+\Hypertarget{utility_8h_a467fd9b9ea9a9350d7d440a433bbacd7}\label{utility_8h_a467fd9b9ea9a9350d7d440a433bbacd7} 
+{\footnotesize template$<$class T$>$ }\\auto {\bfseries util\+::endian\+::big} (T x)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$class T$>$ }\\constexpr bool \mbox{\hyperlink{utility_8h_a9d949684a0760be716704201fa0de6b7}{util\+::is\+\_\+pointer\+\_\+v}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Declarations for utility functions. 
+
+
+
+\label{doc-define-members}
+\Hypertarget{utility_8h_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{utility_8h_a3e1d1c806d4ae4fcd71fd22e23863e9e}\index{utility.h@{utility.h}!KITTY\_DECL\_CONSTR@{KITTY\_DECL\_CONSTR}}
+\index{KITTY\_DECL\_CONSTR@{KITTY\_DECL\_CONSTR}!utility.h@{utility.h}}
+\doxysubsubsection{\texorpdfstring{KITTY\_DECL\_CONSTR}{KITTY\_DECL\_CONSTR}}
+{\footnotesize\ttfamily \label{utility_8h_a3e1d1c806d4ae4fcd71fd22e23863e9e} 
+\#define KITTY\+\_\+\+DECL\+\_\+\+CONSTR(\begin{DoxyParamCaption}\item[{}]{x}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ x(x\ \&\&)\ noexcept\ =\ default;\ \(\backslash\)}
+\DoxyCodeLine{\ \ x\ \&operator=(x\ \&\&)\ noexcept\ =\ default;\ \(\backslash\)}
+\DoxyCodeLine{\ \ x();}
+
+\end{DoxyCode}
+\Hypertarget{utility_8h_a8d455448d1a500de1f9469ba17cddd97}\index{utility.h@{utility.h}!KITTY\_DEFAULT\_CONSTR@{KITTY\_DEFAULT\_CONSTR}}
+\index{KITTY\_DEFAULT\_CONSTR@{KITTY\_DEFAULT\_CONSTR}!utility.h@{utility.h}}
+\doxysubsubsection{\texorpdfstring{KITTY\_DEFAULT\_CONSTR}{KITTY\_DEFAULT\_CONSTR}}
+{\footnotesize\ttfamily \label{utility_8h_a8d455448d1a500de1f9469ba17cddd97} 
+\#define KITTY\+\_\+\+DEFAULT\+\_\+\+CONSTR(\begin{DoxyParamCaption}\item[{}]{x}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ KITTY\_DEFAULT\_CONSTR\_MOVE(x)\ \(\backslash\)}
+\DoxyCodeLine{\ \ x(\textcolor{keyword}{const}\ x\ \&)\ \textcolor{keyword}{noexcept}\ =\ \textcolor{keywordflow}{default};\ \(\backslash\)}
+\DoxyCodeLine{\ \ x\ \&operator=(\textcolor{keyword}{const}\ x\ \&)\ =\ \textcolor{keywordflow}{default};}
+
+\end{DoxyCode}
+\Hypertarget{utility_8h_a66233fcfcc7474a23138ba1f50beaba3}\index{utility.h@{utility.h}!KITTY\_DEFAULT\_CONSTR\_MOVE@{KITTY\_DEFAULT\_CONSTR\_MOVE}}
+\index{KITTY\_DEFAULT\_CONSTR\_MOVE@{KITTY\_DEFAULT\_CONSTR\_MOVE}!utility.h@{utility.h}}
+\doxysubsubsection{\texorpdfstring{KITTY\_DEFAULT\_CONSTR\_MOVE}{KITTY\_DEFAULT\_CONSTR\_MOVE}}
+{\footnotesize\ttfamily \label{utility_8h_a66233fcfcc7474a23138ba1f50beaba3} 
+\#define KITTY\+\_\+\+DEFAULT\+\_\+\+CONSTR\+\_\+\+MOVE(\begin{DoxyParamCaption}\item[{}]{x}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ x(x\ \&\&)\ noexcept\ =\ default;\ \(\backslash\)}
+\DoxyCodeLine{\ \ x\ \&operator=(x\ \&\&)\ noexcept\ =\ default;}
+
+\end{DoxyCode}
+\Hypertarget{utility_8h_af953f5495bd2edf6ad754fc2f99bf6fb}\index{utility.h@{utility.h}!KITTY\_DEFAULT\_CONSTR\_MOVE\_THROW@{KITTY\_DEFAULT\_CONSTR\_MOVE\_THROW}}
+\index{KITTY\_DEFAULT\_CONSTR\_MOVE\_THROW@{KITTY\_DEFAULT\_CONSTR\_MOVE\_THROW}!utility.h@{utility.h}}
+\doxysubsubsection{\texorpdfstring{KITTY\_DEFAULT\_CONSTR\_MOVE\_THROW}{KITTY\_DEFAULT\_CONSTR\_MOVE\_THROW}}
+{\footnotesize\ttfamily \label{utility_8h_af953f5495bd2edf6ad754fc2f99bf6fb} 
+\#define KITTY\+\_\+\+DEFAULT\+\_\+\+CONSTR\+\_\+\+MOVE\+\_\+\+THROW(\begin{DoxyParamCaption}\item[{}]{x}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ x(x\ \&\&)\ =\ \textcolor{keywordflow}{default};\ \(\backslash\)}
+\DoxyCodeLine{\ \ x\ \&operator=(x\ \&\&)\ =\ \textcolor{keywordflow}{default};\ \(\backslash\)}
+\DoxyCodeLine{\ \ x()\ =\ \textcolor{keywordflow}{default};}
+
+\end{DoxyCode}
+\Hypertarget{utility_8h_a58635bb32230035d7c3014460fee150a}\index{utility.h@{utility.h}!KITTY\_WHILE\_LOOP@{KITTY\_WHILE\_LOOP}}
+\index{KITTY\_WHILE\_LOOP@{KITTY\_WHILE\_LOOP}!utility.h@{utility.h}}
+\doxysubsubsection{\texorpdfstring{KITTY\_WHILE\_LOOP}{KITTY\_WHILE\_LOOP}}
+{\footnotesize\ttfamily \label{utility_8h_a58635bb32230035d7c3014460fee150a} 
+\#define KITTY\+\_\+\+WHILE\+\_\+\+LOOP(\begin{DoxyParamCaption}\item[{}]{x}{, }\item[{}]{y}{, }\item[{}]{z}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \{\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ x;\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ while\ (y)\ z\ \(\backslash\)}
+\DoxyCodeLine{\ \ \}}
+
+\end{DoxyCode}
+\Hypertarget{utility_8h_ab8277a72c77b2bbe1841dda7a84035cc}\index{utility.h@{utility.h}!TUPLE\_2D@{TUPLE\_2D}}
+\index{TUPLE\_2D@{TUPLE\_2D}!utility.h@{utility.h}}
+\doxysubsubsection{\texorpdfstring{TUPLE\_2D}{TUPLE\_2D}}
+{\footnotesize\ttfamily \label{utility_8h_ab8277a72c77b2bbe1841dda7a84035cc} 
+\#define TUPLE\+\_\+2D(\begin{DoxyParamCaption}\item[{}]{a}{, }\item[{}]{b}{, }\item[{}]{expr}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \textcolor{keyword}{decltype}(expr)\ a\#\#\_\#\#b\ =\ expr;\ \(\backslash\)}
+\DoxyCodeLine{\ \ \textcolor{keyword}{auto}\ \&a\ =\ std::get<0>(a\#\#\_\#\#b);\ \(\backslash\)}
+\DoxyCodeLine{\ \ \textcolor{keyword}{auto}\ \&b\ =\ std::get<1>(a\#\#\_\#\#b)}
+
+\end{DoxyCode}
+\Hypertarget{utility_8h_a0d4bb3c508de705c51b2ddf573b9596b}\index{utility.h@{utility.h}!TUPLE\_2D\_REF@{TUPLE\_2D\_REF}}
+\index{TUPLE\_2D\_REF@{TUPLE\_2D\_REF}!utility.h@{utility.h}}
+\doxysubsubsection{\texorpdfstring{TUPLE\_2D\_REF}{TUPLE\_2D\_REF}}
+{\footnotesize\ttfamily \label{utility_8h_a0d4bb3c508de705c51b2ddf573b9596b} 
+\#define TUPLE\+\_\+2\+D\+\_\+\+REF(\begin{DoxyParamCaption}\item[{}]{a}{, }\item[{}]{b}{, }\item[{}]{expr}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \textcolor{keyword}{auto}\ \&a\#\#\_\#\#b\ =\ expr;\ \(\backslash\)}
+\DoxyCodeLine{\ \ \textcolor{keyword}{auto}\ \&a\ =\ std::get<0>(a\#\#\_\#\#b);\ \(\backslash\)}
+\DoxyCodeLine{\ \ \textcolor{keyword}{auto}\ \&b\ =\ std::get<1>(a\#\#\_\#\#b)}
+
+\end{DoxyCode}
+\Hypertarget{utility_8h_ad52d8286a156b4cedd47344c9efefac1}\index{utility.h@{utility.h}!TUPLE\_3D@{TUPLE\_3D}}
+\index{TUPLE\_3D@{TUPLE\_3D}!utility.h@{utility.h}}
+\doxysubsubsection{\texorpdfstring{TUPLE\_3D}{TUPLE\_3D}}
+{\footnotesize\ttfamily \label{utility_8h_ad52d8286a156b4cedd47344c9efefac1} 
+\#define TUPLE\+\_\+3D(\begin{DoxyParamCaption}\item[{}]{a}{, }\item[{}]{b}{, }\item[{}]{c}{, }\item[{}]{expr}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \textcolor{keyword}{decltype}(expr)\ a\#\#\_\#\#b\#\#\_\#\#c\ =\ expr;\ \(\backslash\)}
+\DoxyCodeLine{\ \ \textcolor{keyword}{auto}\ \&a\ =\ std::get<0>(a\#\#\_\#\#b\#\#\_\#\#c);\ \(\backslash\)}
+\DoxyCodeLine{\ \ \textcolor{keyword}{auto}\ \&b\ =\ std::get<1>(a\#\#\_\#\#b\#\#\_\#\#c);\ \(\backslash\)}
+\DoxyCodeLine{\ \ \textcolor{keyword}{auto}\ \&c\ =\ std::get<2>(a\#\#\_\#\#b\#\#\_\#\#c)}
+
+\end{DoxyCode}
+\Hypertarget{utility_8h_a9c6e6cf34a9faec1596a6a9423521ad2}\index{utility.h@{utility.h}!TUPLE\_3D\_REF@{TUPLE\_3D\_REF}}
+\index{TUPLE\_3D\_REF@{TUPLE\_3D\_REF}!utility.h@{utility.h}}
+\doxysubsubsection{\texorpdfstring{TUPLE\_3D\_REF}{TUPLE\_3D\_REF}}
+{\footnotesize\ttfamily \label{utility_8h_a9c6e6cf34a9faec1596a6a9423521ad2} 
+\#define TUPLE\+\_\+3\+D\+\_\+\+REF(\begin{DoxyParamCaption}\item[{}]{a}{, }\item[{}]{b}{, }\item[{}]{c}{, }\item[{}]{expr}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \textcolor{keyword}{auto}\ \&a\#\#\_\#\#b\#\#\_\#\#c\ =\ expr;\ \(\backslash\)}
+\DoxyCodeLine{\ \ \textcolor{keyword}{auto}\ \&a\ =\ std::get<0>(a\#\#\_\#\#b\#\#\_\#\#c);\ \(\backslash\)}
+\DoxyCodeLine{\ \ \textcolor{keyword}{auto}\ \&b\ =\ std::get<1>(a\#\#\_\#\#b\#\#\_\#\#c);\ \(\backslash\)}
+\DoxyCodeLine{\ \ \textcolor{keyword}{auto}\ \&c\ =\ std::get<2>(a\#\#\_\#\#b\#\#\_\#\#c)}
+
+\end{DoxyCode}
+\Hypertarget{utility_8h_a46ce4c783c4fe56865e4c95aad270479}\index{utility.h@{utility.h}!TUPLE\_EL@{TUPLE\_EL}}
+\index{TUPLE\_EL@{TUPLE\_EL}!utility.h@{utility.h}}
+\doxysubsubsection{\texorpdfstring{TUPLE\_EL}{TUPLE\_EL}}
+{\footnotesize\ttfamily \label{utility_8h_a46ce4c783c4fe56865e4c95aad270479} 
+\#define TUPLE\+\_\+\+EL(\begin{DoxyParamCaption}\item[{}]{a}{, }\item[{}]{b}{, }\item[{}]{expr}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \textcolor{keyword}{decltype}(expr)\ a\#\#\_\ =\ expr;\ \(\backslash\)}
+\DoxyCodeLine{\ \ \textcolor{keyword}{auto}\ \&a\ =\ std::get<b>(a\#\#\_)}
+
+\end{DoxyCode}
+\Hypertarget{utility_8h_a838ada6fb23c49f50b130a81592dca50}\index{utility.h@{utility.h}!TUPLE\_EL\_REF@{TUPLE\_EL\_REF}}
+\index{TUPLE\_EL\_REF@{TUPLE\_EL\_REF}!utility.h@{utility.h}}
+\doxysubsubsection{\texorpdfstring{TUPLE\_EL\_REF}{TUPLE\_EL\_REF}}
+{\footnotesize\ttfamily \label{utility_8h_a838ada6fb23c49f50b130a81592dca50} 
+\#define TUPLE\+\_\+\+EL\+\_\+\+REF(\begin{DoxyParamCaption}\item[{}]{a}{, }\item[{}]{b}{, }\item[{}]{expr}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \textcolor{keyword}{auto}\ \&a\ =\ std::get<b>(expr)}
+
+\end{DoxyCode}
+
+
+\label{doc-typedef-members}
+\Hypertarget{utility_8h_doc-typedef-members}
+\doxysubsection{Typedef Documentation}
+\Hypertarget{utility_8h_a66b2cb91837698c0f69297f557a6137a}\index{utility.h@{utility.h}!optional\_t@{optional\_t}}
+\index{optional\_t@{optional\_t}!utility.h@{utility.h}}
+\doxysubsubsection{\texorpdfstring{optional\_t}{optional\_t}}
+{\footnotesize\ttfamily \label{utility_8h_a66b2cb91837698c0f69297f557a6137a} 
+template$<$class T$>$ \\
+using util\+::optional\+\_\+t}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ either\_t<}
+\DoxyCodeLine{\ \ \ \ (std::is\_same\_v<T,\ bool>\ ||\ is\_pointer\_v<T>),}
+\DoxyCodeLine{\ \ \ \ T,}
+\DoxyCodeLine{\ \ \ \ std::optional<T>>}
+
+\end{DoxyCode}
+
+
+\label{doc-var-members}
+\Hypertarget{utility_8h_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{utility_8h_a9d949684a0760be716704201fa0de6b7}\index{utility.h@{utility.h}!is\_pointer\_v@{is\_pointer\_v}}
+\index{is\_pointer\_v@{is\_pointer\_v}!utility.h@{utility.h}}
+\doxysubsubsection{\texorpdfstring{is\_pointer\_v}{is\_pointer\_v}}
+{\footnotesize\ttfamily \label{utility_8h_a9d949684a0760be716704201fa0de6b7} 
+template$<$class T$>$ \\
+bool util\+::is\+\_\+pointer\+\_\+v\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ instantiation\_of\_v<std::unique\_ptr,\ T>\ ||}
+\DoxyCodeLine{\ \ \ \ instantiation\_of\_v<std::shared\_ptr,\ T>\ ||}
+\DoxyCodeLine{\ \ \ \ instantiation\_of\_v<uniq\_ptr,\ T>\ ||}
+\DoxyCodeLine{\ \ \ \ std::is\_pointer\_v<T>}
+
+\end{DoxyCode}

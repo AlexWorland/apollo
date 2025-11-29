@@ -1,0 +1,75 @@
+\doxysection{video\+::avcodec\+\_\+software\+\_\+encode\+\_\+device\+\_\+t Class Reference}
+\hypertarget{classvideo_1_1avcodec__software__encode__device__t}{}\label{classvideo_1_1avcodec__software__encode__device__t}\index{video::avcodec\_software\_encode\_device\_t@{video::avcodec\_software\_encode\_device\_t}}
+
+
+Software video encoding device using libavcodec.  
+
+
+Inheritance diagram for video\+::avcodec\+\_\+software\+\_\+encode\+\_\+device\+\_\+t\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classvideo_1_1avcodec__software__encode__device__t}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classvideo_1_1avcodec__software__encode__device__t_a744f5013f7e5a4d667de9813b09a850f}\label{classvideo_1_1avcodec__software__encode__device__t_a744f5013f7e5a4d667de9813b09a850f} 
+int {\bfseries convert} (platf\+::img\+\_\+t \&img) override
+\item 
+\Hypertarget{classvideo_1_1avcodec__software__encode__device__t_a6f27b4810bd4deba2ab7e297a230621c}\label{classvideo_1_1avcodec__software__encode__device__t_a6f27b4810bd4deba2ab7e297a230621c} 
+int {\bfseries set\+\_\+frame} (AVFrame \texorpdfstring{$\ast$}{*}frame, AVBuffer\+Ref \texorpdfstring{$\ast$}{*}hw\+\_\+frames\+\_\+ctx) override
+\item 
+\Hypertarget{classvideo_1_1avcodec__software__encode__device__t_aad15393406230001965140fddcf48af5}\label{classvideo_1_1avcodec__software__encode__device__t_aad15393406230001965140fddcf48af5} 
+void {\bfseries apply\+\_\+colorspace} () override
+\item 
+void \mbox{\hyperlink{classvideo_1_1avcodec__software__encode__device__t_acdc5388558c6eea1b09e76e040523292}{prefill}} ()
+\item 
+\Hypertarget{classvideo_1_1avcodec__software__encode__device__t_a9b2eae3688f20c5232adeaee3c2bafff}\label{classvideo_1_1avcodec__software__encode__device__t_a9b2eae3688f20c5232adeaee3c2bafff} 
+int {\bfseries init} (int in\+\_\+width, int in\+\_\+height, AVFrame \texorpdfstring{$\ast$}{*}frame, AVPixel\+Format format, bool hardware)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classvideo_1_1avcodec__software__encode__device__t_af10524f9410d55b2aacc6336eb719957}\label{classvideo_1_1avcodec__software__encode__device__t_af10524f9410d55b2aacc6336eb719957} 
+avcodec\+\_\+frame\+\_\+t {\bfseries hw\+\_\+frame}
+\item 
+\Hypertarget{classvideo_1_1avcodec__software__encode__device__t_abe2e8bf46a1e26d5749dbadaf77b4747}\label{classvideo_1_1avcodec__software__encode__device__t_abe2e8bf46a1e26d5749dbadaf77b4747} 
+avcodec\+\_\+frame\+\_\+t {\bfseries sw\+\_\+frame}
+\item 
+\Hypertarget{classvideo_1_1avcodec__software__encode__device__t_ac2590e7f1c63f0d75212ca25de104c36}\label{classvideo_1_1avcodec__software__encode__device__t_ac2590e7f1c63f0d75212ca25de104c36} 
+avcodec\+\_\+frame\+\_\+t {\bfseries sws\+\_\+input\+\_\+frame}
+\item 
+\Hypertarget{classvideo_1_1avcodec__software__encode__device__t_a1a8000935dcf3eff04543686ace195f9}\label{classvideo_1_1avcodec__software__encode__device__t_a1a8000935dcf3eff04543686ace195f9} 
+avcodec\+\_\+frame\+\_\+t {\bfseries sws\+\_\+output\+\_\+frame}
+\item 
+\Hypertarget{classvideo_1_1avcodec__software__encode__device__t_a91b9ab435afd8828d676073b7d17aded}\label{classvideo_1_1avcodec__software__encode__device__t_a91b9ab435afd8828d676073b7d17aded} 
+sws\+\_\+t {\bfseries sws}
+\item 
+\Hypertarget{classvideo_1_1avcodec__software__encode__device__t_a7aa55983cbb2e91c7a503b35bbbfa4fd}\label{classvideo_1_1avcodec__software__encode__device__t_a7aa55983cbb2e91c7a503b35bbbfa4fd} 
+int {\bfseries offsetW}
+\item 
+\Hypertarget{classvideo_1_1avcodec__software__encode__device__t_aef21ebc9e0184d7f41f0f9dfd813f839}\label{classvideo_1_1avcodec__software__encode__device__t_aef21ebc9e0184d7f41f0f9dfd813f839} 
+int {\bfseries offsetH}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Software video encoding device using libavcodec. 
+
+Implements software-\/based video encoding using CPU-\/based libavcodec encoders. 
+
+\label{doc-func-members}
+\Hypertarget{classvideo_1_1avcodec__software__encode__device__t_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classvideo_1_1avcodec__software__encode__device__t_acdc5388558c6eea1b09e76e040523292}\index{video::avcodec\_software\_encode\_device\_t@{video::avcodec\_software\_encode\_device\_t}!prefill@{prefill}}
+\index{prefill@{prefill}!video::avcodec\_software\_encode\_device\_t@{video::avcodec\_software\_encode\_device\_t}}
+\doxysubsubsection{\texorpdfstring{prefill()}{prefill()}}
+{\footnotesize\ttfamily \label{classvideo_1_1avcodec__software__encode__device__t_acdc5388558c6eea1b09e76e040523292} 
+void video\+::avcodec\+\_\+software\+\_\+encode\+\_\+device\+\_\+t\+::prefill (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+When preserving aspect ratio, ensure that padding is black 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{video_8cpp}{video.\+cpp}}\end{DoxyCompactItemize}

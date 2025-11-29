@@ -1,0 +1,76 @@
+\doxysection{video\+::packet\+\_\+raw\+\_\+t Struct Reference}
+\hypertarget{structvideo_1_1packet__raw__t}{}\label{structvideo_1_1packet__raw__t}\index{video::packet\_raw\_t@{video::packet\_raw\_t}}
+
+
+Base class for raw video packet data.  
+
+
+
+
+{\ttfamily \#include $<$video.\+h$>$}
+
+Inheritance diagram for video\+::packet\+\_\+raw\+\_\+t\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structvideo_1_1packet__raw__t}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structvideo_1_1packet__raw__t_1_1replace__t}{replace\+\_\+t}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structvideo_1_1packet__raw__t_a644cc6175da6981d63872b6f7a77f7a7}\label{structvideo_1_1packet__raw__t_a644cc6175da6981d63872b6f7a77f7a7} 
+virtual bool {\bfseries is\+\_\+idr} ()=0
+\item 
+\Hypertarget{structvideo_1_1packet__raw__t_ad941e094278ab421144885f7b87a0c3d}\label{structvideo_1_1packet__raw__t_ad941e094278ab421144885f7b87a0c3d} 
+virtual int64\+\_\+t {\bfseries frame\+\_\+index} ()=0
+\item 
+\Hypertarget{structvideo_1_1packet__raw__t_ae739372515d3f3706f884e1019df9777}\label{structvideo_1_1packet__raw__t_ae739372515d3f3706f884e1019df9777} 
+virtual uint8\+\_\+t \texorpdfstring{$\ast$}{*} {\bfseries data} ()=0
+\item 
+\Hypertarget{structvideo_1_1packet__raw__t_a0750f93d9dcada5c4cf286572504668f}\label{structvideo_1_1packet__raw__t_a0750f93d9dcada5c4cf286572504668f} 
+virtual size\+\_\+t {\bfseries data\+\_\+size} ()=0
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ \mbox{\hyperlink{structvideo_1_1packet__raw__t_1_1replace__t}{replace\+\_\+t}} $>$ \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structvideo_1_1packet__raw__t_a7d5da4bc03f285b8da6e5a3c6a2a1450}{replacements}} = nullptr
+\begin{DoxyCompactList}\small\item\em Replacement operations for packet data. \end{DoxyCompactList}\item 
+\Hypertarget{structvideo_1_1packet__raw__t_a96ba038a0c3a8a8a1fdcc627eefa95da}\label{structvideo_1_1packet__raw__t_a96ba038a0c3a8a8a1fdcc627eefa95da} 
+void \texorpdfstring{$\ast$}{*} {\bfseries channel\+\_\+data} = nullptr
+\item 
+\Hypertarget{structvideo_1_1packet__raw__t_adacf6989c2c736c83e781dd49b0e92e9}\label{structvideo_1_1packet__raw__t_adacf6989c2c736c83e781dd49b0e92e9} 
+bool {\bfseries after\+\_\+ref\+\_\+frame\+\_\+invalidation} = false
+\item 
+\Hypertarget{structvideo_1_1packet__raw__t_af9c2712fc958a07f2e061cf852b8e109}\label{structvideo_1_1packet__raw__t_af9c2712fc958a07f2e061cf852b8e109} 
+std\+::optional$<$ std\+::chrono\+::steady\+\_\+clock\+::time\+\_\+point $>$ {\bfseries frame\+\_\+timestamp}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Base class for raw video packet data. 
+
+Provides the interface for accessing encoded video packet data, including frame type detection, frame indexing, and data access. 
+
+\label{doc-variable-members}
+\Hypertarget{structvideo_1_1packet__raw__t_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structvideo_1_1packet__raw__t_a7d5da4bc03f285b8da6e5a3c6a2a1450}\index{video::packet\_raw\_t@{video::packet\_raw\_t}!replacements@{replacements}}
+\index{replacements@{replacements}!video::packet\_raw\_t@{video::packet\_raw\_t}}
+\doxysubsubsection{\texorpdfstring{replacements}{replacements}}
+{\footnotesize\ttfamily \label{structvideo_1_1packet__raw__t_a7d5da4bc03f285b8da6e5a3c6a2a1450} 
+std\+::vector$<$\mbox{\hyperlink{structvideo_1_1packet__raw__t_1_1replace__t}{replace\+\_\+t}}$>$\texorpdfstring{$\ast$}{*} video\+::packet\+\_\+raw\+\_\+t\+::replacements = nullptr}
+
+
+
+Replacement operations for packet data. 
+
+Used to replace specific byte sequences in the packet data (e.\+g., for SPS/\+PPS injection or header modifications). 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{video_8h}{video.\+h}}\end{DoxyCompactItemize}

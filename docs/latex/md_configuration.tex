@@ -1,0 +1,2100 @@
+\chapter{Configuration }
+\hypertarget{md_configuration}{}\label{md_configuration}\index{Configuration@{Configuration}}
+\label{md_configuration_autotoc_md100}%
+\Hypertarget{md_configuration_autotoc_md100}%
+
+
+@admonition\{ Host authority \texorpdfstring{$\vert$}{|}  \}
+
+Sunshine will work with the default settings for most users. In some cases you may want to configure Sunshine further.
+
+The default location for the configuration file is listed below. You can use another location if you choose, by passing in the full configuration file path as the first argument when you start Sunshine.
+
+{\bfseries{Example}} 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sunshine\ \string~/sunshine\_config.conf}
+
+\end{DoxyCode}
+
+
+The default location of the {\ttfamily apps.\+json} is the same as the configuration file. You can use a custom location by modifying the configuration file.
+
+{\bfseries{Default Config Directory}}
+
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}OS  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Location  \\
+Docker  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{/config}
+
+\end{DoxyCode}
+  \\
+Linux  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\string~/.config/sunshine}
+
+\end{DoxyCode}
+  \\
+mac\+OS  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\string~/.config/sunshine}
+
+\end{DoxyCode}
+  \\
+Windows  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\%ProgramFiles\%\(\backslash\)\(\backslash\)Sunshine\(\backslash\)\(\backslash\)config}
+
+\end{DoxyCode}
+  \\
+\end{DoxyTable}
+
+
+Although it is recommended to use the configuration UI, it is possible manually configure Sunshine by editing the {\ttfamily conf} file in a text editor. Use the examples as reference.\hypertarget{md_configuration_autotoc_md101}{}\doxysection{\texorpdfstring{General}{General}}\label{md_configuration_autotoc_md101}
+\hypertarget{md_configuration_autotoc_md102}{}\doxysubsection{\texorpdfstring{locale}{locale}}\label{md_configuration_autotoc_md102}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The locale used for Sunshine\textquotesingle{}s user interface. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{en}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{locale\ =\ en}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=20]{}Choices&bg&Bulgarian\\
+&cs&Czech\\
+&de&German\\
+&en&English\\
+&en\+\_\+\+GB&English (UK)\\
+&en\+\_\+\+US&English (United States)\\
+&es&Spanish\\
+&fr&French\\
+&it&Italian\\
+&ja&Japanese\\
+&ko&Korean\\
+&pl&Polish\\
+&pt&Portuguese\\
+&pt\+\_\+\+BR&Portuguese (Brazilian)\\
+&ru&Russian\\
+&sv&Swedish\\
+&tr&Turkish\\
+&uk&Ukranian\\
+&zh&Chinese (Simplified)\\
+&zh\+\_\+\+TW&Chinese (Traditional)\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md103}{}\doxysubsection{\texorpdfstring{sunshine\+\_\+name}{sunshine\+\_\+name}}\label{md_configuration_autotoc_md103}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The name displayed by Moonlight. &\\
+Default&\SetCell[c=2]{}PC hostname&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sunshine\_name\ =\ Sunshine}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md104}{}\doxysubsection{\texorpdfstring{min\+\_\+log\+\_\+level}{min\+\_\+log\+\_\+level}}\label{md_configuration_autotoc_md104}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The minimum log level printed to standard out. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{info}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{min\_log\_level\ =\ info}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=7]{}Choices&verbose&All logging message. \begin{DoxyAttention}{Attention}
+\{This may negatively affect streaming performance.\}
+\end{DoxyAttention}
+\\
+&debug&Debug log messages and higher. \begin{DoxyAttention}{Attention}
+\{This may negatively affect streaming performance.\}
+\end{DoxyAttention}
+\\
+&info&Informational log messages and higher.\\
+&warning&Warning log messages and higher.\\
+&error&Error log messages and higher.\\
+&fatal&Only fatal log messages.\\
+&none&No log messages.\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md105}{}\doxysubsection{\texorpdfstring{global\+\_\+prep\+\_\+cmd}{global\+\_\+prep\+\_\+cmd}}\label{md_configuration_autotoc_md105}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}A list of commands to be run before/after all applications. If any of the prep-\/commands fail, starting the application is aborted. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{[]}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{global\_prep\_cmd\ =\ [\{"{}do"{}:"{}nircmd.exe\ setdisplay\ 1280\ 720\ 32\ 144"{},"{}elevated"{}:true,"{}undo"{}:"{}nircmd.exe\ setdisplay\ 2560\ 1440\ 32\ 144"{}\}]}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md106}{}\doxysubsection{\texorpdfstring{notify\+\_\+pre\+\_\+releases}{notify\+\_\+pre\+\_\+releases}}\label{md_configuration_autotoc_md106}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Whether to be notified of new pre-\/release versions of Sunshine. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{disabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{notify\_pre\_releases\ =\ disabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md107}{}\doxysubsection{\texorpdfstring{system\+\_\+tray}{system\+\_\+tray}}\label{md_configuration_autotoc_md107}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Show icon in system tray and display desktop notifications &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{enabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{system\_tray\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md108}{}\doxysection{\texorpdfstring{Input}{Input}}\label{md_configuration_autotoc_md108}
+\hypertarget{md_configuration_autotoc_md109}{}\doxysubsection{\texorpdfstring{controller}{controller}}\label{md_configuration_autotoc_md109}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Whether to allow controller input from the client. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{enabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{controller\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md110}{}\doxysubsection{\texorpdfstring{gamepad}{gamepad}}\label{md_configuration_autotoc_md110}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The type of gamepad to emulate on the host. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{auto}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{gamepad\ =\ auto}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=6]{}Choices&ds4&Dual\+Shock 4 controller (PS4) \begin{DoxyNote}{Note}
+\{This option applies to Windows only.\}
+\end{DoxyNote}
+\\
+&ds5&Dual\+Shock 5 controller (PS5) \begin{DoxyNote}{Note}
+\{This option applies to Linux only.\}
+\end{DoxyNote}
+\\
+&switch&Switch Pro controller \begin{DoxyNote}{Note}
+\{This option applies to Linux only.\}
+\end{DoxyNote}
+\\
+&x360&Xbox 360 controller \begin{DoxyNote}{Note}
+\{This option applies to Windows only.\}
+\end{DoxyNote}
+\\
+&xone&Xbox One controller \begin{DoxyNote}{Note}
+\{This option applies to Linux only.\}
+\end{DoxyNote}
+\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md111}{}\doxysubsection{\texorpdfstring{ds4\+\_\+back\+\_\+as\+\_\+touchpad\+\_\+click}{ds4\+\_\+back\+\_\+as\+\_\+touchpad\+\_\+click}}\label{md_configuration_autotoc_md111}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Allow Select/\+Back inputs to also trigger DS4 touchpad click. Useful for clients looking to emulate touchpad click on Xinput devices. @hint\{Only applies when gamepad is set to ds4 manually. Unused in other gamepad modes.\} &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{enabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ds4\_back\_as\_touchpad\_click\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md112}{}\doxysubsection{\texorpdfstring{motion\+\_\+as\+\_\+ds4}{motion\+\_\+as\+\_\+ds4}}\label{md_configuration_autotoc_md112}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}If a client reports that a connected gamepad has motion sensor support, emulate it on the host as a DS4 controller. ~\newline
+ ~\newline
+ When disabled, motion sensors will not be taken into account during gamepad type selection. @hint\{Only applies when gamepad is set to auto.\} &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{enabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{motion\_as\_ds4\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md113}{}\doxysubsection{\texorpdfstring{touchpad\+\_\+as\+\_\+ds4}{touchpad\+\_\+as\+\_\+ds4}}\label{md_configuration_autotoc_md113}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}If a client reports that a connected gamepad has a touchpad, emulate it on the host as a DS4 controller. ~\newline
+ ~\newline
+ When disabled, touchpad presence will not be taken into account during gamepad type selection. @hint\{Only applies when gamepad is set to auto.\} &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{enabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{touchpad\_as\_ds4\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md114}{}\doxysubsection{\texorpdfstring{ds5\+\_\+inputtino\+\_\+randomize\+\_\+mac}{ds5\+\_\+inputtino\+\_\+randomize\+\_\+mac}}\label{md_configuration_autotoc_md114}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Randomize the MAC-\/\+Address for the generated virtual controller. @hint\{Only applies on linux for gamepads created as PS5-\/style controllers\} &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{enabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ds5\_inputtino\_randomize\_mac\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md115}{}\doxysubsection{\texorpdfstring{back\+\_\+button\+\_\+timeout}{back\+\_\+button\+\_\+timeout}}\label{md_configuration_autotoc_md115}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}If the Back/\+Select button is held down for the specified number of milliseconds, a Home/\+Guide button press is emulated. @tip\{If back\+\_\+button\+\_\+timeout \texorpdfstring{$<$}{<} 0, then the Home/\+Guide button will not be emulated.\} &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{-\/1}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{back\_button\_timeout\ =\ 2000}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md116}{}\doxysubsection{\texorpdfstring{keyboard}{keyboard}}\label{md_configuration_autotoc_md116}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Whether to allow keyboard input from the client. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{enabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{keyboard\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md117}{}\doxysubsection{\texorpdfstring{key\+\_\+repeat\+\_\+delay}{key\+\_\+repeat\+\_\+delay}}\label{md_configuration_autotoc_md117}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The initial delay, in milliseconds, before repeating keys. Controls how fast keys will repeat themselves. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{500}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{key\_repeat\_delay\ =\ 500}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md118}{}\doxysubsection{\texorpdfstring{key\+\_\+repeat\+\_\+frequency}{key\+\_\+repeat\+\_\+frequency}}\label{md_configuration_autotoc_md118}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}How often keys repeat every second. @tip\{This configurable option supports decimals.\} &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{24.9}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{key\_repeat\_frequency\ =\ 24.9}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md119}{}\doxysubsection{\texorpdfstring{always\+\_\+send\+\_\+scancodes}{always\+\_\+send\+\_\+scancodes}}\label{md_configuration_autotoc_md119}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Sending scancodes enhances compatibility with games and apps but may result in incorrect keyboard input from certain clients that aren\textquotesingle{}t using a US English keyboard layout. ~\newline
+ ~\newline
+ Enable if keyboard input is not working at all in certain applications. ~\newline
+ ~\newline
+ Disable if keys on the client are generating the wrong input on the host. @caution\{Applies to Windows only.\} &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{enabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{always\_send\_scancodes\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md120}{}\doxysubsection{\texorpdfstring{key\+\_\+rightalt\+\_\+to\+\_\+key\+\_\+win}{key\+\_\+rightalt\+\_\+to\+\_\+key\+\_\+win}}\label{md_configuration_autotoc_md120}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}It may be possible that you cannot send the Windows Key from Moonlight directly. In those cases it may be useful to make Sunshine think the Right Alt key is the Windows key. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{disabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{key\_rightalt\_to\_key\_win\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md121}{}\doxysubsection{\texorpdfstring{mouse}{mouse}}\label{md_configuration_autotoc_md121}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Whether to allow mouse input from the client. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{enabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{mouse\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md122}{}\doxysubsection{\texorpdfstring{high\+\_\+resolution\+\_\+scrolling}{high\+\_\+resolution\+\_\+scrolling}}\label{md_configuration_autotoc_md122}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}When enabled, Sunshine will pass through high resolution scroll events from Moonlight clients. ~\newline
+ This can be useful to disable for older applications that scroll too fast with high resolution scroll events. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{enabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{high\_resolution\_scrolling\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md123}{}\doxysubsection{\texorpdfstring{native\+\_\+pen\+\_\+touch}{native\+\_\+pen\+\_\+touch}}\label{md_configuration_autotoc_md123}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}When enabled, Sunshine will pass through native pen/touch events from Moonlight clients. ~\newline
+ This can be useful to disable for older applications without native pen/touch support. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{enabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{native\_pen\_touch\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md124}{}\doxysubsection{\texorpdfstring{keybindings}{keybindings}}\label{md_configuration_autotoc_md124}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Sometimes it may be useful to map keybindings. Wayland won\textquotesingle{}t allow clients to capture the Win Key for example. @tip\{See \href{https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes}{\texttt{virtual key codes}}\} @hint\{keybindings needs to have a multiple of two elements.\} \begin{DoxyNote}{Note}
+\{This option is not available in the UI. A PR would be welcome.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{[}
+\DoxyCodeLine{\ \ 0x10,\ 0xA0,}
+\DoxyCodeLine{\ \ 0x11,\ 0xA2,}
+\DoxyCodeLine{\ \ 0x12,\ 0xA4}
+\DoxyCodeLine{]}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{keybindings\ =\ [}
+\DoxyCodeLine{\ \ 0x10,\ 0xA0,}
+\DoxyCodeLine{\ \ 0x11,\ 0xA2,}
+\DoxyCodeLine{\ \ 0x12,\ 0xA4,}
+\DoxyCodeLine{\ \ 0x4A,\ 0x4B}
+\DoxyCodeLine{]}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md125}{}\doxysection{\texorpdfstring{Audio/\+Video}{Audio/\+Video}}\label{md_configuration_autotoc_md125}
+\hypertarget{md_configuration_autotoc_md126}{}\doxysubsection{\texorpdfstring{audio\+\_\+sink}{audio\+\_\+sink}}\label{md_configuration_autotoc_md126}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The name of the audio sink used for audio loopback. @tip\{To find the name of the audio sink follow these instructions. ~\newline
+ ~\newline
+ {\bfseries{Linux + pulseaudio\+:}} ~\newline
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ pacmd\ list-\/sinks\ |\ grep\ "{}name:"{}}
+
+\end{DoxyCode}
+ ~\newline
+ ~\newline
+ {\bfseries{Linux + pipewire\+:}} ~\newline
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{pactl\ info\ |\ grep\ Source}
+\DoxyCodeLine{\#\ in\ some\ causes\ you'd\ need\ to\ use\ the\ \`{}Sink`\ device,\ if\ \`{}Source`\ doesn't\ work,\ so\ try:}
+\DoxyCodeLine{pactl\ info\ |\ grep\ Sink}
+
+\end{DoxyCode}
+ ~\newline
+ ~\newline
+ {\bfseries{mac\+OS\+:}} ~\newline
+ Sunshine can only access microphones on mac\+OS due to system limitations. To stream system audio use \href{https://github.com/mattingalls/Soundflower}{\texttt{Soundflower}} or \href{https://github.com/ExistentialAudio/BlackHole}{\texttt{Black\+Hole}}. ~\newline
+ ~\newline
+ {\bfseries{Windows\+:}} ~\newline
+ Enter the following command in command prompt or Power\+Shell. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\%ProgramFiles\%\(\backslash\)Sunshine\(\backslash\)tools\(\backslash\)audio-\/info.exe}
+
+\end{DoxyCode}
+ If you have multiple audio devices with identical names, use the Device ID instead. \} \begin{DoxyAttention}{Attention}
+\{If you want to mute the host speakers, use virtual\+\_\+sink instead.\} 
+\end{DoxyAttention}
+&\\
+Default&\SetCell[c=2]{}Sunshine will select the default audio device.&\\
+Example (Linux)&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{audio\_sink\ =\ alsa\_output.pci-\/0000\_09\_00.3.analog-\/stereo}
+
+\end{DoxyCode}
+&\\
+Example (mac\+OS)&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{audio\_sink\ =\ BlackHole\ 2ch}
+
+\end{DoxyCode}
+&\\
+Example (Windows)&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{audio\_sink\ =\ Speakers\ (High\ Definition\ Audio\ Device)}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md127}{}\doxysubsection{\texorpdfstring{virtual\+\_\+sink}{virtual\+\_\+sink}}\label{md_configuration_autotoc_md127}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The audio device that\textquotesingle{}s virtual, like Steam Streaming Speakers. This allows Sunshine to stream audio, while muting the speakers. @tip\{See audio\+\_\+sink!\} @tip\{These are some options for virtual sound devices.
+\begin{DoxyItemize}
+\item Stream Streaming Speakers (Linux, mac\+OS, Windows)
+\begin{DoxyItemize}
+\item Steam must be installed.
+\item Enable install\+\_\+steam\+\_\+audio\+\_\+drivers or use Steam Remote Play at least once to install the drivers.
+\end{DoxyItemize}
+\item \href{https://vb-audio.com/Cable}{\texttt{Virtual Audio Cable}} (mac\+OS, Windows) \} 
+\end{DoxyItemize}&\\
+Default&\SetCell[c=2]{}n/a&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{virtual\_sink\ =\ Steam\ Streaming\ Speakers}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md128}{}\doxysubsection{\texorpdfstring{stream\+\_\+audio}{stream\+\_\+audio}}\label{md_configuration_autotoc_md128}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Whether to stream audio or not. Disabling this can be useful for streaming headless displays as second monitors. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{enabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{stream\_audio\ =\ disabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md129}{}\doxysubsection{\texorpdfstring{install\+\_\+steam\+\_\+audio\+\_\+drivers}{install\+\_\+steam\+\_\+audio\+\_\+drivers}}\label{md_configuration_autotoc_md129}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Installs the Steam Streaming Speakers driver (if Steam is installed) to support surround sound and muting host audio. \begin{DoxyNote}{Note}
+\{This option is only supported on Windows.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{enabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{install\_steam\_audio\_drivers\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md130}{}\doxysubsection{\texorpdfstring{adapter\+\_\+name}{adapter\+\_\+name}}\label{md_configuration_autotoc_md130}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Select the video card you want to stream. @tip\{To find the appropriate values follow these instructions. ~\newline
+ ~\newline
+ {\bfseries{Linux + VA-\/\+API\+:}} ~\newline
+ Unlike with {\itshape amdvce} and {\itshape nvenc}, it doesn\textquotesingle{}t matter if video encoding is done on a different GPU. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ ls\ /dev/dri/renderD*\ \ \#\ to\ find\ all\ devices\ capable\ of\ VAAPI}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \#\ replace\ \`{}\`{}renderD129``\ with\ the\ device\ from\ above\ to\ list\ the\ name\ and\ capabilities\ of\ the\ device}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ vainfo\ -\/-\/display\ drm\ -\/-\/device\ /dev/dri/renderD129\ |\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ grep\ -\/E\ "{}((VAProfileH264High|VAProfileHEVCMain|VAProfileHEVCMain10).*VAEntrypointEncSlice)|Driver\ version"{}}
+
+\end{DoxyCode}
+ To be supported by Sunshine, it needs to have at the very minimum\+: {\ttfamily VAProfile\+H264\+High \+: VAEntrypoint\+Enc\+Slice} ~\newline
+ ~\newline
+ {\bfseries{Windows\+:}} ~\newline
+ Enter the following command in command prompt or Power\+Shell. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\%ProgramFiles\%\(\backslash\)Sunshine\(\backslash\)tools\(\backslash\)dxgi-\/info.exe}
+
+\end{DoxyCode}
+ For hybrid graphics systems, DXGI reports the outputs are connected to whichever graphics adapter that the application is configured to use, so it\textquotesingle{}s not a reliable indicator of how the display is physically connected. \} &\\
+Default&\SetCell[c=2]{}Sunshine will select the default video card.&\\
+Example (Linux)&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{adapter\_name\ =\ /dev/dri/renderD128}
+
+\end{DoxyCode}
+&\\
+Example (Windows)&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{adapter\_name\ =\ Radeon\ RX\ 580\ Series}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md131}{}\doxysubsection{\texorpdfstring{output\+\_\+name}{output\+\_\+name}}\label{md_configuration_autotoc_md131}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Select the display number you want to stream. @tip\{To find the appropriate values follow these instructions. ~\newline
+ ~\newline
+ {\bfseries{Linux\+:}} ~\newline
+ During Sunshine startup, you should see the list of detected displays\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{\}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ Info:\ Detecting\ displays}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ Info:\ Detected\ display:\ DVI-\/D-\/0\ (id:\ 0)\ connected:\ false}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ Info:\ Detected\ display:\ HDMI-\/0\ (id:\ 1)\ connected:\ true}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ Info:\ Detected\ display:\ DP-\/0\ (id:\ 2)\ connected:\ true}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ Info:\ Detected\ display:\ DP-\/1\ (id:\ 3)\ connected:\ false}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ Info:\ Detected\ display:\ DVI-\/D-\/1\ (id:\ 4)\ connected:\ false}
+
+\end{DoxyCode}
+ You need to use the id value inside the parenthesis, e.\+g. {\ttfamily 1}. ~\newline
+ ~\newline
+ {\bfseries{mac\+OS\+:}} ~\newline
+ During Sunshine startup, you should see the list of detected displays\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{Info:\ Detecting\ displays}
+\DoxyCodeLine{Info:\ Detected\ display:\ Monitor-\/0\ (id:\ 3)\ connected:\ true}
+\DoxyCodeLine{Info:\ Detected\ display:\ Monitor-\/1\ (id:\ 2)\ connected:\ true}
+
+\end{DoxyCode}
+ You need to use the id value inside the parenthesis, e.\+g. {\ttfamily 3}. ~\newline
+ ~\newline
+ {\bfseries{Windows\+:}} ~\newline
+ During Sunshine startup, you should see the list of detected displays\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{Info:\ Currently\ available\ display\ devices:}
+\DoxyCodeLine{[}
+\DoxyCodeLine{\ \ \{}
+\DoxyCodeLine{\ \ \ \ "{}device\_id"{}:\ "{}\{64243705-\/4020-\/5895-\/b923-\/adc862c3457e\}"{},}
+\DoxyCodeLine{\ \ \ \ "{}display\_name"{}:\ "{}"{},}
+\DoxyCodeLine{\ \ \ \ "{}friendly\_name"{}:\ "{}IDD\ HDR"{},}
+\DoxyCodeLine{\ \ \ \ "{}info"{}:\ null}
+\DoxyCodeLine{\ \ \},}
+\DoxyCodeLine{\ \ \{}
+\DoxyCodeLine{\ \ \ \ "{}device\_id"{}:\ "{}\{77f67f3e-\/754f-\/5d31-\/af64-\/ee037e18100a\}"{},}
+\DoxyCodeLine{\ \ \ \ "{}display\_name"{}:\ "{}"{},}
+\DoxyCodeLine{\ \ \ \ "{}friendly\_name"{}:\ "{}SunshineHDR"{},}
+\DoxyCodeLine{\ \ \ \ "{}info"{}:\ null}
+\DoxyCodeLine{\ \ \},}
+\DoxyCodeLine{\ \ \{}
+\DoxyCodeLine{\ \ \ \ "{}device\_id"{}:\ "{}\{daeac860-\/f4db-\/5208-\/b1f5-\/cf59444fb768\}"{},}
+\DoxyCodeLine{\ \ \ \ "{}display\_name"{}:\ "{}\(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\).\(\backslash\)\(\backslash\)DISPLAY1"{},}
+\DoxyCodeLine{\ \ \ \ "{}friendly\_name"{}:\ "{}ROG\ PG279Q"{},}
+\DoxyCodeLine{\ \ \ \ "{}info"{}:\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ "{}hdr\_state"{}:\ null,}
+\DoxyCodeLine{\ \ \ \ \ \ "{}origin\_point"{}:\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ "{}x"{}:\ 0,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ "{}y"{}:\ 0}
+\DoxyCodeLine{\ \ \ \ \ \ \},}
+\DoxyCodeLine{\ \ \ \ \ \ "{}primary"{}:\ true,}
+\DoxyCodeLine{\ \ \ \ \ \ "{}refresh\_rate"{}:\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ "{}type"{}:\ "{}rational"{},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ "{}value"{}:\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ "{}denominator"{}:\ 1000,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ "{}numerator"{}:\ 119998}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ \ \ \},}
+\DoxyCodeLine{\ \ \ \ \ \ "{}resolution"{}:\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ "{}height"{}:\ 1440,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ "{}width"{}:\ 2560}
+\DoxyCodeLine{\ \ \ \ \ \ \},}
+\DoxyCodeLine{\ \ \ \ \ \ "{}resolution\_scale"{}:\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ "{}type"{}:\ "{}rational"{},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ "{}value"{}:\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ "{}denominator"{}:\ 100,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ "{}numerator"{}:\ 100}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\ \ \}}
+\DoxyCodeLine{]}
+
+\end{DoxyCode}
+ You need to use the {\ttfamily device\+\_\+id} value. \} &\\
+Default&\SetCell[c=2]{}Sunshine will select the default display.&\\
+Example (Linux)&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{output\_name\ =\ 0}
+
+\end{DoxyCode}
+&\\
+Example (mac\+OS)&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{output\_name\ =\ 3}
+
+\end{DoxyCode}
+&\\
+Example (Windows)&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{output\_name\ =\ \{daeac860-\/f4db-\/5208-\/b1f5-\/cf59444fb768\}}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md132}{}\doxysubsection{\texorpdfstring{isolated\+\_\+virtual\+\_\+display\+\_\+option}{isolated\+\_\+virtual\+\_\+display\+\_\+option}}\label{md_configuration_autotoc_md132}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Isolates the virtual display. \begin{DoxyNote}{Note}
+\{Applies to Windows only.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{disabled}
+
+\end{DoxyCode}
+&\\
+enabled&Change the position of the virtual display (and other displays if there is a hole)\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md133}{}\doxysubsection{\texorpdfstring{dd\+\_\+configuration\+\_\+option}{dd\+\_\+configuration\+\_\+option}}\label{md_configuration_autotoc_md133}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Perform mandatory verification and additional configuration for the display device. \begin{DoxyNote}{Note}
+\{Applies to Windows only.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{disabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{dd\_configuration\_option\ =\ ensure\_only\_display}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=5]{}Choices&disabled&Perform no additional configuration (disables all {\ttfamily dd\+\_\+} configuration options).\\
+&verify\+\_\+only&Verify that display is active only (this is a mandatory step without any extra steps to verify display state).\\
+&ensure\+\_\+active&Activate the display if it\textquotesingle{}s currently inactive.\\
+&ensure\+\_\+primary&Activate the display if it\textquotesingle{}s currently inactive and make it primary.\\
+&ensure\+\_\+only\+\_\+display&Activate the display if it\textquotesingle{}s currently inactive and disable all others.\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md134}{}\doxysubsection{\texorpdfstring{dd\+\_\+resolution\+\_\+option}{dd\+\_\+resolution\+\_\+option}}\label{md_configuration_autotoc_md134}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Perform additional resolution configuration for the display device. \begin{DoxyNote}{Note}
+\{"{}\+Optimize game settings"{} must be enabled in Moonlight for this option to work.\} ~\newline
+\{Applies to Windows only.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{auto}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{dd\_resolution\_option\ =\ manual}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=3]{}Choices&disabled&Perform no additional configuration.\\
+&auto&Change resolution to the requested resolution from the client.\\
+&manual&Change resolution to the user specified one (set via dd\+\_\+manual\+\_\+resolution).\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md135}{}\doxysubsection{\texorpdfstring{dd\+\_\+manual\+\_\+resolution}{dd\+\_\+manual\+\_\+resolution}}\label{md_configuration_autotoc_md135}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Specify manual resolution to be used. \begin{DoxyNote}{Note}
+\{dd\+\_\+resolution\+\_\+option must be set to {\ttfamily manual}\} ~\newline
+\{Applies to Windows only.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}n/a&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{dd\_manual\_resolution\ =\ 1920x1080}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md136}{}\doxysubsection{\texorpdfstring{dd\+\_\+refresh\+\_\+rate\+\_\+option}{dd\+\_\+refresh\+\_\+rate\+\_\+option}}\label{md_configuration_autotoc_md136}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Perform additional refresh rate configuration for the display device. \begin{DoxyNote}{Note}
+\{Applies to Windows only.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{auto}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{dd\_refresh\_rate\_option\ =\ manual}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=3]{}Choices&disabled&Perform no additional configuration.\\
+&auto&Change refresh rate to the requested FPS value from the client.\\
+&manual&Change refresh rate to the user specified one (set via dd\+\_\+manual\+\_\+refresh\+\_\+rate).\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md137}{}\doxysubsection{\texorpdfstring{dd\+\_\+manual\+\_\+refresh\+\_\+rate}{dd\+\_\+manual\+\_\+refresh\+\_\+rate}}\label{md_configuration_autotoc_md137}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Specify manual refresh rate to be used. \begin{DoxyNote}{Note}
+\{dd\+\_\+refresh\+\_\+rate\+\_\+option must be set to {\ttfamily manual}\} ~\newline
+\{Applies to Windows only.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}n/a&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{dd\_manual\_resolution\ =\ 120}
+\DoxyCodeLine{dd\_manual\_resolution\ =\ 59.95}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md138}{}\doxysubsection{\texorpdfstring{dd\+\_\+hdr\+\_\+option}{dd\+\_\+hdr\+\_\+option}}\label{md_configuration_autotoc_md138}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Perform additional HDR configuration for the display device. \begin{DoxyNote}{Note}
+\{Applies to Windows only.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{auto}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{dd\_hdr\_option\ =\ disabled}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=2]{}Choices&disabled&Perform no additional configuration.\\
+&auto&Change HDR to the requested state from the client if the display supports it.\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md139}{}\doxysubsection{\texorpdfstring{dd\+\_\+wa\+\_\+hdr\+\_\+toggle\+\_\+delay}{dd\+\_\+wa\+\_\+hdr\+\_\+toggle\+\_\+delay}}\label{md_configuration_autotoc_md139}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}When using virtual display device (VDD) for streaming, it might incorrectly display HDR color. Sunshine can try to mitigate this issue, by turning HDR off and then on again.~\newline
+ If the value is set to 0, the workaround is disabled (default). If the value is between 0 and 3000 milliseconds, Sunshine will turn off HDR, wait for the specified amount of time and then turn HDR on again. The recommended delay time is around 500 milliseconds in most cases.~\newline
+ DO NOT use this workaround unless you actually have issues with HDR as it directly impacts stream start time! \begin{DoxyNote}{Note}
+\{This option works independently of dd\+\_\+hdr\+\_\+option\} ~\newline
+\{Applies to Windows only.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{0}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{dd\_wa\_hdr\_toggle\_delay\ =\ 500}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md140}{}\doxysubsection{\texorpdfstring{dd\+\_\+config\+\_\+revert\+\_\+delay}{dd\+\_\+config\+\_\+revert\+\_\+delay}}\label{md_configuration_autotoc_md140}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Additional delay in milliseconds to wait before reverting configuration when the app has been closed or the last session terminated. Main purpose is to provide a smoother transition when quickly switching between apps. \begin{DoxyNote}{Note}
+\{Applies to Windows only.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{3000}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{dd\_config\_revert\_delay\ =\ 1500}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md141}{}\doxysubsection{\texorpdfstring{dd\+\_\+config\+\_\+revert\+\_\+on\+\_\+disconnect}{dd\+\_\+config\+\_\+revert\+\_\+on\+\_\+disconnect}}\label{md_configuration_autotoc_md141}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}When enabled, display configuration is reverted upon disconnect of all clients instead of app close or last session termination. This can be useful for returning to physical usage of the host machine without closing the active app. \begin{DoxyWarning}{Warning}
+\{Some applications may not function properly when display configuration is changed while active.\} 
+\end{DoxyWarning}
+\begin{DoxyNote}{Note}
+\{Applies to Windows only.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{disabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{dd\_config\_revert\_on\_disconnect\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md142}{}\doxysubsection{\texorpdfstring{dd\+\_\+mode\+\_\+remapping}{dd\+\_\+mode\+\_\+remapping}}\label{md_configuration_autotoc_md142}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Remap the requested resolution and FPS to another display mode.~\newline
+ Depending on the dd\+\_\+resolution\+\_\+option and dd\+\_\+refresh\+\_\+rate\+\_\+option values, the following mapping groups are available\+: 
+\begin{DoxyItemize}
+\item {\ttfamily mixed} -\/ both options are set to {\ttfamily auto}. 
+\item {\ttfamily resolution\+\_\+only} -\/ only dd\+\_\+resolution\+\_\+option is set to {\ttfamily auto}.  
+\item {\ttfamily refresh\+\_\+rate\+\_\+only} -\/ only dd\+\_\+refresh\+\_\+rate\+\_\+option is set to {\ttfamily auto}.  
+\end{DoxyItemize}For each of those groups, a list of fields can be configured to perform remapping\+: 
+\begin{DoxyItemize}
+\item {\ttfamily requested\+\_\+resolution} -\/ resolution that needs to be matched in order to use this remapping entry.  
+\item {\ttfamily requested\+\_\+fps} -\/ FPS that needs to be matched in order to use this remapping entry. 
+\item {\ttfamily final\+\_\+resolution} -\/ resolution value to be used if the entry was matched. 
+\item {\ttfamily final\+\_\+refresh\+\_\+rate} -\/ refresh rate value to be used if the entry was matched. 
+\end{DoxyItemize}If {\ttfamily requested\+\_\+\texorpdfstring{$\ast$}{*}} field is left empty, it will match {\bfseries{everything}}.~\newline
+ If {\ttfamily final\+\_\+\texorpdfstring{$\ast$}{*}} field is left empty, the original value will not be remapped and either a requested, manual or current value is used. However, at least one {\ttfamily final\+\_\+\texorpdfstring{$\ast$}{*}} must be set, otherwise the entry is considered invalid.~\newline
+ \begin{DoxyNote}{Note}
+\{"{}\+Optimize game settings"{} must be enabled on client side for ANY entry with {\ttfamily resolution} field to be considered.\} ~\newline
+\{First entry to be matched in the list is the one that will be used.\} @tip\{{\ttfamily requested\+\_\+resolution} and {\ttfamily final\+\_\+resolution} can be omitted for {\ttfamily refresh\+\_\+rate\+\_\+only} group.\} @tip\{{\ttfamily requested\+\_\+fps} and {\ttfamily final\+\_\+refresh\+\_\+rate} can be omitted for {\ttfamily resolution\+\_\+only} group.\} ~\newline
+\{Applies to Windows only.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{dd\_mode\_remapping\ =\ \{}
+\DoxyCodeLine{\ \ "{}mixed"{}:\ [],}
+\DoxyCodeLine{\ \ "{}resolution\_only"{}:\ [],}
+\DoxyCodeLine{\ \ "{}refresh\_rate\_only"{}:\ []}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+ &\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{dd\_mode\_remapping\ =\ \{}
+\DoxyCodeLine{\ \ "{}mixed"{}:\ [}
+\DoxyCodeLine{\ \ \ \ \{}
+\DoxyCodeLine{\ \ \ \ \ \ "{}requested\_fps"{}:\ "{}60"{},}
+\DoxyCodeLine{\ \ \ \ \ \ "{}final\_refresh\_rate"{}:\ "{}119.95"{},}
+\DoxyCodeLine{\ \ \ \ \ \ "{}requested\_resolution"{}:\ "{}1920x1080"{},}
+\DoxyCodeLine{\ \ \ \ \ \ "{}final\_resolution"{}:\ "{}2560x1440"{}}
+\DoxyCodeLine{\ \ \ \ \},}
+\DoxyCodeLine{\ \ \ \ \{}
+\DoxyCodeLine{\ \ \ \ \ \ "{}requested\_fps"{}:\ "{}60"{},}
+\DoxyCodeLine{\ \ \ \ \ \ "{}final\_refresh\_rate"{}:\ "{}120"{},}
+\DoxyCodeLine{\ \ \ \ \ \ "{}requested\_resolution"{}:\ "{}"{},}
+\DoxyCodeLine{\ \ \ \ \ \ "{}final\_resolution"{}:\ "{}"{}}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\ \ ],}
+\DoxyCodeLine{\ \ "{}resolution\_only"{}:\ [}
+\DoxyCodeLine{\ \ \ \ \{}
+\DoxyCodeLine{\ \ \ \ \ \ "{}requested\_resolution"{}:\ "{}1920x1080"{},}
+\DoxyCodeLine{\ \ \ \ \ \ "{}final\_resolution"{}:\ "{}2560x1440"{}}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\ \ ],}
+\DoxyCodeLine{\ \ "{}refresh\_rate\_only"{}:\ [}
+\DoxyCodeLine{\ \ \ \ \{}
+\DoxyCodeLine{\ \ \ \ \ \ "{}requested\_fps"{}:\ "{}60"{},}
+\DoxyCodeLine{\ \ \ \ \ \ "{}final\_refresh\_rate"{}:\ "{}119.95"{}}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\ \ ]}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+ &\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md143}{}\doxysubsection{\texorpdfstring{max\+\_\+bitrate}{max\+\_\+bitrate}}\label{md_configuration_autotoc_md143}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The maximum bitrate (in Kbps) that Sunshine will encode the stream at. If set to 0, it will always use the bitrate requested by Moonlight. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{0}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{max\_bitrate\ =\ 5000}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md144}{}\doxysubsection{\texorpdfstring{minimum\+\_\+fps\+\_\+target}{minimum\+\_\+fps\+\_\+target}}\label{md_configuration_autotoc_md144}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Sunshine tries to save bandwidth when content on screen is static or a low framerate. Because many clients expect a constant stream of video frames, a certain amount of duplicate frames are sent when this happens. This setting controls the lowest effective framerate a stream can reach. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{0}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=3]{}Choices&0&Use half the stream\textquotesingle{}s FPS as the minimum target.\\
+&1-\/1000&Specify your own value. The real minimum may differ from this value.\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md145}{}\doxysection{\texorpdfstring{Network}{Network}}\label{md_configuration_autotoc_md145}
+\hypertarget{md_configuration_autotoc_md146}{}\doxysubsection{\texorpdfstring{upnp}{upnp}}\label{md_configuration_autotoc_md146}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Sunshine will attempt to open ports for streaming over the internet. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{disabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{upnp\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md147}{}\doxysubsection{\texorpdfstring{address\+\_\+family}{address\+\_\+family}}\label{md_configuration_autotoc_md147}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Set the address family that Sunshine will use. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ipv4}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{address\_family\ =\ both}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=2]{}Choices&ipv4&IPv4 only\\
+&both&IPv4+\+IPv6\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md148}{}\doxysubsection{\texorpdfstring{port}{port}}\label{md_configuration_autotoc_md148}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Set the family of ports used by Sunshine. Changing this value will offset other ports as shown in config UI. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{47989}
+
+\end{DoxyCode}
+&\\
+Range&\SetCell[c=2]{}1029-\/65514&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{port\ =\ 47989}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md149}{}\doxysubsection{\texorpdfstring{origin\+\_\+web\+\_\+ui\+\_\+allowed}{origin\+\_\+web\+\_\+ui\+\_\+allowed}}\label{md_configuration_autotoc_md149}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The origin of the remote endpoint address that is not denied for HTTPS Web UI. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{lan}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{origin\_web\_ui\_allowed\ =\ lan}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=3]{}Choices&pc&Only localhost may access the web ui\\
+&lan&Only LAN devices may access the web ui\\
+&wan&Anyone may access the web ui\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md150}{}\doxysubsection{\texorpdfstring{external\+\_\+ip}{external\+\_\+ip}}\label{md_configuration_autotoc_md150}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}If no external IP address is given, Sunshine will attempt to automatically detect external ip-\/address. &\\
+Default&\SetCell[c=2]{}Automatic&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{external\_ip\ =\ 123.456.789.12}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md151}{}\doxysubsection{\texorpdfstring{lan\+\_\+encryption\+\_\+mode}{lan\+\_\+encryption\+\_\+mode}}\label{md_configuration_autotoc_md151}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}This determines when encryption will be used when streaming over your local network. \begin{DoxyWarning}{Warning}
+\{Encryption can reduce streaming performance, particularly on less powerful hosts and clients.\} 
+\end{DoxyWarning}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{0}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{lan\_encryption\_mode\ =\ 0}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=3]{}Choices&0&encryption will not be used\\
+&1&encryption will be used if the client supports it\\
+&2&encryption is mandatory and unencrypted connections are rejected\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md152}{}\doxysubsection{\texorpdfstring{wan\+\_\+encryption\+\_\+mode}{wan\+\_\+encryption\+\_\+mode}}\label{md_configuration_autotoc_md152}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}This determines when encryption will be used when streaming over the Internet. \begin{DoxyWarning}{Warning}
+\{Encryption can reduce streaming performance, particularly on less powerful hosts and clients.\} 
+\end{DoxyWarning}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{wan\_encryption\_mode\ =\ 1}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=3]{}Choices&0&encryption will not be used\\
+&1&encryption will be used if the client supports it\\
+&2&encryption is mandatory and unencrypted connections are rejected\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md153}{}\doxysubsection{\texorpdfstring{ping\+\_\+timeout}{ping\+\_\+timeout}}\label{md_configuration_autotoc_md153}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}How long to wait, in milliseconds, for data from Moonlight before shutting down the stream. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{10000}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ping\_timeout\ =\ 10000}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md154}{}\doxysection{\texorpdfstring{Config Files}{Config Files}}\label{md_configuration_autotoc_md154}
+\hypertarget{md_configuration_autotoc_md155}{}\doxysubsection{\texorpdfstring{file\+\_\+apps}{file\+\_\+apps}}\label{md_configuration_autotoc_md155}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The application configuration file path. The file contains a JSON formatted list of applications that can be started by Moonlight. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{apps.json}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{file\_apps\ =\ apps.json}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md156}{}\doxysubsection{\texorpdfstring{credentials\+\_\+file}{credentials\+\_\+file}}\label{md_configuration_autotoc_md156}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The file where user credentials for the UI are stored. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sunshine\_state.json}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{credentials\_file\ =\ sunshine\_state.json}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md157}{}\doxysubsection{\texorpdfstring{log\+\_\+path}{log\+\_\+path}}\label{md_configuration_autotoc_md157}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The path where the Sunshine log is stored. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sunshine.log}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{log\_path\ =\ sunshine.log}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md158}{}\doxysubsection{\texorpdfstring{pkey}{pkey}}\label{md_configuration_autotoc_md158}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The private key used for the web UI and Moonlight client pairing. For best compatibility, this should be an RSA-\/2048 private key. \begin{DoxyWarning}{Warning}
+\{Not all Moonlight clients support ECDSA keys or RSA key lengths other than 2048 bits.\} 
+\end{DoxyWarning}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{credentials/cakey.pem}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{pkey\ =\ /dir/pkey.pem}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md159}{}\doxysubsection{\texorpdfstring{cert}{cert}}\label{md_configuration_autotoc_md159}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The certificate used for the web UI and Moonlight client pairing. For best compatibility, this should have an RSA-\/2048 public key. \begin{DoxyWarning}{Warning}
+\{Not all Moonlight clients support ECDSA keys or RSA key lengths other than 2048 bits.\} 
+\end{DoxyWarning}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{credentials/cacert.pem}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cert\ =\ /dir/cert.pem}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md160}{}\doxysubsection{\texorpdfstring{file\+\_\+state}{file\+\_\+state}}\label{md_configuration_autotoc_md160}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The file where current state of Sunshine is stored. &\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sunshine\_state.json}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{file\_state\ =\ sunshine\_state.json}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md161}{}\doxysection{\texorpdfstring{Advanced}{Advanced}}\label{md_configuration_autotoc_md161}
+\hypertarget{md_configuration_autotoc_md162}{}\doxysubsection{\texorpdfstring{fec\+\_\+percentage}{fec\+\_\+percentage}}\label{md_configuration_autotoc_md162}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Percentage of error correcting packets per data packet in each video frame. \begin{DoxyWarning}{Warning}
+\{Higher values can correct for more network packet loss, but at the cost of increasing bandwidth usage.\} 
+\end{DoxyWarning}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{20}
+
+\end{DoxyCode}
+&\\
+Range&\SetCell[c=2]{}1-\/255&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{fec\_percentage\ =\ 20}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md163}{}\doxysubsection{\texorpdfstring{qp}{qp}}\label{md_configuration_autotoc_md163}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Quantization Parameter. Some devices don\textquotesingle{}t support Constant Bit Rate. For those devices, QP is used instead. \begin{DoxyWarning}{Warning}
+\{Higher value means more compression, but less quality.\} 
+\end{DoxyWarning}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{28}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{qp\ =\ 28}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md164}{}\doxysubsection{\texorpdfstring{min\+\_\+threads}{min\+\_\+threads}}\label{md_configuration_autotoc_md164}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Minimum number of CPU threads used for encoding. \begin{DoxyNote}{Note}
+\{Increasing the value slightly reduces encoding efficiency, but the tradeoff is usually worth it to gain the use of more CPU cores for encoding. The ideal value is the lowest value that can reliably encode at your desired streaming settings on your hardware.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{2}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{min\_threads\ =\ 2}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md165}{}\doxysubsection{\texorpdfstring{hevc\+\_\+mode}{hevc\+\_\+mode}}\label{md_configuration_autotoc_md165}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Allows the client to request HEVC Main or HEVC Main10 video streams. \begin{DoxyWarning}{Warning}
+\{HEVC is more CPU-\/intensive to encode, so enabling this may reduce performance when using software encoding.\} 
+\end{DoxyWarning}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{0}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{hevc\_mode\ =\ 2}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=4]{}Choices&0&advertise support for HEVC based on encoder capabilities (recommended)\\
+&1&do not advertise support for HEVC\\
+&2&advertise support for HEVC Main profile\\
+&3&advertise support for HEVC Main and Main10 (HDR) profiles\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md166}{}\doxysubsection{\texorpdfstring{av1\+\_\+mode}{av1\+\_\+mode}}\label{md_configuration_autotoc_md166}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Allows the client to request AV1 Main 8-\/bit or 10-\/bit video streams. \begin{DoxyWarning}{Warning}
+\{AV1 is more CPU-\/intensive to encode, so enabling this may reduce performance when using software encoding.\} 
+\end{DoxyWarning}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{0}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{av1\_mode\ =\ 2}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=4]{}Choices&0&advertise support for AV1 based on encoder capabilities (recommended)\\
+&1&do not advertise support for AV1\\
+&2&advertise support for AV1 Main 8-\/bit profile\\
+&3&advertise support for AV1 Main 8-\/bit and 10-\/bit (HDR) profiles\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md167}{}\doxysubsection{\texorpdfstring{capture}{capture}}\label{md_configuration_autotoc_md167}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Force specific screen capture method. &\\
+Default&\SetCell[c=2]{}Automatic. Sunshine will use the first capture method available in the order of the table above.&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{capture\ =\ kms}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=6]{}Choices&nvfbc&Use NVIDIA Frame Buffer Capture to capture direct to GPU memory. This is usually the fastest method for NVIDIA cards. Nv\+FBC does not have native Wayland support and does not work with XWayland. \begin{DoxyNote}{Note}
+\{Applies to Linux only.\}
+\end{DoxyNote}
+\\
+&wlr&Capture for wlroots based Wayland compositors via wlr-\/screencopy-\/unstable-\/v1. It is possible to capture virtual displays in e.\+g. Hyprland using this method. \begin{DoxyNote}{Note}
+\{Applies to Linux only.\}
+\end{DoxyNote}
+\\
+&kms&DRM/\+KMS screen capture from the kernel. This requires that Sunshine has {\ttfamily cap\+\_\+sys\+\_\+admin} capability. \begin{DoxyNote}{Note}
+\{Applies to Linux only.\}
+\end{DoxyNote}
+\\
+&x11&Uses XCB. This is the slowest and most CPU intensive so should be avoided if possible. \begin{DoxyNote}{Note}
+\{Applies to Linux only.\}
+\end{DoxyNote}
+\\
+&ddx&Use DirectX Desktop Duplication API to capture the display. This is well-\/supported on Windows machines. \begin{DoxyNote}{Note}
+\{Applies to Windows only.\}
+\end{DoxyNote}
+\\
+&wgc&(beta feature) Use Windows.\+Graphics.\+Capture to capture the display. \begin{DoxyNote}{Note}
+\{Applies to Windows only.\} 
+\end{DoxyNote}
+\begin{DoxyAttention}{Attention}
+\{This capture method is not compatible with the Sunshine service.\}
+\end{DoxyAttention}
+\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md168}{}\doxysubsection{\texorpdfstring{encoder}{encoder}}\label{md_configuration_autotoc_md168}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Force a specific encoder. &\\
+Default&\SetCell[c=2]{}Sunshine will use the first encoder that is available.&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{encoder\ =\ nvenc}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=5]{}Choices&nvenc&For NVIDIA graphics cards\\
+&quicksync&For Intel graphics cards\\
+&amdvce&For AMD graphics cards\\
+&vaapi&Use Linux VA-\/\+API (AMD, Intel)\\
+&software&Encoding occurs on the CPU\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md169}{}\doxysection{\texorpdfstring{NVIDIA NVENC Encoder}{NVIDIA NVENC Encoder}}\label{md_configuration_autotoc_md169}
+\hypertarget{md_configuration_autotoc_md170}{}\doxysubsection{\texorpdfstring{nvenc\+\_\+preset}{nvenc\+\_\+preset}}\label{md_configuration_autotoc_md170}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}NVENC encoder performance preset. Higher numbers improve compression (quality at given bitrate) at the cost of increased encoding latency. Recommended to change only when limited by network or decoder, otherwise similar effect can be accomplished by increasing bitrate. \begin{DoxyNote}{Note}
+\{This option only applies when using NVENC encoder.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{nvenc\_preset\ =\ 1}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=7]{}Choices&1&P1 (fastest)\\
+&2&P2\\
+&3&P3\\
+&4&P4\\
+&5&P5\\
+&6&P6\\
+&7&P7 (slowest)\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md171}{}\doxysubsection{\texorpdfstring{nvenc\+\_\+twopass}{nvenc\+\_\+twopass}}\label{md_configuration_autotoc_md171}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Enable two-\/pass mode in NVENC encoder. This allows to detect more motion vectors, better distribute bitrate across the frame and more strictly adhere to bitrate limits. Disabling it is not recommended since this can lead to occasional bitrate overshoot and subsequent packet loss. \begin{DoxyNote}{Note}
+\{This option only applies when using NVENC encoder.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{quarter\_res}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{nvenc\_twopass\ =\ quarter\_res}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=3]{}Choices&disabled&One pass (fastest)\\
+&quarter\+\_\+res&Two passes, first pass at quarter resolution (faster)\\
+&full\+\_\+res&Two passes, first pass at full resolution (slower)\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md172}{}\doxysubsection{\texorpdfstring{nvenc\+\_\+spatial\+\_\+aq}{nvenc\+\_\+spatial\+\_\+aq}}\label{md_configuration_autotoc_md172}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Assign higher QP values to flat regions of the video. Recommended to enable when streaming at lower bitrates. \begin{DoxyNote}{Note}
+\{This option only applies when using NVENC encoder.\} 
+\end{DoxyNote}
+\begin{DoxyWarning}{Warning}
+\{Enabling this option may reduce performance.\} 
+\end{DoxyWarning}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{disabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{nvenc\_spatial\_aq\ =\ disabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md173}{}\doxysubsection{\texorpdfstring{nvenc\+\_\+vbr}{nvenc\+\_\+vbr}}\label{md_configuration_autotoc_md173}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Use NVENC variable bitrate rate control (VBR) instead of constant bitrate (CBR). This keeps the same target bitrate but allows the encoder to fluctuate within the VBV window, which can help preserve quality during complex scenes or when automatic bitrate adjustments are applied. See vbr\+\_\+vs\+\_\+cbr for a quick comparison of when to use VBR vs CBR. \begin{DoxyNote}{Note}
+\{This option only applies when using NVENC encoder.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{disabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{nvenc\_vbr\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=2]{}Choices&enabled&Use VBR rate control (NV\+\_\+\+ENC\+\_\+\+PARAMS\+\_\+\+RC\+\_\+\+VBR).\\
+&disabled&Use CBR rate control.\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md174}{}\doxysubsection{\texorpdfstring{nvenc\+\_\+vbv\+\_\+increase}{nvenc\+\_\+vbv\+\_\+increase}}\label{md_configuration_autotoc_md174}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Single-\/frame VBV/\+HRD percentage increase. By default Sunshine uses single-\/frame VBV/\+HRD, which means any encoded video frame size is not expected to exceed requested bitrate divided by requested frame rate. Relaxing this restriction can be beneficial and act as low-\/latency variable bitrate, but may also lead to packet loss if the network doesn\textquotesingle{}t have buffer headroom to handle bitrate spikes. Maximum accepted value is 400, which corresponds to 5x increased encoded video frame upper size limit. \begin{DoxyNote}{Note}
+\{This option only applies when using NVENC encoder.\} 
+\end{DoxyNote}
+\begin{DoxyWarning}{Warning}
+\{Can lead to network packet loss.\} 
+\end{DoxyWarning}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{0}
+
+\end{DoxyCode}
+&\\
+Range&\SetCell[c=2]{}0-\/400&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{nvenc\_vbv\_increase\ =\ 0}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md175}{}\doxysubsection{\texorpdfstring{nvenc\+\_\+realtime\+\_\+hags}{nvenc\+\_\+realtime\+\_\+hags}}\label{md_configuration_autotoc_md175}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Use realtime gpu scheduling priority in NVENC when hardware accelerated gpu scheduling (HAGS) is enabled in Windows. Currently, NVIDIA drivers may freeze in encoder when HAGS is enabled, realtime priority is used and VRAM utilization is close to maximum. Disabling this option lowers the priority to high, sidestepping the freeze at the cost of reduced capture performance when the GPU is heavily loaded. \begin{DoxyNote}{Note}
+\{This option only applies when using NVENC encoder.\} ~\newline
+\{Applies to Windows only.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{enabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{nvenc\_realtime\_hags\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md176}{}\doxysubsection{\texorpdfstring{nvenc\+\_\+latency\+\_\+over\+\_\+power}{nvenc\+\_\+latency\+\_\+over\+\_\+power}}\label{md_configuration_autotoc_md176}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Adaptive P-\/\+State algorithm which NVIDIA drivers employ doesn\textquotesingle{}t work well with low latency streaming, so Sunshine requests high power mode explicitly. \begin{DoxyNote}{Note}
+\{This option only applies when using NVENC encoder.\} 
+\end{DoxyNote}
+\begin{DoxyWarning}{Warning}
+\{Disabling this is not recommended since this can lead to significantly increased encoding latency.\} 
+\end{DoxyWarning}
+\begin{DoxyNote}{Note}
+\{Applies to Windows only.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{enabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{nvenc\_latency\_over\_power\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md177}{}\doxysubsection{\texorpdfstring{nvenc\+\_\+opengl\+\_\+vulkan\+\_\+on\+\_\+dxgi}{nvenc\+\_\+opengl\+\_\+vulkan\+\_\+on\+\_\+dxgi}}\label{md_configuration_autotoc_md177}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Sunshine can\textquotesingle{}t capture fullscreen Open\+GL and Vulkan programs at full frame rate unless they present on top of DXGI. With this option enabled Sunshine changes global Vulkan/\+Open\+GL present method to "{}\+Prefer layered on DXGI Swapchain"{}. This is system-\/wide setting that is reverted on Sunshine program exit. \begin{DoxyNote}{Note}
+\{This option only applies when using NVENC encoder.\} ~\newline
+\{Applies to Windows only.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{enabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{nvenc\_opengl\_vulkan\_on\_dxgi\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md178}{}\doxysubsection{\texorpdfstring{nvenc\+\_\+h264\+\_\+cavlc}{nvenc\+\_\+h264\+\_\+cavlc}}\label{md_configuration_autotoc_md178}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Prefer CAVLC entropy coding over CABAC in H.\+264 when using NVENC. CAVLC is outdated and needs around 10\% more bitrate for same quality, but provides slightly faster decoding when using software decoder. \begin{DoxyNote}{Note}
+\{This option only applies when using H.\+264 format with the NVENC encoder.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{disabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{nvenc\_h264\_cavlc\ =\ disabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md179}{}\doxysection{\texorpdfstring{Intel Quick\+Sync Encoder}{Intel Quick\+Sync Encoder}}\label{md_configuration_autotoc_md179}
+\hypertarget{md_configuration_autotoc_md180}{}\doxysubsection{\texorpdfstring{qsv\+\_\+preset}{qsv\+\_\+preset}}\label{md_configuration_autotoc_md180}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The encoder preset to use. \begin{DoxyNote}{Note}
+\{This option only applies when using quicksync encoder.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{medium}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{qsv\_preset\ =\ medium}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=7]{}Choices&veryfast&fastest (lowest quality)\\
+&faster&faster (lower quality)\\
+&fast&fast (low quality)\\
+&medium&medium (default)\\
+&slow&slow (good quality)\\
+&slower&slower (better quality)\\
+&veryslow&slowest (best quality)\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md181}{}\doxysubsection{\texorpdfstring{qsv\+\_\+coder}{qsv\+\_\+coder}}\label{md_configuration_autotoc_md181}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The entropy encoding to use. \begin{DoxyNote}{Note}
+\{This option only applies when using H.\+264 with the quicksync encoder.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{auto}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{qsv\_coder\ =\ auto}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=3]{}Choices&auto&let ffmpeg decide\\
+&cabac&context adaptive binary arithmetic coding -\/ higher quality\\
+&cavlc&context adaptive variable-\/length coding -\/ faster decode\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md182}{}\doxysubsection{\texorpdfstring{qsv\+\_\+slow\+\_\+hevc}{qsv\+\_\+slow\+\_\+hevc}}\label{md_configuration_autotoc_md182}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}This options enables use of HEVC on older Intel GPUs that only support low power encoding for H.\+264. \begin{DoxyNote}{Note}
+\{This option only applies when using quicksync encoder.\} @caution\{Streaming performance may be significantly reduced when this option is enabled.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{disabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{qsv\_slow\_hevc\ =\ disabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md183}{}\doxysection{\texorpdfstring{AMD AMF Encoder}{AMD AMF Encoder}}\label{md_configuration_autotoc_md183}
+\hypertarget{md_configuration_autotoc_md184}{}\doxysubsection{\texorpdfstring{amd\+\_\+usage}{amd\+\_\+usage}}\label{md_configuration_autotoc_md184}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The encoder usage profile is used to set the base set of encoding parameters. \begin{DoxyNote}{Note}
+\{This option only applies when using amdvce encoder.\} ~\newline
+\{The other AMF options that follow will override a subset of the settings applied by your usage profile, but there are hidden parameters set in usage profiles that cannot be overridden elsewhere.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ultralowlatency}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{amd\_usage\ =\ ultralowlatency}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=5]{}Choices&transcoding&transcoding (slowest)\\
+&webcam&webcam (slow)\\
+&lowlatency\+\_\+high\+\_\+quality&low latency, high quality (fast)\\
+&lowlatency&low latency (faster)\\
+&ultralowlatency&ultra low latency (fastest)\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md185}{}\doxysubsection{\texorpdfstring{amd\+\_\+rc}{amd\+\_\+rc}}\label{md_configuration_autotoc_md185}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The encoder rate control. \begin{DoxyNote}{Note}
+\{This option only applies when using amdvce encoder.\} 
+\end{DoxyNote}
+\begin{DoxyWarning}{Warning}
+\{The {\ttfamily vbr\+\_\+latency} option generally works best, but some bitrate overshoots may still occur. Enabling HRD allows all bitrate based rate controls to better constrain peak bitrate, but may result in encoding artifacts depending on your card.\} 
+\end{DoxyWarning}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{vbr\_latency}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{amd\_rc\ =\ vbr\_latency}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=4]{}Choices&cqp&constant qp mode\\
+&cbr&constant bitrate\\
+&vbr\+\_\+latency&variable bitrate, latency constrained\\
+&vbr\+\_\+peak&variable bitrate, peak constrained\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md186}{}\doxysubsection{\texorpdfstring{amd\+\_\+enforce\+\_\+hrd}{amd\+\_\+enforce\+\_\+hrd}}\label{md_configuration_autotoc_md186}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Enable Hypothetical Reference Decoder (HRD) enforcement to help constrain the target bitrate. \begin{DoxyNote}{Note}
+\{This option only applies when using amdvce encoder.\} 
+\end{DoxyNote}
+\begin{DoxyWarning}{Warning}
+\{HRD is known to cause encoding artifacts or negatively affect encoding quality on certain cards.\} 
+\end{DoxyWarning}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{disabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{amd\_enforce\_hrd\ =\ disabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md187}{}\doxysubsection{\texorpdfstring{amd\+\_\+quality}{amd\+\_\+quality}}\label{md_configuration_autotoc_md187}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The quality profile controls the tradeoff between speed and quality of encoding. \begin{DoxyNote}{Note}
+\{This option only applies when using amdvce encoder.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{balanced}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{amd\_quality\ =\ balanced}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=3]{}Choices&speed&prefer speed\\
+&balanced&balanced\\
+&quality&prefer quality\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md188}{}\doxysubsection{\texorpdfstring{amd\+\_\+preanalysis}{amd\+\_\+preanalysis}}\label{md_configuration_autotoc_md188}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Preanalysis can increase encoding quality at the cost of latency. \begin{DoxyNote}{Note}
+\{This option only applies when using amdvce encoder.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{disabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{amd\_preanalysis\ =\ disabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md189}{}\doxysubsection{\texorpdfstring{amd\+\_\+vbaq}{amd\+\_\+vbaq}}\label{md_configuration_autotoc_md189}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Variance Based Adaptive Quantization (VBAQ) can increase subjective visual quality by prioritizing allocation of more bits to smooth areas compared to more textured areas. \begin{DoxyNote}{Note}
+\{This option only applies when using amdvce encoder.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{enabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{amd\_vbaq\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md190}{}\doxysubsection{\texorpdfstring{amd\+\_\+coder}{amd\+\_\+coder}}\label{md_configuration_autotoc_md190}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The entropy encoding to use. \begin{DoxyNote}{Note}
+\{This option only applies when using H.\+264 with the amdvce encoder.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{auto}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{amd\_coder\ =\ auto}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=3]{}Choices&auto&let ffmpeg decide\\
+&cabac&context adaptive binary arithmetic coding -\/ faster decode\\
+&cavlc&context adaptive variable-\/length coding -\/ higher quality\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md191}{}\doxysection{\texorpdfstring{Video\+Toolbox Encoder}{Video\+Toolbox Encoder}}\label{md_configuration_autotoc_md191}
+\hypertarget{md_configuration_autotoc_md192}{}\doxysubsection{\texorpdfstring{vt\+\_\+coder}{vt\+\_\+coder}}\label{md_configuration_autotoc_md192}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The entropy encoding to use. \begin{DoxyNote}{Note}
+\{This option only applies when using mac\+OS.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{auto}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{vt\_coder\ =\ auto}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=3]{}Choices&auto&let ffmpeg decide\\
+&cabac&context adaptive binary arithmetic coding -\/ faster decode\\
+&cavlc&context adaptive variable-\/length coding -\/ higher quality\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md193}{}\doxysubsection{\texorpdfstring{vt\+\_\+software}{vt\+\_\+software}}\label{md_configuration_autotoc_md193}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Force Video Toolbox to use software encoding. \begin{DoxyNote}{Note}
+\{This option only applies when using mac\+OS.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{auto}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{vt\_software\ =\ auto}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=4]{}Choices&auto&let ffmpeg decide\\
+&disabled&disable software encoding\\
+&allowed&allow software encoding\\
+&forced&force software encoding\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md194}{}\doxysubsection{\texorpdfstring{vt\+\_\+realtime}{vt\+\_\+realtime}}\label{md_configuration_autotoc_md194}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Realtime encoding. \begin{DoxyNote}{Note}
+\{This option only applies when using mac\+OS.\} 
+\end{DoxyNote}
+\begin{DoxyWarning}{Warning}
+\{Disabling realtime encoding might result in a delayed frame encoding or frame drop.\} 
+\end{DoxyWarning}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{enabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{vt\_realtime\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md195}{}\doxysection{\texorpdfstring{VA-\/\+API Encoder}{VA-\/\+API Encoder}}\label{md_configuration_autotoc_md195}
+\hypertarget{md_configuration_autotoc_md196}{}\doxysubsection{\texorpdfstring{vaapi\+\_\+strict\+\_\+rc\+\_\+buffer}{vaapi\+\_\+strict\+\_\+rc\+\_\+buffer}}\label{md_configuration_autotoc_md196}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}Enabling this option can avoid dropped frames over the network during scene changes, but video quality may be reduced during motion. \begin{DoxyNote}{Note}
+\{This option only applies for H.\+264 and HEVC when using VA-\/\+API encoder on AMD GPUs.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{disabled}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{vaapi\_strict\_rc\_buffer\ =\ enabled}
+
+\end{DoxyCode}
+&\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md197}{}\doxysection{\texorpdfstring{Software Encoder}{Software Encoder}}\label{md_configuration_autotoc_md197}
+\hypertarget{md_configuration_autotoc_md198}{}\doxysubsection{\texorpdfstring{sw\+\_\+preset}{sw\+\_\+preset}}\label{md_configuration_autotoc_md198}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The encoder preset to use. \begin{DoxyNote}{Note}
+\{This option only applies when using software encoder.\} ~\newline
+\{From \href{https://trac.ffmpeg.org/wiki/Encode/H.264\#preset}{\texttt{FFmpeg}}. ~\newline
+ ~\newline
+ A preset is a collection of options that will provide a certain encoding speed to compression ratio. A slower preset will provide better compression (compression is quality per filesize). This means that, for example, if you target a certain file size or constant bit rate, you will achieve better quality with a slower preset. Similarly, for constant quality encoding, you will simply save bitrate by choosing a slower preset. ~\newline
+ ~\newline
+ Use the slowest preset that you have patience for.\} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{superfast}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sw\_preset\ =\ superfast}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=9]{}Choices&ultrafast&fastest\\
+&superfast&\\
+&veryfast&\\
+&faster&\\
+&fast&\\
+&medium&\\
+&slow&\\
+&slower&\\
+&veryslow&slowest\\
+\end{DoxyTable}
+\hypertarget{md_configuration_autotoc_md199}{}\doxysubsection{\texorpdfstring{sw\+\_\+tune}{sw\+\_\+tune}}\label{md_configuration_autotoc_md199}
+
+\begin{DoxyTable}{3}{}{}{0}
+Description&\SetCell[c=2]{}The tuning preset to use. \begin{DoxyNote}{Note}
+\{This option only applies when using software encoder.\} ~\newline
+\{From \href{https://trac.ffmpeg.org/wiki/Encode/H.264\#preset}{\texttt{FFmpeg}}. ~\newline
+ ~\newline
+ You can optionally use -\/tune to change settings based upon the specifics of your input. \} 
+\end{DoxyNote}
+&\\
+Default&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{zerolatency}
+
+\end{DoxyCode}
+&\\
+Example&\SetCell[c=2]{}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sw\_tune\ =\ zerolatency}
+
+\end{DoxyCode}
+&\\
+\SetCell[r=6]{}Choices&film&use for high quality movie content; lowers deblocking\\
+&animation&good for cartoons; uses higher deblocking and more reference frames\\
+&grain&preserves the grain structure in old, grainy film material\\
+&stillimage&good for slideshow-\/like content\\
+&fastdecode&allows faster decoding by disabling certain filters\\
+&zerolatency&good for fast encoding and low-\/latency streaming\\
+\end{DoxyTable}
+
+
+
+
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{bg=\tableheadbgcolor,font=\bfseries}Previous  &\SetCell{r,bg=\tableheadbgcolor,font=\bfseries}Next  \\
+\doxysectlink{md_legal}{Legal}{0}  &\SetCell{r}\doxysectlink{md_app__examples}{App Examples}{0}  \\
+\end{DoxyTable}
+
+
+
+
+
+
+{\bfseries{}}\begin{adjustwidth}{1em}{0em}
+
+
+\end{adjustwidth}

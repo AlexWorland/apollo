@@ -1,0 +1,526 @@
+\chapter{App Examples }
+\hypertarget{md_app__examples}{}\label{md_app__examples}\index{App Examples@{App Examples}}
+\label{md_app__examples_autotoc_md200}%
+\Hypertarget{md_app__examples_autotoc_md200}%
+
+
+Since not all applications behave the same, we decided to create some examples to help you get started adding games and applications to Sunshine.
+
+\begin{DoxyRemark}{Remarks}
+Throughout these examples, any fields not shown are left blank. You can enhance your experience by adding an image or a log file (via the {\ttfamily Output} field).
+\end{DoxyRemark}
+\begin{DoxyWarning}{Warning}
+When a working directory is not specified, it defaults to the folder where the target application resides.
+\end{DoxyWarning}
+\hypertarget{md_app__examples_autotoc_md201}{}\doxysection{\texorpdfstring{Common Examples}{Common Examples}}\label{md_app__examples_autotoc_md201}
+\hypertarget{md_app__examples_autotoc_md202}{}\doxysubsection{\texorpdfstring{Desktop}{Desktop}}\label{md_app__examples_autotoc_md202}
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Field  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Value  \\
+Application Name  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{Desktop}
+
+\end{DoxyCode}
+  \\
+Image  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{desktop.png}
+
+\end{DoxyCode}
+  \\
+\end{DoxyTable}
+\hypertarget{md_app__examples_autotoc_md203}{}\doxysubsection{\texorpdfstring{Steam Big Picture}{Steam Big Picture}}\label{md_app__examples_autotoc_md203}
+\begin{DoxyNote}{Note}
+Steam is launched as a detached command because Steam starts with a process that self updates itself and the original process is killed.
+\end{DoxyNote}
+@tabs\{ @tab\{Linux \texorpdfstring{$\vert$}{|}  $|$ Field $|$ Value $|$ $|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$ $|$ Application Name $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{\}Steam\ Big\ Picture}
+
+\end{DoxyCode}
+ $|$ $|$ Command Preporations -\/\texorpdfstring{$>$}{>} Undo $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{setsid\ steam\ steam://close/bigpicture}
+
+\end{DoxyCode}
+ $|$ $|$ Detached Commands $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{setsid\ steam\ steam://open/bigpicture}
+
+\end{DoxyCode}
+ $|$ $|$ Image $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{steam.png}
+
+\end{DoxyCode}
+ $|$ \} @tab\{mac\+OS \texorpdfstring{$\vert$}{|}  $|$ Field $|$ Value $|$ $|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$ $|$ Application Name $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{\}Steam\ Big\ Picture}
+
+\end{DoxyCode}
+ $|$ $|$ Command Preporations -\/\texorpdfstring{$>$}{>} Undo $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{open\ steam://close/bigpicture}
+
+\end{DoxyCode}
+ $|$ $|$ Detached Commands $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{open\ steam://open/bigpicture}
+
+\end{DoxyCode}
+ $|$ $|$ Image $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{steam.png}
+
+\end{DoxyCode}
+ $|$ \} @tab\{Windows \texorpdfstring{$\vert$}{|}  $|$ Field $|$ Value $|$ $|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$ $|$ Application Name $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{\}Steam\ Big\ Picture}
+
+\end{DoxyCode}
+ $|$ $|$ Command Preporations -\/\texorpdfstring{$>$}{>} Undo $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{steam://close/bigpicture}
+
+\end{DoxyCode}
+ $|$ $|$ Detached Commands $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{steam://open/bigpicture}
+
+\end{DoxyCode}
+ $|$ $|$ Image $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{steam.png}
+
+\end{DoxyCode}
+ $|$ \} \}\hypertarget{md_app__examples_autotoc_md204}{}\doxysubsection{\texorpdfstring{Epic Game Store game}{Epic Game Store game}}\label{md_app__examples_autotoc_md204}
+\begin{DoxyNote}{Note}
+Using the URI method will be the most consistent between various games.
+\end{DoxyNote}
+\hypertarget{md_app__examples_autotoc_md205}{}\doxysubsubsection{\texorpdfstring{URI}{URI}}\label{md_app__examples_autotoc_md205}
+@tabs\{ @tab\{Windows \texorpdfstring{$\vert$}{|}  $|$ Field $|$ Value $|$ $|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$ $|$ Application Name $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{\}Surviving\ Mars}
+
+\end{DoxyCode}
+ $|$ $|$ Commands $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{com.epicgames.launcher://apps/d759128018124dcabb1fbee9bb28e178\%3A20729b9176c241f0b617c5723e70ec2d\%3AOvenbird?action=launch\&silent=true}
+
+\end{DoxyCode}
+ $|$ \} \}\hypertarget{md_app__examples_autotoc_md206}{}\doxysubsubsection{\texorpdfstring{Binary (w/ working directory}{Binary (w/ working directory}}\label{md_app__examples_autotoc_md206}
+@tabs\{ @tab\{Windows \texorpdfstring{$\vert$}{|}  $|$ Field $|$ Value $|$ $|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$ $|$ Application Name $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{\}Surviving\ Mars}
+
+\end{DoxyCode}
+ $|$ $|$ Command $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{MarsEpic.exe}
+
+\end{DoxyCode}
+ $|$ $|$ Working Directory $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{"{}C:\(\backslash\)Program\ Files\(\backslash\)Epic\ Games\(\backslash\)SurvivingMars"{}}
+
+\end{DoxyCode}
+ $|$ \} \}\hypertarget{md_app__examples_autotoc_md207}{}\doxysubsubsection{\texorpdfstring{Binary (w/o working directory)}{Binary (w/o working directory)}}\label{md_app__examples_autotoc_md207}
+@tabs\{ @tab\{Windows \texorpdfstring{$\vert$}{|}  $|$ Field $|$ Value $|$ $|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$ $|$ Application Name $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{\}Surviving\ Mars}
+
+\end{DoxyCode}
+ $|$ $|$ Command $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{"{}C:\(\backslash\)Program\ Files\(\backslash\)Epic\ Games\(\backslash\)SurvivingMars\(\backslash\)MarsEpic.exe"{}}
+
+\end{DoxyCode}
+ $|$ \} \}\hypertarget{md_app__examples_autotoc_md208}{}\doxysubsection{\texorpdfstring{Steam game}{Steam game}}\label{md_app__examples_autotoc_md208}
+\begin{DoxyNote}{Note}
+Using the URI method will be the most consistent between various games.
+\end{DoxyNote}
+\hypertarget{md_app__examples_autotoc_md209}{}\doxysubsubsection{\texorpdfstring{URI}{URI}}\label{md_app__examples_autotoc_md209}
+@tabs\{ @tab\{Linux \texorpdfstring{$\vert$}{|}  $|$ Field $|$ Value $|$ $|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$ $|$ Application Name $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{\}Surviving\ Mars}
+
+\end{DoxyCode}
+ $|$ $|$ Detached Commands $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{setsid\ steam\ steam://rungameid/464920}
+
+\end{DoxyCode}
+ $|$ \} @tab\{mac\+OS \texorpdfstring{$\vert$}{|}  $|$ Field $|$ Value $|$ $|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$ $|$ Application Name $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{\}Surviving\ Mars}
+
+\end{DoxyCode}
+ $|$ $|$ Detached Commands $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{open\ steam://rungameid/464920}
+
+\end{DoxyCode}
+ $|$ \} @tab\{Windows \texorpdfstring{$\vert$}{|}  $|$ Field $|$ Value $|$ $|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$ $|$ Application Name $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{\}Surviving\ Mars}
+
+\end{DoxyCode}
+ $|$ $|$ Detached Commands $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{steam://rungameid/464920}
+
+\end{DoxyCode}
+ $|$ \} \}\hypertarget{md_app__examples_autotoc_md210}{}\doxysubsubsection{\texorpdfstring{Binary (w/ working directory}{Binary (w/ working directory}}\label{md_app__examples_autotoc_md210}
+@tabs\{ @tab\{Linux \texorpdfstring{$\vert$}{|}  $|$ Field $|$ Value $|$ $|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$ $|$ Application Name $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{\}Surviving\ Mars}
+
+\end{DoxyCode}
+ $|$ $|$ Command $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{MarsSteam}
+
+\end{DoxyCode}
+ $|$ $|$ Working Directory $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\string~/.steam/steam/SteamApps/common/Survivng\ Mars}
+
+\end{DoxyCode}
+ $|$ \} @tab\{mac\+OS \texorpdfstring{$\vert$}{|}  $|$ Field $|$ Value $|$ $|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$ $|$ Application Name $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{\}Surviving\ Mars}
+
+\end{DoxyCode}
+ $|$ $|$ Command $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{MarsSteam}
+
+\end{DoxyCode}
+ $|$ $|$ Working Directory $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\string~/.steam/steam/SteamApps/common/Survivng\ Mars}
+
+\end{DoxyCode}
+ $|$ \} @tab\{Windows \texorpdfstring{$\vert$}{|}  $|$ Field $|$ Value $|$ $|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$ $|$ Application Name $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{\}Surviving\ Mars}
+
+\end{DoxyCode}
+ $|$ $|$ Command $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{MarsSteam.exe}
+
+\end{DoxyCode}
+ $|$ $|$ Working Directory $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{"{}C:\(\backslash\)Program\ Files\ (x86)\(\backslash\)Steam\(\backslash\)steamapps\(\backslash\)common\(\backslash\)Surviving\ Mars"{}}
+
+\end{DoxyCode}
+ $|$ \} \}\hypertarget{md_app__examples_autotoc_md211}{}\doxysubsubsection{\texorpdfstring{Binary (w/o working directory)}{Binary (w/o working directory)}}\label{md_app__examples_autotoc_md211}
+@tabs\{ @tab\{Linux \texorpdfstring{$\vert$}{|}  $|$ Field $|$ Value $|$ $|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$ $|$ Application Name $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{\}Surviving\ Mars}
+
+\end{DoxyCode}
+ $|$ $|$ Command $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\string~/.steam/steam/SteamApps/common/Survivng\ Mars/MarsSteam}
+
+\end{DoxyCode}
+ $|$ \} @tab\{mac\+OS \texorpdfstring{$\vert$}{|}  $|$ Field $|$ Value $|$ $|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$ $|$ Application Name $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{\}Surviving\ Mars}
+
+\end{DoxyCode}
+ $|$ $|$ Command $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\string~/.steam/steam/SteamApps/common/Survivng\ Mars/MarsSteam}
+
+\end{DoxyCode}
+ $|$ \} @tab\{Windows \texorpdfstring{$\vert$}{|}  $|$ Field $|$ Value $|$ $|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$|$ $|$ Application Name $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{\}Surviving\ Mars}
+
+\end{DoxyCode}
+ $|$ $|$ Command $|$ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{"{}C:\(\backslash\)Program\ Files\ (x86)\(\backslash\)Steam\(\backslash\)steamapps\(\backslash\)common\(\backslash\)Surviving\ Mars\(\backslash\)MarsSteam.exe"{}}
+
+\end{DoxyCode}
+ $|$ \} \}\hypertarget{md_app__examples_autotoc_md212}{}\doxysubsection{\texorpdfstring{Prep Commands}{Prep Commands}}\label{md_app__examples_autotoc_md212}
+\hypertarget{md_app__examples_autotoc_md213}{}\doxysubsubsection{\texorpdfstring{Changing Resolution and Refresh Rate}{Changing Resolution and Refresh Rate}}\label{md_app__examples_autotoc_md213}
+\hypertarget{md_app__examples_autotoc_md214}{}\doxysubsubsubsection{\texorpdfstring{Linux}{Linux}}\label{md_app__examples_autotoc_md214}
+\hypertarget{md_app__examples_autotoc_md215}{}\doxysubsubsubsubsection{\texorpdfstring{X11}{X11}}\label{md_app__examples_autotoc_md215}
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Prep Step  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Command  \\
+Do  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sh\ -\/c\ "{}xrandr\ -\/-\/output\ HDMI-\/1\ -\/-\/mode\ \$\{SUNSHINE\_CLIENT\_WIDTH\}x\$\{SUNSHINE\_CLIENT\_HEIGHT\}\ -\/-\/rate\ \$\{SUNSHINE\_CLIENT\_FPS\}"{}}
+
+\end{DoxyCode}
+  \\
+Undo  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{xrandr\ -\/-\/output\ HDMI-\/1\ -\/-\/mode\ 3840x2160\ -\/-\/rate\ 120}
+
+\end{DoxyCode}
+  \\
+\end{DoxyTable}
+
+
+\begin{DoxyRemark}{Remarks}
+The above only works if the xrandr mode already exists. You will need to create new modes to stream to mac\+OS and i\+OS devices, since they use non-\/standard resolutions. ~\newline
+~\newline
+ You can update the {\ttfamily Do} command to this\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{bash\ -\/c\ "{}\$\{HOME\}/scripts/set-\/custom-\/res.sh\ \(\backslash\)"{}\$\{SUNSHINE\_CLIENT\_WIDTH\}\(\backslash\)"{}\ \(\backslash\)"{}\$\{SUNSHINE\_CLIENT\_HEIGHT\}\(\backslash\)"{}\ \(\backslash\)"{}\$\{SUNSHINE\_CLIENT\_FPS\}\(\backslash\)"{}"{}}
+
+\end{DoxyCode}
+ ~\newline
+~\newline
+ The {\ttfamily set-\/custom-\/res.\+sh} will have this content\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\#!/bin/bash}
+\DoxyCodeLine{set\ -\/e}
+\DoxyCodeLine{<br><br>}
+\DoxyCodeLine{\#\ Get\ params\ and\ set\ any\ defaults}
+\DoxyCodeLine{width=\$\{1:-\/1920\}}
+\DoxyCodeLine{height=\$\{2:-\/1080\}}
+\DoxyCodeLine{refresh\_rate=\$\{3:-\/60\}}
+\DoxyCodeLine{<br><br>}
+\DoxyCodeLine{\#\ You\ may\ need\ to\ adjust\ the\ scaling\ differently\ so\ the\ UI/text\ isn't\ too\ small\ /\ big}
+\DoxyCodeLine{scale=\$\{4:-\/0.55\}}
+\DoxyCodeLine{<br><br>}
+\DoxyCodeLine{\#\ Get\ the\ name\ of\ the\ active\ display}
+\DoxyCodeLine{display\_output=\$(xrandr\ |\ grep\ "{}\ connected"{}\ |\ awk\ '\{\ print\ \$1\ \}')}
+\DoxyCodeLine{<br><br>}
+\DoxyCodeLine{\#\ Get\ the\ modeline\ info\ from\ the\ 2nd\ row\ in\ the\ cvt\ output}
+\DoxyCodeLine{modeline=\$(cvt\ \$\{width\}\ \$\{height\}\ \$\{refresh\_rate\}\ |\ awk\ 'FNR\ ==\ 2')}
+\DoxyCodeLine{xrandr\_mode\_str=\$\{modeline//Modeline\ \(\backslash\)"{}*\(\backslash\)"{}\ /\}}
+\DoxyCodeLine{mode\_alias="{}\$\{width\}x\$\{height\}"{}}
+\DoxyCodeLine{<br><br>}
+\DoxyCodeLine{echo\ "{}xrandr\ setting\ new\ mode\ \$\{mode\_alias\}\ \$\{xrandr\_mode\_str\}"{}}
+\DoxyCodeLine{xrandr\ -\/-\/newmode\ \$\{mode\_alias\}\ \$\{xrandr\_mode\_str\}}
+\DoxyCodeLine{xrandr\ -\/-\/addmode\ \$\{display\_output\}\ \$\{mode\_alias\}}
+\DoxyCodeLine{<br><br>}
+\DoxyCodeLine{\#\ Reset\ scaling}
+\DoxyCodeLine{xrandr\ -\/-\/output\ \$\{display\_output\}\ -\/-\/scale\ 1}
+\DoxyCodeLine{<br><br>}
+\DoxyCodeLine{\#\ Apply\ new\ xrandr\ mode}
+\DoxyCodeLine{xrandr\ -\/-\/output\ \$\{display\_output\}\ -\/-\/primary\ -\/-\/mode\ \$\{mode\_alias\}\ -\/-\/pos\ 0x0\ -\/-\/rotate\ normal\ -\/-\/scale\ \$\{scale\}}
+\DoxyCodeLine{<br><br>}
+\DoxyCodeLine{\#\ Optional\ reset\ your\ wallpaper\ to\ fit\ to\ new\ resolution}
+\DoxyCodeLine{\#\ xwallpaper\ -\/-\/zoom\ /path/to/wallpaper.png}
+
+\end{DoxyCode}
+
+\end{DoxyRemark}
+\hypertarget{md_app__examples_autotoc_md216}{}\doxysubsubsubsubsection{\texorpdfstring{Wayland (wlroots, e.\+g. hyprland)}{Wayland (wlroots, e.\+g. hyprland)}}\label{md_app__examples_autotoc_md216}
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Prep Step  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Command  \\
+Do  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sh\ -\/c\ "{}wlr-\/xrandr\ -\/-\/output\ HDMI-\/1\ -\/-\/mode\ \(\backslash\)"{}\$\{SUNSHINE\_CLIENT\_WIDTH\}x\$\{SUNSHINE\_CLIENT\_HEIGHT\}@\$\{SUNSHINE\_CLIENT\_FPS\}Hz\(\backslash\)"{}"{}}
+
+\end{DoxyCode}
+  \\
+Undo  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{wlr-\/xrandr\ -\/-\/output\ HDMI-\/1\ -\/-\/mode\ 3840x2160@120Hz}
+
+\end{DoxyCode}
+  \\
+\end{DoxyTable}
+
+
+\begin{DoxyRemark}{Remarks}
+{\ttfamily wlr-\/xrandr} only works with wlroots-\/based compositors.
+\end{DoxyRemark}
+\hypertarget{md_app__examples_autotoc_md217}{}\doxysubsubsubsubsection{\texorpdfstring{Gnome (X11)}{Gnome (X11)}}\label{md_app__examples_autotoc_md217}
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Prep Step  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Command  \\
+Do  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sh\ -\/c\ "{}xrandr\ -\/-\/output\ HDMI-\/1\ -\/-\/mode\ \$\{SUNSHINE\_CLIENT\_WIDTH\}x\$\{SUNSHINE\_CLIENT\_HEIGHT\}\ -\/-\/rate\ \$\{SUNSHINE\_CLIENT\_FPS\}"{}}
+
+\end{DoxyCode}
+  \\
+Undo  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{xrandr\ -\/-\/output\ HDMI-\/1\ -\/-\/mode\ 3840x2160\ -\/-\/rate\ 120}
+
+\end{DoxyCode}
+  \\
+\end{DoxyTable}
+\hypertarget{md_app__examples_autotoc_md218}{}\doxysubsubsubsubsection{\texorpdfstring{Gnome (Wayland)}{Gnome (Wayland)}}\label{md_app__examples_autotoc_md218}
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Prep Step  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Command  \\
+Do  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sh\ -\/c\ "{}displayconfig-\/mutter\ set\ -\/-\/connector\ HDMI-\/1\ -\/-\/resolution\ \$\{SUNSHINE\_CLIENT\_WIDTH\}x\$\{SUNSHINE\_CLIENT\_HEIGHT\}\ -\/-\/refresh-\/rate\ \$\{SUNSHINE\_CLIENT\_FPS\}\ -\/-\/hdr\ \$\{SUNSHINE\_CLIENT\_HDR\}"{}}
+
+\end{DoxyCode}
+  \\
+Undo  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{displayconfig-\/mutter\ set\ -\/-\/connector\ HDMI-\/1\ -\/-\/resolution\ 3840x2160\ -\/-\/refresh-\/rate\ 120\ -\/-\/hdr\ false}
+
+\end{DoxyCode}
+  \\
+\end{DoxyTable}
+
+
+Installation instructions for displayconfig-\/mutter can be \href{https://github.com/eaglesemanation/displayconfig-mutter}{\texttt{found here}}. Alternatives include \href{https://github.com/maxwellainatchi/gnome-randr-rust}{\texttt{gnome-\/randr-\/rust}} and \href{https://gitlab.com/Oschowa/gnome-randr}{\texttt{gnome-\/randr.\+py}}, but both of those are unmaintained and do not support newer Mutter features such as HDR and VRR.
+
+\begin{DoxyRemark}{Remarks}
+HDR support has been added to Gnome 48, to check if your display supports it, you can run this\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{displayconfig-\/mutter\ list}
+
+\end{DoxyCode}
+ If it doesn\textquotesingle{}t, then remove {\ttfamily -\/-\/hdr} flag from both {\ttfamily Do} and {\ttfamily Undo} steps.
+\end{DoxyRemark}
+\hypertarget{md_app__examples_autotoc_md219}{}\doxysubsubsubsubsection{\texorpdfstring{KDE Plasma (Wayland, X11)}{KDE Plasma (Wayland, X11)}}\label{md_app__examples_autotoc_md219}
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Prep Step  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Command  \\
+Do  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sh\ -\/c\ "{}kscreen-\/doctor\ output.HDMI-\/A-\/1.mode.\$\{SUNSHINE\_CLIENT\_WIDTH\}x\$\{SUNSHINE\_CLIENT\_HEIGHT\}@\$\{SUNSHINE\_CLIENT\_FPS\}"{}}
+
+\end{DoxyCode}
+  \\
+Undo  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{kscreen-\/doctor\ output.HDMI-\/A-\/1.mode.3840x2160@120}
+
+\end{DoxyCode}
+  \\
+\end{DoxyTable}
+
+
+\begin{DoxyAttention}{Attention}
+The names of your displays will differ between X11 and Wayland. Be sure to use the correct name, depending on your session manager. e.\+g., On X11, the monitor may be called {\ttfamily HDMI-\/\+A-\/0}, but on Wayland, it may be called {\ttfamily HDMI-\/\+A-\/1}.
+\end{DoxyAttention}
+\begin{DoxyRemark}{Remarks}
+Replace {\ttfamily HDMI-\/\+A-\/1} with the display name of the monitor you would like to use for Moonlight. You can list the monitors available to you with\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{kscreen-\/doctor\ -\/o}
+
+\end{DoxyCode}
+ ~\newline
+~\newline
+ These will also give you the supported display properties for each monitor. You can select them either by hard-\/coding their corresponding number (e.\+g. {\ttfamily kscreen-\/doctor output.\+HDMI-\/\+A1.\+mode.\+0}) or using the above {\ttfamily do} command to fetch the resolution requested by your Moonlight client (which has a chance of not being supported by your monitor).
+\end{DoxyRemark}
+\hypertarget{md_app__examples_autotoc_md220}{}\doxysubsubsubsubsection{\texorpdfstring{NVIDIA}{NVIDIA}}\label{md_app__examples_autotoc_md220}
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Prep Step  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Command  \\
+Do  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sh\ -\/c\ "{}nvidia-\/settings\ -\/a\ CurrentMetaMode=\(\backslash\)"{}HDMI-\/1:\ nvidia-\/auto-\/select\ \{\ ViewPortIn=\$\{SUNSHINE\_CLIENT\_WIDTH\}x\$\{SUNSHINE\_CLIENT\_HEIGHT\},\ ViewPortOut=\$\{SUNSHINE\_CLIENT\_WIDTH\}x\$\{SUNSHINE\_CLIENT\_HEIGHT\}+0+0\ \}\(\backslash\)"{}"{}}
+
+\end{DoxyCode}
+  \\
+Undo  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{nvidia-\/settings\ -\/a\ CurrentMetaMode=\(\backslash\)"{}HDMI-\/1:\ nvidia-\/auto-\/select\ \{\ ViewPortIn=3840x2160,\ ViewPortOut=3840x2160+0+0\ \}"{}}
+
+\end{DoxyCode}
+  \\
+\end{DoxyTable}
+\hypertarget{md_app__examples_autotoc_md221}{}\doxysubsubsubsection{\texorpdfstring{mac\+OS}{mac\+OS}}\label{md_app__examples_autotoc_md221}
+\hypertarget{md_app__examples_autotoc_md222}{}\doxysubsubsubsubsection{\texorpdfstring{displayplacer}{displayplacer}}\label{md_app__examples_autotoc_md222}
+\begin{DoxyNote}{Note}
+This example uses the {\ttfamily displayplacer} tool to change the resolution. This tool can be installed following instructions in their \href{https://github.com/jakehilborn/displayplacer}{\texttt{Git\+Hub repository}}.
+\end{DoxyNote}
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Prep Step  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Command  \\
+Do  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sh\ -\/c\ "{}displayplacer\ \(\backslash\)"{}id:<screenId>\ res:\$\{SUNSHINE\_CLIENT\_WIDTH\}x\$\{SUNSHINE\_CLIENT\_HEIGHT\}\ hz:\$\{SUNSHINE\_CLIENT\_FPS\}\ scaling:on\ origin:(0,0)\ degree:0\(\backslash\)"{}"{}}
+
+\end{DoxyCode}
+  \\
+Undo  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{displayplacer\ "{}id:<screenId>\ res:3840x2160\ hz:120\ scaling:on\ origin:(0,0)\ degree:0"{}}
+
+\end{DoxyCode}
+  \\
+\end{DoxyTable}
+\hypertarget{md_app__examples_autotoc_md223}{}\doxysubsubsubsection{\texorpdfstring{Windows}{Windows}}\label{md_app__examples_autotoc_md223}
+Sunshine has built-\/in support for changing the resolution and refresh rate on Windows. If you prefer to use a third-\/party tool, you can use {\itshape QRes} as an example.\hypertarget{md_app__examples_autotoc_md224}{}\doxysubsubsubsubsection{\texorpdfstring{QRes}{QRes}}\label{md_app__examples_autotoc_md224}
+\begin{DoxyNote}{Note}
+This example uses the {\itshape QRes} tool to change the resolution and refresh rate. This tool can be downloaded from their \href{https://sourceforge.net/projects/qres}{\texttt{Source\+Forge repository}}.
+\end{DoxyNote}
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Prep Step  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Command  \\
+Do  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cmd\ /C\ "{}FullPath\(\backslash\)qres.exe\ /x:\%SUNSHINE\_CLIENT\_WIDTH\%\ /y:\%SUNSHINE\_CLIENT\_HEIGHT\%\ /r:\%SUNSHINE\_CLIENT\_FPS\%"{}}
+
+\end{DoxyCode}
+  \\
+Undo  &
+\begin{DoxyCode}{0}
+\DoxyCodeLine{FullPath\(\backslash\)qres.exe\ /x:3840\ /y:2160\ /r:120}
+
+\end{DoxyCode}
+  \\
+\end{DoxyTable}
+\hypertarget{md_app__examples_autotoc_md225}{}\doxysubsection{\texorpdfstring{Additional Considerations}{Additional Considerations}}\label{md_app__examples_autotoc_md225}
+\hypertarget{md_app__examples_autotoc_md226}{}\doxysubsubsection{\texorpdfstring{Linux (Flatpak)}{Linux (Flatpak)}}\label{md_app__examples_autotoc_md226}
+\begin{DoxyAttention}{Attention}
+Because Flatpak packages run in a sandboxed environment and do not normally have access to the host, the Flatpak of Sunshine requires commands to be prefixed with {\ttfamily flatpak-\/spawn -\/-\/host}.
+\end{DoxyAttention}
+\hypertarget{md_app__examples_autotoc_md227}{}\doxysubsubsection{\texorpdfstring{Windows}{Windows}}\label{md_app__examples_autotoc_md227}
+{\bfseries{Elevating Commands (Windows)}}
+
+If you\textquotesingle{}ve installed Sunshine as a service (default), you can specify if a command should be elevated with administrative privileges. Simply enable the elevated option in the WEB UI, or add it to the JSON configuration. This is an option for both prep-\/cmd and regular commands and will launch the process with the current user without a UAC prompt.
+
+{\bfseries{Example}} 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{\ \ "{}name"{}:\ "{}Game\ With\ AntiCheat\ that\ Requires\ Admin"{},}
+\DoxyCodeLine{\ \ "{}output"{}:\ "{}"{},}
+\DoxyCodeLine{\ \ "{}cmd"{}:\ "{}ping\ 127.0.0.1"{},}
+\DoxyCodeLine{\ \ "{}exclude-\/global-\/prep-\/cmd"{}:\ false,}
+\DoxyCodeLine{\ \ "{}elevated"{}:\ true,}
+\DoxyCodeLine{\ \ "{}prep-\/cmd"{}:\ [}
+\DoxyCodeLine{\ \ \ \ \{}
+\DoxyCodeLine{\ \ \ \ \ \ "{}do"{}:\ "{}powershell.exe\ -\/command\ \(\backslash\)"{}Start-\/Streaming\(\backslash\)"{}"{},}
+\DoxyCodeLine{\ \ \ \ \ \ "{}undo"{}:\ "{}powershell.exe\ -\/command\ \(\backslash\)"{}Stop-\/Streaming\(\backslash\)"{}"{},}
+\DoxyCodeLine{\ \ \ \ \ \ "{}elevated"{}:\ false}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\ \ ],}
+\DoxyCodeLine{\ \ "{}image-\/path"{}:\ "{}"{}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+
+
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{bg=\tableheadbgcolor,font=\bfseries}Previous  &\SetCell{r,bg=\tableheadbgcolor,font=\bfseries}Next  \\
+\doxysectlink{md_configuration}{Configuration}{0}  &\SetCell{r}\doxysectlink{md_awesome__sunshine}{Awesome-\/\+Sunshine}{0}  \\
+\end{DoxyTable}
+
+
+
+
+
+
+{\bfseries{}}\begin{adjustwidth}{1em}{0em}
+
+
+\end{adjustwidth}

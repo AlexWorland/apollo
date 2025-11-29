@@ -1,0 +1,39 @@
+\chapter{Game\+Stream Migration }
+\hypertarget{md_gamestream__migration}{}\label{md_gamestream__migration}\index{GameStream Migration@{GameStream Migration}}
+\label{md_gamestream__migration_autotoc_md94}%
+\Hypertarget{md_gamestream__migration_autotoc_md94}%
+
+
+Nvidia announced that their Game\+Stream service for Nvidia Games clients will be discontinued in February 2023. Luckily, Sunshine performance is now equal to or better than Nvidia Game\+Stream.\hypertarget{md_gamestream__migration_autotoc_md95}{}\doxysection{\texorpdfstring{Migration}{Migration}}\label{md_gamestream__migration_autotoc_md95}
+We have developed a simple migration tool to help you migrate your Game\+Stream games and apps to Sunshine automatically. Please check out our \href{https://github.com/LizardByte/GSMS}{\texttt{GSMS}} project if you\textquotesingle{}re interested in an automated migration option. GSMS offers the ability to migrate your custom and auto-\/detected games and apps. The working directory, command, and image are all set in Sunshine\textquotesingle{}s {\ttfamily apps.\+json} file. The box-\/art image is also copied to a specified directory.\hypertarget{md_gamestream__migration_autotoc_md96}{}\doxysection{\texorpdfstring{Internet Streaming}{Internet Streaming}}\label{md_gamestream__migration_autotoc_md96}
+If you are using the Moonlight Internet Hosting Tool, you can remove it from your system when you migrate to Sunshine. To stream over the Internet with Sunshine and a UPn\+P-\/capable router, enable the UPnP option in the Sunshine Web UI.
+
+\begin{DoxyNote}{Note}
+Running Sunshine together with versions of the Moonlight Internet Hosting Tool prior to v5.\+6 will cause UPnP port forwarding to become unreliable. Either uninstall the tool entirely or update it to v5.\+6 or later.
+\end{DoxyNote}
+\hypertarget{md_gamestream__migration_autotoc_md97}{}\doxysection{\texorpdfstring{Limitations}{Limitations}}\label{md_gamestream__migration_autotoc_md97}
+Sunshine does have some limitations, as compared to Nvidia Game\+Stream.
+
+
+\begin{DoxyItemize}
+\item Automatic game/application list.
+\item Changing game settings automatically to optimize streaming.
+\end{DoxyItemize}
+
+
+
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{bg=\tableheadbgcolor,font=\bfseries}Previous  &\SetCell{r,bg=\tableheadbgcolor,font=\bfseries}Next  \\
+\doxysectlink{md_third__party__packages}{Third-\/party Packages}{0}  &\SetCell{r}\doxysectlink{md_legal}{Legal}{0}  \\
+\end{DoxyTable}
+
+
+
+
+
+
+{\bfseries{}}\begin{adjustwidth}{1em}{0em}
+
+
+\end{adjustwidth}

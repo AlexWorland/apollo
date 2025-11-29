@@ -1,0 +1,45 @@
+\doxysection{confighttp.\+h}
+\hypertarget{confighttp_8h_source}{}\label{confighttp_8h_source}\index{/Users/alexworland/autoBitrate/apollo/src/confighttp.h@{/Users/alexworland/autoBitrate/apollo/src/confighttp.h}}
+\mbox{\hyperlink{confighttp_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ standard\ includes}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <functional>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <chrono>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ local\ includes}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{thread__safe_8h}{thread\_safe.h}}"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#define\ WEB\_DIR\ SUNSHINE\_ASSETS\_DIR\ "{}/web/"{}}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{using\ namespace\ }std::chrono\_literals;}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{namespace\ }confighttp\ \{}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{confighttp_8h_a887af3e3e4b61414651a4df28b4f0ac2}{PORT\_HTTPS}}\ =\ 1;\ \ }
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ \mbox{\hyperlink{confighttp_8h_ad6589538324e29c98c9874ed6027370f}{SESSION\_EXPIRE\_DURATION}}\ =\ 24h\ *\ 15;\ \ }
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{confighttp_8cpp_adb6c9baee595116b5e4bad25feb5d467}{start}}();}
+\DoxyCodeLine{00030\ \}\ \ \textcolor{comment}{//\ namespace\ confighttp}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{const}\ std::map<std::string,\ std::string>\ \mbox{\hyperlink{confighttp_8h_a3a8ba5f0b083e66af703d9a712c389b6}{mime\_types}}\ =\ \{}
+\DoxyCodeLine{00036\ \ \ \{\textcolor{stringliteral}{"{}css"{}},\ \textcolor{stringliteral}{"{}text/css"{}}\},}
+\DoxyCodeLine{00037\ \ \ \{\textcolor{stringliteral}{"{}gif"{}},\ \textcolor{stringliteral}{"{}image/gif"{}}\},}
+\DoxyCodeLine{00038\ \ \ \{\textcolor{stringliteral}{"{}htm"{}},\ \textcolor{stringliteral}{"{}text/html"{}}\},}
+\DoxyCodeLine{00039\ \ \ \{\textcolor{stringliteral}{"{}html"{}},\ \textcolor{stringliteral}{"{}text/html"{}}\},}
+\DoxyCodeLine{00040\ \ \ \{\textcolor{stringliteral}{"{}ico"{}},\ \textcolor{stringliteral}{"{}image/x-\/icon"{}}\},}
+\DoxyCodeLine{00041\ \ \ \{\textcolor{stringliteral}{"{}jpeg"{}},\ \textcolor{stringliteral}{"{}image/jpeg"{}}\},}
+\DoxyCodeLine{00042\ \ \ \{\textcolor{stringliteral}{"{}jpg"{}},\ \textcolor{stringliteral}{"{}image/jpeg"{}}\},}
+\DoxyCodeLine{00043\ \ \ \{\textcolor{stringliteral}{"{}js"{}},\ \textcolor{stringliteral}{"{}application/javascript"{}}\},}
+\DoxyCodeLine{00044\ \ \ \{\textcolor{stringliteral}{"{}json"{}},\ \textcolor{stringliteral}{"{}application/json"{}}\},}
+\DoxyCodeLine{00045\ \ \ \{\textcolor{stringliteral}{"{}png"{}},\ \textcolor{stringliteral}{"{}image/png"{}}\},}
+\DoxyCodeLine{00046\ \ \ \{\textcolor{stringliteral}{"{}svg"{}},\ \textcolor{stringliteral}{"{}image/svg+xml"{}}\},}
+\DoxyCodeLine{00047\ \ \ \{\textcolor{stringliteral}{"{}ttf"{}},\ \textcolor{stringliteral}{"{}font/ttf"{}}\},}
+\DoxyCodeLine{00048\ \ \ \{\textcolor{stringliteral}{"{}txt"{}},\ \textcolor{stringliteral}{"{}text/plain"{}}\},}
+\DoxyCodeLine{00049\ \ \ \{\textcolor{stringliteral}{"{}woff2"{}},\ \textcolor{stringliteral}{"{}font/woff2"{}}\},}
+\DoxyCodeLine{00050\ \ \ \{\textcolor{stringliteral}{"{}xml"{}},\ \textcolor{stringliteral}{"{}text/xml"{}}\},}
+\DoxyCodeLine{00051\ \};}
+
+\end{DoxyCode}

@@ -1,0 +1,95 @@
+\doxysection{video\+::packet\+\_\+raw\+\_\+generic Struct Reference}
+\hypertarget{structvideo_1_1packet__raw__generic}{}\label{structvideo_1_1packet__raw__generic}\index{video::packet\_raw\_generic@{video::packet\_raw\_generic}}
+Inheritance diagram for video\+::packet\+\_\+raw\+\_\+generic\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{structvideo_1_1packet__raw__generic}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structvideo_1_1packet__raw__generic_aa1418fe44f0518dcfa456b1ad6821a12}\label{structvideo_1_1packet__raw__generic_aa1418fe44f0518dcfa456b1ad6821a12} 
+{\bfseries packet\+\_\+raw\+\_\+generic} (std\+::vector$<$ uint8\+\_\+t $>$ \&\&frame\+\_\+data, int64\+\_\+t frame\+\_\+index, bool idr)
+\item 
+bool \mbox{\hyperlink{structvideo_1_1packet__raw__generic_a2ca93e58dee2ff6d766cc3f66b202466}{is\+\_\+idr}} () override
+\item 
+int64\+\_\+t \mbox{\hyperlink{structvideo_1_1packet__raw__generic_a66f8ca0d2aa92e44c2f6be88120e73c3}{frame\+\_\+index}} () override
+\item 
+uint8\+\_\+t \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structvideo_1_1packet__raw__generic_a026690f20736a757b8472dce5ab3e517}{data}} () override
+\item 
+size\+\_\+t \mbox{\hyperlink{structvideo_1_1packet__raw__generic_af4346ba9ff7727d0ee3936ec64b2ab77}{data\+\_\+size}} () override
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structvideo_1_1packet__raw__generic_a62b28cd6f942cceb947c64f293b65847}\label{structvideo_1_1packet__raw__generic_a62b28cd6f942cceb947c64f293b65847} 
+std\+::vector$<$ uint8\+\_\+t $>$ {\bfseries frame\+\_\+data}
+\item 
+\Hypertarget{structvideo_1_1packet__raw__generic_a7ddbf186ba55552d31e3adbb109d35af}\label{structvideo_1_1packet__raw__generic_a7ddbf186ba55552d31e3adbb109d35af} 
+int64\+\_\+t {\bfseries index}
+\item 
+\Hypertarget{structvideo_1_1packet__raw__generic_ad611c15dec71135d0cb5c3cb02a320fc}\label{structvideo_1_1packet__raw__generic_ad611c15dec71135d0cb5c3cb02a320fc} 
+bool {\bfseries idr}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{structvideo_1_1packet__raw__t}{video\+::packet\+\_\+raw\+\_\+t}}}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ \mbox{\hyperlink{structvideo_1_1packet__raw__t_1_1replace__t}{replace\+\_\+t}} $>$ \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structvideo_1_1packet__raw__t_a7d5da4bc03f285b8da6e5a3c6a2a1450}{replacements}} = nullptr
+\begin{DoxyCompactList}\small\item\em Replacement operations for packet data. \end{DoxyCompactList}\item 
+void \texorpdfstring{$\ast$}{*} {\bfseries channel\+\_\+data} = nullptr
+\item 
+bool {\bfseries after\+\_\+ref\+\_\+frame\+\_\+invalidation} = false
+\item 
+std\+::optional$<$ std\+::chrono\+::steady\+\_\+clock\+::time\+\_\+point $>$ {\bfseries frame\+\_\+timestamp}
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{structvideo_1_1packet__raw__generic_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structvideo_1_1packet__raw__generic_a026690f20736a757b8472dce5ab3e517}\index{video::packet\_raw\_generic@{video::packet\_raw\_generic}!data@{data}}
+\index{data@{data}!video::packet\_raw\_generic@{video::packet\_raw\_generic}}
+\doxysubsubsection{\texorpdfstring{data()}{data()}}
+{\footnotesize\ttfamily \label{structvideo_1_1packet__raw__generic_a026690f20736a757b8472dce5ab3e517} 
+uint8\+\_\+t \texorpdfstring{$\ast$}{*} video\+::packet\+\_\+raw\+\_\+generic\+::data (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{structvideo_1_1packet__raw__t}{video\+::packet\+\_\+raw\+\_\+t}}.
+
+\Hypertarget{structvideo_1_1packet__raw__generic_af4346ba9ff7727d0ee3936ec64b2ab77}\index{video::packet\_raw\_generic@{video::packet\_raw\_generic}!data\_size@{data\_size}}
+\index{data\_size@{data\_size}!video::packet\_raw\_generic@{video::packet\_raw\_generic}}
+\doxysubsubsection{\texorpdfstring{data\_size()}{data\_size()}}
+{\footnotesize\ttfamily \label{structvideo_1_1packet__raw__generic_af4346ba9ff7727d0ee3936ec64b2ab77} 
+size\+\_\+t video\+::packet\+\_\+raw\+\_\+generic\+::data\+\_\+size (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{structvideo_1_1packet__raw__t}{video\+::packet\+\_\+raw\+\_\+t}}.
+
+\Hypertarget{structvideo_1_1packet__raw__generic_a66f8ca0d2aa92e44c2f6be88120e73c3}\index{video::packet\_raw\_generic@{video::packet\_raw\_generic}!frame\_index@{frame\_index}}
+\index{frame\_index@{frame\_index}!video::packet\_raw\_generic@{video::packet\_raw\_generic}}
+\doxysubsubsection{\texorpdfstring{frame\_index()}{frame\_index()}}
+{\footnotesize\ttfamily \label{structvideo_1_1packet__raw__generic_a66f8ca0d2aa92e44c2f6be88120e73c3} 
+int64\+\_\+t video\+::packet\+\_\+raw\+\_\+generic\+::frame\+\_\+index (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{structvideo_1_1packet__raw__t}{video\+::packet\+\_\+raw\+\_\+t}}.
+
+\Hypertarget{structvideo_1_1packet__raw__generic_a2ca93e58dee2ff6d766cc3f66b202466}\index{video::packet\_raw\_generic@{video::packet\_raw\_generic}!is\_idr@{is\_idr}}
+\index{is\_idr@{is\_idr}!video::packet\_raw\_generic@{video::packet\_raw\_generic}}
+\doxysubsubsection{\texorpdfstring{is\_idr()}{is\_idr()}}
+{\footnotesize\ttfamily \label{structvideo_1_1packet__raw__generic_a2ca93e58dee2ff6d766cc3f66b202466} 
+bool video\+::packet\+\_\+raw\+\_\+generic\+::is\+\_\+idr (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{structvideo_1_1packet__raw__t}{video\+::packet\+\_\+raw\+\_\+t}}.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{video_8h}{video.\+h}}\end{DoxyCompactItemize}

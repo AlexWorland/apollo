@@ -1,0 +1,40 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/video.h File Reference}
+\hypertarget{video_8h}{}\label{video_8h}\index{/Users/alexworland/autoBitrate/apollo/src/video.h@{/Users/alexworland/autoBitrate/apollo/src/video.h}}
+
+
+Declarations for video.  
+
+
+{\ttfamily \#include "{}input.\+h"{}}\newline
+{\ttfamily \#include "{}platform/common.\+h"{}}\newline
+{\ttfamily \#include "{}thread\+\_\+safe.\+h"{}}\newline
+{\ttfamily \#include "{}video\+\_\+colorspace.\+h"{}}\newline
+{\ttfamily \#include $<$libavcodec/avcodec.\+h$>$}\newline
+{\ttfamily \#include $<$libswscale/swscale.\+h$>$}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{video_8h_adfc7c5b350cd44594ef49e9eff65bab0}{\+\_\+\+CONVERT}}(x)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Declarations for video. 
+
+
+
+\label{doc-define-members}
+\Hypertarget{video_8h_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{video_8h_adfc7c5b350cd44594ef49e9eff65bab0}\index{video.h@{video.h}!\_CONVERT@{\_CONVERT}}
+\index{\_CONVERT@{\_CONVERT}!video.h@{video.h}}
+\doxysubsubsection{\texorpdfstring{\_CONVERT}{\_CONVERT}}
+{\footnotesize\ttfamily \label{video_8h_adfc7c5b350cd44594ef49e9eff65bab0} 
+\#define \+\_\+\+CONVERT(\begin{DoxyParamCaption}\item[{}]{x}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \textcolor{keywordflow}{case}\ flag\_e::x:\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{return}\ std::string\_view(\#x)}
+
+\end{DoxyCode}

@@ -1,0 +1,52 @@
+\doxysection{lifetime Namespace Reference}
+\hypertarget{namespacelifetime}{}\label{namespacelifetime}\index{lifetime@{lifetime}}
+
+
+Functions for handling the lifetime of Sunshine.  
+
+
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{namespacelifetime_a8b0bdeb152a33f192bd40d76f780b6fb}{exit\+\_\+sunshine}} (int exit\+\_\+code, bool async)
+\begin{DoxyCompactList}\small\item\em Terminates Sunshine gracefully with the provided exit code. \end{DoxyCompactList}\item 
+\Hypertarget{namespacelifetime_a27ba172c553f3a39672faab8178d8b60}\label{namespacelifetime_a27ba172c553f3a39672faab8178d8b60} 
+void {\bfseries debug\+\_\+trap} ()
+\begin{DoxyCompactList}\small\item\em Breaks into the debugger or terminates Sunshine if no debugger is attached. \end{DoxyCompactList}\item 
+\Hypertarget{namespacelifetime_afba0e62507253a24ffd9da31b523899c}\label{namespacelifetime_afba0e62507253a24ffd9da31b523899c} 
+char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*} {\bfseries get\+\_\+argv} ()
+\begin{DoxyCompactList}\small\item\em Get the argv array passed to \doxylink{main_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main()}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{namespacelifetime_ae1b05ccd8eed2df7b4d5b01b7e498fc0}\label{namespacelifetime_ae1b05ccd8eed2df7b4d5b01b7e498fc0} 
+char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*} {\bfseries argv}
+\item 
+\Hypertarget{namespacelifetime_a1c6e5feeb3d5730b9cbb4f4eb0a8795c}\label{namespacelifetime_a1c6e5feeb3d5730b9cbb4f4eb0a8795c} 
+std\+::atomic\+\_\+int {\bfseries desired\+\_\+exit\+\_\+code}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Functions for handling the lifetime of Sunshine. 
+
+\label{doc-func-members}
+\Hypertarget{namespacelifetime_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{namespacelifetime_a8b0bdeb152a33f192bd40d76f780b6fb}\index{lifetime@{lifetime}!exit\_sunshine@{exit\_sunshine}}
+\index{exit\_sunshine@{exit\_sunshine}!lifetime@{lifetime}}
+\doxysubsubsection{\texorpdfstring{exit\_sunshine()}{exit\_sunshine()}}
+{\footnotesize\ttfamily \label{namespacelifetime_a8b0bdeb152a33f192bd40d76f780b6fb} 
+void lifetime\+::exit\+\_\+sunshine (\begin{DoxyParamCaption}\item[{int}]{exit\+\_\+code}{, }\item[{bool}]{async}{}\end{DoxyParamCaption})}
+
+
+
+Terminates Sunshine gracefully with the provided exit code. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em exit\+\_\+code} & The exit code to return from \doxylink{main_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main()}. \\
+\hline
+{\em async} & Specifies whether our termination will be non-\/blocking. \\
+\hline
+\end{DoxyParams}

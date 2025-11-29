@@ -1,0 +1,81 @@
+\doxysection{util\+::wrap\+\_\+ptr\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classutil_1_1wrap__ptr}{}\label{classutil_1_1wrap__ptr}\index{util::wrap\_ptr$<$ T $>$@{util::wrap\_ptr$<$ T $>$}}
+
+
+Wrapper pointer that can own or reference memory.  
+
+
+
+
+{\ttfamily \#include $<$utility.\+h$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classutil_1_1wrap__ptr_aa3991f99e2acf77df10c0165d3cd1c0f}\label{classutil_1_1wrap__ptr_aa3991f99e2acf77df10c0165d3cd1c0f} 
+using {\bfseries element\+\_\+type} = T
+\item 
+\Hypertarget{classutil_1_1wrap__ptr_a6cf5af9f3f916241009d02a663a18678}\label{classutil_1_1wrap__ptr_a6cf5af9f3f916241009d02a663a18678} 
+using {\bfseries pointer} = element\+\_\+type \texorpdfstring{$\ast$}{*}
+\item 
+\Hypertarget{classutil_1_1wrap__ptr_aa2162e2b3d209a85fa81ec6dfe6ade96}\label{classutil_1_1wrap__ptr_aa2162e2b3d209a85fa81ec6dfe6ade96} 
+using {\bfseries const\+\_\+pointer} = element\+\_\+type const \texorpdfstring{$\ast$}{*}
+\item 
+\Hypertarget{classutil_1_1wrap__ptr_a420e31f915bf8de3f838578fd7100a91}\label{classutil_1_1wrap__ptr_a420e31f915bf8de3f838578fd7100a91} 
+using {\bfseries reference} = element\+\_\+type \&
+\item 
+\Hypertarget{classutil_1_1wrap__ptr_a0acf3530222dacd184a9d864098b2914}\label{classutil_1_1wrap__ptr_a0acf3530222dacd184a9d864098b2914} 
+using {\bfseries const\+\_\+reference} = element\+\_\+type const \&
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classutil_1_1wrap__ptr_afada59b2ab8530135f7001bcbafc0ad3}\label{classutil_1_1wrap__ptr_afada59b2ab8530135f7001bcbafc0ad3} 
+{\bfseries wrap\+\_\+ptr} (pointer p)
+\item 
+\Hypertarget{classutil_1_1wrap__ptr_ad8b4224b1cc0ceae68794a4c23c2bd32}\label{classutil_1_1wrap__ptr_ad8b4224b1cc0ceae68794a4c23c2bd32} 
+{\bfseries wrap\+\_\+ptr} (std\+::unique\+\_\+ptr$<$ element\+\_\+type $>$ \&\&uniq\+\_\+p)
+\item 
+\Hypertarget{classutil_1_1wrap__ptr_a4cb4f67c31fcf06cbcbb057afbacd338}\label{classutil_1_1wrap__ptr_a4cb4f67c31fcf06cbcbb057afbacd338} 
+{\bfseries wrap\+\_\+ptr} (wrap\+\_\+ptr \&\&other)
+\item 
+\Hypertarget{classutil_1_1wrap__ptr_ac07ca5daf49cbf03b1ae63489bae2da1}\label{classutil_1_1wrap__ptr_ac07ca5daf49cbf03b1ae63489bae2da1} 
+wrap\+\_\+ptr \& {\bfseries operator=} (wrap\+\_\+ptr \&\&other) noexcept
+\item 
+\Hypertarget{classutil_1_1wrap__ptr_adcc6aecc3b13965ecdb651b6c1130584}\label{classutil_1_1wrap__ptr_adcc6aecc3b13965ecdb651b6c1130584} 
+{\footnotesize template$<$class V$>$ }\\wrap\+\_\+ptr \& {\bfseries operator=} (std\+::unique\+\_\+ptr$<$ V $>$ \&\&\mbox{\hyperlink{classutil_1_1uniq__ptr}{uniq\+\_\+ptr}})
+\item 
+\Hypertarget{classutil_1_1wrap__ptr_a3eff8a022f517e185fdefea77cba007b}\label{classutil_1_1wrap__ptr_a3eff8a022f517e185fdefea77cba007b} 
+wrap\+\_\+ptr \& {\bfseries operator=} (pointer p)
+\item 
+\Hypertarget{classutil_1_1wrap__ptr_a70d220c7faa5fa2033abe748e05c5c66}\label{classutil_1_1wrap__ptr_a70d220c7faa5fa2033abe748e05c5c66} 
+const\+\_\+reference {\bfseries operator\texorpdfstring{$\ast$}{*}} () const
+\item 
+\Hypertarget{classutil_1_1wrap__ptr_a96fe777ad3a5006fa25453049285e9f2}\label{classutil_1_1wrap__ptr_a96fe777ad3a5006fa25453049285e9f2} 
+reference {\bfseries operator\texorpdfstring{$\ast$}{*}} ()
+\item 
+\Hypertarget{classutil_1_1wrap__ptr_a0da600a92214ad1427a1545501f3f369}\label{classutil_1_1wrap__ptr_a0da600a92214ad1427a1545501f3f369} 
+const\+\_\+pointer {\bfseries operator-\/$>$} () const
+\item 
+\Hypertarget{classutil_1_1wrap__ptr_a4caea6d6deade31690a5d814155f101d}\label{classutil_1_1wrap__ptr_a4caea6d6deade31690a5d814155f101d} 
+pointer {\bfseries operator-\/$>$} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T$>$\newline
+class util\+::wrap\+\_\+ptr$<$ T $>$}
+Wrapper pointer that can own or reference memory. 
+
+Can either own memory (like unique\+\_\+ptr) or just reference it (like raw pointer). Useful for APIs that may or may not transfer ownership.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Element type. \\
+\hline
+\end{DoxyTemplParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/alexworland/auto\+Bitrate/apollo/src/\mbox{\hyperlink{utility_8h}{utility.\+h}}\end{DoxyCompactItemize}

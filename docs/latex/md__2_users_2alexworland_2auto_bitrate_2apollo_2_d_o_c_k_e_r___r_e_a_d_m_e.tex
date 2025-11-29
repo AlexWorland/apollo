@@ -1,0 +1,170 @@
+\chapter{Docker }
+\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e}{}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e}\index{Docker@{Docker}}
+\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md75}%
+\Hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md75}%
+\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md76}{}\doxysection{\texorpdfstring{Important note}{Important note}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md76}
+Starting with v0.\+18.\+0, tag names have changed. You may no longer use {\ttfamily latest}, {\ttfamily master}, {\ttfamily v\+X.\+X.\+X}.\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md77}{}\doxysection{\texorpdfstring{Build your own containers}{Build your own containers}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md77}
+This image provides a method for you to easily use the latest Sunshine release in your own docker projects. It is not intended to use as a standalone container at this point, and should be considered experimental.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ARG\ SUNSHINE\_VERSION=latest}
+\DoxyCodeLine{ARG\ SUNSHINE\_OS=ubuntu-\/22.04}
+\DoxyCodeLine{FROM\ lizardbyte/\mbox{\hyperlink{config_8cpp_ab1574b9a185050000a067e2484eab328}{sunshine}}:\$\{SUNSHINE\_VERSION\}-\/\$\{SUNSHINE\_OS\}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{preprocessor}{\#\ install\ Steam,\ Wayland,\ etc.}}
+\DoxyCodeLine{}
+\DoxyCodeLine{ENTRYPOINT\ steam\ \&\&\ \mbox{\hyperlink{config_8cpp_ab1574b9a185050000a067e2484eab328}{sunshine}}}
+
+\end{DoxyCode}
+\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md78}{}\doxysubsection{\texorpdfstring{SUNSHINE\+\_\+\+VERSION}{SUNSHINE\+\_\+\+VERSION}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md78}
+
+\begin{DoxyItemize}
+\item {\ttfamily latest}, {\ttfamily master}, {\ttfamily v\+X.\+X.\+X}
+\item commit hash
+\end{DoxyItemize}\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md79}{}\doxysubsection{\texorpdfstring{SUNSHINE\+\_\+\+OS}{SUNSHINE\+\_\+\+OS}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md79}
+Sunshine images are available with the following tag suffixes, based on their respective base images.
+
+
+\begin{DoxyItemize}
+\item {\ttfamily archlinux}
+\item {\ttfamily debian-\/bookworm}
+\item {\ttfamily ubuntu-\/22.\+04}
+\item {\ttfamily ubuntu-\/24.\+04}
+\end{DoxyItemize}\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md80}{}\doxysubsection{\texorpdfstring{Tags}{Tags}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md80}
+You must combine the {\ttfamily SUNSHINE\+\_\+\+VERSION} and {\ttfamily SUNSHINE\+\_\+\+OS} to determine the tag to pull. The format should be {\ttfamily \texorpdfstring{$<$}{<}SUNSHINE\+\_\+\+VERSION\texorpdfstring{$>$}{>}-\/\texorpdfstring{$<$}{<}SUNSHINE\+\_\+\+OS\texorpdfstring{$>$}{>}}. For example, {\ttfamily latest-\/ubuntu-\/24.\+04}.
+
+See all our available tags on \href{https://hub.docker.com/r/lizardbyte/sunshine/tags}{\texttt{docker hub}} or \href{https://github.com/LizardByte/Sunshine/pkgs/container/sunshine/versions}{\texttt{ghcr}} for more info.\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md81}{}\doxysection{\texorpdfstring{Where used}{Where used}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md81}
+This is a list of docker projects using Sunshine. Something missing? Let us know about it!
+
+
+\begin{DoxyItemize}
+\item \href{https://games-on-whales.github.io}{\texttt{Games on Whales}}
+\end{DoxyItemize}\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md82}{}\doxysection{\texorpdfstring{Port and Volume mappings}{Port and Volume mappings}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md82}
+Examples are below of the required mappings. The configuration file will be saved to {\ttfamily /config} in the container.\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md83}{}\doxysubsection{\texorpdfstring{Using docker run}{Using docker run}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md83}
+Create and run the container (substitute your {\ttfamily \texorpdfstring{$<$}{<}values\texorpdfstring{$>$}{>}})\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{docker\ run\ -\/d\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/-\/device\ /dev/dri/\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/-\/name=<image\_name>\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/-\/restart=unless-\/stopped\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/-\/ipc=host\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/e\ PUID=<uid>\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/e\ PGID=<gid>\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/e\ TZ=<timezone>\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/v\ <path\ to\ data>:/config\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/p\ 47984-\/47990:47984-\/47990/tcp\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/p\ 48010:48010\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/p\ 47998-\/48000:47998-\/48000/udp\ \(\backslash\)}
+\DoxyCodeLine{\ \ <image>}
+
+\end{DoxyCode}
+\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md84}{}\doxysubsection{\texorpdfstring{Using docker-\/compose}{Using docker-\/compose}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md84}
+Create a {\ttfamily docker-\/compose.\+yml} file with the following contents (substitute your {\ttfamily \texorpdfstring{$<$}{<}values\texorpdfstring{$>$}{>}})\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{version:\ '3'}
+\DoxyCodeLine{services:}
+\DoxyCodeLine{\ \ <image\_name>:}
+\DoxyCodeLine{\ \ \ \ image:\ <image>}
+\DoxyCodeLine{\ \ \ \ container\_name:\ sunshine}
+\DoxyCodeLine{\ \ \ \ restart:\ unless-\/stopped}
+\DoxyCodeLine{\ \ \ \ volumes:}
+\DoxyCodeLine{\ \ \ \ \ \ -\/\ <path\ to\ data>:/config}
+\DoxyCodeLine{\ \ \ \ environment:}
+\DoxyCodeLine{\ \ \ \ \ \ -\/\ PUID=<uid>}
+\DoxyCodeLine{\ \ \ \ \ \ -\/\ PGID=<gid>}
+\DoxyCodeLine{\ \ \ \ \ \ -\/\ TZ=<timezone>}
+\DoxyCodeLine{\ \ \ \ ipc:\ host}
+\DoxyCodeLine{\ \ \ \ ports:}
+\DoxyCodeLine{\ \ \ \ \ \ -\/\ "{}47984-\/47990:47984-\/47990/tcp"{}}
+\DoxyCodeLine{\ \ \ \ \ \ -\/\ "{}48010:48010"{}}
+\DoxyCodeLine{\ \ \ \ \ \ -\/\ "{}47998-\/48000:47998-\/48000/udp"{}}
+
+\end{DoxyCode}
+\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md85}{}\doxysubsection{\texorpdfstring{Using podman run}{Using podman run}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md85}
+Create and run the container (substitute your {\ttfamily \texorpdfstring{$<$}{<}values\texorpdfstring{$>$}{>}})\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{podman\ run\ -\/d\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/-\/device\ /dev/dri/\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/-\/name=<image\_name>\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/-\/restart=unless-\/stopped\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/-\/userns=keep-\/id\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/e\ PUID=<uid>\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/e\ PGID=<gid>\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/e\ TZ=<timezone>\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/v\ <path\ to\ data>:/config\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/p\ 47984-\/47990:47984-\/47990/tcp\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/p\ 48010:48010\ \(\backslash\)}
+\DoxyCodeLine{\ \ -\/p\ 47998-\/48000:47998-\/48000/udp\ \(\backslash\)}
+\DoxyCodeLine{\ \ <image>}
+
+\end{DoxyCode}
+\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md86}{}\doxysubsection{\texorpdfstring{Parameters}{Parameters}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md86}
+You must substitute the {\ttfamily \texorpdfstring{$<$}{<}values\texorpdfstring{$>$}{>}} with your own settings.
+
+Parameters are split into two halves separated by a colon. The left side represents the host and the right side the container.
+
+{\bfseries{Example\+:}} {\ttfamily -\/p external\+:internal} -\/ This shows the port mapping from internal to external of the container. Therefore {\ttfamily -\/p 47990\+:47990} would expose port {\ttfamily 47990} from inside the container to be accessible from the host\textquotesingle{}s IP on port {\ttfamily 47990} (e.\+g. {\ttfamily \href{http://}{\texttt{http\+://}}\texorpdfstring{$<$}{<}host\+\_\+ip\texorpdfstring{$>$}{>}\+:47990}). The internal port must be {\ttfamily 47990}, but the external port may be changed (e.\+g. {\ttfamily -\/p 8080\+:47990}). All the ports listed in the {\ttfamily docker run} and {\ttfamily docker-\/compose} examples are required.
+
+
+\begin{DoxyTable}{4}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Parameter  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Function  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Example Value  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Required  \\
+{\ttfamily -\/p \texorpdfstring{$<$}{<}port\texorpdfstring{$>$}{>}\+:47990}  &Web UI Port  &{\ttfamily 47990}  &True  \\
+{\ttfamily -\/v \texorpdfstring{$<$}{<}path to data\texorpdfstring{$>$}{>}\+:/config}  &Volume mapping  &{\ttfamily /home/sunshine}  &True  \\
+{\ttfamily -\/e PUID=\texorpdfstring{$<$}{<}uid\texorpdfstring{$>$}{>}}  &User ID  &{\ttfamily 1001}  &False  \\
+{\ttfamily -\/e PGID=\texorpdfstring{$<$}{<}gid\texorpdfstring{$>$}{>}}  &Group ID  &{\ttfamily 1001}  &False  \\
+{\ttfamily -\/e TZ=\texorpdfstring{$<$}{<}timezone\texorpdfstring{$>$}{>}}  &Lookup \href{https://en.wikipedia.org/wiki/List_of_tz_database_time_zones}{\texttt{TZ value}}  &{\ttfamily America/\+New\+\_\+\+York}  &False  \\
+\end{DoxyTable}
+
+
+For additional configuration, it is recommended to reference the {\itshape Games on Whales} \href{https://github.com/games-on-whales/gow/blob/2e442292d79b9d996f886b8a03d22b6eb6bddf7b/compose/streamers/sunshine.yml}{\texttt{sunshine config}}.\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md87}{}\doxysubsubsection{\texorpdfstring{User / Group Identifiers\+:}{User / Group Identifiers\+:}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md87}
+When using data volumes (-\/v flags) permissions issues can arise between the host OS and the container. To avoid this issue you can specify the user PUID and group PGID. Ensure the data volume directory on the host is owned by the same user you specify.
+
+In this instance {\ttfamily PUID=1001} and {\ttfamily PGID=1001}. To find yours use id user as below\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\$\ id\ dockeruser}
+\DoxyCodeLine{uid=1001(dockeruser)\ gid=1001(dockergroup)\ groups=1001(dockergroup)}
+
+\end{DoxyCode}
+
+
+If you want to change the PUID or PGID after the image has been built, it will require rebuilding the image.\hypertarget{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md88}{}\doxysection{\texorpdfstring{Supported Architectures}{Supported Architectures}}\label{md__2_users_2alexworland_2auto_bitrate_2apollo_2_d_o_c_k_e_r___r_e_a_d_m_e_autotoc_md88}
+Specifying {\ttfamily lizardbyte/sunshine\+:latest-\/\texorpdfstring{$<$}{<}SUNSHINE\+\_\+\+OS\texorpdfstring{$>$}{>}} or {\ttfamily ghcr.\+io/lizardbyte/sunshine\+:latest-\/\texorpdfstring{$<$}{<}SUNSHINE\+\_\+\+OS\texorpdfstring{$>$}{>}} should retrieve the correct image for your architecture.
+
+The architectures supported by these images are shown in the table below.
+
+
+\begin{DoxyTable}{3}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}tag suffix  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}amd64/x86\+\_\+64  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}arm64/aarch64  \\
+archlinux  &✅  &❌  \\
+debian-\/bookworm  &✅  &✅  \\
+ubuntu-\/22.\+04  &✅  &✅  \\
+ubuntu-\/24.\+04  &✅  &✅  \\
+\end{DoxyTable}
+
+
+
+
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{bg=\tableheadbgcolor,font=\bfseries}Previous  &\SetCell{r,bg=\tableheadbgcolor,font=\bfseries}Next  \\
+\doxysectlink{md_changelog}{Changelog}{0}  &\SetCell{r}\doxysectlink{md_third__party__packages}{Third-\/\+Party Packages}{0}  \\
+\end{DoxyTable}
+
+
+
+
+
+
+{\bfseries{}}\begin{adjustwidth}{1em}{0em}
+
+
+\end{adjustwidth}

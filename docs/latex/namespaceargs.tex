@@ -1,0 +1,59 @@
+\doxysection{args Namespace Reference}
+\hypertarget{namespaceargs}{}\label{namespaceargs}\index{args@{args}}
+
+
+Functions for handling command line arguments.  
+
+
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{namespaceargs_a12f74871184d794069843ca2f73a33e9}{creds}} (const char \texorpdfstring{$\ast$}{*}name, int argc, char \texorpdfstring{$\ast$}{*}argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Reset the user credentials. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{namespaceargs_afee3c375307ccb9b232d063f806f6ebb}{help}} (const char \texorpdfstring{$\ast$}{*}name)
+\begin{DoxyCompactList}\small\item\em Print help to stdout, then exit. \end{DoxyCompactList}\item 
+\Hypertarget{namespaceargs_a473eb95d65f3fc47ce193c8cfcc631da}\label{namespaceargs_a473eb95d65f3fc47ce193c8cfcc631da} 
+int {\bfseries version} ()
+\begin{DoxyCompactList}\small\item\em Print the version to stdout, then exit. @examples \doxylink{namespaceargs_a473eb95d65f3fc47ce193c8cfcc631da}{version()}; @examples\+\_\+end. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Functions for handling command line arguments. 
+
+\label{doc-func-members}
+\Hypertarget{namespaceargs_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{namespaceargs_a12f74871184d794069843ca2f73a33e9}\index{args@{args}!creds@{creds}}
+\index{creds@{creds}!args@{args}}
+\doxysubsubsection{\texorpdfstring{creds()}{creds()}}
+{\footnotesize\ttfamily \label{namespaceargs_a12f74871184d794069843ca2f73a33e9} 
+int args\+::creds (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{name}{, }\item[{int}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{argv}{\mbox{[}$\,$\mbox{]}}\end{DoxyParamCaption})}
+
+
+
+Reset the user credentials. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & The name of the program. \\
+\hline
+{\em argc} & The number of arguments. \\
+\hline
+{\em argv} & The arguments. @examples creds("{}sunshine"{}, 2, \{"{}new\+\_\+username"{}, "{}new\+\_\+password"{}\}); @examples\+\_\+end \\
+\hline
+\end{DoxyParams}
+\Hypertarget{namespaceargs_afee3c375307ccb9b232d063f806f6ebb}\index{args@{args}!help@{help}}
+\index{help@{help}!args@{args}}
+\doxysubsubsection{\texorpdfstring{help()}{help()}}
+{\footnotesize\ttfamily \label{namespaceargs_afee3c375307ccb9b232d063f806f6ebb} 
+int args\+::help (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{name}{}\end{DoxyParamCaption})}
+
+
+
+Print help to stdout, then exit. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & The name of the program. @examples help("{}sunshine"{}); @examples\+\_\+end \\
+\hline
+\end{DoxyParams}

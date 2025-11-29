@@ -1,0 +1,196 @@
+\doxysection{/\+Users/alexworland/auto\+Bitrate/apollo/src/rtsp.cpp File Reference}
+\hypertarget{rtsp_8cpp}{}\label{rtsp_8cpp}\index{/Users/alexworland/autoBitrate/apollo/src/rtsp.cpp@{/Users/alexworland/autoBitrate/apollo/src/rtsp.cpp}}
+
+
+Definitions for RTSP streaming.  
+
+
+{\ttfamily \#include $<$moonlight-\/common-\/c/src/\+Limelight-\/internal.\+h$>$}\newline
+{\ttfamily \#include $<$moonlight-\/common-\/c/src/\+Rtsp.\+h$>$}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$array$>$}\newline
+{\ttfamily \#include $<$cctype$>$}\newline
+{\ttfamily \#include $<$cstdint$>$}\newline
+{\ttfamily \#include $<$format$>$}\newline
+{\ttfamily \#include $<$set$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+{\ttfamily \#include $<$boost/asio.\+hpp$>$}\newline
+{\ttfamily \#include $<$boost/bind.\+hpp$>$}\newline
+{\ttfamily \#include "{}config.\+h"{}}\newline
+{\ttfamily \#include "{}globals.\+h"{}}\newline
+{\ttfamily \#include "{}input.\+h"{}}\newline
+{\ttfamily \#include "{}logging.\+h"{}}\newline
+{\ttfamily \#include "{}network.\+h"{}}\newline
+{\ttfamily \#include "{}rtsp.\+h"{}}\newline
+{\ttfamily \#include "{}stream.\+h"{}}\newline
+{\ttfamily \#include "{}sync.\+h"{}}\newline
+{\ttfamily \#include "{}video.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structrtsp__stream_1_1encrypted__rtsp__header__t}{rtsp\+\_\+stream\+::encrypted\+\_\+rtsp\+\_\+header\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Encrypted RTSP message header. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classrtsp__stream_1_1socket__t}{rtsp\+\_\+stream\+::socket\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em RTSP socket handler. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classrtsp__stream_1_1rtsp__server__t}{rtsp\+\_\+stream\+::rtsp\+\_\+server\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em RTSP server implementation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{rtsp_8cpp_aef9f7aad24968bb67e2ada2cd10337cb}\label{rtsp_8cpp_aef9f7aad24968bb67e2ada2cd10337cb} 
+using {\bfseries rtsp\+\_\+stream\+::msg\+\_\+t} = util\+::safe\+\_\+ptr$<$RTSP\+\_\+\+MESSAGE, free\+\_\+msg$>$
+\item 
+\Hypertarget{rtsp_8cpp_a7e704c7f025d47332f0f309832e6d791}\label{rtsp_8cpp_a7e704c7f025d47332f0f309832e6d791} 
+using {\bfseries rtsp\+\_\+stream\+::cmd\+\_\+func\+\_\+t} = std\+::function$<$void(\mbox{\hyperlink{classrtsp__stream_1_1rtsp__server__t}{rtsp\+\_\+server\+\_\+t}} \texorpdfstring{$\ast$}{*}server, tcp\+::socket \&, \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\+\_\+session\+\_\+t}} \&, msg\+\_\+t \&\&)$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{rtsp_8cpp_a68b95b07a67d0ed11144cddebf018867}\label{rtsp_8cpp_a68b95b07a67d0ed11144cddebf018867} 
+void {\bfseries rtsp\+\_\+stream\+::free\+\_\+msg} (PRTSP\+\_\+\+MESSAGE msg)
+\item 
+\Hypertarget{rtsp_8cpp_ac8ff728058b78386a9a4cca0362d5725}\label{rtsp_8cpp_ac8ff728058b78386a9a4cca0362d5725} 
+void {\bfseries rtsp\+\_\+stream\+::print\+\_\+msg} (PRTSP\+\_\+\+MESSAGE msg)
+\item 
+\Hypertarget{rtsp_8cpp_a3c9191ba2c996c6dd5c6b51281707b17}\label{rtsp_8cpp_a3c9191ba2c996c6dd5c6b51281707b17} 
+void {\bfseries rtsp\+\_\+stream\+::cmd\+\_\+not\+\_\+found} (tcp\+::socket \&sock, \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\+\_\+session\+\_\+t}} \&, msg\+\_\+t \&\&req)
+\item 
+\Hypertarget{rtsp_8cpp_acc4ea74a0b7e2d469e2af3eb9a74d8a3}\label{rtsp_8cpp_acc4ea74a0b7e2d469e2af3eb9a74d8a3} 
+void {\bfseries rtsp\+\_\+stream\+::respond} (tcp\+::socket \&sock, \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\+\_\+session\+\_\+t}} \&session, POPTION\+\_\+\+ITEM options, int statuscode, const char \texorpdfstring{$\ast$}{*}status\+\_\+msg, int seqn, const std\+::string\+\_\+view \&payload)
+\item 
+void \mbox{\hyperlink{rtsp_8cpp_ace65558c3b0a45389132782bf0ae76af}{rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+raise}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\+\_\+session\+\_\+t}} $>$ launch\+\_\+session)
+\begin{DoxyCompactList}\small\item\em Raise/activate a launch session. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{rtsp_8cpp_a58910a8858632361972daa6afb96d84a}{rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+clear}} (uint32\+\_\+t launch\+\_\+session\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Clear state for the specified launch session. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{rtsp_8cpp_ac328e4d3b111e0fd4219b13737d99d6d}{rtsp\+\_\+stream\+::session\+\_\+count}} ()
+\begin{DoxyCompactList}\small\item\em Get the number of active sessions. \end{DoxyCompactList}\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structstream_1_1session__t}{stream\+::session\+\_\+t}} $>$ \mbox{\hyperlink{rtsp_8cpp_a226a5d9986c10450c111cb7ba7704f53}{rtsp\+\_\+stream\+::find\+\_\+session}} (const std\+::string\+\_\+view \&uuid)
+\begin{DoxyCompactList}\small\item\em Find a session by UUID. \end{DoxyCompactList}\item 
+std\+::list$<$ std\+::string $>$ \mbox{\hyperlink{rtsp_8cpp_ac06dc570a4d3b4ae0083b42c9ad8b866}{rtsp\+\_\+stream\+::get\+\_\+all\+\_\+session\+\_\+uuids}} ()
+\begin{DoxyCompactList}\small\item\em Get all active session UUIDs. \end{DoxyCompactList}\item 
+\Hypertarget{rtsp_8cpp_a10870a2e7029f864eb050932b6e03b3e}\label{rtsp_8cpp_a10870a2e7029f864eb050932b6e03b3e} 
+void {\bfseries rtsp\+\_\+stream\+::terminate\+\_\+sessions} ()
+\begin{DoxyCompactList}\small\item\em Terminates all running streaming sessions. \end{DoxyCompactList}\item 
+\Hypertarget{rtsp_8cpp_a94b526b859bc2f6037584eb91ca9811a}\label{rtsp_8cpp_a94b526b859bc2f6037584eb91ca9811a} 
+int {\bfseries rtsp\+\_\+stream\+::send} (tcp\+::socket \&sock, const std\+::string\+\_\+view \&sv)
+\item 
+\Hypertarget{rtsp_8cpp_a3d660b9f9f4d246c496a2e76f4093b22}\label{rtsp_8cpp_a3d660b9f9f4d246c496a2e76f4093b22} 
+void {\bfseries rtsp\+\_\+stream\+::respond} (tcp\+::socket \&sock, \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\+\_\+session\+\_\+t}} \&session, msg\+\_\+t \&resp)
+\item 
+\Hypertarget{rtsp_8cpp_a4627145b1936aa628a009b692f1e1fec}\label{rtsp_8cpp_a4627145b1936aa628a009b692f1e1fec} 
+void {\bfseries rtsp\+\_\+stream\+::cmd\+\_\+option} (\mbox{\hyperlink{classrtsp__stream_1_1rtsp__server__t}{rtsp\+\_\+server\+\_\+t}} \texorpdfstring{$\ast$}{*}server, tcp\+::socket \&sock, \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\+\_\+session\+\_\+t}} \&session, msg\+\_\+t \&\&req)
+\item 
+void \mbox{\hyperlink{rtsp_8cpp_aa85a5dcfac52a0d9dd08aff2fc0f46e6}{rtsp\+\_\+stream\+::cmd\+\_\+describe}} (\mbox{\hyperlink{classrtsp__stream_1_1rtsp__server__t}{rtsp\+\_\+server\+\_\+t}} \texorpdfstring{$\ast$}{*}server, tcp\+::socket \&sock, \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\+\_\+session\+\_\+t}} \&session, msg\+\_\+t \&\&req)
+\item 
+\Hypertarget{rtsp_8cpp_a184c386b27b9ff51fe6c1e0e34f8ead7}\label{rtsp_8cpp_a184c386b27b9ff51fe6c1e0e34f8ead7} 
+void {\bfseries rtsp\+\_\+stream\+::cmd\+\_\+setup} (\mbox{\hyperlink{classrtsp__stream_1_1rtsp__server__t}{rtsp\+\_\+server\+\_\+t}} \texorpdfstring{$\ast$}{*}server, tcp\+::socket \&sock, \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\+\_\+session\+\_\+t}} \&session, msg\+\_\+t \&\&req)
+\item 
+\Hypertarget{rtsp_8cpp_abd9f1e46ea0bfcc30f3b59fefd2f533e}\label{rtsp_8cpp_abd9f1e46ea0bfcc30f3b59fefd2f533e} 
+void {\bfseries rtsp\+\_\+stream\+::cmd\+\_\+announce} (\mbox{\hyperlink{classrtsp__stream_1_1rtsp__server__t}{rtsp\+\_\+server\+\_\+t}} \texorpdfstring{$\ast$}{*}server, tcp\+::socket \&sock, \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\+\_\+session\+\_\+t}} \&session, msg\+\_\+t \&\&req)
+\item 
+\Hypertarget{rtsp_8cpp_a5428749c053d97f994e0c6d11c5efaac}\label{rtsp_8cpp_a5428749c053d97f994e0c6d11c5efaac} 
+void {\bfseries rtsp\+\_\+stream\+::cmd\+\_\+play} (\mbox{\hyperlink{classrtsp__stream_1_1rtsp__server__t}{rtsp\+\_\+server\+\_\+t}} \texorpdfstring{$\ast$}{*}server, tcp\+::socket \&sock, \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\+\_\+session\+\_\+t}} \&session, msg\+\_\+t \&\&req)
+\item 
+\Hypertarget{rtsp_8cpp_ae0ea344308f556ed0816ab85675738fc}\label{rtsp_8cpp_ae0ea344308f556ed0816ab85675738fc} 
+void {\bfseries rtsp\+\_\+stream\+::start} ()
+\begin{DoxyCompactList}\small\item\em Runs the RTSP server loop. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{rtsp_8cpp_a5d6aadf108dd03ef919cb405f096be23}\label{rtsp_8cpp_a5d6aadf108dd03ef919cb405f096be23} 
+constexpr std\+::int64\+\_\+t {\bfseries CLIENT\+\_\+\+MAX\+\_\+\+REQUESTED\+\_\+\+BITRATE\+\_\+\+KBPS} = 1\textquotesingle{}000\textquotesingle{}000
+\item 
+\Hypertarget{rtsp_8cpp_a956761b2c9064fdf598b8908a390f72d}\label{rtsp_8cpp_a956761b2c9064fdf598b8908a390f72d} 
+\mbox{\hyperlink{classrtsp__stream_1_1rtsp__server__t}{rtsp\+\_\+server\+\_\+t}} {\bfseries rtsp\+\_\+stream\+::server} \{\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Definitions for RTSP streaming. 
+
+
+
+\label{doc-func-members}
+\Hypertarget{rtsp_8cpp_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{rtsp_8cpp_aa85a5dcfac52a0d9dd08aff2fc0f46e6}\index{rtsp.cpp@{rtsp.cpp}!cmd\_describe@{cmd\_describe}}
+\index{cmd\_describe@{cmd\_describe}!rtsp.cpp@{rtsp.cpp}}
+\doxysubsubsection{\texorpdfstring{cmd\_describe()}{cmd\_describe()}}
+{\footnotesize\ttfamily \label{rtsp_8cpp_aa85a5dcfac52a0d9dd08aff2fc0f46e6} 
+void rtsp\+\_\+stream\+::cmd\+\_\+describe (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classrtsp__stream_1_1rtsp__server__t}{rtsp\+\_\+server\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{server}{, }\item[{tcp\+::socket \&}]{sock}{, }\item[{\mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\+\_\+session\+\_\+t}} \&}]{session}{, }\item[{msg\+\_\+t \&\&}]{req}{}\end{DoxyParamCaption})}
+
+GFE advertises incorrect mapping for normal quality configurations, as a result, Moonlight rotates all channels from index \textquotesingle{}3\textquotesingle{} to the right To work around this, rotate channels to the left from index \textquotesingle{}3\textquotesingle{}\Hypertarget{rtsp_8cpp_a226a5d9986c10450c111cb7ba7704f53}\index{rtsp.cpp@{rtsp.cpp}!find\_session@{find\_session}}
+\index{find\_session@{find\_session}!rtsp.cpp@{rtsp.cpp}}
+\doxysubsubsection{\texorpdfstring{find\_session()}{find\_session()}}
+{\footnotesize\ttfamily \label{rtsp_8cpp_a226a5d9986c10450c111cb7ba7704f53} 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structstream_1_1session__t}{stream\+::session\+\_\+t}} $>$ rtsp\+\_\+stream\+::find\+\_\+session (\begin{DoxyParamCaption}\item[{const std\+::string\+\_\+view \&}]{uuid}{}\end{DoxyParamCaption})}
+
+
+
+Find a session by UUID. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em uuid} & The session UUID. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Shared pointer to session, or nullptr if not found. 
+\end{DoxyReturn}
+\Hypertarget{rtsp_8cpp_ac06dc570a4d3b4ae0083b42c9ad8b866}\index{rtsp.cpp@{rtsp.cpp}!get\_all\_session\_uuids@{get\_all\_session\_uuids}}
+\index{get\_all\_session\_uuids@{get\_all\_session\_uuids}!rtsp.cpp@{rtsp.cpp}}
+\doxysubsubsection{\texorpdfstring{get\_all\_session\_uuids()}{get\_all\_session\_uuids()}}
+{\footnotesize\ttfamily \label{rtsp_8cpp_ac06dc570a4d3b4ae0083b42c9ad8b866} 
+std\+::list$<$ std\+::string $>$ rtsp\+\_\+stream\+::get\+\_\+all\+\_\+session\+\_\+uuids (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Get all active session UUIDs. 
+
+\begin{DoxyReturn}{Returns}
+List of session UUID strings. 
+\end{DoxyReturn}
+\Hypertarget{rtsp_8cpp_a58910a8858632361972daa6afb96d84a}\index{rtsp.cpp@{rtsp.cpp}!launch\_session\_clear@{launch\_session\_clear}}
+\index{launch\_session\_clear@{launch\_session\_clear}!rtsp.cpp@{rtsp.cpp}}
+\doxysubsubsection{\texorpdfstring{launch\_session\_clear()}{launch\_session\_clear()}}
+{\footnotesize\ttfamily \label{rtsp_8cpp_a58910a8858632361972daa6afb96d84a} 
+void rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+clear (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{launch\+\_\+session\+\_\+id}{}\end{DoxyParamCaption})}
+
+
+
+Clear state for the specified launch session. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em launch\+\_\+session\+\_\+id} & The ID of the session to clear. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{rtsp_8cpp_ace65558c3b0a45389132782bf0ae76af}\index{rtsp.cpp@{rtsp.cpp}!launch\_session\_raise@{launch\_session\_raise}}
+\index{launch\_session\_raise@{launch\_session\_raise}!rtsp.cpp@{rtsp.cpp}}
+\doxysubsubsection{\texorpdfstring{launch\_session\_raise()}{launch\_session\_raise()}}
+{\footnotesize\ttfamily \label{rtsp_8cpp_ace65558c3b0a45389132782bf0ae76af} 
+void rtsp\+\_\+stream\+::launch\+\_\+session\+\_\+raise (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{structrtsp__stream_1_1launch__session__t}{launch\+\_\+session\+\_\+t}} $>$}]{launch\+\_\+session}{}\end{DoxyParamCaption})}
+
+
+
+Raise/activate a launch session. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em launch\+\_\+session} & Shared pointer to the launch session. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{rtsp_8cpp_ac328e4d3b111e0fd4219b13737d99d6d}\index{rtsp.cpp@{rtsp.cpp}!session\_count@{session\_count}}
+\index{session\_count@{session\_count}!rtsp.cpp@{rtsp.cpp}}
+\doxysubsubsection{\texorpdfstring{session\_count()}{session\_count()}}
+{\footnotesize\ttfamily \label{rtsp_8cpp_ac328e4d3b111e0fd4219b13737d99d6d} 
+int rtsp\+\_\+stream\+::session\+\_\+count (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Get the number of active sessions. 
+
+\begin{DoxyReturn}{Returns}
+Count of active sessions. 
+\end{DoxyReturn}

@@ -44,6 +44,11 @@ using namespace std::literals;
 constexpr std::int64_t CLIENT_MAX_REQUESTED_BITRATE_KBPS = 1'000'000;
 
 namespace rtsp_stream {
+  /**
+   * @brief Free RTSP message resources.
+   * 
+   * @param msg RTSP message to free.
+   */
   void free_msg(PRTSP_MESSAGE msg) {
     freeMessage(msg);
 
@@ -52,44 +57,115 @@ namespace rtsp_stream {
 
 #pragma pack(push, 1)
 
+  /**
+   * @brief Encrypted RTSP message header.
+   * 
+   * Header structure for encrypted RTSP messages with AES-GCM authentication.
+   * Contains payload length, sequence number, and authentication tag.
+   */
   struct encrypted_rtsp_header_t {
     // We set the MSB in encrypted RTSP messages to allow format-agnostic
     // parsing code to be able to tell encrypted from plaintext messages.
     static constexpr std::uint32_t ENCRYPTED_MESSAGE_TYPE_BIT = 0x80000000;
 
+    /**
+     * @brief Get pointer to payload data.
+     * @return Pointer to payload following the header.
+     */
     uint8_t *payload() {
       return (uint8_t *) (this + 1);
     }
 
+    /**
+     * @brief Get payload length.
+     * @return Payload length in bytes (without encryption bit).
+     */
     std::uint32_t payload_length() {
       return util::endian::big<std::uint32_t>(typeAndLength) & ~ENCRYPTED_MESSAGE_TYPE_BIT;
     }
 
+    /**
+     * @brief Check if message is encrypted.
+     * @return True if message is encrypted.
+     */
     bool is_encrypted() {
       return !!(util::endian::big<std::uint32_t>(typeAndLength) & ENCRYPTED_MESSAGE_TYPE_BIT);
     }
 
-    // This field is the length of the payload + ENCRYPTED_MESSAGE_TYPE_BIT in big-endian
+    /**
+     * @brief Type and length field (big-endian).
+     * 
+     * Contains payload length with MSB set to indicate encryption.
+     */
     std::uint32_t typeAndLength;
 
-    // This field is the number used to initialize the bottom 4 bytes of the AES IV in big-endian
+    /**
+     * @brief Sequence number (big-endian).
+     * 
+     * Used to initialize the bottom 4 bytes of the AES IV.
+     */
     std::uint32_t sequenceNumber;
 
-    // This field is the AES GCM authentication tag
+    /**
+     * @brief AES GCM authentication tag.
+     * 
+     * 16-byte authentication tag for message integrity.
+     */
     std::uint8_t tag[16];
   };
 
 #pragma pack(pop)
 
+  /**
+   * @brief Forward declaration of RTSP server class.
+   */
   class rtsp_server_t;
 
+  /**
+   * @brief Safe pointer type for RTSP messages.
+   */
   using msg_t = util::safe_ptr<RTSP_MESSAGE, free_msg>;
+
+  /**
+   * @brief Command handler function type.
+   */
   using cmd_func_t = std::function<void(rtsp_server_t *server, tcp::socket &, launch_session_t &, msg_t &&)>;
 
+  /**
+   * @brief Print RTSP message for debugging.
+   * 
+   * @param msg RTSP message to print.
+   */
   void print_msg(PRTSP_MESSAGE msg);
+
+  /**
+   * @brief Handle command not found error.
+   * 
+   * @param sock Socket to send error response on.
+   * @param session Launch session.
+   * @param req Request message.
+   */
   void cmd_not_found(tcp::socket &sock, launch_session_t &, msg_t &&req);
+
+  /**
+   * @brief Send RTSP response.
+   * 
+   * @param sock Socket to send response on.
+   * @param session Launch session.
+   * @param options RTSP options to include in response.
+   * @param statuscode HTTP status code.
+   * @param status_msg Status message.
+   * @param seqn Sequence number.
+   * @param payload Response payload.
+   */
   void respond(tcp::socket &sock, launch_session_t &session, POPTION_ITEM options, int statuscode, const char *status_msg, int seqn, const std::string_view &payload);
 
+  /**
+   * @brief RTSP socket handler.
+   * 
+   * Manages RTSP connection state, message reading (both plaintext and encrypted),
+   * and message handling for a single RTSP client connection.
+   */
   class socket_t: public std::enable_shared_from_this<socket_t> {
   public:
     socket_t(boost::asio::io_context &io_context, std::function<void(tcp::socket &sock, launch_session_t &, msg_t &&)> &&handle_data_fn):
@@ -244,6 +320,8 @@ namespace rtsp_stream {
 
     /**
      * @brief Queue an asynchronous read of the payload portion of a plaintext message.
+     * 
+     * Continues reading after the RTSP header has been parsed.
      */
     void read_plaintext_payload() {
       if (begin == std::end(msg_buf)) {
@@ -386,28 +464,66 @@ namespace rtsp_stream {
       handle_plaintext_payload(socket, ec, buf_size);
     }
 
+    /**
+     * @brief Handle received RTSP message.
+     * 
+     * @param req RTSP message to handle.
+     */
     void handle_data(msg_t &&req) {
       handle_data_fn(sock, *session, std::move(req));
     }
 
+    /**
+     * @brief Callback function for handling received messages.
+     */
     std::function<void(tcp::socket &sock, launch_session_t &, msg_t &&)> handle_data_fn;
 
+    /**
+     * @brief TCP socket for RTSP connection.
+     */
     tcp::socket sock;
 
+    /**
+     * @brief Message buffer for reading RTSP messages.
+     */
     std::array<char, 2048> msg_buf;
 
+    /**
+     * @brief Pointer to end of header (CRLF position).
+     */
     char *crlf;
+
+    /**
+     * @brief Pointer to current read position in buffer.
+     */
     char *begin = msg_buf.data();
 
+    /**
+     * @brief Launch session associated with this socket.
+     */
     std::shared_ptr<launch_session_t> session;
   };
 
+  /**
+   * @brief RTSP server implementation.
+   * 
+   * Handles RTSP protocol communication including session management,
+   * message routing, and connection lifecycle.
+   */
   class rtsp_server_t {
   public:
     ~rtsp_server_t() {
       clear();
     }
 
+    /**
+     * @brief Bind RTSP server to address and port.
+     * 
+     * @param af Address family (IPv4 or IPv6).
+     * @param port Port number to bind to.
+     * @param ec Error code output parameter.
+     * @return 0 on success, -1 on error.
+     */
     int bind(net::af_e af, std::uint16_t port, boost::system::error_code &ec) {
       acceptor.open(af == net::IPV4 ? tcp::v4() : tcp::v6(), ec);
       if (ec) {
@@ -437,6 +553,15 @@ namespace rtsp_stream {
       return 0;
     }
 
+    /**
+     * @brief Handle incoming RTSP message.
+     * 
+     * Routes message to appropriate command handler based on message type.
+     * 
+     * @param sock Socket the message was received on.
+     * @param session Launch session.
+     * @param req RTSP message.
+     */
     void handle_msg(tcp::socket &sock, launch_session_t &session, msg_t &&req) {
       auto func = _map_cmd_cb.find(req->message.request.command);
       if (func != std::end(_map_cmd_cb)) {
@@ -449,6 +574,14 @@ namespace rtsp_stream {
       sock.shutdown(boost::asio::socket_base::shutdown_type::shutdown_both, ec);
     }
 
+    /**
+     * @brief Handle new connection acceptance.
+     * 
+     * Called when a new TCP connection is accepted. Associates it with a launch session
+     * and begins reading RTSP messages.
+     * 
+     * @param ec Error code from accept operation.
+     */
     void handle_accept(const boost::system::error_code &ec) {
       if (ec) {
         BOOST_LOG(error) << "Couldn't accept incoming connections: "sv << ec.message();
@@ -483,6 +616,14 @@ namespace rtsp_stream {
       });
     }
 
+    /**
+     * @brief Register command handler.
+     * 
+     * Maps an RTSP command type to a handler function.
+     * 
+     * @param type RTSP command type (e.g., "OPTIONS", "DESCRIBE").
+     * @param cb Handler function to call for this command.
+     */
     void map(const std::string_view &type, cmd_func_t cb) {
       _map_cmd_cb.emplace(type, std::move(cb));
     }
@@ -541,6 +682,11 @@ namespace rtsp_stream {
       return _session_slots->size();
     }
 
+    /**
+     * @brief Event channel for launch sessions.
+     * 
+     * Used to signal when a new launch session is ready for RTSP handshake.
+     */
     safe::event_t<std::shared_ptr<launch_session_t>> launch_event;
 
     /**
@@ -607,6 +753,12 @@ namespace rtsp_stream {
       clear();
     }
 
+    /**
+     * @brief Find a streaming session by UUID.
+     * 
+     * @param uuid Session UUID to search for.
+     * @return Shared pointer to session, or nullptr if not found.
+     */
     std::shared_ptr<stream::session_t>
     find_session(const std::string_view& uuid) {
       auto lg = _session_slots.lock();
@@ -620,6 +772,11 @@ namespace rtsp_stream {
       return nullptr;
     }
 
+    /**
+     * @brief Get UUIDs of all active sessions.
+     * 
+     * @return List of session UUID strings.
+     */
     std::list<std::string>
     get_all_session_uuids() {
       std::list<std::string> uuids;
@@ -633,27 +790,62 @@ namespace rtsp_stream {
     }
 
   private:
+    /**
+     * @brief Map of RTSP command types to handler functions.
+     */
     std::unordered_map<std::string_view, cmd_func_t> _map_cmd_cb;
 
+    /**
+     * @brief Thread-safe set of active streaming sessions.
+     */
     sync_util::sync_t<std::set<std::shared_ptr<stream::session_t>>> _session_slots;
 
+    /**
+     * @brief I/O context for async operations.
+     */
     boost::asio::io_context io_context;
+
+    /**
+     * @brief TCP acceptor for incoming connections.
+     */
     tcp::acceptor acceptor {io_context};
+
+    /**
+     * @brief Timer for launch session expiration.
+     */
     boost::asio::steady_timer raised_timer {io_context};
 
+    /**
+     * @brief Next socket to accept connections on.
+     */
     std::shared_ptr<socket_t> next_socket;
   };
 
   rtsp_server_t server {};
 
+  /**
+   * @brief Raise/activate a launch session.
+   * 
+   * @param launch_session Launch session to activate.
+   */
   void launch_session_raise(std::shared_ptr<launch_session_t> launch_session) {
     server.session_raise(std::move(launch_session));
   }
 
+  /**
+   * @brief Clear a launch session by ID.
+   * 
+   * @param launch_session_id ID of launch session to clear.
+   */
   void launch_session_clear(uint32_t launch_session_id) {
     server.session_clear(launch_session_id);
   }
 
+  /**
+   * @brief Get count of active streaming sessions.
+   * 
+   * @return Number of active sessions.
+   */
   int session_count() {
     // Ensure session_count is up-to-date
     server.clear(false);
@@ -661,18 +853,39 @@ namespace rtsp_stream {
     return server.session_count();
   }
 
+  /**
+   * @brief Find a streaming session by UUID.
+   * 
+   * @param uuid Session UUID to search for.
+   * @return Shared pointer to session, or nullptr if not found.
+   */
   std::shared_ptr<stream::session_t> find_session(const std::string_view& uuid) {
     return server.find_session(uuid);
   }
 
+  /**
+   * @brief Get UUIDs of all active sessions.
+   * 
+   * @return List of session UUID strings.
+   */
   std::list<std::string> get_all_session_uuids() {
     return server.get_all_session_uuids();
   }
 
+  /**
+   * @brief Terminate all active sessions.
+   */
   void terminate_sessions() {
     server.clear(true);
   }
 
+  /**
+   * @brief Send data over TCP socket.
+   * 
+   * @param sock Socket to send on.
+   * @param sv String view of data to send.
+   * @return 0 on success, -1 on error.
+   */
   int send(tcp::socket &sock, const std::string_view &sv) {
     std::size_t bytes_send = 0;
 
