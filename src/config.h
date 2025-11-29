@@ -19,6 +19,12 @@ namespace config {
   // track modified config options
   inline std::unordered_map<std::string, std::string> modified_config_settings;
 
+  /**
+   * @brief Video encoding and display configuration structure.
+   * 
+   * Contains all settings related to video capture, encoding, display device management,
+   * and auto bitrate adjustment for streaming.
+   */
   struct video_t {
     bool headless_mode;
     bool limit_framerate;
@@ -88,7 +94,19 @@ namespace config {
     std::string adapter_name;
     std::string output_name;
 
+    /**
+     * @brief Display device configuration structure.
+     * 
+     * Contains settings for managing display device configuration, resolution,
+     * refresh rate, HDR, and mode remapping during streaming sessions.
+     */
     struct dd_t {
+      /**
+       * @brief Display device workarounds configuration.
+       * 
+       * Contains workaround settings for display device issues, such as
+       * HDR toggle delays and other display-related fixes.
+       */
       struct workarounds_t {
         std::chrono::milliseconds hdr_toggle_delay;  ///< Specify whether to apply HDR high-contrast color workaround and what delay to use.
       };
@@ -118,6 +136,13 @@ namespace config {
         automatic  ///< Change HDR settings and use the state requested by Moonlight.
       };
 
+      /**
+       * @brief Mode remapping entry structure.
+       * 
+       * Defines a single mapping between requested and final display modes.
+       * Used to remap client-requested resolutions and refresh rates to
+       * different values based on configuration.
+       */
       struct mode_remapping_entry_t {
         std::string requested_resolution;
         std::string requested_fps;
@@ -125,6 +150,12 @@ namespace config {
         std::string final_refresh_rate;
       };
 
+      /**
+       * @brief Mode remapping configuration structure.
+       * 
+       * Contains collections of mode remapping entries organized by
+       * which automatic options are enabled (resolution, refresh rate, or both).
+       */
       struct mode_remapping_t {
         std::vector<mode_remapping_entry_t> mixed;  ///< To be used when `resolution_option` and `refresh_rate_option` is set to `automatic`.
         std::vector<mode_remapping_entry_t> resolution_only;  ///< To be use when only `resolution_option` is set to `automatic`.

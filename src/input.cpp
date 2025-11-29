@@ -122,6 +122,13 @@ namespace input {
     free_id(gamepadMask, id);
   }
 
+  /**
+   * @brief Gamepad state structure.
+   * 
+   * Manages the state and lifecycle of a gamepad controller, including
+   * gamepad state, back button timeout handling, and automatic cleanup
+   * when the gamepad is destroyed.
+   */
   struct gamepad_t {
     gamepad_t():
         gamepad_state {},
@@ -152,6 +159,13 @@ namespace input {
     button_state_e back_button_state;
   };
 
+  /**
+   * @brief Main input handler structure.
+   * 
+   * Manages all input handling including keyboard, mouse, gamepad, and touch input.
+   * Handles shortcut key combinations, gamepad state management, and input routing
+   * to the appropriate platform-specific handlers.
+   */
   struct input_t {
     enum shortkey_e {
       CTRL = 0x1,  ///< Control key
@@ -1667,6 +1681,12 @@ namespace input {
     });
   }
 
+  /**
+   * @brief RAII deinitialization helper for input system.
+   * 
+   * Automatically resets the platform input system when destroyed.
+   * Used to ensure proper cleanup of input resources.
+   */
   class deinit_t: public platf::deinit_t {
   public:
     ~deinit_t() override {

@@ -12,6 +12,12 @@
  * @brief UUID utilities.
  */
 namespace uuid_util {
+  /**
+   * @brief UUID structure.
+   * 
+   * Represents a 128-bit UUID with multiple access methods (bytes, words, dwords, qwords).
+   * Supports generation, parsing, and string conversion.
+   */
   union uuid_t {
     std::uint8_t b8[16];
     std::uint16_t b16[8];

@@ -52,6 +52,12 @@ namespace rtsp_stream {
 
 #pragma pack(push, 1)
 
+  /**
+   * @brief Encrypted RTSP message header.
+   * 
+   * Header structure for encrypted RTSP messages with AES-GCM authentication.
+   * Contains payload length, sequence number, and authentication tag.
+   */
   struct encrypted_rtsp_header_t {
     // We set the MSB in encrypted RTSP messages to allow format-agnostic
     // parsing code to be able to tell encrypted from plaintext messages.
@@ -90,6 +96,12 @@ namespace rtsp_stream {
   void cmd_not_found(tcp::socket &sock, launch_session_t &, msg_t &&req);
   void respond(tcp::socket &sock, launch_session_t &session, POPTION_ITEM options, int statuscode, const char *status_msg, int seqn, const std::string_view &payload);
 
+  /**
+   * @brief RTSP socket handler.
+   * 
+   * Manages RTSP connection state, message reading (both plaintext and encrypted),
+   * and message handling for a single RTSP client connection.
+   */
   class socket_t: public std::enable_shared_from_this<socket_t> {
   public:
     socket_t(boost::asio::io_context &io_context, std::function<void(tcp::socket &sock, launch_session_t &, msg_t &&)> &&handle_data_fn):
@@ -402,6 +414,12 @@ namespace rtsp_stream {
     std::shared_ptr<launch_session_t> session;
   };
 
+  /**
+   * @brief RTSP server implementation.
+   * 
+   * Handles RTSP protocol communication including session management,
+   * message routing, and connection lifecycle.
+   */
   class rtsp_server_t {
   public:
     ~rtsp_server_t() {

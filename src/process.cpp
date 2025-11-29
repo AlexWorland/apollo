@@ -78,6 +78,11 @@ namespace proc {
   }
 #endif
 
+  /**
+   * @brief RAII deinitialization helper for process management.
+   * 
+   * Automatically terminates the process when destroyed.
+   */
   class deinit_t: public platf::deinit_t {
   public:
     ~deinit_t() {

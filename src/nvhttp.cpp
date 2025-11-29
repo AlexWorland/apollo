@@ -53,6 +53,11 @@ namespace nvhttp {
   using p_named_cert_t = crypto::p_named_cert_t;
   using PERM = crypto::PERM;
 
+  /**
+   * @brief Client information structure.
+   * 
+   * Stores information about paired clients, including their named certificates.
+   */
   struct client_t {
     std::vector<p_named_cert_t> named_devices;
   };
@@ -65,6 +70,12 @@ namespace nvhttp {
   static std::string otp_device_name;
   static std::chrono::time_point<std::chrono::steady_clock> otp_creation_time;
 
+  /**
+   * @brief HTTPS server for GameStream protocol.
+   * 
+   * Extends SimpleWeb::ServerBase to provide SSL/TLS support with client certificate
+   * verification for secure GameStream communication.
+   */
   class SunshineHTTPSServer: public SimpleWeb::ServerBase<SunshineHTTPS> {
   public:
     SunshineHTTPSServer(const std::string &certification_file, const std::string &private_key_file):
@@ -141,6 +152,11 @@ namespace nvhttp {
   using https_server_t = SunshineHTTPSServer;
   using http_server_t = SimpleWeb::Server<SimpleWeb::HTTP>;
 
+  /**
+   * @brief Internal configuration structure.
+   * 
+   * Stores internal server configuration including certificate and private key paths.
+   */
   struct conf_intern_t {
     std::string servercert;
     std::string pkey;
@@ -649,14 +665,28 @@ namespace nvhttp {
     tree.put("root.<xmlattr>.status_code", 200);
   }
 
+  /**
+   * @brief Tunnel structure template.
+   * 
+   * Provides tunneling functionality for HTTP/HTTPS connections.
+   * Used to forward requests through the server.
+   * 
+   * @tparam T The protocol type (SimpleWeb::HTTP or SunshineHTTPS).
+   */
   template<class T>
   struct tunnel;
 
+  /**
+   * @brief Tunnel specialization for HTTPS.
+   */
   template<>
   struct tunnel<SunshineHTTPS> {
     static auto constexpr to_string = "HTTPS"sv;
   };
 
+  /**
+   * @brief Tunnel specialization for HTTP.
+   */
   template<>
   struct tunnel<SimpleWeb::HTTP> {
     static auto constexpr to_string = "NONE"sv;

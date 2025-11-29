@@ -319,6 +319,11 @@ namespace crypto {
       int decrypt(const std::string_view &cipher, std::vector<std::uint8_t> &plaintext);
     };
 
+    /**
+     * @brief AES-GCM cipher implementation.
+     * 
+     * Provides authenticated encryption using AES in Galois/Counter Mode (GCM).
+     */
     class gcm_t: public cipher_t {
     public:
       gcm_t() = default;

@@ -13,6 +13,14 @@
  * @tparam T The iterator type.
  */
 namespace round_robin_util {
+  /**
+   * @brief Iterator wrapper for round-robin iteration.
+   * 
+   * Wraps an iterator to provide round-robin iteration semantics.
+   * 
+   * @tparam V Value type.
+   * @tparam T Iterator type.
+   */
   template<class V, class T>
   class it_wrap_t {
   public:
@@ -141,6 +149,14 @@ namespace round_robin_util {
     }
   };
 
+  /**
+   * @brief Round-robin container iterator.
+   * 
+   * Provides round-robin iteration over a container, cycling through elements.
+   * 
+   * @tparam V Value type.
+   * @tparam It Iterator type.
+   */
   template<class V, class It>
   class round_robin_t: public it_wrap_t<V, round_robin_t<V, It>> {
   public:

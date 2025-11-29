@@ -25,6 +25,12 @@ namespace cbs {
 
   using ctx_t = util::safe_ptr<CodedBitstreamContext, close>;
 
+  /**
+   * @brief Coded bitstream fragment wrapper.
+   * 
+   * Wraps FFmpeg's CodedBitstreamFragment with proper move semantics
+   * and initialization for handling H.264/H.265/AV1 bitstream fragments.
+   */
   class frag_t: public CodedBitstreamFragment {
   public:
     frag_t(frag_t &&o) {

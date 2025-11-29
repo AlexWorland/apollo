@@ -283,6 +283,12 @@ namespace video {
     uint32_t flags;
   };
 
+  /**
+   * @brief Base class for video encoding sessions.
+   * 
+   * Provides the interface for video encoding operations including frame conversion,
+   * IDR frame requests, and reference frame invalidation.
+   */
   struct encode_session_t {
     virtual ~encode_session_t() = default;
 
@@ -321,6 +327,12 @@ namespace video {
   extern encoder_t videotoolbox;
 #endif
 
+  /**
+   * @brief Base class for raw video packet data.
+   * 
+   * Provides the interface for accessing encoded video packet data,
+   * including frame type detection, frame indexing, and data access.
+   */
   struct packet_raw_t {
     virtual ~packet_raw_t() = default;
 
@@ -332,6 +344,13 @@ namespace video {
 
     virtual size_t data_size() = 0;
 
+    /**
+     * @brief Replacement operation for packet data.
+     * 
+     * Defines a single byte sequence replacement operation.
+     * Used to replace specific byte sequences in the packet data
+     * (e.g., for SPS/PPS injection or header modifications).
+     */
     struct replace_t {
       std::string_view old;
       std::string_view _new;
@@ -344,12 +363,24 @@ namespace video {
       }
     };
 
-    std::vector<replace_t> *replacements = nullptr;
+    /**
+     * @brief Replacement operation for packet data.
+     * 
+     * Defines a single byte sequence replacement operation.
+     * Used to replace specific byte sequences in the packet data
+     * (e.g., for SPS/PPS injection or header modifications).
+     */
+    struct replace_t {
     void *channel_data = nullptr;
     bool after_ref_frame_invalidation = false;
     std::optional<std::chrono::steady_clock::time_point> frame_timestamp;
   };
 
+  /**
+   * @brief Video packet implementation using libavcodec.
+   * 
+   * Wraps AVPacket from FFmpeg/libavcodec for video packet handling.
+   */
   struct packet_raw_avcodec: packet_raw_t {
     packet_raw_avcodec() {
       av_packet = av_packet_alloc();
@@ -378,6 +409,12 @@ namespace video {
     AVPacket *av_packet;
   };
 
+  /**
+   * @brief Generic video packet implementation.
+   * 
+   * Stores video packet data in a vector with frame index and IDR flag.
+   * Used for encoders that don't use libavcodec.
+   */
   struct packet_raw_generic: packet_raw_t {
     packet_raw_generic(std::vector<uint8_t> &&frame_data, int64_t frame_index, bool idr):
         frame_data {std::move(frame_data)},
@@ -408,6 +445,11 @@ namespace video {
 
   using packet_t = std::unique_ptr<packet_raw_t>;
 
+  /**
+   * @brief HDR information structure.
+   * 
+   * Contains HDR metadata and enabled state for High Dynamic Range video.
+   */
   struct hdr_info_raw_t {
     explicit hdr_info_raw_t(bool enabled):
         enabled {enabled},

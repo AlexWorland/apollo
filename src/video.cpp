@@ -133,6 +133,11 @@ namespace video {
   util::Either<avcodec_buffer_t, int> cuda_init_avcodec_hardware_input_buffer(platf::avcodec_encode_device_t *);
   util::Either<avcodec_buffer_t, int> vt_init_avcodec_hardware_input_buffer(platf::avcodec_encode_device_t *);
 
+  /**
+   * @brief Software video encoding device using libavcodec.
+   * 
+   * Implements software-based video encoding using CPU-based libavcodec encoders.
+   */
   class avcodec_software_encode_device_t: public platf::avcodec_encode_device_t {
   public:
     int convert(platf::img_t &img) override {
@@ -312,6 +317,12 @@ namespace video {
     ASYNC_TEARDOWN = 1 << 11,  ///< Encoder supports async teardown on a different thread
   };
 
+  /**
+   * @brief Video encoding session using libavcodec.
+   * 
+   * Implements encode_session_t using FFmpeg/libavcodec for software encoding
+   * or hardware-accelerated encoding through libavcodec.
+   */
   class avcodec_encode_session_t: public encode_session_t {
   public:
     avcodec_encode_session_t() = default;
@@ -389,6 +400,12 @@ namespace video {
     int inject;
   };
 
+  /**
+   * @brief Video encoding session using NVIDIA NVENC.
+   * 
+   * Implements encode_session_t using NVIDIA's hardware video encoder
+   * for accelerated H.264, HEVC, and AV1 encoding.
+   */
   class nvenc_encode_session_t: public encode_session_t {
   public:
     nvenc_encode_session_t(std::unique_ptr<platf::nvenc_encode_device_t> encode_device):
@@ -442,6 +459,12 @@ namespace video {
     bool force_idr = false;
   };
 
+  /**
+   * @brief Synchronous encoding session context.
+   * 
+   * Contains thread-safe communication channels and configuration
+   * for synchronous video encoding operations.
+   */
   struct sync_session_ctx_t {
     safe::signal_t *join_event;
     safe::mail_raw_t::event_t<bool> shutdown_event;
@@ -455,6 +478,11 @@ namespace video {
     void *channel_data;
   };
 
+  /**
+   * @brief Synchronous encoding session.
+   * 
+   * Pairs an encoding session with its context for synchronous encoding.
+   */
   struct sync_session_t {
     sync_session_ctx_t *ctx;
     std::unique_ptr<encode_session_t> session;
@@ -463,11 +491,22 @@ namespace video {
   using encode_session_ctx_queue_t = safe::queue_t<sync_session_ctx_t>;
   using encode_e = platf::capture_e;
 
+  /**
+   * @brief Video capture context.
+   * 
+   * Contains image event channel and configuration for video capture operations.
+   */
   struct capture_ctx_t {
     img_event_t images;
     config_t config;
   };
 
+  /**
+   * @brief Asynchronous video capture thread context.
+   * 
+   * Contains thread-safe queues and synchronization primitives
+   * for asynchronous video capture operations.
+   */
   struct capture_thread_async_ctx_t {
     std::shared_ptr<safe::queue_t<capture_ctx_t>> capture_ctx_queue;
     std::thread capture_thread;
@@ -477,6 +516,11 @@ namespace video {
     sync_util::sync_t<std::weak_ptr<platf::display_t>> display_wp;
   };
 
+  /**
+   * @brief Synchronous video capture thread context.
+   * 
+   * Contains queue for synchronous video capture operations.
+   */
   struct capture_thread_sync_ctx_t {
     encode_session_ctx_queue_t encode_session_ctx_queue {30};
   };

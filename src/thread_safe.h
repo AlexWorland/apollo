@@ -17,6 +17,15 @@
 #include "utility.h"
 
 namespace safe {
+  /**
+   * @brief Thread-safe event/signal class.
+   * 
+   * Provides a thread-safe mechanism for signaling events between threads.
+   * Supports waiting for events, timeout-based waiting, and can be stopped/reset.
+   * Thread-safe: all operations are protected by internal mutex.
+   * 
+   * @tparam T The type of value to signal with the event.
+   */
   template<class T>
   class event_t {
   public:
@@ -148,6 +157,15 @@ namespace safe {
     std::mutex _lock;
   };
 
+  /**
+   * @brief Thread-safe alarm class.
+   * 
+   * Provides a thread-safe alarm mechanism that can be "rung" to signal
+   * waiting threads. Supports timeout-based waiting and predicate-based waiting.
+   * Thread-safe: all operations are protected by internal mutex.
+   * 
+   * @tparam T The type of status value associated with the alarm.
+   */
   template<class T>
   class alarm_raw_t {
   public:
@@ -249,6 +267,15 @@ namespace safe {
     return std::make_shared<alarm_raw_t<T>>();
   }
 
+  /**
+   * @brief Thread-safe queue class.
+   * 
+   * Provides a thread-safe FIFO queue with a maximum size limit.
+   * When the queue reaches maximum capacity, it automatically clears.
+   * Thread-safe: all operations are protected by internal mutex.
+   * 
+   * @tparam T The type of elements stored in the queue.
+   */
   template<class T>
   class queue_t {
   public:
@@ -346,6 +373,15 @@ namespace safe {
     std::vector<T> _queue;
   };
 
+  /**
+   * @brief Thread-safe shared object manager.
+   * 
+   * Manages a single instance of an object with reference counting.
+   * The object is constructed on first access and destructed when the last
+   * reference is released. Thread-safe: all operations are protected by internal mutex.
+   * 
+   * @tparam T The type of object to manage.
+   */
   template<class T>
   class shared_t {
   public:
@@ -354,6 +390,12 @@ namespace safe {
     using construct_f = std::function<int(element_type &)>;
     using destruct_f = std::function<void(element_type &)>;
 
+    /**
+     * @brief Smart pointer to a shared object.
+     * 
+     * Manages a reference to a shared object. Automatically releases
+     * the reference when destroyed. Copying increments the reference count.
+     */
     struct ptr_t {
       shared_t *owner;
 
@@ -476,6 +518,14 @@ namespace safe {
 
   void cleanup(mail_raw_t *);
 
+  /**
+   * @brief Post wrapper for mail-based communication.
+   * 
+   * Wraps an event or queue with automatic cleanup when destroyed.
+   * Ensures proper cleanup of mail resources when the post goes out of scope.
+   * 
+   * @tparam T The type being wrapped (typically event_t or queue_t).
+   */
   template<class T>
   class post_t: public T {
   public:
@@ -497,6 +547,13 @@ namespace safe {
     return std::reinterpret_pointer_cast<typename T::element_type>(wp.lock());
   }
 
+  /**
+   * @brief Mail container for named events and queues.
+   * 
+   * Provides a registry for named thread-safe events and queues.
+   * Allows multiple components to access the same event/queue by name.
+   * Automatically cleans up expired references.
+   */
   class mail_raw_t: public std::enable_shared_from_this<mail_raw_t> {
   public:
     template<class T>

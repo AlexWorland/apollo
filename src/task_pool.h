@@ -21,6 +21,11 @@
 
 namespace task_pool_util {
 
+  /**
+   * @brief Base class for task pool implementation.
+   * 
+   * Internal base class for task execution in the task pool.
+   */
   class _ImplBase {
   public:
     // _unique_base_type _this_ptr;
@@ -30,6 +35,13 @@ namespace task_pool_util {
     virtual void run() = 0;
   };
 
+  /**
+   * @brief Task implementation for function execution.
+   * 
+   * Internal implementation class that wraps a function for execution in the task pool.
+   * 
+   * @tparam Function Function or callable type to execute.
+   */
   template<class Function>
   class _Impl: public _ImplBase {
     Function _func;
@@ -44,6 +56,12 @@ namespace task_pool_util {
     }
   };
 
+  /**
+   * @brief Thread pool for asynchronous task execution.
+   * 
+   * Manages a pool of worker threads for executing tasks asynchronously.
+   * Supports scheduled tasks and timer-based execution.
+   */
   class TaskPool {
   public:
     typedef std::unique_ptr<_ImplBase> __task;
@@ -51,6 +69,13 @@ namespace task_pool_util {
 
     typedef std::chrono::steady_clock::time_point __time_point;
 
+    /**
+     * @brief Timer task result structure.
+     * 
+     * Contains the task ID and future result for scheduled timer tasks.
+     * 
+     * @tparam R Return type of the timer task.
+     */
     template<class R>
     class timer_task_t {
     public:

@@ -11,6 +11,14 @@
 
 namespace sync_util {
 
+  /**
+   * @brief Synchronized value wrapper.
+   * 
+   * Wraps a value with a mutex to provide thread-safe access.
+   * 
+   * @tparam T Value type to synchronize.
+   * @tparam M Mutex type (defaults to std::mutex).
+   */
   template<class T, class M = std::mutex>
   class sync_t {
   public:

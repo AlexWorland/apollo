@@ -26,6 +26,11 @@ using namespace std::literals;
 
 namespace upnp {
 
+  /**
+   * @brief UPnP port mapping structure.
+   * 
+   * Contains port mapping information for UPnP port forwarding.
+   */
   struct mapping_t {
     struct {
       std::string wan;
@@ -63,6 +68,11 @@ namespace upnp {
 #endif
   }
 
+  /**
+   * @brief RAII deinitialization helper for UPnP.
+   * 
+   * Automatically removes UPnP port mappings when destroyed.
+   */
   class deinit_t: public platf::deinit_t {
   public:
     deinit_t() {

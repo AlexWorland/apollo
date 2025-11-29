@@ -98,6 +98,13 @@ namespace stream {
 
 #pragma pack(push, 1)
 
+  /**
+   * @brief Short frame header for video packets.
+   * 
+   * Compact header format for video frames with minimal overhead.
+   * Used for efficient transmission of video data with frame type and
+   * processing latency information.
+   */
   struct video_short_frame_header_t {
     uint8_t *payload() {
       return (uint8_t *) (this + 1);
@@ -129,6 +136,12 @@ namespace stream {
     "Short frame header must be 8 bytes"
   );
 
+  /**
+   * @brief Raw video packet structure.
+   * 
+   * Contains RTP packet header and NVIDIA video packet structure
+   * for transmitting raw video data over the network.
+   */
   struct video_packet_raw_t {
     uint8_t *payload() {
       return (uint8_t *) (this + 1);
@@ -140,16 +153,33 @@ namespace stream {
     NV_VIDEO_PACKET packet;
   };
 
+  /**
+   * @brief Encrypted video packet prefix.
+   * 
+   * Contains initialization vector (IV), frame number, and authentication tag
+   * for AES-GCM encrypted video packets.
+   */
   struct video_packet_enc_prefix_t {
     std::uint8_t iv[12];  // 12-byte IV is ideal for AES-GCM
     std::uint32_t frameNumber;
     std::uint8_t tag[16];
   };
 
+  /**
+   * @brief Audio packet structure.
+   * 
+   * Contains RTP packet header for transmitting audio data over the network.
+   */
   struct audio_packet_t {
     RTP_PACKET rtp;
   };
 
+  /**
+   * @brief Control message header (version 2).
+   * 
+   * Header structure for control stream messages, containing message type
+   * and payload length information.
+   */
   struct control_header_v2 {
     std::uint16_t type;
     std::uint16_t payloadLength;
@@ -159,12 +189,22 @@ namespace stream {
     }
   };
 
+  /**
+   * @brief Control message: terminate stream.
+   * 
+   * Sent to terminate the streaming session with an exit code.
+   */
   struct control_terminate_t {
     control_header_v2 header;
 
     std::uint32_t ec;
   };
 
+  /**
+   * @brief Control message: gamepad rumble.
+   * 
+   * Sent to trigger rumble/haptic feedback on a gamepad controller.
+   */
   struct control_rumble_t {
     control_header_v2 header;
 
@@ -175,6 +215,11 @@ namespace stream {
     std::uint16_t highfreq;
   };
 
+  /**
+   * @brief Control message: trigger rumble.
+   * 
+   * Sent to trigger adaptive trigger rumble effects on gamepad controllers.
+   */
   struct control_rumble_triggers_t {
     control_header_v2 header;
 
@@ -183,6 +228,11 @@ namespace stream {
     std::uint16_t right;
   };
 
+  /**
+   * @brief Control message: set motion event.
+   * 
+   * Sent to configure motion sensor reporting for a gamepad controller.
+   */
   struct control_set_motion_event_t {
     control_header_v2 header;
 
@@ -191,6 +241,11 @@ namespace stream {
     std::uint8_t type;
   };
 
+  /**
+   * @brief Control message: set RGB LED.
+   * 
+   * Sent to set the RGB LED color on a gamepad controller.
+   */
   struct control_set_rgb_led_t {
     control_header_v2 header;
 
@@ -200,6 +255,12 @@ namespace stream {
     std::uint8_t b;
   };
 
+  /**
+   * @brief Control message: adaptive triggers.
+   * 
+   * Sent to configure adaptive trigger effects on gamepad controllers
+   * (e.g., DualSense trigger resistance).
+   */
   struct control_adaptive_triggers_t {
     control_header_v2 header;
 
@@ -215,6 +276,12 @@ namespace stream {
     std::uint8_t right[DS_EFFECT_PAYLOAD_SIZE];
   };
 
+  /**
+   * @brief Control message: HDR mode.
+   * 
+   * Sent to enable or disable HDR mode, including HDR metadata
+   * (Sunshine protocol extension).
+   */
   struct control_hdr_mode_t {
     control_header_v2 header;
 
@@ -224,6 +291,11 @@ namespace stream {
     SS_HDR_METADATA metadata;
   };
 
+  /**
+   * @brief Control message: bitrate statistics.
+   * 
+   * Contains statistics about current bitrate, adjustments, and packet loss.
+   */
   struct control_bitrate_stats_t {
     control_header_v2 header;
 
@@ -233,11 +305,22 @@ namespace stream {
     float loss_percentage;
   };
 
+  /**
+   * @brief Control message: connection status.
+   * 
+   * Reports the current connection quality status (OKAY or POOR).
+   */
   struct control_connection_status_t {
     control_header_v2 header;
     std::uint8_t status;  // 0 = OKAY, 1 = POOR
   };
 
+  /**
+   * @brief Control message: auto bitrate statistics (version 2).
+   * 
+   * Enhanced statistics for auto bitrate adjustment, including loss metrics,
+   * timing information, and connection status hints.
+   */
   struct control_auto_bitrate_stats_v2_t {
     control_header_v2 header;
     std::uint32_t loss_pct_milli;
@@ -249,6 +332,12 @@ namespace stream {
     std::uint8_t reserved[7];
   };
 
+  /**
+   * @brief Encrypted control message wrapper.
+   * 
+   * Wraps control messages with encryption metadata including sequence number,
+   * initialization vector, and authentication tag for AES-GCM encryption.
+   */
   typedef struct control_encrypted_t {
     std::uint16_t encryptedHeaderType;  // Always LE 0x0001
     std::uint16_t length;  // sizeof(seq) + 16 byte tag + secondary header and data
@@ -514,6 +603,12 @@ namespace stream {
       reed_solomon_release(rs);
     }>;
 
+    /**
+     * @brief Forward Error Correction (FEC) structure.
+     * 
+     * Manages FEC encoding for video packets, including data shards,
+     * parity shards, and buffer management for Reed-Solomon encoding.
+     */
     struct fec_t {
       size_t data_shards;
       size_t nr_shards;

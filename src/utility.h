@@ -25,6 +25,15 @@
     while (y) z \
   }
 
+/**
+ * @brief Template helper to extract argument type from function signature.
+ * 
+ * Extracts the argument type U from a function type T(U).
+ * Used internally for template metaprogramming.
+ * 
+ * @tparam T Function type in the form ReturnType(ArgType)
+ * @tparam U Argument type (deduced)
+ */
 template<typename T>
 struct argument_type;
 
@@ -158,6 +167,14 @@ namespace util {
   template<class... Ts>
   overloaded(Ts...) -> overloaded<Ts...>;
 
+  /**
+   * @brief RAII guard that executes a function on failure.
+   * 
+   * Executes a cleanup function when the guard is destroyed if failure is true.
+   * Useful for ensuring cleanup code runs when an operation fails.
+   * 
+   * @tparam T Function or callable type to execute on failure.
+   */
   template<class T>
   class FailGuard {
   public:
@@ -213,6 +230,13 @@ namespace util {
     }
   }
 
+  /**
+   * @brief Hexadecimal string conversion utility.
+   * 
+   * Converts binary data to hexadecimal string representation.
+   * 
+   * @tparam T Container or data type to convert.
+   */
   template<class T>
   class Hex {
   public:
@@ -479,6 +503,13 @@ namespace util {
     return default_value;
   }
 
+  /**
+   * @brief Hash function for arbitrary types.
+   * 
+   * Provides a hash implementation that hashes the raw bytes of a type.
+   * 
+   * @tparam T Type to hash.
+   */
   template<class T>
   class hash {
   public:
@@ -521,6 +552,15 @@ namespace util {
     return from_chars(std::begin(number), std::end(number));
   }
 
+  /**
+   * @brief Either type for representing one of two possible values.
+   * 
+   * Similar to Haskell's Either type, holds either an X or Y value.
+   * Provides convenient accessors for left (X) and right (Y) values.
+   * 
+   * @tparam X Left value type.
+   * @tparam Y Right value type.
+   */
   template<class X, class Y>
   class Either: public std::variant<std::monostate, X, Y> {
   public:
@@ -551,7 +591,15 @@ namespace util {
     }
   };
 
-  // Compared to std::unique_ptr, it adds the ability to get the address of the pointer itself
+  /**
+   * @brief Unique pointer with addressable pointer storage.
+   * 
+   * Similar to std::unique_ptr but allows getting the address of the pointer itself,
+   * which is useful for C APIs that require pointer-to-pointer arguments.
+   * 
+   * @tparam T Element type.
+   * @tparam D Deleter type (defaults to std::default_delete<T>).
+   */
   template<typename T, typename D = std::default_delete<T>>
   class uniq_ptr {
   public:
@@ -731,6 +779,14 @@ namespace util {
     return shared_t<P>(reinterpret_cast<typename P::pointer>(pointer), typename P::deleter_type());
   }
 
+  /**
+   * @brief Wrapper pointer that can own or reference memory.
+   * 
+   * Can either own memory (like unique_ptr) or just reference it (like raw pointer).
+   * Useful for APIs that may or may not transfer ownership.
+   * 
+   * @tparam T Element type.
+   */
   template<class T>
   class wrap_ptr {
   public:
@@ -858,6 +914,13 @@ namespace util {
     std::optional<T>>;
 
   template<class T>
+  /**
+   * @brief Buffer container for binary data.
+   * 
+   * Provides a resizable buffer for storing binary data with convenient access methods.
+   * 
+   * @tparam T Element type (typically char or uint8_t).
+   */
   class buffer_t {
   public:
     buffer_t():
@@ -939,11 +1002,28 @@ namespace util {
     return std::forward<T>(r);
   }
 
+  /**
+   * @brief Function pointer type helper.
+   * 
+   * Helper template to extract function pointer types.
+   * 
+   * @tparam ReturnType Return type of the function.
+   * @tparam Args Argument types of the function.
+   */
   template<class ReturnType, class... Args>
   struct Function {
     typedef ReturnType (*type)(Args...);
   };
 
+  /**
+   * @brief Deleter wrapper for function pointers.
+   * 
+   * Wraps a function pointer to be used as a deleter for smart pointers.
+   * 
+   * @tparam T Pointer type.
+   * @tparam ReturnType Return type of the destroy function.
+   * @tparam function Function pointer to call for destruction.
+   */
   template<class T, class ReturnType, typename Function<ReturnType, T>::type function>
   struct Destroy {
     typedef T pointer;
@@ -989,6 +1069,11 @@ namespace util {
     return std::string_view((const char *) &data, sizeof(T));
   }
 
+  /**
+   * @brief 2D point structure.
+   * 
+   * Represents a point in 2D space with x and y coordinates.
+   */
   struct point_t {
     double x;
     double y;
@@ -999,6 +1084,13 @@ namespace util {
   };
 
   namespace endian {
+    /**
+     * @brief Endianness detection helper.
+     * 
+     * Provides compile-time endianness detection for the target architecture.
+     * 
+     * @tparam T Unused (for consistency with other templates).
+     */
     template<class T = void>
     struct endianness {
       enum : bool {
@@ -1025,6 +1117,14 @@ namespace util {
       };
     };
 
+    /**
+     * @brief Endianness conversion helper.
+     * 
+     * Provides functions to convert between big-endian and little-endian byte orders.
+     * 
+     * @tparam T Type to convert.
+     * @tparam S SFINAE helper type (void for non-optional types).
+     */
     template<class T, class S = void>
     struct endian_helper {};
 
