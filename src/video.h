@@ -363,14 +363,6 @@ namespace video {
       }
     };
 
-    /**
-     * @brief Replacement operation for packet data.
-     * 
-     * Defines a single byte sequence replacement operation.
-     * Used to replace specific byte sequences in the packet data
-     * (e.g., for SPS/PPS injection or header modifications).
-     */
-    struct replace_t {
     void *channel_data = nullptr;
     bool after_ref_frame_invalidation = false;
     std::optional<std::chrono::steady_clock::time_point> frame_timestamp;
