@@ -59,15 +59,37 @@ namespace nvhttp {
    * Stores information about paired clients, including their named certificates.
    */
   struct client_t {
-    std::vector<p_named_cert_t> named_devices;
+    std::vector<p_named_cert_t> named_devices;  ///< List of paired client certificates.
   };
 
+  /**
+   * @brief Forward declaration of pairing session structure.
+   */
   struct pair_session_t;
 
+  /**
+   * @brief Certificate chain for server authentication.
+   */
   crypto::cert_chain_t cert_chain;
+
+  /**
+   * @brief One-time PIN for client pairing.
+   */
   static std::string one_time_pin;
+
+  /**
+   * @brief Passphrase for one-time PIN pairing.
+   */
   static std::string otp_passphrase;
+
+  /**
+   * @brief Device name for one-time PIN pairing.
+   */
   static std::string otp_device_name;
+
+  /**
+   * @brief Creation time of one-time PIN (for expiration).
+   */
   static std::chrono::time_point<std::chrono::steady_clock> otp_creation_time;
 
   /**
@@ -88,12 +110,31 @@ namespace nvhttp {
       context.use_private_key_file(private_key_file, boost::asio::ssl::context::pem);
     }
 
+    /**
+     * @brief Client certificate verification callback.
+     * 
+     * Called to verify client certificates. Returns true if certificate is valid.
+     */
     std::function<bool(std::shared_ptr<Request>, SSL*)> verify;
+
+    /**
+     * @brief Callback for failed certificate verification.
+     * 
+     * Called when client certificate verification fails.
+     */
     std::function<void(std::shared_ptr<Response>, std::shared_ptr<Request>)> on_verify_failed;
 
   protected:
+    /**
+     * @brief SSL context for TLS connections.
+     */
     boost::asio::ssl::context context;
 
+    /**
+     * @brief Called after server binds to port.
+     * 
+     * Configures SSL verification if verify callback is set.
+     */
     void after_bind() override {
       if (verify) {
         context.set_verify_mode(boost::asio::ssl::verify_peer | boost::asio::ssl::verify_fail_if_no_peer_cert | boost::asio::ssl::verify_client_once);
@@ -104,7 +145,11 @@ namespace nvhttp {
       }
     }
 
-    // This is Server<HTTPS>::accept() with SSL validation support added
+    /**
+     * @brief Accept new HTTPS connections with SSL validation.
+     * 
+     * Overrides base accept() to add SSL handshake and client certificate verification.
+     */
     void accept() override {
       auto connection = create_connection(*io_service, context);
 
@@ -149,7 +194,14 @@ namespace nvhttp {
     }
   };
 
+  /**
+   * @brief HTTPS server type alias.
+   */
   using https_server_t = SunshineHTTPSServer;
+
+  /**
+   * @brief HTTP server type alias.
+   */
   using http_server_t = SimpleWeb::Server<SimpleWeb::HTTP>;
 
   /**
@@ -158,18 +210,43 @@ namespace nvhttp {
    * Stores internal server configuration including certificate and private key paths.
    */
   struct conf_intern_t {
-    std::string servercert;
-    std::string pkey;
+    std::string servercert;  ///< Path to server certificate file.
+    std::string pkey;  ///< Path to private key file.
   } conf_intern;
 
-  // uniqueID, session
+  /**
+   * @brief Map of unique IDs to pairing sessions.
+   */
   std::unordered_map<std::string, pair_session_t> map_id_sess;
+
+  /**
+   * @brief Root client container for all paired clients.
+   */
   client_t client_root;
+
+  /**
+   * @brief Atomic counter for generating unique session IDs.
+   */
   std::atomic<uint32_t> session_id_counter;
 
+  /**
+   * @brief HTTPS response type alias.
+   */
   using resp_https_t = std::shared_ptr<typename SimpleWeb::ServerBase<SunshineHTTPS>::Response>;
+
+  /**
+   * @brief HTTPS request type alias.
+   */
   using req_https_t = std::shared_ptr<typename SimpleWeb::ServerBase<SunshineHTTPS>::Request>;
+
+  /**
+   * @brief HTTP response type alias.
+   */
   using resp_http_t = std::shared_ptr<typename SimpleWeb::ServerBase<SimpleWeb::HTTP>::Response>;
+
+  /**
+   * @brief HTTP request type alias.
+   */
   using req_http_t = std::shared_ptr<typename SimpleWeb::ServerBase<SimpleWeb::HTTP>::Request>;
 
   enum class op_e {
@@ -189,7 +266,15 @@ namespace nvhttp {
     return it->second;
   }
 
-  // Helper function to extract command entries from a JSON object.
+  /**
+   * @brief Extract command entries from a JSON object.
+   * 
+   * Parses a JSON array of command entries and converts them to a list of command_entry_t.
+   * 
+   * @param j JSON object containing the commands.
+   * @param key JSON key containing the command array.
+   * @return List of command entries.
+   */
   cmd_list_t extract_command_entries(const nlohmann::json& j, const std::string& key) {
     cmd_list_t commands;
 
@@ -219,6 +304,11 @@ namespace nvhttp {
     return commands;
   }
 
+  /**
+   * @brief Save server state to file.
+   * 
+   * Saves client pairing information, unique ID, and configuration to JSON file.
+   */
   void save_state() {
     nlohmann::json root = nlohmann::json::object();
     // If the state file exists, try to read it.
@@ -302,6 +392,12 @@ namespace nvhttp {
     }
   }
 
+  /**
+   * @brief Load server state from file.
+   * 
+   * Loads client pairing information, unique ID, and configuration from JSON file.
+   * Generates new unique ID if file doesn't exist or is invalid.
+   */
   void load_state() {
     if (!fs::exists(config::nvhttp.file_state)) {
       BOOST_LOG(info) << "File "sv << config::nvhttp.file_state << " doesn't exist"sv;
@@ -381,6 +477,11 @@ namespace nvhttp {
     client_root = client;
   }
 
+  /**
+   * @brief Add an authorized client to the pairing list.
+   * 
+   * @param named_cert_p Named certificate of the client to add.
+   */
   void add_authorized_client(const p_named_cert_t& named_cert_p) {
     client_t &client = client_root;
     client.named_devices.push_back(named_cert_p);
@@ -395,6 +496,15 @@ namespace nvhttp {
     }
   }
 
+  /**
+   * @brief Create a launch session for RTSP streaming.
+   * 
+   * @param host_audio Whether to host audio.
+   * @param input_only Whether this is an input-only session.
+   * @param args Request arguments containing stream configuration.
+   * @param named_cert_p Client certificate (nullptr if unpaired).
+   * @return Shared pointer to launch session.
+   */
   std::shared_ptr<rtsp_stream::launch_session_t> make_launch_session(bool host_audio, bool input_only, const args_t &args, const crypto::named_cert_t* named_cert_p) {
     auto launch_session = std::make_shared<rtsp_stream::launch_session_t>();
 
@@ -486,10 +596,24 @@ namespace nvhttp {
     return launch_session;
   }
 
+  /**
+   * @brief Remove a pairing session.
+   * 
+   * @param sess Pairing session to remove.
+   */
   void remove_session(const pair_session_t &sess) {
     map_id_sess.erase(sess.client.uniqueID);
   }
 
+  /**
+   * @brief Fail a pairing attempt.
+   * 
+   * Sets pairing status to failed in the response tree.
+   * 
+   * @param sess Pairing session.
+   * @param tree Response property tree.
+   * @param status_msg Status message to include.
+   */
   void fail_pair(pair_session_t &sess, pt::ptree &tree, const std::string status_msg) {
     tree.put("root.paired", 0);
     tree.put("root.<xmlattr>.status_code", 400);

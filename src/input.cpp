@@ -29,6 +29,13 @@ extern "C" {
 #include "utility.h"
 
 // Win32 WHEEL_DELTA constant
+/**
+ * @def WHEEL_DELTA
+ * @brief Standard wheel delta value for mouse wheel scrolling.
+ * 
+ * Represents one detent (click) of the mouse wheel. Used for accumulating
+ * high-resolution scroll deltas.
+ */
 #ifndef WHEEL_DELTA
   #define WHEEL_DELTA 120
 #endif
@@ -38,7 +45,22 @@ using namespace std::literals;
 namespace input {
 
   constexpr auto MAX_GAMEPADS = std::min((std::size_t) platf::MAX_GAMEPADS, sizeof(std::int16_t) * 8);
+/**
+ * @def DISABLE_LEFT_BUTTON_DELAY
+ * @brief Task ID value indicating left mouse button should be disabled.
+ * 
+ * Used as a sentinel value in mouse_left_button_timeout to indicate
+ * that the left button delay is active.
+ */
 #define DISABLE_LEFT_BUTTON_DELAY ((thread_pool_util::ThreadPool::task_id_t) 0x01)
+
+/**
+ * @def ENABLE_LEFT_BUTTON_DELAY
+ * @brief Task ID value indicating left mouse button delay is cleared.
+ * 
+ * Used as a sentinel value (nullptr) to indicate that the left button
+ * delay timeout has been cleared.
+ */
 #define ENABLE_LEFT_BUTTON_DELAY nullptr
 
   constexpr auto VKEY_SHIFT = 0x10;
@@ -145,18 +167,18 @@ namespace input {
       }
     }
 
-    platf::gamepad_state_t gamepad_state;
+    platf::gamepad_state_t gamepad_state;  ///< Current gamepad button and axis state.
 
-    thread_pool_util::ThreadPool::task_id_t back_timeout_id;
+    thread_pool_util::ThreadPool::task_id_t back_timeout_id;  ///< Task ID for back button timeout handling.
 
-    int id;
+    int id;  ///< Unique gamepad identifier.
 
     // When emulating the HOME button, we may need to artificially release the back button.
     // Afterwards, the gamepad state on sunshine won't match the state on Moonlight.
     // To prevent Sunshine from sending erroneous input data to the active application,
     // Sunshine forces the button to be in a specific state until the gamepad state matches that of
     // Moonlight once more.
-    button_state_e back_button_state;
+    button_state_e back_button_state;  ///< Forced state for back button during HOME button emulation.
   };
 
   /**
@@ -167,6 +189,11 @@ namespace input {
    * to the appropriate platform-specific handlers.
    */
   struct input_t {
+    /**
+     * @brief Shortcut key combination flags enumeration.
+     * 
+     * Flags for tracking modifier key combinations used for shortcuts.
+     */
     enum shortkey_e {
       CTRL = 0x1,  ///< Control key
       ALT = 0x2,  ///< Alt key
@@ -174,6 +201,12 @@ namespace input {
       SHORTCUT = CTRL | ALT | SHIFT  ///< Shortcut combination
     };
 
+    /**
+     * @brief Construct input handler.
+     * 
+     * @param touch_port_event Event for touch port updates.
+     * @param feedback_queue Queue for gamepad feedback (rumble, etc.).
+     */
     input_t(
       safe::mail_raw_t::event_t<input::touch_port_t> touch_port_event,
       platf::feedback_queue_t feedback_queue
@@ -189,24 +222,23 @@ namespace input {
         accumulated_hscroll_delta {} {
     }
 
-    // Keep track of alt+ctrl+shift key combo
-    int shortcutFlags;
+    int shortcutFlags;  ///< Bitmask tracking alt+ctrl+shift key combination state.
 
-    std::vector<gamepad_t> gamepads;
-    std::unique_ptr<platf::client_input_t> client_context;
+    std::vector<gamepad_t> gamepads;  ///< Vector of gamepad state structures (one per connected gamepad).
+    std::unique_ptr<platf::client_input_t> client_context;  ///< Platform-specific client input context.
 
-    safe::mail_raw_t::event_t<input::touch_port_t> touch_port_event;
-    platf::feedback_queue_t feedback_queue;
+    safe::mail_raw_t::event_t<input::touch_port_t> touch_port_event;  ///< Event for touch port coordinate updates.
+    platf::feedback_queue_t feedback_queue;  ///< Queue for sending gamepad feedback (rumble, triggers, etc.).
 
-    std::list<std::vector<uint8_t>> input_queue;
-    std::mutex input_queue_lock;
+    std::list<std::vector<uint8_t>> input_queue;  ///< Queue of input packets waiting to be processed.
+    std::mutex input_queue_lock;  ///< Mutex protecting the input queue.
 
-    thread_pool_util::ThreadPool::task_id_t mouse_left_button_timeout;
+    thread_pool_util::ThreadPool::task_id_t mouse_left_button_timeout;  ///< Task ID for mouse left button timeout handling.
 
-    input::touch_port_t touch_port;
+    input::touch_port_t touch_port;  ///< Current touch port coordinates and scaling.
 
-    int32_t accumulated_vscroll_delta;
-    int32_t accumulated_hscroll_delta;
+    int32_t accumulated_vscroll_delta;  ///< Accumulated vertical scroll delta for high-resolution scrolling.
+    int32_t accumulated_hscroll_delta;  ///< Accumulated horizontal scroll delta for high-resolution scrolling.
   };
 
   /**

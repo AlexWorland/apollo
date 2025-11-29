@@ -17,6 +17,12 @@
 
 namespace config {
   // track modified config options
+  /**
+   * @brief Map tracking modified configuration settings.
+   * 
+   * Stores configuration option names and their values that have been modified
+   * from defaults, used for logging and debugging.
+   */
   inline std::unordered_map<std::string, std::string> modified_config_settings;
 
   /**
@@ -26,73 +32,91 @@ namespace config {
    * and auto bitrate adjustment for streaming.
    */
   struct video_t {
-    bool headless_mode;
-    bool limit_framerate;
-    bool double_refreshrate;
+    bool headless_mode;  ///< Run without a display (headless mode).
+    bool limit_framerate;  ///< Limit framerate to match display refresh rate.
+    bool double_refreshrate;  ///< Use double refresh rate mode.
     // ffmpeg params
-    int qp;  // higher == more compression and less quality
+    int qp;  ///< Quantization parameter (higher == more compression and less quality).
 
-    int hevc_mode;
-    int av1_mode;
+    int hevc_mode;  ///< HEVC encoding mode (0 = disabled, 1 = enabled).
+    int av1_mode;  ///< AV1 encoding mode (0 = disabled, 1 = enabled).
 
-    int min_threads;  // Minimum number of threads/slices for CPU encoding
+    int min_threads;  ///< Minimum number of threads/slices for CPU encoding.
 
+    /**
+     * @brief Software encoder settings.
+     */
     struct {
-      std::string sw_preset;
-      std::string sw_tune;
-      std::optional<int> svtav1_preset;
+      std::string sw_preset;  ///< Software encoder preset (e.g., "superfast", "veryfast").
+      std::string sw_tune;  ///< Software encoder tune (e.g., "zerolatency").
+      std::optional<int> svtav1_preset;  ///< SVT-AV1 preset value (1-12).
     } sw;
 
-    nvenc::nvenc_config nv;
-    bool nv_realtime_hags;
-    bool nv_opengl_vulkan_on_dxgi;
-    bool nv_sunshine_high_power_mode;
+    nvenc::nvenc_config nv;  ///< NVIDIA NVENC encoder configuration.
+    bool nv_realtime_hags;  ///< Enable NVIDIA realtime HAGS (Hardware Accelerated GPU Scheduling).
+    bool nv_opengl_vulkan_on_dxgi;  ///< Allow OpenGL/Vulkan on DXGI adapter.
+    bool nv_sunshine_high_power_mode;  ///< Enable Sunshine high power mode for NVIDIA GPUs.
 
+    /**
+     * @brief NVIDIA legacy encoder settings.
+     */
     struct {
-      int preset;
-      int multipass;
-      int h264_coder;
-      int aq;
-      int vbv_percentage_increase;
+      int preset;  ///< NVENC preset value.
+      int multipass;  ///< Multi-pass encoding mode.
+      int h264_coder;  ///< H.264 coder type (CABAC/CAVLC).
+      int aq;  ///< Adaptive quantization setting.
+      int vbv_percentage_increase;  ///< VBV buffer percentage increase.
     } nv_legacy;
 
+    /**
+     * @brief Intel Quick Sync Video (QSV) encoder settings.
+     */
     struct {
-      std::optional<int> qsv_preset;
-      std::optional<int> qsv_cavlc;
-      bool qsv_slow_hevc;
+      std::optional<int> qsv_preset;  ///< QSV preset value (1-7).
+      std::optional<int> qsv_cavlc;  ///< QSV CAVLC setting (0 = auto, 1 = enabled).
+      bool qsv_slow_hevc;  ///< Use slow HEVC encoding mode.
     } qsv;
 
+    /**
+     * @brief AMD encoder settings.
+     */
     struct {
-      std::optional<int> amd_usage_h264;
-      std::optional<int> amd_usage_hevc;
-      std::optional<int> amd_usage_av1;
-      std::optional<int> amd_rc_h264;
-      std::optional<int> amd_rc_hevc;
-      std::optional<int> amd_rc_av1;
-      std::optional<int> amd_enforce_hrd;
-      std::optional<int> amd_quality_h264;
-      std::optional<int> amd_quality_hevc;
-      std::optional<int> amd_quality_av1;
-      std::optional<int> amd_preanalysis;
-      std::optional<int> amd_vbaq;
-      int amd_coder;
+      std::optional<int> amd_usage_h264;  ///< AMD usage mode for H.264.
+      std::optional<int> amd_usage_hevc;  ///< AMD usage mode for HEVC.
+      std::optional<int> amd_usage_av1;  ///< AMD usage mode for AV1.
+      std::optional<int> amd_rc_h264;  ///< AMD rate control method for H.264.
+      std::optional<int> amd_rc_hevc;  ///< AMD rate control method for HEVC.
+      std::optional<int> amd_rc_av1;  ///< AMD rate control method for AV1.
+      std::optional<int> amd_enforce_hrd;  ///< AMD HRD enforcement setting.
+      std::optional<int> amd_quality_h264;  ///< AMD quality preset for H.264.
+      std::optional<int> amd_quality_hevc;  ///< AMD quality preset for HEVC.
+      std::optional<int> amd_quality_av1;  ///< AMD quality preset for AV1.
+      std::optional<int> amd_preanalysis;  ///< AMD pre-analysis setting.
+      std::optional<int> amd_vbaq;  ///< AMD VBAQ (Variance Based Adaptive Quantization) setting.
+      int amd_coder;  ///< AMD coder type (auto, CABAC, or CAVLC).
     } amd;
 
+    /**
+     * @brief VideoToolbox (Apple) encoder settings.
+     */
     struct {
-      int vt_allow_sw;
-      int vt_require_sw;
-      int vt_realtime;
-      int vt_coder;
+      int vt_allow_sw;  ///< Allow software encoding fallback (0 = disabled, 1 = allowed).
+      int vt_require_sw;  ///< Require software encoding (0 = disabled, 1 = required).
+      int vt_realtime;  ///< Enable realtime encoding mode (0 = disabled, 1 = enabled).
+      int vt_coder;  ///< VideoToolbox coder type (auto, CABAC, or CAVLC).
     } vt;
 
+    /**
+     * @brief VAAPI encoder settings.
+     */
     struct {
-      bool strict_rc_buffer;
+      bool strict_rc_buffer;  ///< Use strict rate control buffer management.
     } vaapi;
 
-    std::string capture;
-    std::string encoder;
-    std::string adapter_name;
-    std::string output_name;
+    std::string capture;  ///< Capture method name (e.g., "gdi", "x11", "wayland").
+    std::string encoder;  ///< Encoder name (e.g., "nvenc", "qsv", "software").
+    std::string adapter_name;  ///< Graphics adapter name to use for capture/encoding.
+    std::string output_name;  ///< Display output name to capture from.
 
     /**
      * @brief Display device configuration structure.
@@ -111,6 +135,11 @@ namespace config {
         std::chrono::milliseconds hdr_toggle_delay;  ///< Specify whether to apply HDR high-contrast color workaround and what delay to use.
       };
 
+      /**
+       * @brief Display device configuration option enumeration.
+       * 
+       * Controls how the display device is prepared and configured during streaming.
+       */
       enum class config_option_e {
         disabled,  ///< Disable the configuration for the device.
         verify_only,  ///< @seealso{display_device::SingleDisplayConfiguration::DevicePreparation}
@@ -119,18 +148,33 @@ namespace config {
         ensure_only_display  ///< @seealso{display_device::SingleDisplayConfiguration::DevicePreparation}
       };
 
+      /**
+       * @brief Resolution option enumeration.
+       * 
+       * Controls how display resolution is managed during streaming.
+       */
       enum class resolution_option_e {
         disabled,  ///< Do not change resolution.
         automatic,  ///< Change resolution and use the one received from Moonlight.
         manual  ///< Change resolution and use the manually provided one.
       };
 
+      /**
+       * @brief Refresh rate option enumeration.
+       * 
+       * Controls how display refresh rate is managed during streaming.
+       */
       enum class refresh_rate_option_e {
         disabled,  ///< Do not change refresh rate.
         automatic,  ///< Change refresh rate and use the one received from Moonlight.
         manual  ///< Change refresh rate and use the manually provided one.
       };
 
+      /**
+       * @brief HDR option enumeration.
+       * 
+       * Controls how HDR (High Dynamic Range) settings are managed during streaming.
+       */
       enum class hdr_option_e {
         disabled,  ///< Do not change HDR settings.
         automatic  ///< Change HDR settings and use the state requested by Moonlight.
@@ -144,10 +188,10 @@ namespace config {
        * different values based on configuration.
        */
       struct mode_remapping_entry_t {
-        std::string requested_resolution;
-        std::string requested_fps;
-        std::string final_resolution;
-        std::string final_refresh_rate;
+        std::string requested_resolution;  ///< Client-requested resolution (e.g., "1920x1080").
+        std::string requested_fps;  ///< Client-requested framerate (e.g., "60").
+        std::string final_resolution;  ///< Final resolution to use (e.g., "2560x1440").
+        std::string final_refresh_rate;  ///< Final refresh rate to use (e.g., "120").
       };
 
       /**
@@ -162,41 +206,41 @@ namespace config {
         std::vector<mode_remapping_entry_t> refresh_rate_only;  ///< To be use when only `refresh_rate_option` is set to `automatic`.
       };
 
-      config_option_e configuration_option;
-      resolution_option_e resolution_option;
+      config_option_e configuration_option;  ///< Display device configuration option.
+      resolution_option_e resolution_option;  ///< Resolution change option.
       std::string manual_resolution;  ///< Manual resolution in case `resolution_option == resolution_option_e::manual`.
-      refresh_rate_option_e refresh_rate_option;
+      refresh_rate_option_e refresh_rate_option;  ///< Refresh rate change option.
       std::string manual_refresh_rate;  ///< Manual refresh rate in case `refresh_rate_option == refresh_rate_option_e::manual`.
-      hdr_option_e hdr_option;
+      hdr_option_e hdr_option;  ///< HDR change option.
       std::chrono::milliseconds config_revert_delay;  ///< Time to wait until settings are reverted (after stream ends/app exists).
       bool config_revert_on_disconnect;  ///< Specify whether to revert display configuration on client disconnect.
-      mode_remapping_t mode_remapping;
-      workarounds_t wa;
+      mode_remapping_t mode_remapping;  ///< Mode remapping configuration for resolution/refresh rate overrides.
+      workarounds_t wa;  ///< Display device workarounds configuration.
     } dd;
 
-    int max_bitrate;  // Maximum bitrate, sets ceiling in kbps for bitrate requested from client
+    int max_bitrate;  ///< Maximum bitrate ceiling in kbps for bitrate requested from client.
     double minimum_fps_target;  ///< Lowest framerate that will be used when streaming. Range 0-1000, 0 = half of client's requested framerate.
 
     // Auto bitrate adjustment settings (only used when client enables it)
     // Note: Feature is controlled by client checkbox, these are host-side tuning parameters
-    int auto_bitrate_min_kbps = 1;  // Minimum bitrate (Kbps)
-    int auto_bitrate_max_kbps = 0;    // Maximum bitrate (0 = use client max)
-    int auto_bitrate_adjustment_interval_ms = 3000;  // Minimum time between adjustments
-    int auto_bitrate_min_adjustment_pct = 5;  // Minimum % delta required to change bitrate
-    int auto_bitrate_loss_severe_pct = 10;    // Loss percentage considered severe
-    int auto_bitrate_loss_moderate_pct = 5;   // Loss percentage considered moderate
-    int auto_bitrate_loss_mild_pct = 1;       // Loss percentage considered mild
-    int auto_bitrate_decrease_severe_pct = 25;   // Reduce bitrate by this percent on severe loss
-    int auto_bitrate_decrease_moderate_pct = 12; // Reduce bitrate by this percent on moderate loss
-    int auto_bitrate_decrease_mild_pct = 5;      // Reduce bitrate by this percent on mild loss
-    int auto_bitrate_increase_good_pct = 5;       // Increase bitrate by this percent when stable
-    int auto_bitrate_good_stability_ms = 5000;    // Good-network duration required before increases
-    int auto_bitrate_increase_min_interval_ms = 3000; // Minimum interval between increases
-    int auto_bitrate_poor_status_cap_pct = 25;    // Cap reduction percent when status == POOR
+    int auto_bitrate_min_kbps = 1;  ///< Minimum bitrate in Kbps.
+    int auto_bitrate_max_kbps = 0;  ///< Maximum bitrate in Kbps (0 = use client max).
+    int auto_bitrate_adjustment_interval_ms = 3000;  ///< Minimum time between adjustments in milliseconds.
+    int auto_bitrate_min_adjustment_pct = 5;  ///< Minimum percentage delta required to change bitrate.
+    int auto_bitrate_loss_severe_pct = 10;  ///< Packet loss percentage considered severe.
+    int auto_bitrate_loss_moderate_pct = 5;  ///< Packet loss percentage considered moderate.
+    int auto_bitrate_loss_mild_pct = 1;  ///< Packet loss percentage considered mild.
+    int auto_bitrate_decrease_severe_pct = 25;  ///< Reduce bitrate by this percent on severe loss.
+    int auto_bitrate_decrease_moderate_pct = 12;  ///< Reduce bitrate by this percent on moderate loss.
+    int auto_bitrate_decrease_mild_pct = 5;  ///< Reduce bitrate by this percent on mild loss.
+    int auto_bitrate_increase_good_pct = 5;  ///< Increase bitrate by this percent when network is stable.
+    int auto_bitrate_good_stability_ms = 5000;  ///< Good-network duration required before increases in milliseconds.
+    int auto_bitrate_increase_min_interval_ms = 3000;  ///< Minimum interval between increases in milliseconds.
+    int auto_bitrate_poor_status_cap_pct = 25;  ///< Cap reduction percent when network status is POOR.
 
-    std::string fallback_mode;
-    bool isolated_virtual_display_option;
-    bool ignore_encoder_probe_failure;
+    std::string fallback_mode;  ///< Fallback display mode if primary mode fails (format: "WIDTHxHEIGHTxFPS").
+    bool isolated_virtual_display_option;  ///< Use isolated virtual display option.
+    bool ignore_encoder_probe_failure;  ///< Ignore encoder probe failures and continue anyway.
   };
 
   /**
@@ -276,6 +320,11 @@ namespace config {
   };
 
   namespace flag {
+    /**
+     * @brief Sunshine application flag enumeration.
+     * 
+     * Flags that control various runtime behaviors of the Sunshine application.
+     */
     enum flag_e : std::size_t {
       PIN_STDIN = 0,  ///< Read PIN from stdin instead of http
       FRESH_STATE,  ///< Do not load or save state
